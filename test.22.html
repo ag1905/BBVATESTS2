@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>IBM TeaLeaf Cloud Testing</title>
+</head>
+<body>
+
+  <h1>IBM TeaLeaf Cloud Testing. Test 22. DOM Events</h1>
+
+  <p>Antes del Componente</p>
+  <wc-test id="A"></wc-test>
+  <wc-test id="B"></wc-test>
+  <wc-test id="C"></wc-test>
+  <p>Despues del Componente</p>
+
+  <script type="text/javascript">
+    const TEST   = 'wc-test'
+    const TYPE   = 'purchase'
+    const OPEN   = { mode: 'open'   }
+    const CLOSED = { mode: 'closed' }
+    const MODE   = OPEN
+    const MAX    = 5000
+
+    function Random (max) {
+      return Math.floor (MAX * Math.random ())
+    }
+
+    function doAsync (fn) {
+      setTimeout (function () {
+        fn ()
+        doAsync (fn)
+      }, Random (MAX))
+    }
+
+    class WCTest extends HTMLElement {
+
+      constructor () {
+        super ()
+        this.ready  ()
+        this.render ()
+      }
+
+      ready  () {
+        this.shadow = this.attachShadow (MODE)
+        doAsync (() => {
+           let event = new Event (TYPE)
+           event.detail = this.id
+           this.dispatchEvent (event)
+        })
+      }
+
+      render () {
+        this.shadow.innerHTML = `
+          <style>
+            .container {
+              display : inline-block;
+              margin  : 10px;
+              padding : 10px;
+              border  : 3px solid blue;
+              background: rgba(0,0,255, 0.1);
+            }
+          </style>
+          <div class="container">
+            <strong>Componente Web [Test 22 - ${this.id}]</strong>
+            <div>
+              <p>Este es un componente emisor<p>
+            </div>
+          </div>
+        `
+      }
+
+    }
+
+    customElements.define (TEST, WCTest)
+
+    let tests = document.querySelectorAll (TEST)
+    for (let test of tests) {
+      test.addEventListener (TYPE, console.log)
+    }
+
+  </script>
+</body>
+</html>

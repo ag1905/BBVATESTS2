@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>IBM TeaLeaf Cloud Testing</title>
+</head>
+<body>
+
+  <h1>IBM TeaLeaf Cloud Testing. Test 04. Shadow DOM</h1>
+
+  <p>Antes del Componente</p>
+  <wc-test>
+    <wc-item> Este es contenido descartado </wc-item>
+    <wc-item> Este es contenido descartado </wc-item>
+    <wc-item> Este es contenido descartado </wc-item>
+  </wc-test>
+  <p>Despues del Componente</p>
+
+  <script type="text/javascript">
+    const TEST   = 'wc-test'
+    const ITEM   = 'wc-item'
+    const OPEN   = { mode: 'open'   }
+    const CLOSED = { mode: 'closed' }
+    const MODE   = OPEN
+
+    class WCTest extends HTMLElement {
+
+      constructor () {
+        super ()
+        this.ready  ()
+        this.render ()
+      }
+
+      ready  () {}
+      render () {
+        let shadow = this.attachShadow (MODE)
+        shadow.innerHTML = `
+          <style>
+            .container {
+              display : inline-block;
+              margin  : 10px;
+              padding : 10px;
+              border  : 3px solid blue;
+              background: rgba(0,0,255, 0.1);
+            }
+          </style>
+          <div class="container">
+            <strong>Componente Web [Test 04]</strong>
+            <div>
+              <slot></slot>
+            </div>
+          </div>
+        `
+      }
+
+    }
+
+    class WCItem extends HTMLElement {
+
+      constructor () {
+        super ()
+        this.ready  ()
+        this.render ()
+      }
+
+      ready  () {}
+      render () {
+        let shadow = this.attachShadow (MODE)
+        shadow.innerHTML = `
+          <style>
+            .container {
+              display    : block;
+              margin     : 10px;
+              padding    : 10px;
+              border     : 1px dashed blue;
+              background : #fff;
+            }
+          </style>
+          <div class="container">
+            <p>Componente Web Item</p>
+          </div>
+        `
+      }
+
+    }
+
+    customElements.define (TEST, WCTest)
+    customElements.define (ITEM, WCItem)
+
+  </script>
+</body>
+</html>

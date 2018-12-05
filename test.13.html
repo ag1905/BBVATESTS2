@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>IBM TeaLeaf Cloud Testing</title>
+</head>
+<body>
+
+  <h1>IBM TeaLeaf Cloud Testing. Test 13. Dynamic Content</h1>
+
+  <p>Antes del Componente</p>
+  <wc-test title="A"> </wc-test>
+  <wc-test title="B"> </wc-test>
+  <wc-test title="C"> </wc-test>
+  <wc-test title="D"> </wc-test>
+  <wc-test title="E"> </wc-test>
+  <p>Despues del Componente</p>
+
+  <script type="text/javascript">
+    const TEST   = 'wc-test'
+    const TITLE  = 'title'
+    const OPEN   = { mode: 'open'   }
+    const CLOSED = { mode: 'closed' }
+    const MODE   = OPEN
+    const MAX    = 10000
+
+    function Random (max) {
+      return Math.floor (MAX * Math.random ())
+    }
+
+    function doDelay (fn) {
+      setTimeout (fn, Random (MAX))
+    }
+
+    class WCTest extends HTMLElement {
+
+      constructor () {
+        super ()
+        this.ready ()
+      }
+
+      ready  () {
+        this.shadow = this.attachShadow (MODE)
+        this.title  = this.getAttribute (TITLE)
+        doDelay (this.render.bind (this))
+      }
+
+      render () {
+        this.shadow.innerHTML = `
+          <style>
+            .container {
+              display : inline-block;
+              margin  : 10px;
+              padding : 10px;
+              border  : 3px solid blue;
+              background: rgba(0,0,255, 0.1);
+            }
+            h2 {
+              text-align: center;
+            }
+          </style>
+          <div class="container">
+            <strong>Componente Web [Test 13 - ${this.title}]</strong>
+            <div>
+              <p><slot></slot><p>
+            </div>
+          </div>
+        `
+      }
+
+    }
+
+    customElements.define (TEST, WCTest)
+
+  </script>
+
+</body>
+</html>

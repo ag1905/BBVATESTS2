@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>IBM TeaLeaf Cloud Testing</title>
+</head>
+<body>
+
+  <h1>IBM TeaLeaf Cloud Testing. Test 26. DOM Events</h1>
+
+  <p>Antes del Componente</p>
+  <wc-test id="A"></wc-test>
+  <wc-test id="B"></wc-test>
+  <wc-test id="C"></wc-test>
+  <p>Despues del Componente</p>
+
+  <script type="text/javascript">
+    const TEST   = 'wc-test'
+    const BUTTON = 'button'
+    const TYPE   = 'purchase'
+    const TAP    = 'click'
+    const OPEN   = { mode: 'open'   }
+    const CLOSED = { mode: 'closed' }
+    const MODE   = OPEN
+
+    class WCTest extends HTMLElement {
+
+      constructor () {
+        super ()
+        this.ready  ()
+        this.render ()
+      }
+
+      ready  () {
+        this.shadow = this.attachShadow (MODE)
+      }
+
+      render () {
+        this.shadow.innerHTML = `
+          <style>
+            .container {
+              display : inline-block;
+              margin  : 10px;
+              padding : 10px;
+              border  : 3px solid blue;
+              background: rgba(0,0,255, 0.1);
+            }
+            button {
+              margin: 10px auto;
+              padding : 10px;
+              border  : 1px solid grey;
+              color   : #000;
+            }
+          </style>
+          <div class="container">
+            <strong>Componente Web [Test 26 - ${this.id}]</strong>
+            <div>
+              <button type="button">Click Me</button>
+            </div>
+          </div>
+        `
+      }
+
+    }
+
+    customElements.define (TEST, WCTest)
+
+    // Capturar Click en button
+
+  </script>
+</body>
+</html>

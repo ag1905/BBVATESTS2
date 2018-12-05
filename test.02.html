@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>IBM TeaLeaf Cloud Testing</title>
+</head>
+<body>
+
+  <h1>IBM TeaLeaf Cloud Testing. Test 02. Shadow DOM</h1>
+
+  <p>Antes del Componente</p>
+  <wc-test></wc-test>
+  <p>Despues del Componente</p>
+
+  <script type="text/javascript">
+    const TEST   = 'wc-test'
+    const OPEN   = { mode: 'open'   }
+    const CLOSED = { mode: 'closed' }
+    const MODE   = CLOSED
+
+    class WCTest extends HTMLElement {
+
+      constructor () {
+        super ()
+        this.ready  ()
+        this.render ()
+      }
+
+      ready  () {}
+      render () {
+        let shadow = this.attachShadow (MODE)
+        shadow.innerHTML = `
+          <style>
+            .container {
+              display : inline-block;
+              margin  : 10px;
+              padding : 10px;
+              border  : 3px solid blue;
+              background: rgba(0,0,255, 0.1);
+            }
+          </style>
+          <div class="container">
+            <strong>Componente Web [Test 02]</strong>
+            <ul>
+              <li> Este es un contenido en la Sombra</li>
+              <li> Modo Cerrado</li>
+            </ul>
+          </div>
+        `
+      }
+
+    }
+
+    customElements.define(TEST, WCTest)
+
+  </script>
+</body>
+</html>
