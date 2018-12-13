@@ -1,0 +1,146 @@
+{
+  "default-cancel-button": "_Cancelar_",
+
+  "alert-REGISTER-DEVICE-title": "_Vincular dispositivo_",
+  "alert-REGISTER-DEVICE-accept": "_Continuar_",
+  "alert-REGISTER-DEVICE-cancel": "_Más tarde_",
+  "alert-REGISTER-DEVICE-message": "_Vincula este dispositivo con tu <strong>perfil de BBVA</strong> para sacarle el mayor partido a la App:_",
+  "alert-REGISTER-DEVICE-subtext-1": "_Recibirás notificaciones de tus movimientos más importantes_",
+  "alert-REGISTER-DEVICE-subtext-2": "_Pagarás con tu móvil_",
+
+  "alert-DATA-ERROR-cancel": "_Reintentar_",
+  "alert-DATA-ERROR-subtext-1": "_Los datos introducidos no son correctos_",
+
+  "alert-DATA-CHANGED-cancel": "_Reintentar_",
+  "alert-DATA-CHANGED-subtext-1": "_Hemos detectado que has cambiado alguno de tus datos._",
+  "alert-DATA-CHANGED-subtext-2": "_Por favor, introduce tus nuevas credenciales de acceso._",
+
+  "alert-LOGOUT-accept": "_Cerrar sesión_",
+  "alert-LOGOUT-message": "_Procederás a cerrar tu sesión. ¿Deseas continuar?_",
+
+  "alert-AUTOMATIC-LOGOUT-accept": "_Cerrar sesión_",
+  "alert-AUTOMATIC-LOGOUT-message": "_Desactivarás el acceso automático de la aplicación. ¿Deseas continuar?_",
+
+  "alert-CHANGE-USER-accept": "_Cambiar_",
+  "alert-CHANGE-USER-cancel": "_Cancelar_",
+  "alert-CHANGE-USER-message": "_¿Estás seguro de que quieres cambiar de usuario?_",
+
+  "alert-SESSION-EXPIRED-cancel": "_Entendido_",
+  "alert-SESSION-EXPIRED-message": "_Después de un período de inactividad hemos cerrado tu sesión por seguridad._",
+
+  "alert-SPEI-LINK-WARNING-accept": "_Confirmar_",
+  "alert-SPEI-LINK-WARNING-message": "_Tienes este celular asociado a la cuenta <strong>“$(lastAccount)”</strong>. Si confirmas, lo vincularás a <strong>“$(nextAccount)”</strong> y se desvinculará de la otra cuenta._",
+
+  "alert-ACCESS-PASSWORD-WRONG-title": "_Clave de seguridad_",
+  "alert-ACCESS-PASSWORD-WRONG-message": "_<h2>Clave de acceso incorrecta</h2>_",
+  "alert-ACCESS-PASSWORD-WRONG-subtext-1": "_La clave introducida no es correcta_",
+  "alert-ACCESS-PASSWORD-WRONG-subtext-2": "_Inténtalo de nuevo_",
+  "alert-ACCESS-PASSWORD-WRONG-accept": "_Reintentar_",
+  "alert-ACCESS-PASSWORD-WRONG-cancel": "_Olvidé mi clave de acceso_",
+
+  "alert-OTP-SMS-WRONG-title": "_Clave de seguridad_",
+  "alert-OTP-SMS-WRONG-message": "_<h2>Clave incorrecta</h2>_",
+  "alert-OTP-SMS-WRONG-subtext-1": "_La clave introducida no es correcta_",
+  "alert-OTP-SMS-WRONG-subtext-2": "_Inténtalo de nuevo_",
+  "alert-OTP-SMS-WRONG-accept": "_Reintentar_",
+
+  "alert-BLOCKED-CAUSE-RETRIALS-title": "_Clave de seguridad_",
+  "alert-BLOCKED-CAUSE-RETRIALS-message": "_<h2>Clave de acceso bloqueada</h2>_",
+  "alert-BLOCKED-CAUSE-RETRIALS-subtext-1": "_Tu clave de acceso ha sido bloqueada por razones de seguridad tras <strong>varios intentos fallidos</strong>_",
+  "alert-BLOCKED-CAUSE-RETRIALS-accept": "_Recuperar clave_",
+
+  "alert-CARDLESS-WITHDRAWAL-title": "_Retiro sin tarjeta_",
+  "alert-CARDLESS-WITHDRAWAL-message": "_<h2>Retiro no realizado</h2>",
+  "alert-CARDLESS-WITHDRAWAL-subtext-1": "_La operación ha fallado._",
+  "alert-CARDLESS-WITHDRAWAL-subtext-2": "_Intentalo de nuevo._",
+  "alert-CARDLESS-WITHDRAWAL-accept": "_Reintentar_",
+  "alert-CARDLESS-WITHDRAWAL-cancel": "_Cancelar_",
+
+  "alert-MOBILE-TOP-UP-title": "_Comprar tiempo aire",
+  "alert-MOBILE-TOP-UP-message": "<h2>_Recarga no realizada</h2>",
+  "alert-MOBILE-TOP-UP-subtext-1": "_La operación ha fallado.",
+  "alert-MOBILE-TOP-UP-subtext-2": "_Intentalo de nuevo.",
+  "alert-MOBILE-TOP-UP-accept": "_Reintentar",
+  "alert-MOBILE-TOP-UP-cancel": "_Cancelar",
+
+  "alert-MINIMUM-AMOUNT-PAYMENT-title": "_Pago minímo_",
+  "alert-MINIMUM-AMOUNT-PAYMENT-message": "_Es la cantidad mínima que debes pagar para mantener tu crédito al corriente y no entrar en morosidad. <br> <br> Pagar el mínimo te genera intereses sobre el saldo que adeudas. Para conocer la tasa de interés, consulta tu estado de cuenta._",
+  "alert-MINIMUM-AMOUNT-TO-AVOID-INTEREST-title": "_Pago para no generar intereses_",
+  "alert-MINIMUM-AMOUNT-TO-AVOID-INTEREST-message": "_Es la cantidad exacta que debes pagar para no generar intereses en el periodo actual. <br>  <br> Excepción: si tienes un plan de pagos fijos, éste sí causará intereses._",
+  "alert-CURRENT-AMOUNT-PAYMENT-title": "_Saldo actual_",
+  "alert-CURRENT-AMOUNT-PAYMENT-message": "_Es el monto total de tu deuda al día de hoy, el cual se actualiza cada vez que utilizas tu tarjetra de crédito. <br>  <br> Este pago no genera intereses._",
+
+  "alert-CREDIT-CARD-PAYMENT-title": "_Pagar tarjeta_",
+  "alert-CREDIT-CARD-PAYMENT-message": "_<h2>Operación no realizada</h2>_",
+  "alert-CREDIT-CARD-PAYMENT-subtext-1": "_La operación ha fallado. Intentalo de nuevo_",
+  "alert-CREDIT-CARD-PAYMENT-accept": "_Reintentar_",
+  "alert-CREDIT-CARD-PAYMENT-cancel": "_Volver al resumen_",
+
+  "alert-MAXIMUM-DAILY-LIMIT-EXCEEDED-ERROR-accept": "_Entendido_",
+  "alert-MAXIMUM-DAILY-LIMIT-EXCEEDED-ERROR-message": "_Has superado el límite diario o las operaciones mensuales permitidas. Por favor, comunícate con Banca por Teléfono al (01) 595-0000 y solicita su ampliación._",
+
+  "alert-AMOUNT-OVER-BALANCE-ERROR-accept": "_Cambiar importe_",
+  "alert-AMOUNT-OVER-BALANCE-ERROR-cancel": "_Seleccionar otra cuenta_",
+  "alert-AMOUNT-OVER-BALANCE-ERROR-message": "_El importe que deseas transferir es mayor al saldo disponible en tu cuenta. Por favor, verifica e intenta nuevamente._",
+
+  "alert-NOT-ALLOWED-SEARCH-THIRD-PERSON-ERROR-title": "_Transferir_",
+  "alert-NOT-ALLOWED-SEARCH-THIRD-PERSON-ERROR-message": "_<h2>Error en el proceso</h2>_",
+  "alert-NOT-ALLOWED-SEARCH-THIRD-PERSON-ERROR-subtext-1": "_No se ha podido encontrar la información. Por favor, comunícate con nosotros al (01) 595-0000 o visita la oficina más cercana._",
+  "alert-NOT-ALLOWED-SEARCH-THIRD-PERSON-ERROR-accept": "_Salir_",
+  "alert-NOT-ALLOWED-SEARCH-THIRD-PERSON-ERROR-cancel": "_Llamar a Banca por Teléfono_",
+
+  "alert-ACCOUNT-WITHOUT-ALLOWED-HOLDERS-title": "_Transferir_",
+  "alert-ACCOUNT-WITHOUT-ALLOWED-HOLDERS-message": "_<h2>Error en el proceso</h2>_",
+  "alert-ACCOUNT-WITHOUT-ALLOWED-HOLDERS-subtext-1": "_La cuenta ingresada no tiene titulares dados de alta. Por favor, comunícate con nosotros al (01) 595-0000 o visita la oficina más cercana._",
+  "alert-ACCOUNT-WITHOUT-ALLOWED-HOLDERS-accept": "_Salir_",
+  "alert-ACCOUNT-WITHOUT-ALLOWED-HOLDERS-cancel": "_Llamar a Banca por Teléfono_",
+
+  "alert-BACKEND-ERROR-TRANSFERS-PE-title": "_Transferir_",
+  "alert-BACKEND-ERROR-TRANSFERS-PE-message": "_<h2>Error en el proceso</h2>_",
+  "alert-BACKEND-ERROR-TRANSFERS-PE-subtext-1": "_Lo sentimos, hubo un error al ingresar la información. Por favor, comunícate con nosotros al (01) 595-0000 o visita la oficina más cercana._",
+  "alert-BACKEND-ERROR-TRANSFERS-PE-accept": "_Salir_",
+  "alert-BACKEND-ERROR-TRANSFERS-PE-cancel": "_Llamar a Banca por Teléfono_",
+
+  "alert-RENEW-KEY-TRANSACTION-message": "__Usa la funcionalidad 'Reenviar clave' y recuérdale al beneficiario que tiene dinero pendiente por cobrar.__",
+
+  "alert-RENEW-KEY-TRANSACTION-ERROR-accept": "Los sentimos, no se pudo completar la operación en este momento. Por favor, comunícate con nosotros al (01) 595-0000 para poder ayudarte.",
+  "alert-RENEW-KEY-TRANSACTION-ERROR-message": "Llamar a Banca por Teléfono",
+
+  "alert-SERVICE-ERROR-title": "__Comunicación interrumpida__",
+  "alert-SERVICE-ERROR-subtext": "__Ha habido un problema y no se han podido cargar los datos.__",
+
+  "alert-CHANGE-PASSWORD-USED-BEFORE-accept": "_Agreed",
+  "alert-CHANGE-PASSWORD-USED-BEFORE-message": "_Your new password must be different from the current one. Check and try again",
+
+  "alert-CHAGE-PASSWORD-TRIED-ERROR-accept": "_Password blocked",
+  "alert-CHANGE-PASSWORD-TRIED-title": "_Bloked Password",
+  "alert-CHAGE-PASSWORD-TRIED-ERROR-message": "_Your access password has been blocked after exceeding the number of attempts.",
+
+  "alert-CHANGE-PASSWORD-ERROR-accept": "_Agreed",
+  "alert-CHANGE-PASSWORD-ERROR-message": "_Change password data entered are not correct",
+
+  "alert-ATM-LOCATOR-WELCOME-title": "__Ubicación sucursales y cajeros__",
+  "alert-ATM-LOCATOR-WELCOME-message": "__<h2>¡Ahora podrás consultar el tiempo de espera en una sucursal!</h2>__",
+  "alert-ATM-LOCATOR-WELCOME-subtext-1": "__Sólo necesitamos conocer tu ubicación para encontrar sucursales y cajeros más cercanos a tí.__",
+  "alert-ATM-LOCATOR-WELCOME-accept": "__Continuar__",
+
+  "alert-NETWORK-ERROR-message": "__No se ha podido establecer la conexión__",
+  "alert-NETWORK-ERROR-accept": "__Reintentar__",
+
+  "alert-LOCATION-PERMISSION-DENIED-cancel-button": "__No, gracias__",
+  "alert-LOCATION-PERMISSION-DENIED-title": "__Permiso de ubicación__",
+  "alert-LOCATION-PERMISSION-DENIED-message": "__Para que podamos guiarte, permite el uso de tu ubicación. Activalos en los ajustes de tu teléfono.__",
+
+  "alert-CARD-SWITCH-INFO-accept": "__Entendido__",
+  "alert-CARD-SWITCH-INFO-title-modal": "__Configurar por operación__",
+  "alert-CARD-SWITCH-INFO-subtitle": "__¿Qué puedo hacer con esta función?__",
+  "alert-CARD-SWITCH-INFO-message": "__Puedes prender y apagar temporalmente las siguientes opciones en tu tarjeta: compras por internet, compras en el exterior y disposición de efectivo. Es gratuita y segura.__",
+
+  "alert-LOAN-OFFER-ASSISTANCE-CALL-SUCCESS-accept": "_Understood",
+  "alert-LOAN-OFFER-ASSISTANCE-CALL-SUCCESS-title": "_Request received",
+  "alert-LOAN-OFFER-ASSISTANCE-CALL-SUCCESS-message": "_Soon we will call you at this number to advise you. The hours of operation are from Monday to Saturday from 9:00 a.m. to 9:00 p.m.",
+
+  "alert-EXIT-OPERATIVE-accept": "_Sí, salir_",
+  "alert-EXIT-OPERATIVE-cancel": "_Seguir con la operación_",
+  "alert-EXIT-OPERATIVE-message": "_¿Estás seguro de que deseas salir?_"
+}

@@ -1,0 +1,104 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  overflow: hidden;
+  height: 100vh;
+  @apply --glomo-atm-locator;
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.search-area {
+  background: var(--bbva-white,#fff);
+  width: 95%;
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  opacity: .9;
+  button {
+    width: 100%;
+  }
+}
+
+.close {
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  border: 0;
+  outline: none;
+  background: transparent;
+  z-index: 2;
+}
+
+cells-atom-icon {
+  color: var(--bbva-500, #666);
+}
+
+.detail {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(150%);
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  max-height: 175px;
+  padding: 1.875rem;
+  font-family: var(--cells-fontDefault, sans-serif);
+  overflow: hidden;
+  background: var(--bbva-white, #fff);
+  will-change: top;
+  box-sizing: border-box;
+  transition: all .3s ease-in-out;
+
+  &.active {
+    transform: translateX(-50%) translateY(0);
+    transition: all .3s ease-in-out;
+  }
+
+  &__body {
+    margin: 0 0 .625rem 0;
+    text-align: center;
+    cursor: pointer;
+    @apply --glomo-atm-locator-detail-body;
+  }
+
+  .main {
+    display: block;
+    position: relative;
+    font-weight: 400;
+    font-style: initial;
+    margin-bottom: .625rem;
+    color: var(--bbva-dark-medium-blue, #1464A5);
+    @apply --glomo-atm-locator-detail-main;
+  }
+  
+  .secondary {
+    display: block;
+    margin-bottom: .1875rem;
+    font-weight: 100;
+    font-size: var(--cells-text-size-14);
+    font-style: italic;
+    color: var(--bbva-500, #666);
+    outline: none;
+    @apply --glomo-atm-locator-detail-secondary;
+  }
+
+  @apply --glomo-atm-locator-detail;
+}
+
+cells-operations-list {
+  margin-bottom: 0;
+}

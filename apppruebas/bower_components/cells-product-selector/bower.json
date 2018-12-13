@@ -1,0 +1,38 @@
+{
+  "name": "cells-product-selector",
+  "version": "2.6.2",
+  "description": "A simple product selector",
+  "keywords": [
+    "i18n"
+  ],
+  "dependencies": {
+    "cells-atom-message": "^2.1.0",
+    "cells-atom-subheader": "^3.0.0",
+    "cells-i18n-behavior": "3.1.0",
+    "cells-molecule-skeleton": "^2.0.0",
+    "cells-product-item": "~10.1.0",
+    "cells-skeleton-custom": "^1.1.0",
+    "cells-skeleton-item-account-transfer": "^1.0.0",
+    "polymer": "Polymer/polymer#^1.6.0"
+  },
+  "devDependencies": {
+    "cells-coronita-theme": "9 - 10",
+    "cells-demo-helper": "9 - 10",
+    "cells-glomo-theme": "~5.5.0",
+    "cells-sass": "^2.0.0",
+    "cells-shadow-query-selector": "^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "coronita-icons": "^10.1.0"
+  },
+  "main": [
+    "cells-account-selector.html"
+  ],
+  "resolutions": {
+    "cells-i18n-behavior": "9 - 10",
+    "iron-icon": "^2.0.0",
+    "webcomponentsjs": "^v1.0.19",
+    "cells-atom-icon": "9 - 10"
+  }
+}

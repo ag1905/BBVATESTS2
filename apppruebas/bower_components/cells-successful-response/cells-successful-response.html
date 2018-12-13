@@ -1,0 +1,324 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-successful-response-styles.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-atom-button/cells-atom-button.html">
+<link rel="import" href="../cells-contact-avatar/cells-contact-avatar.html">
+<link rel="import" href="../cells-molecule-mask/cells-molecule-mask.html">
+<link rel="import" href="../cells-atom-date/cells-atom-date.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href="../cells-from-to/cells-from-to.html" />
+<link rel="import" href="../cells-operations-list/cells-operations-list.html" />
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+
+
+<!--
+![cells-successful-response screenshot](cells-successful-response.png)
+# cells-successful-response
+
+[![Certificated](https://img.shields.io/badge/certificated-yes-brightgreen.svg)](http://bbva-files.s3.amazonaws.com/cells/bbva-catalog/index.html)
+
+[Demo to component in Cells Catalog](http://bbva-files.s3.amazonaws.com/cells/bbva-catalog/index.html#/elements/cells-successful-response)
+
+`<cells-successful-response>` shows a page with a success message from the service
+
+Example:
+```html
+<cells-successful-response></cells-successful-response>
+```
+
+Example:
+
+```html
+<cells-successful-response result="{{result}}"></cells-successful-response>
+```
+
+## Properties
++ **result**: Object with the result of the operation.
+
+This is the data for result:
+
+```json
+{
+  id: '667466',
+  date: '2016-09-16T12:27:00',
+  title: 'cells-successful-response-success',
+  origin: {
+    product: {
+      id: 'ACCOUNTS',
+      name: 'Juan Sin Tierra'
+    },
+    number: '12345'
+  },
+  destination: {
+    product: {
+      id: 'ACCOUNTS',
+      name: 'Cuenta Crédito'
+    },
+    number: '23456'
+  },
+  fees: [{
+    amount: 0.5,
+    currency: 'EU'
+  }],
+  amount: {
+    amount: 300.5,
+    currency: 'EU'
+  },
+  info: [
+    {
+      key: 'cells-sucessful-response-concept',
+      value: 'September bill',
+      class: 'bold spacing md'
+    },
+    {
+      key: 'cells-successful-response-id-or-reference',
+      value: '667466',
+      class: 'inline spacing separator'
+    },
+    {
+      key: 'cells-successful-cie-guide',
+      value: 'oncwe908uojsncpqqc88QWcQaa45',
+      class: 'inline secondary'
+    },
+    {
+      key: 'cells-successful-page-number',
+      value: '667466',
+      class: 'inline secondary'
+    }
+  ],
+  operations: [
+    {
+      label: 'Compartir',
+      id: 'share',
+      icon: 'coronita:share'
+    },
+    {
+      label: 'Descargar recibo',
+      id: 'download',
+      icon: 'coronita:document'
+    }
+  ]
+}
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                                                         | Description | Default                                  |
+|:--------------------------------------------------------                |:------------|:-----------------------------------------|
+| --cells-successful-response-bg-color                                    | bg color for host         | var(--bbva-white, #fff)    |
+| --cells-successful-response                                             | empty mixin               | {}                         |
+| --cells-successful-response-info-bg-color                               | bg color for .info        | var(--bbva-green,#48AE64)  |
+| --cells-successful-response-info-color                                  | color for .info           | var(--bbva-white, #fff)    |
+| --cells-successful-response-info                                        | empty mixin               | {}                         |
+| --cells-successful-response-info-success-bg-color                       | bg color for .success     | var(--bbva-green,#48AE64)  |
+| --cells-successful-response-info-success                                | empty mixin               | {}                         |
+| --cells-successful-response-info-warning-bg-color                       | bg color for .warning     | var(--bbva-yellow,#F8CD51) |
+| --cells-successful-response-info-warning                                | empty mixin               | {}                         |
+| --cells-successful-response-info-error-bg-color                         | bg color for .error       | var(--bbva-red,#DA3851)    |
+| --cells-successful-response-info-error                                  | empty mixin               | {}                         |
+| --cells-successful-response-info-fees-container                         | empty mixin               | {}                         |
+| --cells-successful-response-info-fees                                   | empty mixin               | {}                         |
+| --cells-successful-response-info-fees-amount                            | empty mixin               | {}                         |
+| --cells-successful-response-otherInfo-item-inline-key-color             | color for otherInfo keys  | var(--bbva-500, #666)      |
+| --cells-successful-response-otherInfo-item-key-icon-color               | color for key icon        | var(--bbva-green, #48ae64) |
+| --cells-successful-response-otherInfo-item-inline-fees-amount-color     | color for amounts         | var(--bbva-500, #666)      |
+| --cells-successful-response-actions                                     | empty mixin               | {}                         |
+| --cells-successful-response-actions-buttons                             | empty mixin               | {}                         |
+| --cells-successful-response-button                                      | empty mixin               | {}                         |
+| --cells-successful-response-button-color                                | color for button          | #2a86ca                    |
+| --cells-successful-response-more-info-bg-color                          | empty mixin               | {}                         |
+| --cells-successful-response-more-info-message                           | empty mixin               | {}                         |
+| --cells-successful-response-more-info                                   | bg color for .more-info   | var(--bbva-white, #fff)    |
+| --cells-successful-response-otherInfo-item                              | empty mixin               | {}                         |
+| --cells-successful-response-otherInfo-item-key                          | empty mixin               | {}                         |
+| --cells-successful-response-otherInfo-item-inline                       | empty mixin               | {}                         |
+| --cells-successful-response-otherInfo-item-inline-key                   | empty mixin               | {}                         |
+| --cells-successful-response-otherInfo-separator                         | empty mixin               | {}                         |
+| --cells-successful-response-otherInfo-separator-key-after               | empty mixin               | {}                         |
+| --cells-successful-response-otherInfo-spacing                           | empty mixin               | {}                         |
+| --cells-successful-response-otherInfo-secondary                         | empty mixin               | {}                         |
+| --cells-successful-response-otherInfo                                   | empty mixin               | {}                         |
+| --cells-successful-response-contact-avatar-other-info                   | empty mixin               | {}                         |
+| --cells-successful-response-contact-avatar                              | empty mixin               | {}                         |
+| --cells-successful-response-from-to                                     | empty mixin               | {}                         |
+| --cells-successful-response-operations-list                             | empty mixin               | {}                         |
+| --cells-successful-response-molecule-mask                               | empty mixin               | {}                         |
+| --cells-successful-response-amount-description                          | empty mixin               | {}                         |
+| --cells-successful-response-additional-info | mixin applied to additional info | {}
+| --cells-successful-response-code-title | mixin applied to code-title | {}
+| --cells-successful-response-codes | mixin applied to codes | {}
+| --cells-successful-response-codes-bg-color | background-color for codes | var(--bbva-navy, #072146)
+| --cells-successful-response-codes-color | color for codes | var(--bbva-white, #fff)
+| --cells-successful-response-codes-item | mixin applied to item in codes | {}
+| --cells-successful-response-codes-item-bg-color | background-color applied to item in codes | var(--bbva-white, #fff)
+| --cells-successful-response-codes-item-color | color applied to item in codes | var(--bbva-white-core-blue, #1464A5)
+| --cells-successful-response-codes-list | mixin applied to codes list | {}
+| --cells-successful-response-image-div | mixin applied to image container | {}
+| --cells-successful-response-img | mixin applied to img | {}
+| --cells-successful-response-info-white | mixin applied to info.white | {}
+| --cells-successful-response-info-white-bg-color | background-color for info.white | var(--bbva-white, #fff)
+| --cells-successful-response-info-white-color | color for info.white | var(--bbva-600, #121212)
+| --cells-successful-response-info-white-date | mixin applied to date | {}
+| --cells-successful-response-otherInfo-item-inline-fees-amount | mixin applied to .feesAmount | {}
+| --cells-successful-response-subtitle | mixin applied to subtitle | {}
+| --cells-successful-response-title | mixin applied to title | {}
+| --cells-header-additional-info| mixin applied to header info section| {}
+| --cells-header-additional-info-row | mixin applied to header row on header info section| {}
+
+@hero cells-successful-response.png
+@demo demo/index.html
+-->
+<dom-module id="cells-successful-response">
+  <template>
+    <style include="cells-successful-response-styles cells-successful-response-shared-styles"></style>
+    <section class$="info [[type]]">
+      <template is="dom-if" if="[[imgSrc]]">
+        <div class="image-div">
+          <img alt$="[[t(result.title)]]" src="[[imgSrc]]">
+        </div>
+      </template>
+      <template is="dom-if" if="[[result.title]]">
+        <p class="title">{{t(result.title)}}</p>
+      </template>
+      <p class="subtitle">{{t(result.subtitle)}}
+        <cells-atom-date date="[[result.date]]" format="[[formatDate]]"></cells-atom-date>
+      </p>
+      <template is="dom-if" if="[[result.amountLabel]]">
+        <p class="amount-description">[[t(result.amountLabel)]]</p>
+      </template>
+      <cells-atom-amount class="amount-huge" amount="[[result.amount.amount]]" currency-code="[[result.amount.currency]]" local-currency="[[localCurrency]]"
+        language="[[localCurrency]]">
+      </cells-atom-amount>
+      <template is="dom-if" if="[[result.amountDescription]]">
+        <p class="amount-description">[[t(result.amountDescription)]]</p>
+      </template>
+      <template is="dom-if" if="[[result.fees]]">
+        <div class="fees-container">
+          <template is="dom-repeat" items="[[result.fees]]">
+            <p class="fees">({{t(item.text)}}:
+              <cells-atom-amount class="feesAmount" amount="[[item.amount]]" currency-code="[[item.currency]]" local-currency="[[localCurrency]]"></cells-atom-amount>)</p>
+          </template>
+        </div>
+      </template>
+      <template is="dom-if" if={{result.headerAdditionalInfo}}>
+        <ul class="header-additional-info">
+          <li class="header-additional-info__row">
+            <span>[[t(result.headerAdditionalInfo.card.text)]]</span>
+            <cells-molecule-mask value="[[result.headerAdditionalInfo.card.musk.value]]" visible-chars="[[result.headerAdditionalInfo.card.musk.chars]]"
+              masked mask-chars="[[result.headerAdditionalInfo.card.musk.symbol]]"></cells-molecule-mask>
+          </li>
+          <li class="header-additional-info__row">
+            <span>{{t(result.headerAdditionalInfo.amount.text)}}</span>
+            <cells-atom-amount class="amount-fractional" amount="[[result.headerAdditionalInfo.amount.amount]]" currency-code="[[result.headerAdditionalInfo.amount.currency]]"
+              local-currency="[[localCurrency]]"></cells-atom-amount>
+          </li>
+          <li class="header-additional-info__row">
+            <span>[[t(result.headerAdditionalInfo.rates.text)]]</span>
+            <span>[[result.headerAdditionalInfo.rates.value]]</span>
+          </li>
+          <li class="header-additional-info__row">
+            <span>[[t(result.headerAdditionalInfo.term.text)]]</span>
+            <span>[[t(result.headerAdditionalInfo.term.value)]] [[t(result.headerAdditionalInfo.term.months)]]</span>
+          </li>
+          <template is="dom-if" if={{result.headerAdditionalInfo.fee.text}}>
+            <li class="header-additional-info__row cursive">
+              <span>([[result.headerAdditionalInfo.fee.text]])</span>
+            </li>
+          </template>
+        </ul>
+      </template>
+    </section>
+    <section class="moreInfo">
+      <template is="dom-if" if="[[!result.destination]]">
+        <cells-contact-avatar src="[[result.origin.avatar.src]]" alt="[[result.origin.product.name]]" type$="[[result.origin.avatar.type]]"></cells-contact-avatar>
+      </template>
+      <template is="dom-if" if="[[_checkedDest(result.origin, result.destination)]]">
+        <cells-from-to animate origin="[[result.origin.product.name]]" origin-number="[[result.origin.number]]" destination="[[result.destination.product.name]]"
+          destination-number="[[result.destination.number]]" visible-chars="[[visibleChars]]"></cells-from-to>
+      </template>
+      <template is="dom-if" if="[[result.topInfo]]">
+        <ul class="otherInfo">
+          <template is="dom-repeat" items="[[result.topInfo]]">
+            <li class$="[[item.class]]">
+              <cells-atom-icon hidden$=[[!item.icon]] icon="[[item.icon]]" class="info-key-icon icon-size-18"></cells-atom-icon>
+              <span class="key">{{t(item.key)}}</span>
+              <span class="value">[[t(item.value)]]</span>
+              <template is="dom-if" if="[[item.musk]]">
+                <cells-molecule-mask value="[[item.musk.value]]" visible-chars="[[item.musk.chars]]" masked mask-chars="[[item.musk.simbol]]"></cells-molecule-mask>
+              </template>
+              <template is="dom-if" if="[[item.amount]]">
+                <cells-atom-amount class="feesAmount" amount="[[item.amount.amount]]" currency-code="[[item.amount.currency]]" local-currency="[[localCurrency]]"></cells-atom-amount>
+              </template>
+            </li>
+          </template>
+        </ul>
+      </template>
+      <template is="dom-if" if="[[result.message]]">
+        <div class="message">
+          <cells-icon-message icon="[[result.message.icon]]" type="[[result.message.type]]" message="[[t(result.message.text)]]"></cells-icon-message>
+        </div>
+      </template>
+      <template is="dom-if" if="[[result.bottomInfo]]">
+        <ul class="otherInfo">
+          <template is="dom-repeat" items="[[result.bottomInfo]]">
+            <li class$="[[item.class]]">
+              <cells-atom-icon hidden$=[[!item.icon]] icon="[[item.icon]]" class="info-key-icon icon-size-18"></cells-atom-icon>
+              <span class="key">{{t(item.key)}}</span>
+              <span class="value">[[t(item.value)]]</span>
+              <template is="dom-if" if="[[item.musk]]">
+                <cells-molecule-mask value="[[item.musk.value]]" visible-chars="[[item.musk.chars]]" masked mask-chars="[[item.musk.simbol]]"></cells-molecule-mask>
+              </template>
+              <template is="dom-if" if="[[item.amount]]">
+                <cells-atom-amount class="feesAmount" amount="[[item.amount.amount]]" currency-code="[[item.amount.currency]]" local-currency="[[localCurrency]]"></cells-atom-amount>
+              </template>
+            </li>
+          </template>
+        </ul>
+      </template>
+      <template is="dom-if" if="[[result.codes.length]]">
+        <div class="codes">
+          <template is="dom-repeat" items="[[result.codes]]">
+            <p class="code-title">[[t(item.key)]]</p>
+            <ul class="withdrawal-code-list">
+              <template is="dom-repeat" items="[[item.split]]">
+                <li class="code-box">
+                  [[item]]
+                </li>
+              </template>
+            </ul>
+          </template>
+        </div>
+      </template>
+      <template is="dom-if" if="[[result.additionalInfo]]">
+        <ul class="additional-info">
+          <template is="dom-repeat" items="[[result.additionalInfo]]">
+            <li class$="[[item.class]]">
+              <span class="key">{{t(item.key)}}</span>
+              <span class="value">[[t(item.value)]]</span>
+              <template is="dom-if" if="[[item.musk]]">
+                <cells-molecule-mask value="[[item.musk.value]]" visible-chars="[[item.musk.chars]]" masked mask-chars="[[item.musk.simbol]]"></cells-molecule-mask>
+              </template>
+            </li>
+          </template>
+        </ul>
+      </template>
+      <template is="dom-if" if="[[result.operations]]">
+        <cells-operations-list layout="review" operations="[[result.operations]]"></cells-operations-list>
+      </template>
+    </section>
+    <section class="actions">
+      <div class="buttons">
+        <button hidden$="[[result.buttons.primary.hidden]]" is="cells-atom-button" class$="[[result.buttons.primary.class]]" disabled$="[[result.buttons.primary.disabled]]"
+          data="[[result.buttons.primary]]" on-click="_notifyPrimary">{{t(result.buttons.primary.text)}}
+        </button>
+        <button hidden$="[[result.buttons.secondary.hidden]]" is="cells-atom-button" class$="[[result.buttons.secondary.class]]"
+          disabled$="[[result.buttons.secondary.disabled]]" data="[[result.buttons.secondary]]" on-click="_notifySecondary">{{t(result.buttons.secondary.text)}}
+        </button>
+      </div>
+    </section>
+  </template>
+  <script src="cells-successful-response.js"></script>
+</dom-module>

@@ -1,0 +1,53 @@
+<link rel="import" href="../cells-skeleton-item/cells-skeleton-item.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-skeleton-group-styles.html">
+
+<!--
+`<cells-skeleton-group>` Molecule that contain cells-skeleton-item atoms.
+
+Example:
+
+```html
+<cells-skeleton-group></cells-skeleton-group>
+```
+
+Example without animation:
+
+```html
+<cells-skeleton-group pause-animation></cells-skeleton-group>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                               | Description                                         | Default                    |
+| :-------------------------------------------- | :-------------------------------------------------- | :------------------------- |
+| --cells-skeleton-group                        | empty mixin of host                                 | {}                         |
+| --cells-skeleton-group-skeleton-group         | empty mixin of .skeleton-group                      | {}                         |
+| --cells-skeleton-group-background-color       | background color applied to :host                   | var(--bbva-white, #FFFFFF) |
+| --cells-skeleton-group-item-last-border-color | border color of last of type of cells-skeleton-item | var(--bbva-200, #E9E9E9)   |
+| --cells-skeleton-group--item-last             | mixin for last item                                 | {}                         |
+| --cells-skeleton-group--item                  | mixin for skeleton item                             | {}                         |
+| --cells-skeleton-group-animate-layer-bg-color | background color of animate layer                   | var(--bbva-white, #FFFFFF) |
+| --cells-skeleton-group-animate-layer          | mixin for animate layer                             | {}                         |
+
+
+@demo demo/index.html
+@hero cells-skeleton-group.png
+-->
+<dom-module id="cells-skeleton-group">
+  <template>
+    <style include="cells-skeleton-group-styles cells-skeleton-group-shared-styles"></style>
+
+    <div class="skeleton-group">
+      <cells-skeleton-item show-header show-item></cells-skeleton-item>
+      <cells-skeleton-item show-item class="last-item"></cells-skeleton-item>
+
+      <div class="animate-layer" hidden$="[[pauseAnimation]]"></div>
+    </div>
+
+    <slot></slot>
+  </template>
+  <script src="cells-skeleton-group.js"></script>
+</dom-module>

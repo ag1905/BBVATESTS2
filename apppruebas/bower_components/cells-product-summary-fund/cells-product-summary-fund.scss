@@ -1,0 +1,24 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  --cells-product-summary-bottom-summary: unquote("{
+    flex-direction: column;
+  }");  
+
+  --cells-product-summary-additional-items-list-item-not-first-key-value: unquote("{
+    color:var(--bbva-dark-gold, #b79e5e);
+  }");
+
+  --cells-product-summary-additional-items:unquote("{
+   margin-top: 30px;
+  }"); 
+
+  --cells-product-summary-additional-items-list-item:unquote("{
+   padding-bottom: 10px;
+  }");
+
+  @apply(--cells-product-summary-fund);
+}
+
+
+

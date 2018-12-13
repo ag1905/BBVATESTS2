@@ -1,0 +1,21 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="cells-clipboard-manager-styles.html">
+<!--
+Copy to clipboard text passed and fire event
+
+Example:
+
+```html
+<cells-clipboard-manager></cells-clipboard-manager>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="cells-clipboard-manager">
+  <template>
+    <style include="cells-clipboard-manager-styles cells-clipboard-manager-shared-styles"></style>
+    <div id="textContainer" contentEditable="false">[[text]]</div>
+  </template>
+  <script src="cells-clipboard-manager.js"></script>
+</dom-module>

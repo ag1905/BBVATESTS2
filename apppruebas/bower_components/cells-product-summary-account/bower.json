@@ -1,0 +1,27 @@
+{
+  "name": "cells-product-summary-account",
+  "version": "2.4.5",
+  "description": "Wrapper of cells-product-summary that understands the account the Canonical Data Model (CMD). That account is binded into cells-product-summary, which displays it.",
+  "keywords": [
+    "i18n"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "global-products-lists-behavior": "~0.1.4",
+    "cells-product-summary": "~9.0.0",
+    "polymer": "Polymer/polymer#^1.7.0",
+    "cells-i18n-behavior": "~9.0.0",
+    "cells-atom-icon": "~9.0.0",
+    "cells-atom-amount": "~9.0.1"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "cells-demo-helper": "^10.0.4",
+    "coronita-icons": "~9.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0"
+  },
+  "main": [
+    "cells-product-summary-account.html"
+  ]
+}

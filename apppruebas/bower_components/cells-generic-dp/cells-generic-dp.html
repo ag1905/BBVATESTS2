@@ -1,0 +1,593 @@
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../cells-ajax/cells-ajax.html" />
+<link rel="import" href="./object-assign-polyfill.html" />
+
+<!--
+# cells-generic-dp
+
+Allows to perform an AJAX request to any API environment.
+
+Example:
+
+```html
+<cells-generic-dp
+  id="myDataProvider"
+  host="http://some_host"
+  path="some_endpoint_path"
+  params='{"key":"value"}'
+  body='{"key":"value"}'
+  headers='{"key":"value"}'
+  method="GET">
+</cells-generic-dp>
+```
+
+```javascript
+myEl.$.myDataProvider.addEventListener('request-success', function(e) {
+  //on success
+});
+myEl.$.myDataProvider.addEventListener('request-error', function(e) {
+  //on error
+});
+myEl.$.myDataProvider.generateRequest();
+```
+
+## Dependencies
+
+- [cells-ajax](https://globaldevtools.bbva.com/bitbucket/projects/CEL/repos/cells-ajax/browse)
+
+@demo demo/index.html
+@hero DP_cells.svg
+-->
+
+<dom-module id="cells-generic-dp">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+    </style>
+    <cells-ajax id="cells-ajax" url="[[_url]]" method="[[method]]" params="[[params]]" headers="[[headers]]" body="[[body]]"
+      verbose="[[verbose]]" native="[[native]]" cache="[[cache]]" cache-time="[[cacheTime]]" content-type="[[contentType]]"
+      sync="[[sync]]" handle-as="[[handleAs]]" with-credentials="[[withCredentials]]" timeout="[[timeout]]" auto="[[auto]]"
+      loading="{{_isLoading}}" last-request="{{_lastRequest}}" on-response="_lastResponseChanged" on-error="_lastErrorChanged">
+    </cells-ajax>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+
+        is: 'cells-generic-dp',
+
+        properties: {
+          /**
+           * Flags if request will be auto-generated whenever any of its properties changes.
+           * @property  auto
+           * @type      {Boolean}
+           * @default   false
+           */
+          auto: {
+            type: Boolean,
+            value: false
+          },
+          /**
+           * Request body, commonly used for <em>PATH</em>, <em>POST</em> or <em>PUT</em> request.
+           * @property  body
+           * @type      {Object}
+           * @default   null
+           */
+          body: {
+            type: Object,
+            value: null
+          },
+          /**
+           * Type of cache: <em>none</em>, <em>local</em> or <em>memory</em>
+           * @property  cache
+           * @type      {String}
+           * @default   'none'
+           */
+          cache: {
+            observer: '_isValidCacheType',
+            type: String,
+            value: function() {
+              return 'none';
+            }
+          },
+          /**
+           * Time for cache validity.
+           * @property  cacheTime
+           * @type      {Number}
+           * @default   0
+           */
+          cacheTime: {
+            type: Number,
+            value: 0
+          },
+          /**
+           * Type of content-type requested to service.<br/>
+           * In case <em>headers</em> defines this value, this will be ignored.
+           * @property  contentType
+           * @type      {String}
+           * @default   ''
+           */
+          contentType: {
+            type: String,
+            value: ''
+          },
+          /**
+           * Text format to handle request response.<br/>
+           * Could be: <em>json</em>, <em>html</em>, <em>text</em> or any other valid MIME type.
+           * @property  handleAs
+           * @type      {String}
+           * @default   'json'
+           */
+          handleAs: {
+            type: String,
+            value: 'json'
+          },
+          /**
+           * Request headers.<br/>
+           * <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html" target="_blank">More info</a>
+           * @property  headers
+           * @type      {Object}
+           * @default   null
+           */
+          headers: {
+            type: Object,
+            value: function() {
+              return null;
+            }
+          },
+          /**
+           * Request host domain, including protocol, i.e.: <em>http://my-domain</em>
+           * @property  host
+           * @type      {String}
+           * @default   ''
+           */
+          host: {
+            type: String,
+            value: ''
+          },
+          /**
+           * Request method.<br/>
+           * <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html" target="_blank">More info</a>
+           * @property  method
+           * @type      {String}
+           * @default   'GET'
+           */
+          method: {
+            type: String,
+            value: 'GET'
+          },
+          /**
+           * Flags if should be performed through <em>cellsCordova.Http</em> plugin.
+           * @property  native
+           * @type      {Boolean}
+           * @default   false
+           */
+          native: {
+            type: Boolean,
+            value: false
+          },
+          /**
+           * Request query params.
+           * @property  params
+           * @type      {Object}
+           * @default   null
+           */
+          params: {
+            type: Object,
+            value: null
+          },
+          /**
+           * Request endpoint path, without leading backslash, i.e.: <em>accounts/v0/accounts</em>
+           * @property  path
+           * @type      {String}
+           * @default   ''
+           */
+          path: {
+            type: String,
+            value: ''
+          },
+          /**
+           * Flags if this request should add <em>tsec</em> header.
+           * @property  requiresTsec
+           * @type      {Boolean}
+           * @default   false
+           */
+          requiresTsec: {
+            type: Boolean,
+            value: false
+          },
+          /**
+           * Flags if request should be synchronous or not.
+           * @property  sync
+           * @type      {Boolean}
+           * @default   false
+           */
+          sync: {
+            type: Boolean,
+            value: false
+          },
+          /**
+           * Reference for the interface which stores <em>tsec</em> value.<br/>
+           * Must be a valid interface for <em>Storage</em> class.<br/>
+           * <a href="https://developer.mozilla.org/en-US/docs/Web/API/Storage" target="_blank">More Info</a>
+           * @property  tsecHandler
+           * @type      {Storage|Object}
+           * @default   sessionStorage
+           */
+          tsecHandler: {
+            type: Boolean,
+            value: function() {
+              return window.sessionStorage;
+            }
+          },
+          /**
+           * Request timeout (in milliseconds).
+           * @property  timeout
+           * @type      {Number}
+           * @default   60000
+           */
+          timeout: {
+            type: Number,
+            value: 60000
+          },
+          /**
+           * Enables debug mode and <em>console.log</em> traces.
+           * @property  verbose
+           * @type      {Boolean}
+           * @default   false
+           */
+          verbose: {
+            type: Boolean,
+            value: false
+          },
+          /**
+           * XHR with credentials.<br/>
+           * <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials" target="_blank">More info</a>
+           * @property  withCredentials
+           * @type      {Boolean}
+           * @default   false
+           */
+          withCredentials: {
+            type: Boolean,
+            value: false
+          },
+          /**
+           * Default headers value.
+           * @property  _headers
+           * @type      {Object}
+           * @default   {{'Accept': 'application/json, text/plain, *\/*; q=0.0.1`, 'Content-Type': 'application/json`}}
+           * @private
+           */
+          _headers: {
+            type: Object,
+            value: function() {
+              return {
+                'Accept': 'application/json, text/plain, */*; q=0.01',
+                'Content-Type': 'application/json'
+              };
+            }
+          },
+          /**
+           * Flags if current request is being processed or not.
+           * @property  _isLoading
+           * @type      {Boolean}
+           * @default   false
+           * @private
+           */
+          _isLoading: {
+            type: Boolean,
+            value: false
+          },
+          /**
+           * Stores last error produced.
+           * @property  _lastError
+           * @type      {Object}
+           * @default   null
+           * @private
+           */
+          _lastError: {
+            type: Object,
+            value: null
+          },
+          /**
+           * Stores last request performed.
+           * @property  _lastRequest
+           * @type      {Object}
+           * @default   null
+           * @private
+           */
+          _lastRequest: {
+            type: Object,
+            value: null
+          },
+          /**
+           * Stores last response obtained from server.
+           * @property  _lastResponse
+           * @type      {Object}
+           * @default   null
+           * @private
+           */
+          _lastResponse: {
+            type: Object,
+            value: null
+          },
+          /**
+           * Computed value from <em>host</em> and <em>path</em>.
+           * @property  _url
+           * @type      {String}
+           * @default   ''
+           * @private
+           */
+          _url: {
+            type: String,
+            value: ''
+          }
+        },
+
+        observers: [
+          '_setURL(host, path)'
+        ],
+
+        ready: function() {
+          /* istanbul ignore next */
+          if (this.tsecHandler) {
+            try {
+              this.tsecHandler.setItem('test', 'test');
+              this.tsecHandler.removeItem('test');
+            } catch (e) {
+              throw Error('Invalid [tsecHandler] or can\'t write/read from it');
+            }
+          }
+        },
+
+        /**
+         * Observer callback executed on <em>host</em> and <em>path</em> changes.
+         * Will calculate value of <em>_url</em>.
+         * @method  _setURL
+         * @param   host {String}
+         * @param   path {String}
+         * @private
+         */
+        _setURL: function(host, path) {
+          if (typeof host === 'string' && typeof path === 'string') {
+            var url = host.length && path.length
+              ? [host, path].join('/')
+              : host;
+            this.set('_url', url);
+          } else {
+            this._emit('error', 'Invalid [host] or [path] properties values!', true);
+          }
+        },
+
+        /**
+         * Validates the value of <em>cacheType</em> property.
+         * @method  _isValidCacheType
+         * @param   cache {String}
+         * @private
+         */
+        _isValidCacheType: function(cache) {
+          var isValid = false;
+          if (cache && typeof cache === 'string') {
+            cache = cache.toUpperCase().trim();
+            isValid = cache === 'NONE' || cache === 'LOCAL' || cache === 'MEMORY';
+          }
+          if (!isValid) {
+            Polymer.RenderStatus.afterNextRender(this, function() {
+              this._emit('error', 'Invalid [cache] type! [cache =  ' + cache + ']', true);
+            });
+          }
+        },
+
+        /**
+         * Extracts last response from server
+         * @method  _extractResponse
+         * @param   {Event} event Request event
+         * @private
+         */
+        _extractResponse: function(event) {
+          var response;
+          if (event instanceof Event) {
+            if (event.detail.hasOwnProperty('value')) {
+              response = event.detail.value;
+            } else if (event.detail instanceof HTMLElement && event.detail.xhr instanceof XMLHttpRequest) {
+              response = event.detail.xhr.response;
+            } else if (event.detail.hasOwnProperty('request') && event.detail.hasOwnProperty('error')
+              && event.detail.request instanceof HTMLElement
+              && event.detail.request.xhr instanceof XMLHttpRequest) {
+              response = event.detail.request.xhr.response;
+            } else {
+              response = event.detail;
+            }
+          }
+          return response;
+        },
+
+        /**
+         * Observer callback executed whenever <em>_lastError</em> changes.
+         * @method  _lastErrorChanged
+         * @param   error {Object}
+         * @private
+         */
+        _lastErrorChanged: function(error) {
+          if (error instanceof Event) {
+            error.stopPropagation();
+            error = this._extractResponse(error);
+          }
+          this.set('_isLoading', false);
+          this.set('_lastError', error);
+          this._emit('request-error', error, false);
+        },
+
+        /**
+         * Observer callback executed whenever <em>_lastResponse</em> changeds.
+         * @method  _lastResponseChanged
+         * @param   result {Object}
+         * @private
+         */
+        _lastResponseChanged: function(result) {
+          if (result instanceof Event) {
+            result.stopPropagation();
+            result = this._extractResponse(result);
+          }
+          this.set('_lastResponse', result);
+          this.set('_isLoading', false);
+          this._emit('request-success', result, false);
+        },
+
+        /**
+         * Merges <em>_headers</em> and <em>headers</em> properties.
+         * Also, if <em>requiresTsec</em> tries to recover <em>tsec</em> value from <em>tsecHandler</em>.
+         * @method  _mergeHeaders
+         * @returns {Object}
+         * @private
+         */
+        _mergeHeaders: function() {
+          var headers = Object.assign(this._headers, this.headers || {});
+          if (this.requiresTsec) {
+            headers.tsec = this.tsecHandler.getItem('tsec');
+          }
+          return headers;
+        },
+
+        /**
+         * Parses <em>body</em> value in order to produce right format.
+         * @method  _parseBodyObject
+         * @param   headers {Object} Merged headers for request.
+         * @return  {String|null}
+         * @private
+         */
+        _parseBodyObject: function(headers) {
+          var body = this.body;
+          if (typeof body === 'object' && body !== null) {
+            var contentType = this.contentType;
+            if (!contentType) {
+              Object.keys(headers).some(function(key) {
+                if (key.toLowerCase() === 'content-type') {
+                  contentType = headers[key];
+                  return true;
+                } else {
+                  return false;
+                }
+              });
+            }
+
+            switch (contentType.split(';')[0]) {
+              case 'text/plain':
+              case 'application/json':
+                try {
+                  body = JSON.stringify(body);
+                } catch (error) {
+                  this._emit('error', error, true);
+                  body = null;
+                }
+                break;
+              default:
+                body = Object.keys(body).map(function(key) {
+                  return key + '=' + body[key];
+                }, this).join('&');
+            }
+          }
+
+          return body;
+        },
+
+        /**
+         * Emits or logs into <em>console</em> events.
+         * @method  _emit
+         * @param   type {String} Event to fire.
+         * @param   payload {*} To be sent.
+         * @param   prefix {Boolean} Whether to add <em>this.is</em> value to <em>type</em>
+         * @private
+         */
+        _emit: function(type, payload, prefix) {
+
+          if (!type || typeof type !== 'string') {
+            type = 'log';
+          }
+          if (this.verbose === true) {
+            var method = type;
+            if (typeof console[method] !== 'function') {
+              method = 'log';
+            }
+            console[method]('[' + this.is + '] [' + type.toUpperCase() + '] :: ' + JSON.stringify(payload));
+          }
+          if (prefix === true) {
+            type = 'cells-generic-dp-' + type;
+          }
+          this.dispatchEvent(new CustomEvent(type, {
+            bubbles: true,
+            composed: true,
+            detail: payload
+          }));
+        },
+
+        /**
+         * Returns last response or last error.
+         * @method  getLastResponse
+         * @return  {Object}
+         */
+        getLastResponse: function() {
+          return this._lastResponse || this._lastError;
+        },
+
+        /**
+         * Returns last request performed.
+         * @method  getLastRequest
+         * @return  {XMLHttpRequest}
+         */
+        getLastRequest: function() {
+          return (this._lastRequest && this._lastRequest.xhr) || null;
+        },
+
+        /**
+         * In case there's no another request pending, performs configured request.
+         * @method  generateRequest
+         */
+        generateRequest: function() {
+          if (!this._lastRequest || !this._isLoading) {
+            this.set('headers', this._mergeHeaders());
+            this.set('body', this._parseBodyObject(this.headers));
+            var config = {
+              url: this._url,
+              headers: this.headers,
+              params: this.params,
+              body: this.body,
+              method: this.method
+            };
+            this._emit('info', config, true);
+            return this.$['cells-ajax'].generateRequest();
+          }
+        }
+
+        /**
+         * @event cells-generic-dp-error
+         * Fired whenever there's an internal error.<br/>
+         * Only if <em>verbose</em> is set to <em>true</em>
+         */
+
+        /**
+         * @event cells-generic-dp-info
+         * Fired for debug purposes.<br/>
+         * Only if <em>verbose</em> is set to <em>true</em>
+         */
+
+        /**
+         * @event   request-success
+         * Fired after successful request.<br/>
+         * Returns service <em>response {Object}</em>.
+         */
+
+        /**
+         * @event   request-error
+         * Fired after failed request.<br/>
+         * Returns: <em>{{error: String, response: Object}}</em>.
+         */
+
+      });
+    }());
+  </script>
+</dom-module>

@@ -1,0 +1,14 @@
+{
+  "cells-modal-new-recipient-selector-pe-title": "Nueva cuenta de destino",
+  "cells-modal-new-recipient-selector-pe-search": "Buscar",
+  "cells-modal-new-recipient-selector-pe-choose-another-recipient": "Elegir otro destinatario",
+  "cells-modal-new-recipient-selector-pe-continue": "Continuar",
+  "cells-modal-new-recipient-selector-pe-change-account-number": "Cambiar número de cuenta",
+  "cells-modal-new-recipient-selector-pe-intro": "Ingresa el número de cuenta para ubicar los datos del destinatario.",
+  "cells-modal-new-recipient-selector-pe-account-number": "Número de cuenta",
+  "cells-modal-new-recipient-selector-pe-account-number-wrong": "El número de cuenta ingresado no es correcto. Por favor, verifica e intenta nuevamente.",
+  "cells-modal-new-recipient-selector-pe-canceled-account": "Esta cuenta se encuentra cancelada. Por favor, verifica e intenta nuevamente."
+
+
+
+}

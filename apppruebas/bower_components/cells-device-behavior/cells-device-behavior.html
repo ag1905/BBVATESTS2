@@ -1,0 +1,515 @@
+<script src="../device-js/lib/device.js"></script>
+<script>
+  /* global Cells */
+  window.CellsBehaviors = window.CellsBehaviors || {};
+  /* global device */
+  window.device = window.device || {};
+
+  (function(Cells, device) {
+    'use strict';
+    var deviceBehavior = (function(window) {
+
+      /**
+       * Operating System List, a list made of different OS's
+       * @type {Array}
+       */
+      var osList = [{
+        os: 'Windows 10',
+        regString: /(Windows 10.0|Windows NT 10.0)/
+      }, {
+        os: 'Windows 8.1',
+        regString: /(Windows 8.1|Windows NT 6.3)/
+      }, {
+        os: 'Windows 8',
+        regString: /(Windows 8|Windows NT 6.2)/
+      }, {
+        os: 'Windows 7',
+        regString: /(Windows 7|Windows NT 6.1)/
+      }, {
+        os: 'Windows Vista',
+        regString: /Windows NT 6.0/
+      }, {
+        os: 'Windows Server 2003',
+        regString: /Windows NT 5.2/
+      }, {
+        os: 'Windows XP',
+        regString: /(Windows NT 5.1|Windows XP)/
+      }, {
+        os: 'Windows 2000',
+        regString: /(Windows NT 5.0|Windows 2000)/
+      }, {
+        os: 'Windows ME',
+        regString: /(Win 9x 4.90|Windows ME)/
+      }, {
+        os: 'Windows 98',
+        regString: /(Windows 98|Win98)/
+      }, {
+        os: 'Windows 95',
+        regString: /(Windows 95|Win95|Windows_95)/
+      }, {
+        os: 'Windows NT 4.0',
+        regString: /(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/
+      }, {
+        os: 'Windows CE',
+        regString: /Windows CE/
+      }, {
+        os: 'Windows 3.11',
+        regString: /Win16/
+      }, {
+        os: 'Windows Phone 10',
+        regString: /Windows Phone 10.0/
+      }, {
+        os: 'Windows Phone 8',
+        regString: /Windows Phone 8.0/
+      }, {
+        os: 'Windows Phone 7',
+        regString: /Windows Phone OS 7.0/
+      }, {
+        os: 'Windows Phone 7.5',
+        regString: /Windows Phone OS 7.5/
+      }, {
+        os: 'Firefox OS',
+        regString: /(Tablet|Mobile);.+rv:/i
+      }, {
+        os: 'Chrome OS',
+        regString: /CrOS/
+      }, {
+        os: 'Android',
+        regString: /Android/
+      }, {
+        os: 'Open BSD',
+        regString: /OpenBSD/
+      }, {
+        os: 'Sun OS',
+        regString: /SunOS/
+      }, {
+        os: 'Linux',
+        regString: /(Linux|X11)/
+      }, {
+        os: 'iOS',
+        regString: /(iPhone|iPad|iPod)/
+      }, {
+        os: 'Mac OS X',
+        regString: /Mac OS X/
+      }, {
+        os: 'Mac OS',
+        regString: /(MacPPC|MacIntel|Mac_PowerPC|Macintosh)/
+      }, {
+        os: 'QNX',
+        regString: /QNX/
+      }, {
+        os: 'UNIX',
+        regString: /UNIX/
+      }, {
+        os: 'BeOS',
+        regString: /BeOS/
+      }, {
+        os: 'OS/2',
+        regString: /OS\/2/
+      }, {
+        os: 'Search Bot',
+        regString: /(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/
+      }];
+
+      /**
+       * Browser List, a list with different browsers
+       * @type {Array}
+       */
+      var browserList = [{
+        code: 'Edge',
+        version: '',
+        name: ''
+      }, {
+        code: 'Opera',
+        version: 'Version',
+        name: ''
+      }, {
+        code: 'OPR',
+        version: '',
+        name: 'Opera'
+      }, {
+        code: 'MSIE',
+        version: '',
+        name: 'Microsoft Internet Explorer'
+      }, {
+        code: 'Chrome',
+        version: '',
+        name: ''
+      }, {
+        code: 'Safari',
+        version: '',
+        name: ''
+      }, {
+        code: 'Firefox',
+        version: '',
+        name: ''
+      }, {
+        code: 'Trident/',
+        version: 'rv',
+        name: 'Microsoft Internet Explorer'
+      }];
+
+      /**
+       * Nodes List, a place to store the dom element nodes which will be notified
+       * where an orientation change occurs
+       * @type {Array}
+       */
+      var nodesWithDeviceBehavior = [];
+
+      /**
+       * Detect the correct orientation changing event regarding current browser API
+       * @private
+       * @return {String} orientationEvent [orientationchange | resize]
+       */
+      var _detectOrientationEvent = function() {
+        var orientationEvent;
+        if ((Object.prototype.hasOwnProperty).call(window, 'onorientationchange')) {
+          orientationEvent = 'orientationchange';
+        } else {
+          orientationEvent = 'resize';
+        }
+
+        return orientationEvent;
+      };
+
+      /**
+       * Create a unique listener for detecting orientation changes
+       * @private
+       * @param {String} event the event to listen
+       * @param {Function} handler function executed when event listened
+       * @return {Void}
+       */
+      var _addOrientationChangeListener = function(event, handler) {
+        if (window.addEventListener) {
+          window.addEventListener(event, handler, false);
+        } else if (window.attachEvent) {
+          window.attachEvent(event, handler);
+        } else {
+          window[event] = handler;
+        }
+      };
+
+      /**
+       * Iterate over the elements nodes which have added the DeviceBehavior
+       * calling his __handleOrientation() (behavior) which in turn call to _handleOrientation() (component)
+       * @private
+       */
+      var _refreshNodesWithOrientationChanged = function() {
+        nodesWithDeviceBehavior.forEach(function(item) {
+          item.__handleOrientation();
+        });
+      };
+
+      /**
+       * Get the OS
+       * @private
+       * @return {String} the OS where this code is running
+       */
+      var _getOS = function() {
+        var os;
+        var userAgent = navigator.userAgent;
+        var found = false;
+        var index = 0;
+        while (!found && index < osList.length) {
+          var currentOS = osList[index++];
+          if (currentOS.regString.test(userAgent)) {
+            found = true;
+            os = currentOS.os;
+          }
+        }
+
+        return os;
+      };
+
+      /**
+       * Fetch info from userAgent to detect browser name and version
+       * @private
+       * @param {Stri
+       ng} browserCode code to find at userAgent
+       * @param {String} versionString string previous to browser version is some cases
+       * @param {String} browserName Name to be returned
+       * @return {Object} browser {name: {String} name, version: {String} version}
+       */
+      var _matchBrowserAndVersion = function(browserCode, versionString, browserName) {
+        var browserIndex;
+        var browser;
+        var version;
+        var versionIndex;
+        var userAgent = navigator.userAgent;
+        if ((browserIndex = userAgent.indexOf(browserCode)) !== -1) {
+          if (browserName) {
+            browser = browserName;
+          } else {
+            browser = browserCode;
+          }
+
+          version = userAgent.substring(browserIndex + (browserCode.length + 1));
+          if (versionString) {
+            if ((browserIndex = userAgent.indexOf(versionString)) !== -1) {
+              version = userAgent.substring(browserIndex + (versionString.length + 1));
+            }
+          }
+
+          if ((versionIndex = version.indexOf(';')) !== -1) {
+            version = version.substring(0, versionIndex);
+          } else if ((versionIndex = version.indexOf(' ')) !== -1) {
+            version = version.substring(0, versionIndex);
+          } else if ((versionIndex = version.indexOf(')')) !== -1) {
+            version = version.substring(0, versionIndex);
+          }
+        }
+
+        if (browser && version) {
+          return {
+            name: browser,
+            version: version
+          };
+        } else {
+          return null;
+        }
+      };
+
+      /**
+       * Get the current browser and the current version
+       * @private
+       * @return {Object} browser {name: {String} name, version: {String} version}
+       */
+      var _getBrowserAndVersion = function() {
+        var found = false;
+        var index = 0;
+        var browser;
+        while (!found && index < browserList.length) {
+          var currentBrowser = browserList[index++];
+          browser = _matchBrowserAndVersion(currentBrowser.code, currentBrowser.version, currentBrowser.name);
+          if (browser) {
+            found = true;
+          }
+        }
+
+        return browser;
+      };
+
+      _addOrientationChangeListener(_detectOrientationEvent(), _refreshNodesWithOrientationChanged);
+
+      return {
+        elementNodes: nodesWithDeviceBehavior,
+        os: _getOS(),
+        browser: _getBrowserAndVersion(),
+        _fnOS: _getOS,
+        _fnBrowser: _getBrowserAndVersion
+      };
+    }(window));
+
+    window.device.getOS = deviceBehavior._fnOS;
+    window.device.getBrowser = deviceBehavior._fnBrowser;
+
+    /**
+     * This behavior encapsulates device.js library for be used at components.
+     * It gives you a function called **_handleOrientation(orientation)** that you might
+     * implement in your component to handle device orientation changes.
+     *
+     * @polymerBehavior CellsBehaviors.DeviceBehavior
+     * @demo demo/index.html
+     * @hero cells-device-behavior.jpg
+     */
+    CellsBehaviors.DeviceBehavior = {
+
+      properties: {
+
+        /**
+         * Flag for mobile device
+         */
+        isMobile: {
+          type: Boolean,
+          value: device.mobile()
+        },
+
+        /**
+         * Flag for tablet device
+         */
+        isTablet: {
+          type: Boolean,
+          value: device.tablet()
+        },
+
+        /**
+         * Flag for desktop device
+         */
+        isDesktop: {
+          type: Boolean,
+          value: device.desktop()
+        },
+
+        /**
+         * Flag for television device
+         */
+        isTV: {
+          type: Boolean,
+          value: device.television()
+        },
+
+        /**
+         * Flag for iOS operating system
+         */
+        isIOS: {
+          type: Boolean,
+          value: device.ios()
+        },
+
+        /**
+         * Flag for Android operating system
+         */
+        isAndroid: {
+          type: Boolean,
+          value: device.android()
+        },
+
+        /**
+         * Flag for Blackberry operating system
+         */
+        isBlackberry: {
+          type: Boolean,
+          value: device.blackberry()
+        },
+
+        /**
+         * Flag for Windows operating system either desktop, phone or tablet
+         */
+        isWindows: {
+          type: Boolean,
+          value: device.windows()
+        },
+
+        /**
+         * Flag for Firefox OS operating system
+         */
+        isFxos: {
+          type: Boolean,
+          value: device.fxos()
+        },
+
+        /**
+         * Flag for portrait orientation
+         */
+        isPortrait: {
+          type: Boolean,
+          value: device.portrait()
+        },
+
+        /**
+         * Flag for landscape orientation
+         */
+        isLandscape: {
+          type: Boolean,
+          value: device.landscape()
+        },
+
+        /**
+         * Flag for check if Apache Cordova is available
+         */
+        isCordova: {
+          type: Boolean,
+          value: device.cordova()
+        },
+
+        /**
+         * Screen orientation
+         */
+        orientation: {
+          type: String,
+          computed: '_orientationChanged(isLandscape, isPortrait)'
+        },
+
+        /**
+         * Operating system
+         */
+        os: {
+          type: String,
+          value: 'UNKNOWN'
+        },
+
+        /**
+         * Browser
+         */
+        browser: {
+          type: Object,
+          value: {
+            name: 'UNKNOWN',
+            version: 'UNKNOWN'
+          }
+        }
+      },
+
+      /**
+       * Computed method for calculating orientation
+       * @private
+       * @param {Boolean} landscape flag for landscape orientation
+       * @param {Boolean} portrait flag for portrait orientation
+       * @return {String} orientation [landscape | portrait]
+       */
+      _orientationChanged: function(landscape, portrait) {
+        var orientation;
+        if (landscape) {
+          orientation = 'landscape';
+        } else if (portrait) {
+          orientation = 'portrait';
+        }
+
+        return orientation;
+      },
+
+      /**
+       * _handleOrientation will be called when orientation change ocurrs.
+       * This way the component could perform some actions in addition to what
+       * have been done by the behavior.
+       * @public
+       * @param orientation a string
+       */
+      _handleOrientation: function() {
+        /* to be overwritten in the component which use this behavior */
+      },
+
+      /**
+       * Set orientation flags and notify new orientation if appropriate
+       * @private
+       * @return {Void}
+       */
+      __handleOrientation: function() {
+        this.set('isLandscape', device.landscape());
+        this.set('isPortrait', device.portrait());
+        if (this.orientation !== this._orientation) {
+          this._orientation = this.orientation;
+          this._handleOrientation(this.orientation); //call to component function if any, only when is a real change
+        }
+      },
+
+      /**
+       * Detect where the code is running (OS and browser)
+       */
+      ready: function() {
+        this.set('os', deviceBehavior.os);
+        this.set('browser', deviceBehavior.browser);
+      },
+
+      /**
+       * Add this component to the list of element that should be notified when
+       * ocurrs an orientation change
+       */
+      attached: function() {
+        deviceBehavior.elementNodes.push(this);
+      },
+
+      /**
+       * Since the component is not in the dom anymore, unsubscribe it from
+       * orientation changes
+       */
+      detached: function() {
+        var index = deviceBehavior.elementNodes.indexOf(this);
+        if (index !== -1) {
+          deviceBehavior.elementNodes.splice(index, 1); //remove element
+        }
+      }
+
+    };
+  }(window.CellsBehaviors, window.device));
+</script>

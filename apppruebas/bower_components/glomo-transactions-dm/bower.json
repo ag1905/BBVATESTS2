@@ -1,0 +1,29 @@
+{
+  "name": "glomo-transactions-dm",
+  "version": "4.2.1",
+  "description": "Transactions product Dm",
+  "keywords": [
+    "dm",
+    "data",
+    "manager"
+  ],
+  "main": [
+    "glomo-dashboard-dm.html"
+  ],
+  "dependencies": {
+    "cells-dm-global-apis-accounts": "~8.8.0",
+    "cells-dm-global-apis-cards": "~1.7.0",
+    "cells-dm-global-apis-deposits": "~1.3.2",
+    "cells-i18n-behavior": "~9.0.1",
+    "cells-product-format-behavior": "~1.1.0",
+    "cells-moment-import": "~10.0.0",
+    "polymer": "Polymer/polymer#1.10.0"
+  },
+  "devDependencies": {
+    "cells-demo-dm-helper": "^0.2.1",
+    "cells-demo-helper": "^1.3.5",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "test-fixture": "polymerelements/test-fixture#^1.0.0",
+    "web-component-tester": "^6.5.0"
+  }
+}

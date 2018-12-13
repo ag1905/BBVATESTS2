@@ -1,0 +1,55 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`glomo-legal-notice-dm` is a data component to set glomo legal notice content from static, server or remote content
+
+Example:
+
+```html
+<glomo-legal-notice-dm></glomo-legal-notice-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-legal-notice-dm">
+  <script>
+    (function() {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-legal-notice-dm',
+
+        properties: {
+          /**
+          * Legal notice static temporal content. It will be dynamic on future
+          * @type {String}
+          */
+          legalNoticeResponse: {
+            type: String,
+            notify: true,
+            value:
+              '<h2>CONDICIONES “GloMo CL”</h2>' +
+              '<p>La privacidad de nuestros clientes es fundamental para nosotros, por lo que esta Política explica cómo tratamos la información cuando estos acceden a través de Internet a nuestros servicios móviles. A continuación se describen los derechos y obligaciones tanto de nuestros clientes o usuarios como los del Grupo BBVA respecto del tratamiento y uso de información que los primeros provean al Banco o a sus sociedades filiales cuando visitan o acceden a los servicios móviles.</p>' +
+              '<p>El cliente o usuario declara conocer que al acceder o hacer uso de las funcionalidades de los servicios móviles del Grupo BBVA, éstas puedan recopilar información personal, ya sea de personas naturales o jurídicas, información de localización limitada (por ejemplo, para así encontrar la sucursal o cajero automático cercano) e información de los dispositivos móviles desde los que se accede para mejorar así su experiencia de navegación.</p>' +
+              '<p>Por su parte, el Grupo BBVA declara que se encuentra comprometido con proveer los mejores productos y servicios financieros con la máxima calidad de servicio, por lo que mantener la confianza y seguridad de sus clientes y usuarios es su más alta prioridad.</p>' +
+              '<p>Conforme con lo expresado, y con el objeto de respetar la privacidad y seguridad de los datos de clientes y usuarios del Grupo BBVA, se han desarrollado las presentes Políticas de Privacidad, cuyo contenido se detalla a continuación:</p>' +
+              '<ul>' +
+                '<li>El Grupo BBVA obtiene información personal no pública de sus clientes y usuarios de solicitudes, solicitudes electrónicas, u otras formas provistas por aquellos por escrito, personalmente, electrónicamente o por teléfono, transacciones con el Grupo BBVA, etc. La información recopilada puede referirse al nombre, dirección, teléfono, correo electrónico, información de empleador, número de cédula nacional de identidad, fecha de nacimiento e ingresos.</li>' +
+                '<li>El Grupo BBVA podrá tratar, para los fines que estime pertinentes, los datos de carácter personal de los clientes o usuarios que accedan a los distintos servicios habilitados por internet, de acuerdo con la normativa vigente y se obliga a darles, a través de sus empleados y dependientes que tengan acceso a ellos, un uso confidencial y cuidadoso.</li>' +
+                '<li>En virtud de la autorización precedente, el Grupo BBVA podrá enviar al cliente o usuario comunicaciones comerciales o publicitarias por cualquier medio con el fin de informarle acerca de servicios ofrecidos por el Banco o por su matriz o sociedades relacionadas y comunicar los datos indicados precedentemente a dichas sociedades. En todo caso, el Grupo BBVA se compromete a limitar el tratamiento de la información personal de sus clientes y usuarios a lo estrictamente necesario para brindarle los mejores servicios, los cuales pueden incluir orientarle sobre los productos o servicios contratados, ofrecerle productos o servicios adicionales, etc. El cliente o usuario podrá en cualquier tiempo, y sin expresión de causa alguna, revocar la presente autorización.</li>' +
+                '<li>El Grupo BBVA no podrá vender, traspasar ni comunicar datos de carácter personal de sus clientes o usuarios a terceros distintos de su matriz y sociedades relacionadas, sin previa autorización del cliente o usuario. En ningún caso el Grupo BBVA podrá divulgar información médica y/o de salud para ningún otro propósito que no sea tramitar una solicitud de póliza de seguro o una reclamación, salvo autorización expresa del cliente o usuario.</li>' +
+                '<li>El cliente o usuario tendrá siempre derecho a requerir del Grupo BBVA el detalle de la información que trata respecto de su persona, para lo cual deberá presentar solicitud por escrito autorizada notarialmente.</li>' +
+                '<li>El Grupo BBVA tomará las medidas necesarias para asegurar que sólo tengan acceso a la información personal de sus clientes y usuarios aquellos empleados que tengan una razón legítima de negocio y aquellos que verifican cumplimiento de leyes y reglamentos.</li>' +
+              '</ul>' +
+              '<p>Para todos los efectos del presente documento, se fija domicilio especial en la ciudad y comuna de Santiago de Chile y se otorga competencia a sus Tribunales Ordinarios de Justicia. Se acuerda, asimismo, que los derechos y obligaciones anteriormente señalados se someterán a la legislación de la República de Chile, especialmente en conformidad a lo estipulado respecto al Secreto y Reserva Bancario establecidos en el artículo 154 de la Ley General de Bancos, la ley Nº 19.628 de Protección de Datos Personales y la ley Nº 19.496 que establece Normas de Protección de los Derechos del Consumidor.</p>' +
+              '<p>Para todos los efectos legales, el solo acceso o uso de los servicios móviles por parte del cliente o usuario implica la aceptación tácita, en los términos dispuestos en el artículo 103 del Código de Comercio, de las presentes Políticas de Privacidad, así como de cada una de sus condiciones y estipulaciones, las que son por lo tanto imperativas para los clientes o usuarios.</p>' +
+              '<p>La versión vigente de las presentes Condiciones en cada momento podrá ser consultada en la opción del menú “Aviso Legal”.</p>' +
+              '<p><time>24 de Agosto de 2015</time></p>'
+          }
+        }
+      });
+    }());
+  </script>
+</dom-module>

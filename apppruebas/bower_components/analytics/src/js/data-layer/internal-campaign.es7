@@ -1,0 +1,81 @@
+import BgdmjsAnalyticsDataLayerInternalCampaignAttribute from './internal-campaign/attribute';
+import BgdmjsAnalyticsDataLayerInternalCampaignEventInfo from './internal-campaign/event-info';
+/**
+ * Recoge la información relativa a las campañas que se exponen al usuario,
+ * así como las interacciones que el usuario hace con las mismas.
+ *
+ * Este apartado sólo se informará cuando haya información de campañas expuestas al
+ * usuario (o éste interactúe con ellas), en caso contrario, los campos irán sin informar.
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer
+ * @class     bgdmjs.analytics.dataLayer.InternalCampaign
+ */
+export default class BgdmjsAnalyticsDataLayerInternalCampaign
+{
+    /**
+     * Atributos de la campaña.
+     *
+     * @property attributes
+     * @type     {bgdmjs.analytics.dataLayer.internalCampaign.Attribute[]}
+     */
+    attributes = [];
+    /**
+     * Evento recibido sobre la campaña.
+     *
+     * @property event
+     * @type     {bgdmjs.analytics.dataLayer.internalCampaign.EventInfo}
+     */
+    event      = {};
+
+    /**
+     * Agrega una campaña al listado.
+     *
+     * @method addCampaign
+     *
+     * @param {Object} config Objeto a usar para configurar la campaña.
+     */
+    addCampaign(config)
+    {
+        if (config)
+        {
+            if (config instanceof BgdmjsAnalyticsDataLayerInternalCampaignAttribute)
+            {
+                this.attributes.push(config);
+            }
+            else if (typeof config === 'object')
+            {
+                let _attribute = new BgdmjsAnalyticsDataLayerInternalCampaignAttribute();
+                Object.assign(_attribute, config);
+                this.attributes.push(_attribute);
+            }
+        }
+    }
+
+    /**
+     * Asigna a la campaña la información del evento recibido.
+     *
+     * @method setEvent
+     *
+     * @param {string} action Acción de la campaña del evento.
+     * @param {string} name   Nombre del evento.
+     */
+    setEvent(action, name = 'IntCmpClick')
+    {
+        if (action && name)
+        {
+            let _event = new BgdmjsAnalyticsDataLayerInternalCampaignEventInfo();
+            if (action)
+            {
+                _event.siteActionName = action;
+            }
+            if (name)
+            {
+                _event.eventName = name;
+            }
+            this.event = {
+                eventInfo : _event
+            }
+        }
+    }
+}

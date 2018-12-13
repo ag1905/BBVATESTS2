@@ -1,0 +1,55 @@
+<dom-module id="cells-molecule-mask-styles"><template><style>
+:host {
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 0.875rem;
+  @apply (--cells-molecule-mask); }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+.wrapper {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  @apply (--cells-molecule-mask-wrapper); }
+
+.content {
+  @apply (--cells-molecule-mask-content); }
+
+::slotted(*) {
+  padding-right: var(--cells-molecule-mask-margin-right, 0.1875rem); }
+
+.mask {
+  line-height: 1;
+  margin-right: var(--cells-molecule-mask-margin-right, 0.1875rem);
+  font-size: var(--cells-molecule-mask-separator-font-size, 1rem);
+  @apply (--cells-molecule-mask-separator); }
+
+.icon {
+  color: var(--cells-molecule-mask-icon-color, currentColor); }
+
+.number {
+  line-height: 1;
+  font-size: var(--cells-molecule-mask-number-font-size, inherit);
+  @apply (--cells-molecule-mask-number); }
+
+.btn-transparent {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  margin-left: 0.125rem;
+  position: relative;
+  top: -0.0625rem;
+  overflow: visible;
+  background-color: transparent;
+  @apply (--cells-molecule-mask-icon-button); }
+
+</style></template></dom-module>

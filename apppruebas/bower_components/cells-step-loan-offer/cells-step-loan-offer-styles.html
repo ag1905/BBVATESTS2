@@ -1,0 +1,36 @@
+<dom-module id="cells-step-loan-offer-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-step-loan-offer; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+button:active {
+  @apply --cells-global-active; }
+
+cells-step {
+  --cells-step-iron-collapse-expanded-resume: { padding: 0; };
+  --cells-step-filled: { padding-bottom: 0; };
+  @apply --cells-step-loan-offer-cells-step; }
+
+glomo-one-click-resume {
+  --glomo-one-click-resume-change-button: { color: var(--bbva-light-blue, #5bbeff) }; }
+
+</style></template></dom-module>

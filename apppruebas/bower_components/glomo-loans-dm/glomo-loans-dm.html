@@ -1,0 +1,197 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../cells-dm-global-apis-loans/cells-dm-global-apis-loans.html"/>
+
+<!--
+# glomo-accounts-dm
+
+Data manager description.
+
+Example:
+```html
+<glomo-loans-dm></glomo-loans-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-loans-dm">
+  <template>
+    <cells-dm-global-apis-loans id="dm"
+    host="[[host]]"
+    loans="{{_loans}}"
+    balances="{{_balances}}"
+    loans-api-version="[[loansApiVersion]]"></cells-dm-global-apis-loans>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-loans-dm',
+
+        properties: {
+          /**
+           * Chosen host to make requests to. Check providers.
+           * @type {String}
+           */
+          host: {
+            type: String
+          },
+          /**
+           * loans list
+           * @type {Object}
+           */
+          loans: {
+            type: Array,
+            computed: '_setLoans(_loans)'
+          },
+          /**
+           * loans list
+           * @type {Array}
+           */
+          _loans: Array,
+          /**
+           * Balances
+           * @type {Array}
+           */
+          _balances: Array,
+          /**
+           * Total balances
+           * @type {Object}
+           */
+          _totalBalance: {
+            type: Object,
+            value: {
+              amount: 0
+            }
+          },
+          /**
+           * Inital Amount
+           * @type {Object}
+           */
+          initialAmount: Boolean,
+          /**
+           * API version
+           * @type {String}
+           */
+          loansApiVersion: {
+            type: String,
+            value: '0'
+          }
+        },
+        /**
+        * Reset
+        */
+        reset: function() {
+          this.set('_loans', undefined);
+          this.set('_balances', undefined);
+          this.set('_totalBalance', {
+            amount: 0
+          });
+        },
+        /**
+        * Fetch loans
+        */
+        fetch: function() {
+          this.$.dm.getLoans();
+        },
+        /**
+        * Set loan on response successfull
+        */
+        _setLoans: function(_loans) {
+          var response = [];
+          var loans = this._parseLoans(_loans);
+
+          if (loans && loans.length) {
+            response.push({
+              products: loans,
+              order: 4,
+              headerTitle: 'cells-global-dashboard-loans-header',
+              headerAmount: (loans && loans.length > 1) ? this._totalBalance : undefined
+            });
+          }
+
+          this.fire('loans-fetched', response);
+          return response;
+        },
+        /**
+        * Parse loans
+        */
+        _parseLoans: function(loans) {
+          return loans && loans.reduce(function(acc, loan) {
+            var status = ['BLOCKED', 'FROZEN', 'EXPIRED', 'OVERDUE_BALANCES'];
+            var response = {
+              alias: loan.alias || loan.title && loan.title.name,
+              currencies: loan.currencies,
+              description: {
+                value: loan.number,
+                masked: true
+              },
+              icon: 'coronita:' + (loan.loanType && loan.loanType.id === 'MORTGAGE' ? 'home' : 'myprofile'),
+              id: loan.loanId,
+              name: loan.alias || loan.loanType && loan.loanType.name,
+              number: loan.number,
+              status: loan.status && loan.status.id
+            };
+
+            this._calcTotalBalance(loan.initialAmount);
+
+            if (loan.pendingAmount && loan.pendingAmount.total) {
+              response.primaryAmount = {
+                amount: loan.pendingAmount.total.amount,
+                currency: loan.pendingAmount.total.currency,
+                label: 'cells-global-dashboard-loans-pending'
+              };
+            }
+
+            if (loan.initialAmount && this.initialAmount) {
+              response.secondaryAmount = {
+                amount: loan.initialAmount.amount,
+                currency: loan.initialAmount.currency,
+                label: 'cells-global-dashboard-loans-initial'
+              };
+            }
+
+            var disabled = status.includes(response.status);
+            if (response.status && disabled) {
+              var _status = response.status.toLowerCase();
+              response.additionalList = [];
+              response.additionalList.push({
+                css: 'error italic featured ',
+                icon: 'coronita:error',
+                label: 'cells-global-dashboard-status-' + _status
+              });
+              response.additionalList.push({
+                css: 'italic indentation',
+                label: 'cells-global-dashboard-status-description-' + _status
+              });
+              response.additionalList.push({
+                css: 'info indentation',
+                label: 'cells-global-dashboard-comunication'
+              });
+            }
+
+            acc.push(response);
+            return acc;
+          }.bind(this), []);
+        },
+        /**
+        * Calc total balance
+        */
+        _calcTotalBalance: function(amount) {
+          var currency = amount && amount.currency;
+
+          if (this._totalBalance && !this._totalBalance.currency) {
+            this.set('_totalBalance.currency', currency);
+          }
+
+          if (this._totalBalance && this._totalBalance.currency === currency && amount) {
+            this.set('_totalBalance.amount',  this._totalBalance.amount + amount.amount);
+          } else {
+            this.set('_totalBalance', undefined);
+          }
+        }
+      });
+    }());
+  </script>
+</dom-module>

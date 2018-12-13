@@ -1,0 +1,357 @@
+<link rel='import' href='../polymer/polymer.html'>
+<link rel="import" href="../cells-moment-import/cells-moment-import.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel='import' href='../bgadp-mx-notifications/bgadp-mx-notifications.html'>
+
+<!--
+`<glomo-notifications-dm-mx>` description.
+
+Example:
+
+```html
+<glomo-notifications-dm-mx></glomo-notifications-dm-mx>
+```
+
+@demo demo/index.html
+-->
+<dom-module id='glomo-notifications-dm-mx'>
+  <template>
+  </template>
+  <script>
+    /* global moment, BGADPMxNotifications */
+    /*eslint new-cap: 0*/
+    (function(moment) {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-notifications-dm-mx',
+
+        behaviors: [
+          CellsBehaviors.i18nBehavior
+        ],
+
+        properties: {
+
+          /* CONFIG */
+          host: {
+            type: String
+          },
+
+          apiVersion: {
+            type: String,
+            value: '0'
+          },
+
+          dateFormat: {
+            type: String,
+            value: 'D MMMM'
+          },
+
+          timeFormat: {
+            type: String,
+            value: 'H:mm'
+          },
+
+          detailDateFormat: {
+            type: String,
+            value: 'D MMMM, H:mm[h]'
+          },
+
+          /* IN */
+          selectedType: {
+            type: Object,
+            observer: '_onTypeSelected'
+          },
+
+          notificationId: {
+            type: Number
+          },
+
+          /* OUT */
+          notifications: {
+            type: Object,
+            notify: true
+          },
+
+          notificationDetail: {
+            type: Object,
+            notify: true
+          },
+
+          filterCategories: {
+            type: Array,
+            notify: true
+          },
+
+          selectedTypeLabel: {
+            type: String,
+            value: 'glomo-notifications-dm-filter-all',
+            notify: true
+          },
+
+          /* PRIVATE */
+          _serviceResponse: {
+            type: Object,
+            observer: '_serviceResponseObserver'
+          },
+
+          _selectedFilter: {
+            type: String,
+            value: 'all'
+          },
+
+          _parsedNotificationsList: {
+            type: Array,
+            value: []
+          }
+        },
+
+        init: function() {
+          this.getNotifications();
+          this.getFilterCategories();
+        },
+
+        initDetail: function() {
+          if (this.notificationId) {
+            this._openControlVeil();
+            this.getNotification(this.notificationId);
+            this.markAsRead(this.notificationId);
+          }
+        },
+
+        reset: function() {
+          this._selectedFilter = 'all';
+          this.selectedTypeLabel = 'glomo-notifications-dm-filter-all';
+          this.set('_parsedNotificationsList', []);
+        },
+
+        getNotifications: function() {
+          var dp = this._notificationsDp({
+            host: this.host,
+            version: this.apiVersion
+          });
+
+          this._openControlVeil();
+          dp.generateRequest()
+            .then(function(response) {
+              var notifications = dp.getLastResponse();
+              this.set('_serviceResponse', notifications);
+            }.bind(this))
+            .catch(function(error) {
+              this._fire('notifications-request-error');
+              this._closeControlVeil();
+            }.bind(this));
+        },
+
+        getFilterCategories: function() {
+          this.set('filterCategories', [
+            {
+              id: 'all',
+              name: 'glomo-notifications-dm-filter-all'
+            },
+            {
+              id: 'income',
+              name: 'glomo-notifications-dm-filter-income'
+            },
+            {
+              id: 'expense',
+              name: 'glomo-notifications-dm-filter-expense'
+            },
+            {
+              id: 'alert',
+              name: 'glomo-notifications-dm-filter-alert'
+            },
+            {
+              id: 'promotion',
+              name: 'glomo-notifications-dm-filter-promotion'
+            }
+          ]);
+        },
+
+        getNotification: function(notificationId) {
+          var dp = this._notificationDP({
+            host: this.host,
+            version: this.apiVersion,
+            params: {'notification-id': notificationId},
+          });
+
+          dp.generateRequest().then(
+            function() {
+              var response = dp.getLastResponse();
+              if (response.data) {
+                this.set('notificationDetail', this._parseNotificationDetail(response.data));
+              }
+              this._closeControlVeil();
+            }.bind(this),
+            function(error) {
+              this._fire('notification-detail-request-error');
+              this._closeControlVeil();
+            }.bind(this)
+          );
+        },
+
+        markAsRead: function(notificationId) {
+          var dp = this._notificationsMarkAsReadDp({
+            host: this.host,
+            body: {
+              status: {
+                id: 'READ'
+              }
+            },
+            params: {'notification-id': notificationId},
+            version: this.apiVersion
+          });
+
+          dp.generateRequest().then(
+            function() {
+              this._fire('notification-marked-as-read');
+            }.bind(this),
+            function(error) {
+              this._fire('notification-mark-as-read-error');
+            }.bind(this)
+          );
+        },
+
+        _onTypeSelected: function(typeSelected) {
+          this.selectedTypeLabel = typeSelected.name;
+          this._selectedFilter = typeSelected.id;
+          this._groupNotificationsList();
+        },
+
+        _serviceResponseObserver: function(response) {
+          if (response && response.data && response.data.length) {
+            response.data.forEach(function(notif) {
+              let parsed = this._parseNotification(notif);
+              if (parsed.type !== 'default') {
+                this._parsedNotificationsList.push(parsed);
+              }
+            }, this);
+            this._groupNotificationsList();
+          } else {
+            this.set('notifications', {});
+          }
+          this._closeControlVeil();
+        },
+
+        _groupNotificationsList: function() {
+          var groupedNotifs = {};
+
+          this._parsedNotificationsList
+            .filter(function(notif) {
+              return this._selectedFilter === 'all' || notif.type === this._selectedFilter;
+            }.bind(this))
+            .forEach(function(notif) {
+              if (!groupedNotifs[notif.date]) {
+                groupedNotifs[notif.date] = [];
+              }
+              groupedNotifs[notif.date].push(notif);
+            });
+
+          this.set('notifications', groupedNotifs);
+        },
+
+        _parseNotification: function(notif) {
+          var date = moment(notif.sendDate);
+
+          return {
+            id: notif.id,
+            type: this._getNotificationType(notif),
+            class: notif.status.id.toLowerCase(),
+            date: date.format(this.dateFormat),
+            time: date.format(this.timeFormat),
+            title: notif.concept,
+            amount: notif.money
+          };
+        },
+
+        _getNotificationType: function(notif) {
+          var type = notif.notificationType && notif.notificationType.id;
+          var subtype = notif.notificationType && notif.notificationType.subType && notif.notificationType.subType.id;
+
+          switch (type) {
+            case 'MANAGEMENT_OPERATION': return 'alert';
+            case 'PROMOTION': return 'promotion';
+            default:
+              switch (subtype) {
+                case 'INCOME': return 'income';
+                case 'EXPENSE': return 'expense';
+              }
+          }
+
+          return 'default';
+        },
+
+        _parseNotificationDetail: function(detail) {
+          var type = this._getNotificationType(detail);
+          var image = {
+            alert: 'images/notificationsDetail/alert.svg',
+            promotion: 'images/notificationsDetail/promotion.svg',
+            income: 'images/notificationsDetail/income.svg',
+            expense: 'images/notificationsDetail/expense.svg',
+            default: ''
+          }[type];
+          var title = {
+            alert: this.t('glomo-notifications-dm-mx-alert-title'),
+            promotion: this.t('glomo-notifications-dm-mx-promotion-title'),
+            income: this.t('glomo-notifications-dm-mx-income-title'),
+            expense: this.t('glomo-notifications-dm-mx-expense-title'),
+            default: this.t('glomo-notifications-dm-mx-default-title')
+          }[type];
+          var parsed = {
+            id: detail.id,
+            date: moment(detail.sendDate).format(this.detailDateFormat),
+            type: type,
+            image: image,
+            title: title
+          };
+
+          if (detail.money) {
+            parsed.amount = detail.money;
+          }
+
+          if (detail.contract && ['income', 'expense'].indexOf(type) >= 0) {
+            var key = 'glomo-notifications-dm-message-' + detail.contract.product.id + '-' + type;
+            parsed.message = this.t(key);
+          } else if (detail.message && detail.message.messageBody) {
+            parsed.message = detail.message.messageBody;
+          }
+
+          return parsed;
+        },
+
+        _openControlVeil: function() {
+          this._fire('open-control-veil');
+        },
+
+        _closeControlVeil: function() {
+          this._fire('close-control-veil');
+        },
+
+        _fire: function(evtType) {
+          this.dispatchEvent(new CustomEvent(evtType, {
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        _notificationDP: function(params) {
+          /* eslint-disable-next-line */
+          return new BGADPMxNotifications.notifications.notification.get(params);
+        },
+
+        _notificationsDp: function(params) {
+          /* eslint-disable-next-line */
+          return new BGADPMxNotifications.notifications.get(params);
+        },
+
+        _notificationsMarkAsReadDp: function(params) {
+          /* eslint-disable-next-line */
+          return new BGADPMxNotifications.notifications.notification.patch(params);
+        }
+
+      });
+    }(moment));
+  </script>
+</dom-module>

@@ -1,0 +1,67 @@
+{
+  "cells-global-dashboard-available": "Disponible",
+  "cells-global-dashboard-disposed": "Dispuesto",
+  "cells-global-dashboard-initial": "Inicial",
+  "cells-global-dashboard-no-transactions": "No hay movimientos recientes",
+  "cells-global-dashboard-pending": "Pendiente",
+  "cells-global-dashboard-transactions-last-transactions": "Últimos movimientos",
+  "cells-global-dashboard-view-all": "Ver todos",
+
+  "cells-global-dashboard-status-blocked": "Bloqueado",
+  "cells-global-dashboard-status-dormant": "Inactiva",
+  "cells-global-dashboard-status-frozen": "Congelado",
+  "cells-global-dashboard-status-expired-receipts": "Vencido",
+  "cells-global-dashboard-status-overdue_balances": "Vencido",
+
+  "cells-global-dashboard-status-description-blocked": "Tu crédito se encuentra bloqueado.",
+  "cells-global-dashboard-status-description-dormant": "Tu cuenta está en estado inactivo.",  
+  "cells-global-dashboard-status-description-frozen": "Tu crédito se encuentra congelado.",
+  "cells-global-dashboard-status-description-expired-receipts": "Tu crédito presenta saldos vencidos.",
+  "cells-global-dashboard-status-description-overdue_balances": "Tu crédito presenta saldos vencidos.",
+
+  "cells-global-dashboard-comunication": "Comunícate al 01-800-122 6362 para más información.",
+
+  "cells-global-dashboard-account-description": "Cuenta BBVA",
+  "cells-global-dashboard-accounts-credit-header": "Líneas de crédito",
+  "cells-global-dashboard-accounts-header": "Cuentas",  
+  "cells-global-dashboard-accounts-short-currency-header": "Cuentas",
+  "cells-global-dashboard-accounts-header-balance-limit": "Límite",
+  "cells-global-dashboard-accounts-header-balance-quota": "Cupo actual",
+  "cells-global-dashboard-accounts-header-credit-line": "Línea crédito",
+  "cells-global-dashboard-accounts-with-currency-header": "Cuentas en",
+  "cells-global-dashboard-accounts-credit-with-currency-header": "Cuentas crédito en",
+
+
+  "cells-global-dashboard-card-description-credit": "Tarjeta de crédito",
+  "cells-global-dashboard-card-description-debit": "Tarjeta de débito",
+  "cells-global-dashboard-card-description-prepaid": "Tarjeta prepago",
+  "cells-global-dashboard-card-status-locked": "Bloqueada",
+  "cells-global-dashboard-card-status-activate": "Pendiente de activar",
+  "cells-global-dashboard-card-status-off": "Apagada",
+  "cells-global-dashboard-cards-header": "Tarjetas",
+  "cells-global-dashboard-cards-child-sticker": "Sticker",
+  "cells-global-dashboard-cards-child-aditional": "Adicional",
+  "cells-global-dashboard-cards-available": "Saldo disponible",
+  "cells-global-dashboard-cards-disposed": "Saldo actual",
+
+  "cells-global-dashboard-deposit-description-base": "Depósito",
+  "cells-global-dashboard-deposits-header": "Depósitos",
+  "cells-global-dashboard-deposits-with-currency-header": "Depósitos en",
+  "cells-global-dashboard-deposit-description": "Depósito a plazo BBVA",
+  "cells-global-dashboard-deposits-available": "Saldo",
+
+  "cells-global-dashboard-funds-fundPosition": "Importe",
+  "cells-global-dashboard-funds-header": "Fondos mutuos",
+  "cells-global-dashboard-funds-shares": "Participaciones",
+  "cells-global-dashboard-fund-description": "Fondo Mutuo BBVA",
+
+  "cells-global-dashboard-loan-blocked": "Bloqueado",
+  "cells-global-dashboard-loan-description": "Crédito BBVA",
+  "cells-global-dashboard-loan-frozen": "Congelado",
+  "cells-global-dashboard-loans-header": "Créditos",
+  "cells-global-dashboard-loans-pending": "Saldo pendiente",
+  "cells-global-dashboard-loans-initial": "Crédito otorgado",
+
+  "cells-global-atom-message-link": "Recargar",
+  "cells-global-atom-message-text": "Se ha producido un error al cargar tus productos Intenta recargarlo de nuevo."
+}

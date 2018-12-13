@@ -1,0 +1,15 @@
+{
+  "name": "cells-swipes-behavior",
+  "version": "1.0.1",
+  "description": "A behavior that allows mutual between open state of swipes or close them all on vertical scrolling.",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^3.0.0"
+  },
+  "main": [
+    "cells-swipes-behavior.html"
+  ]
+}

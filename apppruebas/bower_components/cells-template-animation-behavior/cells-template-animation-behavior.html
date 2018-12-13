@@ -1,0 +1,377 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-template-animation-behavior-styles.html">
+<script>
+  /*global WeakMap*/
+
+  /**
+     * `Polymer.CellsTemplateAnimationBehavior` is a behavior to manage animations
+     *
+     * 1) Import the behavior in your component.
+     *
+     * ```html
+      <link rel="import" href="../cells-template-animation-behavior/cells-template-animation-behavior.html">
+      ```
+     *
+     * 2) Add Polymer.CellsTemplateAnimationBehavior to the behaviors list in the JS file or script of your component:
+     *
+     * 3) Add cells-template-animation-behavior-styles in tag style.
+     *
+     *```html
+      <style include="name-your-component-styles cells-template-animation-behavior-styles"></style>
+      ```
+     * @polymerBehavior Polymer.CellsTemplateAnimationBehavior
+     *
+     * @demo demo/index.html
+     * @hero cells-template-animation-behavior.jpg
+   */
+
+  Polymer.CellsTemplateAnimationBehavior = {
+
+    /**
+     * Fired when template is cached.
+     *
+     * @event 'template-cached'
+     */
+
+    /**
+     * Fired when template animation ends.
+     *
+     * @event this.animationCompleteEvent ('default value: template-active')
+     */
+
+    /**
+     * Fired from outgoing template when forward animation.
+     *
+     * @event 'animation-forward'
+     */
+
+    /**
+     * Fired from outgoing template when backward animation.
+     *
+     * @event 'animation-backward'
+     */
+    properties: {
+
+      /**
+       * @type {String}
+       */
+      name: {
+        type: String
+      },
+
+      /**
+       * @type {Number}
+       */
+      distance: {
+        type: Number
+      },
+
+      /**
+       * Can be 'cached', 'inactive', 'active'
+       * @type {String}
+       */
+      state: {
+        type: String,
+        observer: '_stateChanged'
+      },
+
+      /**
+       *
+       * @type {String}
+       */
+      animationCompleteEvent: {
+        type: String,
+        value: 'template-active'
+      },
+
+      /**
+       * Can be 'horizontal', 'verticalDownForwards', 'verticalDownBackwards', 'verticalUp', 'staticEver'
+       * @type {String}
+       */
+      animationType: {
+        type: String,
+        value: 'horizontal',
+        notify: true,
+        observer: '_animationTypeChanged'
+      },
+
+      /**
+       * An object that configurates the animation name .class type for horizontal direction
+       */
+      horizontal: {
+        type: Object,
+        value: {
+          forwardsIn: 'template-animation-moveFromRight',
+          forwardsOut: 'template-animation-moveToLeft',
+          backwardsIn: 'template-animation-moveFromLeft',
+          backwardsOut: 'template-animation-moveToRight'
+        }
+      },
+
+      /**
+       * An object that configurates the animation name .class type for horizontal ever direction when both pages are sibling and the second
+       page should not behave as the main  */
+      horizontalEverFor: {
+        type: Object,
+        value: {
+          forwardsIn: 'template-animation-moveFromRight',
+          forwardsOut: 'template-animation-moveToLeft',
+          backwardsIn: 'template-animation-moveFromRight',
+          backwardsOut: 'template-animation-moveToLeft'
+        }
+      },
+
+      /**
+       * An object that configurates the animation name .class type for horizontal ever direction when both pages are sibling and the second
+       page should not behave as the main
+       */
+      horizontalEverBack: {
+        type: Object,
+        value: {
+          forwardsIn: 'template-animation-moveFromLeft',
+          forwardsOut: 'template-animation-moveToRight',
+          backwardsIn: 'template-animation-moveFromLeft',
+          backwardsOut: 'template-animation-moveToRight'
+        }
+      },
+
+      /**
+       * An object that configurates the animation name .class type for vertical down forwards direction
+       */
+      verticalDownForwards: {
+        type: Object,
+        value: {
+          forwardsIn: 'template-animation-static',
+          forwardsOut: 'template-animation-moveToBottom',
+          backwardsIn: 'template-animation-moveFromLeft',
+          backwardsOut: 'template-animation-moveToRight'
+        }
+      },
+
+      /**
+       * An object that configurates the animation name .class type for vertical down backwards direction
+       */
+      verticalDownBackwards: {
+        type: Object,
+        value: {
+          forwardsIn: 'template-animation-moveFromRight',
+          forwardsOut: 'template-animation-moveToLeft',
+          backwardsIn: 'template-animation-static',
+          backwardsOut: 'template-animation-moveToBottom'
+        }
+      },
+
+      /**
+       * An object that configurates the animation name .class type for vertical up direction
+       */
+      verticalUp: {
+        type: Object,
+        value: {
+          forwardsIn: 'template-animation-moveFromBottom',
+          forwardsOut: 'template-animation-static',
+          backwardsIn: 'template-animation-static',
+          backwardsOut: 'template-animation-moveToBottom'
+        }
+      },
+
+      /**
+       * An object that configurates the animation name .class type for static
+       */
+      static: {
+        type: Object,
+        value: {
+          forwardsIn: 'template-animation-static',
+          forwardsOut: 'template-animation-static',
+          backwardsIn: 'template-animation-static',
+          backwardsOut: 'template-animation-static'
+        }
+      }
+    },
+
+    _animationTypeChanged: function(animationType) {
+      this.classList.toggle('static', animationType === 'staticEver');
+    },
+
+    /**
+     * @method _findTemplateByState
+     * @param {string} type state in template.
+     * @return {DOM} Template.
+     */
+    _findTemplateByState: function(state) {
+      return this.parentNode.querySelector('[state="' + state + '"]');
+    },
+
+    /**
+     * @method _stateChanged
+     * @param newState state template ('cached', 'inactive', 'active')
+     */
+    _stateChanged: function(newState) {
+      if (newState === 'active') {
+        var inactiveTemplate = this._findTemplateByState('inactive');
+        if (inactiveTemplate) {
+          this.animateWith(inactiveTemplate);
+        } else {
+          this.classList.add('template-is-visible');
+          this.fire(this.animationCompleteEvent);
+        }
+      }
+    },
+
+    /**
+     * @method _compareLevel
+     * @param a ()
+     * @param b ()
+     * @returns ()
+     */
+    _compareLevel: function(a, b) {
+      if (a === b) {
+        return 'sibling';
+      }
+
+      var sA = (a ? a : '').split('.');
+      var sB = (b ? b : '').split('.');
+
+      for (var i = 0; i < sA.length; i++) {
+        if (sA[i] !== sB[i]) {
+          if (sB[i] === undefined) {
+            return 'parent';
+          } else {
+            return 'sibling';
+          }
+        }
+      }
+      return 'child';
+    },
+
+    /**
+     * @method directAnimationForwards add animation name class forwards direction
+     * @param templateA template in
+     * @param templateB template out
+     * @param animationType type animation
+     */
+    directAnimationForwards: function(templateA, templateB, animationType) {
+      templateA.classList.add(animationType.forwardsIn);
+      templateB.classList.add(animationType.forwardsOut);
+
+      templateB.fire('animation-forward');
+    },
+
+    /**
+     * @method directAnimationBackwards add animation name class backwards direction
+     * @param templateA template in
+     * @param templateB template out
+     * @param animationType type animation
+     */
+    directAnimationBackwards: function(templateA, templateB, animationType) {
+      templateA.classList.add(animationType.backwardsIn);
+      templateB.classList.add(animationType.backwardsOut);
+
+      templateB.fire('animation-backward');
+    },
+
+    _configureAnimationTypeActive: function(templateB) {
+      var animationTypeIn = this.animationType;
+      var animationTypeOut = templateB.animationType;
+
+      if (animationTypeOut === animationTypeIn) {
+        return this[this.animationType];
+      } else if (animationTypeOut === 'verticalUp' || animationTypeIn === 'verticalUp') {
+        return this.verticalUp;
+      } else if (animationTypeOut === 'horizontalEver' && animationTypeIn === 'static') {
+        return this.horizontalEverBack;
+      } else if (animationTypeIn === 'horizontalEver' && animationTypeOut === 'static') {
+        return this.horizontalEverFor;
+      } else if (animationTypeOut === 'horizontalEver' || animationTypeIn === 'horizontalEver') {
+        return this.horizontal;
+      } else if (animationTypeOut === 'staticEver' || animationTypeIn === 'staticEver') {
+        return this.static;
+      } else if (animationTypeOut === 'verticalDownBackwards') {
+        return this.verticalDownBackwards;
+      } else if (animationTypeOut === 'verticalDownForwards') {
+        return this.verticalDownForwards;
+      } else {
+        return this.horizontal;
+      }
+    },
+
+    /**
+     * @method animateWith init animation
+     * @param templateB template out
+     */
+    animateWith: function(templateB) {
+      //var templateA = this;
+      var reverse = false;
+      var templateBRelation;
+      var evName;
+      var animationTypeActive;
+      if (this._templateN && this._templateN.get(templateB)) {
+        reverse = true;
+      } else {
+        templateB._templateN = new WeakMap();
+        templateB._templateN.set(this, true);
+      }
+
+      templateBRelation = this._compareLevel(templateB.name, this.name);
+
+      evName = this.style.WebkitAnimation !== undefined ? 'webkitAnimationEnd' : 'animationend';
+
+      this.listen(this, evName, 'resetTemplate');
+      this.listen(templateB, evName, 'resetTemplate');
+
+      this.classList.add('template-animation-is-animating');
+      templateB.classList.add('template-animation-is-animating');
+      animationTypeActive = this._configureAnimationTypeActive(templateB);
+
+      setTimeout(function() {
+        if (templateBRelation === 'child') {
+          this.directAnimationForwards(this, templateB, animationTypeActive);
+
+          //this.classList.add('template-animation-moveFromRight');
+          //templateB.classList.add('template-animation-moveToLeft');
+        } else if (templateBRelation === 'sibling') {
+          if (!reverse) {
+
+            //forward
+            this.directAnimationForwards(this, templateB, animationTypeActive);
+          } else {
+
+            //backward
+            this.directAnimationBackwards(this, templateB, animationTypeActive);
+          }
+        } else if (templateBRelation === 'parent') {
+          this.directAnimationBackwards(this, templateB, animationTypeActive);
+
+          //this.classList.add('template-animation-moveFromLeft');
+          //templateB.classList.add('template-animation-moveToRight');
+        }
+
+        this.classList.add('template-is-visible');
+      }.bind(this), 1000 / 60);
+    },
+
+    /**
+     * @method resetTemplate clear state animation
+     * @param evt animationend
+     */
+    resetTemplate: function(evt) {
+      if (evt.eventPhase !== Event.AT_TARGET) {
+        return;
+      }
+      var node = evt.target;
+      var regClsTemplate = /\btemplate-animation\S+/g;
+
+      this.unlisten(node, evt.type, 'resetTemplate');
+      node.className = (node.className || '').replace(regClsTemplate, '');
+      if (node !== this) {
+        var templateB = node;
+        templateB.setAttribute('state', 'cached');
+        templateB.classList.remove('template-is-visible');
+        templateB.fire('template-cached');
+      } else {
+        this.async(function() {
+          this.fire(this.animationCompleteEvent);
+        }.bind(this), 116);
+      }
+    }
+  };
+</script>

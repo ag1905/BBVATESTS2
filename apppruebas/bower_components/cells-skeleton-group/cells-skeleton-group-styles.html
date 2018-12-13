@@ -1,0 +1,73 @@
+<dom-module id="cells-skeleton-group-styles"><template><style>
+:host {
+  display: block;
+  background-color: var(--cells-skeleton-group-background-color, var(--bbva-white, #FFFFFF));
+  @apply --cells-skeleton-group; }
+
+:host([hidden]), [hidden] {
+  display: none; }
+
+.skeleton-group {
+  width: 100%;
+  margin-bottom: 0.625rem;
+  overflow: hidden;
+  position: relative;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+  @apply --cells-skeleton-group-skeleton-group; }
+  .skeleton-group cells-skeleton-item {
+    padding: 1.25rem;
+    @apply --cells-skeleton-group--item; }
+    .skeleton-group cells-skeleton-item:last-of-type {
+      border-top: 1px solid var(--cells-skeleton-group-item-last-border-color, var(--bbva-200, #E9E9E9));
+      @apply --cells-skeleton-group--item-last; }
+  .skeleton-group .animate-layer {
+    contain: strict;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: var(--cells-skeleton-group-background-color, var(--bbva-white, #FFFFFF));
+    opacity: .5;
+    -webkit-transform: skewX(160deg) translateX(200%) scaleX(1);
+            transform: skewX(160deg) translateX(200%) scaleX(1);
+    -webkit-transform-origin: right bottom;
+            transform-origin: right bottom;
+    -webkit-animation: skeletonAnimation 1600ms 300ms ease-out infinite both;
+            animation: skeletonAnimation 1600ms 300ms ease-out infinite both;
+    @apply --cells-skeleton-group-animate-layer; }
+
+@-webkit-keyframes skeletonAnimation {
+  from {
+    opacity: 0.5; }
+  50% {
+    opacity: 0.6; }
+  60% {
+    opacity: 0.6; }
+  70% {
+    opacity: 0.3; }
+  90% {
+    opacity: 0.1; }
+  100% {
+    -webkit-transform: skewX(160deg) translateX(0%) scaleX(2);
+            transform: skewX(160deg) translateX(0%) scaleX(2);
+    opacity: 0; } }
+
+@keyframes skeletonAnimation {
+  from {
+    opacity: 0.5; }
+  50% {
+    opacity: 0.6; }
+  60% {
+    opacity: 0.6; }
+  70% {
+    opacity: 0.3; }
+  90% {
+    opacity: 0.1; }
+  100% {
+    -webkit-transform: skewX(160deg) translateX(0%) scaleX(2);
+            transform: skewX(160deg) translateX(0%) scaleX(2);
+    opacity: 0; } }
+
+</style></template></dom-module>

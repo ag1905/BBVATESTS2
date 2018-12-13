@@ -1,0 +1,7 @@
+{
+  "name": "cleave-import",
+  "version": "0.1.0",
+  "description": "Imports Cleave.js as an HTML import.",
+  "main": "cleave-import.html",
+  "ignore": []
+}

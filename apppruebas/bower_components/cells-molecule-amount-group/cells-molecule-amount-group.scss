@@ -1,0 +1,107 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-molecule-amount-group;
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.little {
+  width: 66px;
+  height: 66px;
+  padding: 28px 20px;
+  border-radius: 400px;
+  color: var(--cells-molecule-amount-group__link-color, var(--bbva-core-blue, #004481));
+  background-color: var(--cells-molecule-amount-group__bglink-color, var(--bbva-100, #f4f4f4));
+  @apply cells-molecule-amount-group-little-size;
+}
+
+.medium {
+  width: 92px;
+  height: 92px;
+  padding: 36px 33px;
+  border-radius: 400px;
+  color: var(--cells-molecule-amount-group__link-color, var(--bbva-core-blue, #004481));
+  background-color: var(--cells-molecule-amount-group__bglink-color, var(--bbva-100, #f4f4f4));
+  @apply cells-molecule-amount-group-medium-size;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  width: 75%;
+  margin: 0 auto;
+  padding: 0;
+
+  &__item {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
+  }
+
+  .link {
+    color: var(--cells-molecule-amount-group__link-color, var(--bbva-core-blue, #004481));
+    background-color: var(--cells-molecule-amount-group__bglink-color, var(--bbva-100, #f4f4f4));
+    border: none;
+    font-size: rem(20px);
+    padding: 0;
+    text-align: center;
+
+    &:hover, &:active, &:link {
+      color: #fff;
+      background-color: var(--cells-molecule-amount-group__link-color, var(--bbva-core-blue, #004481));
+      outline: none;
+    }
+
+    &[disabled ] {
+      color: var(--cells-molecule-amount-group__bglink-color-disabled, var(--bbva-300, '#bdbdbd'));
+      &:hover, &:active, &:link {
+        background-color: var(--cells-molecule-amount-group__bglink-color, var(--bbva-100, #f4f4f4));
+      }
+    }
+    @apply cells-molecule-amount-group-link;
+  }
+  @apply cells-molecule-amount-group-list;
+
+}
+cells-icon-message {
+  margin: rem(30px);
+  min-width: rem(165px);
+  justify-content: center;
+  --cells-icon-message-background-color-warning: var(--bbva-white-red, #f8d7dc);
+  --cells-icon-message-icon-color-warning: var(--bbva-light-red, #e77d8e);
+  --cells-icon-message-color: var(--bbva-600,  #121212);
+
+  span {
+    margin: rem(20px) rem(30px);
+  }
+}
+
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+button:active { @apply --cells-global-active; }

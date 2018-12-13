@@ -1,0 +1,23 @@
+<dom-module id="cells-clipboard-manager-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply (--cells-clipboard-manager); }
+
+:host([hidden]), [hidden] {
+  display: none; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+#textContainer {
+  height: 0px; }
+
+[contenteditable] {
+  -webkit-user-select: auto;
+  -moz-user-select: all;
+   -ms-user-select: all;
+       user-select: all; }
+
+</style></template></dom-module>

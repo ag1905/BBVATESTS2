@@ -1,0 +1,56 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href="cells-molecule-amount-group-styles.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<!--
+`<cells-molecule-amount-group>` description.
+
+Example:
+
+```html
+<cells-molecule-amount-group></cells-molecule-amount-group>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-molecule-amount-group  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-molecule-amount-group">
+  <template>
+    <style include="cells-molecule-amount-group-styles cells-molecule-amount-group-shared-styles"></style>
+    <cells-icon-message
+      hidden$=[[!overcomeBalance]]
+      type="warning"
+      icon="coronita:alert"
+      message=[[t(errorMessage)]]>
+    </cells-icon-message>
+    <ul class="list">
+      <template is="dom-repeat" id="amounts" items="[[amounts]]" sort="_sort">
+        <li class="list__item ">
+          <button class$="link [[calculateSize(item)]]" on-click="_selectedAmount" disabled$="[[checkAmounts(item, maxAmount, index)]]">
+            <cells-atom-amount
+              class="amount-large"
+              decimals-hidden
+              amount="[[item]]"
+              currency-code="[[currencyCode]]"
+              local-currency="[[localCurrency]]">
+            </cells-atom-amount>
+          </button>
+        </li>
+      </template>
+    </ul>
+  </template>
+  <script src="cells-molecule-amount-group.js"></script>
+</dom-module>

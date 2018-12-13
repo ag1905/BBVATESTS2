@@ -1,0 +1,133 @@
+<link rel="import" href="../cells-atom-button/cells-atom-button.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-amount-behavior/cells-amount-behavior.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="../cells-step/cells-step.html">
+<link rel="import" href="../cells-step-behavior/cells-step-behavior.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../cells-checkbox-button/cells-checkbox-button.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-step-legal-terms-styles.html">
+
+
+<!--
+`<cells-step-legal-terms>` Component containing inputs for an operation concept and reference.
+
+Example:
+
+```html
+<cells-step-legal-terms></cells-step-legal-terms>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-step-legal-terms-scope      | scope description | default value  |
+| --cells-step-legal-terms  | empty mixin     | {}             |
+| --cells-step-legal-terms-full  | empty mixin     | {}             |
+| --cells-step-legal-terms-filled-p  | empty mixin     | {}             |
+| --cells-step-legal-terms-secondary-input  | empty mixin     | {}             |
+| --cells-step-legal-terms-btn-primary  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-step-legal-terms">
+  <template>
+    <style include="cells-step-legal-terms-styles cells-step-legal-terms-shared-styles"></style>
+
+    <cells-step id="stepContainer"
+        active="[[active]]"
+        title="[[title]]"
+        collapsed="{{collapsed}}"
+        current-step="[[currentStep]]"
+        max-steps="[[maxSteps]]"
+        change-label="[[t('cells-step-legal-terms-change','Change')]]"
+        last-step="[[lastStep]]"
+        previous="[[previous]]"
+        next="[[next]]"
+        scrolled="[[scrolled]]"
+        decorated="[[decorated]]">
+      <div class="filled">
+        <cells-icon-message
+          class="inline"
+          type="info"
+          icon="coronita:correct"
+          icon-size="17"
+          message="[[t('cells-step-legal-accepted', 'Aceptadas')]]">
+        </cells-icon-message>
+      </div>
+
+      <div class="full">
+
+        <template is="dom-if" if={{!additionalInfo}}>
+          <cells-checkbox-button
+            id="saveCheck"
+            checked="{{statusTerms}}"
+            icon-check="coronita:checkmark">
+            <p class="check-text" inner-h-t-m-l="[[t('cells-step-legal-terms-check-text')]]"></p>
+          </cells-checkbox-button>
+        </template>
+
+        <template is="dom-if" if={{additionalInfo}}>
+          <cells-checkbox-button
+            id="checkFirstAdditionalInfo"
+            class="additonalInfoCheck"
+            hidden$="[[!additionalInfoData.preapproved]]"
+            checked="{{additionInfoFirstCheck}}"
+            icon-check="coronita:checkmark">
+            <p class="check-text" inner-h-t-m-l="[[t('cells-step-legal-terms-additional-info-first-check-text')]]"></p>
+          </cells-checkbox-button>
+          <cells-checkbox-button
+            id="checkSecondAdditionalInfo"
+            class="additonalInfoCheck"
+            checked="{{additionInfoSecondCheck}}"
+            icon-check="coronita:checkmark">
+            <p class="check-text" inner-h-t-m-l="[[t('cells-step-legal-terms-additional-info-second-check-text')]]"></p>
+          </cells-checkbox-button>
+          <cells-icon-message
+            class="inline cursive"
+            type="info"
+            icon="coronita:info"
+            icon-size="18"
+            message="[[additionalInfoConditions]]">
+          </cells-icon-message>
+          <cells-checkbox-button
+            id="checkThirdAdditionalInfo"
+            class="additonalInfoCheck"
+            checked="{{additionInfoThirdCheck}}"
+            icon-check="coronita:checkmark">
+            <p class="check-text" inner-h-t-m-l="[[t('cells-step-legal-terms-additional-info-third-check-text')]]"></p>
+          </cells-checkbox-button>
+          <cells-icon-message
+            class="inline cursive"
+            type="info"
+            icon="coronita:info"
+            icon-size="18"
+            message="[[additionalInfoAmount]]">
+          </cells-icon-message>
+          <cells-icon-message
+            class="info btn--message__info"
+            type="info"
+            icon="coronita:info"
+            icon-size="18"
+            message="[[t('cells-step-legal-info')]]">
+          </cells-icon-message>
+          <cells-icon-message class="btn-message__buttons">
+            <cells-st-button class="primary" >
+              <button  disabled$="[[!additionalInfoCheckStatus]]" on-click="_onContinue">
+                  [[t('cells-step-legal-terms-btn-primary')]]
+              </button>
+            </cells-st-button>
+            <cells-st-button class$="[[secondaryButtonType]]" hidden$="[[!showSecondaryButton]]" on-click="_onSecondaryButtonPressed">
+              <button> [[t(secondaryButtonLabel, 'Cancel')]]</button>
+            </cells-st-button>
+          </cells-icon-message>
+        </template>
+      </div>
+    </cells-step>
+  </template>
+  <script src="cells-step-legal-terms.js"></script>
+</dom-module>

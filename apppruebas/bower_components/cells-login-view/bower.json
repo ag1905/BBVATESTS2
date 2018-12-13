@@ -1,0 +1,65 @@
+{
+  "name": "cells-login-view",
+  "version": "11.1.0",
+  "description": "Login view with focus animation",
+  "keywords": [
+    "a11y",
+    "login",
+    "user",
+    "password"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "cells-credentials-form": "^10.1.0",
+    "cells-device-behavior": "9 - 10",
+    "cells-molecule-spinner": "9 - 10",
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "cells-coronita-theme": "9 - 10",
+    "cells-demo-helper": "^10.0.0",
+    "cells-sass": "^2.0.0",
+    "coronita-icons": "9 - 10",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "cells-i18n-behavior": "9 - 10"
+  },
+  "main": [
+    "cells-login-view.html"
+  ],
+  "composer": {
+    "description": "Login component.",
+    "preview": "cells-template-paper-drawer-panel.jpg",
+    "type": "UI",
+    "platforms": "android, ios, desktop",
+    "family": "cells-catalog-forms-family"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "cells-credentials-form": "^10.1.0",
+        "cells-device-behavior": "^9.0.0",
+        "cells-molecule-spinner": "^9.0.0",
+        "polymer": "Polymer/polymer#^1.9.0"
+      },
+      "devDependencies": {
+        "cells-coronita-theme": "^9.0.0",
+        "cells-demo-helper": "^10.0.0",
+        "cells-sass": "^2.0.0",
+        "coronita-icons": "^9.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7",
+        "cells-i18n-behavior": "^9.0.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7",
+        "iron-input": "^2.0.0"
+      }
+    }
+  }
+}

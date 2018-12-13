@@ -1,0 +1,16 @@
+{
+  "name": "cells-analytics-behavior",
+  "version": "1.0.0",
+  "description": "Analytics behavior web component",
+  "keywords": [],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0"
+  },
+  "main": [
+    "cells-analytics-behavior.html"
+  ]
+}

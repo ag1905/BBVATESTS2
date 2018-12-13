@@ -1,0 +1,74 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-checked-element-behavior/iron-checked-element-behavior.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="cells-toggle-button-styles.html">
+
+<!--
+`<cells-toggle-button>` is a simple toggle button.
+
+Example:
+
+```html
+<cells-toggle-button
+  content-left="US$"
+  content-right="$">
+</cells-toggle-button>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+
+|:----------------|:----------------|:--------------:|
+
+| --cells-toggle-button | empty mixin for define element | { } |
+| --cells-toggle-button-switch | empty mixin for define element | { } |
+| --cells-toggle-button-text-container | empty mixin for define element | { } |
+| --cells-toggle-button-text-container-icon | empty mixin for define element | { } |
+| --cells-toggle-button-text-container-last | empty mixin for define element | { } |
+| --cells-toggle-button-text-container-icon-last | empty mixin for define element | { } |
+| --cells-toggle-button-switch-active | empty mixin for define element | { } |
+| --cells-toggle-button-switch-dragging | empty mixin for define element | { } |
+
+| --cells-toggle-button-width | width of component | rem(78px) |
+| --cells-toggle-button-height | height of component | rem(20px) |
+| --cells-toggle-button-border-radius | border radius of component | rem(20px) |
+| --cells-toggle-button-background-color | background color of component | --bbva-300 |
+
+| --cells-toggle-button-switch-top | switch top position | rem(-2px) |
+| --cells-toggle-button-switch-left | switch left position | 0 |
+| --cells-toggle-button-switch-height | compontent switch height | rem(24px) |
+| --cells-toggle-button-switch-width | compontent switch width | rem(40px) |
+| --cells-toggle-button-switch-border-radius | compontent switch border radius | rem(20px) |
+| --cells-toggle-button-switch-color |  compontent switch color | --bbva-medium-blue |
+
+| --cells-toggle-button-font-size | text font size | rem(14px) |
+| --cells-toggle-button-text-height | text line height | rem(22px) |
+| --cells-toggle-button-text-color | component text color | --bbva-white |
+| --cells-toggle-button-text-container-top | top of toggle text's | rem(2px)|
+
+
+@demo demo/index.html
+-->
+<dom-module id="cells-toggle-button">
+  <template>
+    <style include="cells-toggle-button-styles cells-toggle-button-shared-styles"></style>
+    <div id="toggleButton" class="toggle-button__switch"></div>
+      <template is="dom-if" if="[[iconLeft]]">
+        <cells-atom-icon class="text-container__icon" icon="[[contentLeft]]"></cells-atom-icon>
+      </template>
+      <template is="dom-if" if="[[!iconLeft]]">
+        <span class="text-container">[[contentLeft]]</span>
+      </template>
+      <template is="dom-if" if="[[iconRight]]">
+        <cells-atom-icon class="text-container__icon" icon="[[contentRight]]"></cells-atom-icon>
+      </template>
+      <template is="dom-if" if="[[!iconRight]]">
+        <span class="text-container">[[contentRight]]</span>
+      </template>
+  </template>
+
+  <script src="cells-toggle-button.js"></script>
+</dom-module>

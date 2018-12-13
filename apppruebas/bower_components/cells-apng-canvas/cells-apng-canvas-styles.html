@@ -1,0 +1,18 @@
+<dom-module id="cells-apng-canvas-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  @apply (--cells-apng-canvas); }
+
+canvas {
+  width: var(--cells-apng-canvas__canvas_width, 100%);
+  height: var(--cells-apng-canvas__canvas_height, auto);
+  @apply (--cells-apng-canvas__canvas); }
+
+</style></template></dom-module>

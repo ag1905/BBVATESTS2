@@ -1,0 +1,55 @@
+{
+  "name": "cells-product-summary-loan",
+  "version": "2.0.1",
+  "description": "`<cells-product-summary-loan>` is a wrapper of cells-product-summary that understands the loan the Canonical Data Model (CMD). That loan is binded into cells-product-summary, which displays it.",
+  "keywords": [
+    "i18n",
+    "cells-product-summary"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "cells-atom-amount": "^10.0.0",
+    "cells-i18n-behavior": "^10.0.0",
+    "cells-product-summary": "^10.0.0",
+    "cells-moment-import": "^10.0.0",
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "cells-demo-helper": "^10.0.0",
+    "cells-glomo-theme": "^10.0.0",
+    "cells-sass": "^2.0.0",
+    "coronita-icons": "^10.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "^1.0.0"
+  },
+  "main": [
+    "cells-product-summary-loan.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "cells-atom-amount": "^10.0.0",
+        "cells-i18n-behavior": "^10.0.0",
+        "cells-product-summary": "^10.0.0",
+        "cells-moment-import": "^10.0.0",
+        "polymer": "Polymer/polymer#^1.9.0"
+      },
+      "devDependencies": {
+        "cells-demo-helper": "^10.0.0",
+        "cells-glomo-theme": "^10.0.0",
+        "cells-sass": "^2.0.0",
+        "coronita-icons": "^10.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "webcomponentsjs": "^0.7"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

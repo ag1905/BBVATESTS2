@@ -1,0 +1,279 @@
+<script>
+
+  'use strict';
+
+  (function() {
+    window.CellsBehaviors = window.CellsBehaviors || {};
+    /**
+     * `CellsBehaviors.AmountsBehavior` is a behavior to format amounts and currency codes
+     *
+     *
+     * > Note. Implemented in [`cells-atom-amount`]
+     *
+     * @demo demo/index.html
+     * @polymerBehavior CellsBehaviors.AmountsBehavior
+     */
+
+    /**
+    * Separate fractional from integer according to document language.
+    *
+    * WARNING: uses non-standard lowercase language strings to prevent errors.
+    * You should follow ISO-3166-1 and write the region part of your language in uppercase letters
+    * (es-MX, es-CL, ...)
+    */
+    var separators = {
+      'es': ',',
+      'es-us': '.',
+      'en': '.',
+      'en-us': '.',
+      'es-mx': '.',
+      'es-cl': '.',
+      'es-uy': ','
+    };
+
+    /**
+    * Group hundreds according to document language.
+    *
+    * WARNING: uses non-standard lowercase language strings to prevent errors.
+    * You should follow ISO-3166-1 and write the region part of your language in uppercase letters
+    * (es-MX, es-CL, ...)
+    */
+    var groupChars = {
+      'es': '.',
+      'es-us': ',',
+      'en': ',',
+      'en-us': ',',
+      'es-mx': ',',
+      'es-cl': ',',
+      'es-uy': '.'
+    };
+
+    /**
+    * Currency symbols organized by localCurrency[currencyCode] with a 'default' key.
+    * @type {Object}
+    */
+    var currenciesMap = {
+      CLP: {
+        CLP: '$'
+      },
+      MXN: {
+        MXN: '$'
+      },
+      EUR: {
+        USD: '$'
+      },
+      USD: {
+        USD: '$'
+      },
+      UYU: {
+        UYU: '$',
+        USD: 'U$S',
+        UYI: 'UI' // Uruguayan Indexed Unit (unidad idexada)       
+      },
+      default: {
+        CLF: 'UF', //CL specific, here in case it's needed in another country
+        EUR: '€',
+        USD: 'US$',
+        AUD: 'A$',
+        CAD: 'C$',
+        CHF: 'Fr.',
+        CLP: 'Ch$',
+        CZK: 'Kč',
+        CNY: 'Yu¥',
+        DKK: 'kr',
+        GBP: '£',
+        HKD: 'HK$',
+        HUF: 'Ft',
+        JPY: '¥',
+        LTL: 'Lt',
+        MAD: 'درهم',
+        MXN: 'Mx$',
+        NOK: 'kr',
+        NZD: 'NZ$',
+        PEN: 'S/',
+        PLN: 'zł',
+        RUB: 'руб',
+        SAR: 'SR',
+        SEK: 'kr',
+        SGD: 'S$',
+        TRY: 'TL',
+        UYU: 'UYU',
+        ZAR: 'R'
+      }
+    };
+    /**
+    * localCurrency determines whether the minus sign of a negative number is rendered before or after the currency symbol (for left-aligned currencyCodes)
+    * @type {Object}
+    */
+    var minusAfterSymbolLocalCurrencies = ['MXN', 'CLP', 'UYU'];
+
+    var defaultLanguage = 'en';
+
+    /**
+    * currencyCodes whose symbol is rendered after the amount
+    */
+    var rightAlignedCurrencies = [ 'EUR' ];
+    /**
+     *   `Cells.AmountsBehavior` is a behavior to format amounts and currency codes
+     *
+     * > Note. Implemented in [`cells-atom-amount`](http://bbva-files.s3.amazonaws.com/cells/bbva-catalog/index.html?element=cells-atom-amount#/elements/cells-atom-amount?v=1.1.0)
+     *
+     * ```js
+     * Polymer({
+     *   is: 'your-component',
+     *   behaviors: [
+     *     CellsBehaviors.AmountBehavior
+     *   ]
+     * })
+     * ```
+     *
+     * @demo demo/index.html
+     * @polymerBehavior
+     */
+    window.CellsBehaviors.AmountBehavior = {
+      properties: {
+        /**
+         * Set the quantity of fractional.
+         */
+        quantityFractional: {
+          type: Number,
+          value: 2
+        }
+      },
+      _hasMinusAfterSymbol: function(localCurrency) {
+        return minusAfterSymbolLocalCurrencies.indexOf(localCurrency) !== -1;
+      },
+
+      _isNegative: function(amount) {
+        return amount < 0;
+      },
+
+      /**
+       * [function description]
+       * @param  {String} currencyCode [description]
+       * @return {Bool}              [description]
+       */
+      _isRightAligned: function(currencyCode) {
+        return rightAlignedCurrencies.indexOf(currencyCode) !== -1 ? true : false;
+      },
+
+      /**(String, String) -> String
+       * Input String prepared for [ISO 4217 Currency Codes]
+       *
+       * @return {String}
+       */
+      _getCurrencyAsSymbol: function(localCurrency, currencyAsLiteral) {
+        return (currenciesMap[localCurrency] &&
+          currenciesMap[localCurrency][currencyAsLiteral]) ||
+
+          (currenciesMap.default &&
+            currenciesMap.default[currencyAsLiteral]) ||
+
+          currencyAsLiteral;
+      },
+
+      /**
+       * Get a translation key for a currency
+       * Input String prepared for [ISO 4217 Currency Codes]
+       *
+       * @return {String}
+       */
+      _getTranslationKeyForCurrency: function(currency) {
+        return 'cells-amount-behavior-currency-' + currency;
+      },
+
+      /** (Number, String) -> String
+       * Returns the integer part of a number without '-' sign in case it's negative
+       */
+      _getAbsIntegerPart: function(number, language) {
+        if (isNaN(number) || number === null) {
+          return;
+        }
+        var integer = this._getIntegerPart(number, language);
+
+        //remove '-' if negative
+        return this._startsWith(integer, '-') ? integer.slice(1) : integer;
+      },
+      /**
+      * Determines whether a string begins with the characters of a specified string.
+      * this._startsWith(stringSearching, searchValue, startPosition)
+      */
+      _startsWith: function(str, searchedString, position) {
+        position = position || 0;
+        return str.indexOf(searchedString, position) === position;
+      },
+      /** (Number, String) -> String
+       * Returns the integer part of a number
+       */
+      _getIntegerPart: function(number, language) {
+        if (isNaN(number) || number === null) {
+          return;
+        }
+        return this.__commafy(number.toString().split('.')[0], language);
+      },
+
+      /** Number -> String
+       * Returns the fractional part of a number (rounded down to 2 digits) or '00' if it's an integer.
+       */
+      _getFractionalPart: function(number) {
+        if (isNaN(number) || number === null) {
+          return;
+        }
+        var fractional = number.toString().split('.')[1];
+        if (!fractional) {
+          return '00';
+        }
+        if (fractional.length === 1) {
+          return fractional + '0';
+        }
+        return fractional.slice(0, this.quantityFractional);
+      },
+
+      _getSeparator: function(language) {
+        language = language.toLowerCase();
+        return separators[language] ||
+          separators[language.substring(0, language.indexOf('-'))] ||
+          separators[document.documentElement.lang] ||
+          separators[defaultLanguage];
+      },
+
+      /**
+      * Get group hundreds according to document language
+      */
+      _getGroupChars: function(language) {
+        language = language.toLowerCase();
+        return groupChars[language] ||
+          groupChars[language.substring(0, language.indexOf('-'))] ||
+          groupChars[document.documentElement.lang] ||
+          groupChars[defaultLanguage];
+      },
+
+      /** (String, String) -> String
+       * Returns a long integer separated by hundreds
+       * with separator according to language
+       */
+      __commafy: function(numberStr, language) {
+        language = language.toLowerCase();
+        return numberStr.replace(/(\d)(?=(\d{3})+$)/g, '$1' +
+          this._getGroupChars(language));
+      },
+
+      /**
+      * Get custom formatted amount
+      */
+      getFormattedAmount: function(amount, currency, localCurrency, decimal, separator, symbol) {
+        if (amount && currency) {
+          var _symbol = symbol ? this._getCurrencyAsSymbol(localCurrency, currency) : '';
+          var _integer = this._getAbsIntegerPart(amount, localCurrency);
+          var _separator = separator ? this._getSeparator(localCurrency) : '';
+          var _decimal = decimal ? this._getFractionalPart(amount) : '';
+          var _negative = this._isNegative(amount) ? '-' : '';
+          var formattedAmount = _symbol + _negative + _integer + _separator + _decimal;
+
+          return formattedAmount;
+        }
+      }
+    };
+  }());
+
+</script>

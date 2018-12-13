@@ -1,0 +1,20 @@
+{
+  "name": "cells-adtm-analytics",
+  "version": "1.0.0",
+  "description": "Adobe Tag Manager Analytics web component",
+  "keywords": [],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.0",
+    "cells-analytics-behavior": "ssh://git@globaldevtools.bbva.com:7999/cellslabs/cells-analytics-behavior.git",
+    "analytics": "ssh://git@globaldevtools.bbva.com:7999/bgdmjs/analytics.git#~1.0.0",
+    "iron-jsonp-library": "PolymerElements/iron-jsonp-library#^1.0.4"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0"
+  },
+  "main": [
+    "cells-adtm-analytics.html"
+  ]
+}

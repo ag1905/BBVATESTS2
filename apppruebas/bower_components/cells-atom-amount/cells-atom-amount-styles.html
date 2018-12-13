@@ -1,0 +1,129 @@
+<dom-module id="cells-atom-amount-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  white-space: nowrap;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply (--cells-atom-amount); }
+
+:host(.negative) {
+  @apply (--cells-atom-amount-negative); }
+
+:host([hidden]), [hidden] {
+  display: none; }
+
+.sr-amount {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  @apply (--cells-atom-amount-sr); }
+
+.visible-amount {
+  display: -webkit-inline-flex !important;
+  display: -ms-inline-flexbox !important;
+  display: inline-flex !important;
+  white-space: nowrap;
+  @apply (--cells-atom-amount-visible); }
+
+/**
+ * Default styles for all <cells-atom-amount> with "amount-*" classes.
+ */
+:host([class*="amount-"]) {
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--cells-atom-amount-color, #121212);
+  @apply (--cells-fontDefaultNormal); }
+  :host([class*="amount-"]) .currency,
+  :host([class*="amount-"]) .fractional {
+    font-size: 0.875rem;
+    line-height: 1;
+    padding-top: 0.0625rem; }
+  :host([class*="amount-"]) .integer {
+    margin-left: 0.125rem;
+    margin-right: 0.125rem; }
+  :host([class*="amount-"]) .separator {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px; }
+
+:host([decimals-hidden]) .separator {
+  display: none; }
+
+:host([decimals-hidden]) .integer {
+  margin-right: 0; }
+
+/**
+ * large size
+ */
+:host(.amount-large) {
+  font-size: 1.25rem; }
+
+/**
+ * huge size
+ */
+:host(.amount-huge) {
+  font-size: 2.25rem; }
+  :host(.amount-huge) .currency {
+    font-size: 1.375rem; }
+    :host(.amount-huge) .currency--left {
+      padding-top: 0.125rem; }
+  :host(.amount-huge) .fractional {
+    font-size: 1.375rem; }
+
+:host .minus,
+:host([class*="amount-"]) .minus {
+  @apply (--cells-atom-amount-minus); }
+  :host .minus--left,
+  :host([class*="amount-"]) .minus--left {
+    @apply (--cells-atom-amount-minus-left); }
+  :host .minus--right,
+  :host([class*="amount-"]) .minus--right {
+    @apply (--cells-atom-amount-minus-right); }
+
+:host .integer,
+:host([class*="amount-"]) .integer {
+  @apply (--cells-atom-amount-integer); }
+
+:host .fractional,
+:host([class*="amount-"]) .fractional {
+  @apply (--cells-atom-amount-fractional); }
+
+:host .separator,
+:host([class*="amount-"]) .separator {
+  @apply (--cells-atom-amount-separator); }
+
+:host .currency,
+:host([class*="amount-"]) .currency {
+  @apply (--cells-atom-amount-currency); }
+  :host .currency--left,
+  :host([class*="amount-"]) .currency--left {
+    @apply (--cells-atom-amount-currency-left); }
+  :host .currency--right,
+  :host([class*="amount-"]) .currency--right {
+    @apply (--cells-atom-amount-currency-right); }
+
+:host .abbreviation,
+:host([class*="amount-"]) .abbreviation {
+  margin-left: 0.3125rem;
+  @apply (--cells-atom-amount-abbreviation); }
+
+</style></template></dom-module>

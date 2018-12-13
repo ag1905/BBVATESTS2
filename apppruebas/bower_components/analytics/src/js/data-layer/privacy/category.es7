@@ -1,0 +1,25 @@
+/**
+ * Representa una categoría de acceso a datos.
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer.privacy
+ * @class     bgdmjs.analytics.dataLayer.privacy.Category
+ */
+export default class BgdmjsAnalyticsDataLayerPrivacyCategory
+{
+    /**
+     * Nombre de la categoría que se corresponderá
+     * con el de la variable `Security`.
+     *
+     * @property categoryName
+     * @type     {string}
+     */
+    categoryName = '';
+    /**
+     * Array de dominios de la herramienta que accede
+     * al área de privacidad.
+     *
+     * @type {string[]}
+     */
+    domains      = [];
+};

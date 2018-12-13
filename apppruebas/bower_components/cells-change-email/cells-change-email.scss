@@ -1,0 +1,82 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  padding: 1rem 1.875rem;
+  @apply --cells-change-email;
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+cells-molecule-input {
+  --cells-molecule-input-wrapper: unquote('{
+    height: 3.75rem;
+  }');
+
+  --cells-molecule-input-invalid-background-color: var(--bbva-100, #F4F4F4);
+}
+
+.form {
+  &__row {
+    margin: 0 0 1.25rem 0;
+    @apply --cells-change-email-form-row;
+  }
+
+  &--label {
+    color: var(--bbva-600, '#121212');
+    font-size: .875rem;
+  }
+
+  @apply --cells-change-email-form;
+}
+
+.error-message {
+  margin: .625rem 0 0 0;
+  --cells-icon-message-icon-error: unquote('{
+    color: var(--bbva-dark-red, #b92a45);
+  }');
+  --cells-icon-message-inline-error: unquote('{
+    color: var(--bbva-dark-red, #b92a45);
+  }');
+
+  @apply --cells-change-email-message;
+}
+
+.notification {
+  margin: 0 0 3rem 0;
+  @apply --cells-change-email-notification;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  cells-st-button {
+    & + cells-st-button {margin: 1.25rem 0 0 0;}
+
+    @apply --cells-change-email-action-button;
+  }
+
+  @apply --cells-change-email-actions;
+}

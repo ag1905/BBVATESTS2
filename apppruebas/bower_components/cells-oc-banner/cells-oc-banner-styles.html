@@ -1,0 +1,205 @@
+<dom-module id="cells-oc-banner-styles"><template><style>
+:host {
+  display: var(--cells-oc-banner-display, block);
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  background-color: rgba(255, 255, 255, 0.6);
+  position: relative;
+  @apply --cells-oc-banner; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+.banner {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.6);
+  @apply --cells-oc-banner-banner; }
+  .banner .banner-content {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    @apply --cells-oc-banner-banner-content; }
+  .banner__img {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 6.25rem;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    background: var(--cells-oc-banner-background-color, #237ABA);
+    @apply --cells-oc-banner-banner-img; }
+  .banner__info {
+    padding: 0 0.625rem;
+    -webkit-flex-grow: 2;
+        -ms-flex-positive: 2;
+            flex-grow: 2;
+    @apply --cells-oc-banner-banner-info; }
+    .banner__info__date {
+      @apply --cells-fontDefaultMediumItalic;
+      color: var(--bbva-dark-gold, #b79e5e);
+      font-size: var(--cells-text-size-12, 12px);
+      @apply --cells-oc-banner-banner-info-date; }
+    .banner__info__description {
+      @apply --cells-fontDefaultBold;
+      font-size: var(--cells-text-size-14, 14px);
+      @apply --cells-oc-banner-banner-info-description; }
+    .banner__info__amount__description {
+      font-size: var(--cells-text-size-14, 14px);
+      @apply --cells-oc-banner-banner-info-amount-description; }
+    .banner__info__iwant {
+      display: block;
+      line-height: 2rem;
+      color: var(--bbva-medium-blue, #237ABA);
+      font-size: var(--cells-text-size-14, 14px);
+      @apply --cells-oc-banner-banner-info-iwant; }
+  .banner__close {
+    padding: 0.625rem;
+    background-color: rgba(255, 255, 255, 0.6);
+    @apply --cells-oc-banner-banner-close; }
+    .banner__close .close-icon {
+      color: var(--bbva-500, #666);
+      @apply --cells-oc-banner-banner-close-icon; }
+  .banner-closed {
+    height: 0;
+    overflow: hidden;
+    @apply --cells-oc-banner-banner-closed; }
+
+cells-atom-date {
+  display: inline;
+  color: var(--bbva-dark-gold, #b79e5e);
+  @apply --cells-oc-banner-banner-atom-date; }
+
+cells-atom-amount {
+  --cells-atom-amount-integer-font-size: 200px;
+  @apply --cells-oc-banner-banner-atom-amount; }
+
+:host(.animated) .banner-opened {
+  -webkit-animation-name: displayBanner;
+          animation-name: displayBanner;
+  transition: all 0.4s ease;
+  -webkit-animation-duration: 1.5s;
+          animation-duration: 1.5s;
+  @apply --cells-oc-banner-banner-opened; }
+
+@-webkit-keyframes displayBanner {
+  0% {
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%); }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0); } }
+
+@keyframes displayBanner {
+  0% {
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%); }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0); } }
+
+:host(.animated) .banner-closed {
+  transition: height 0.4s ease-out;
+  -webkit-animation-duration: 1.5s;
+          animation-duration: 1.5s;
+  height: 0;
+  overflow: hidden;
+  @apply --cells-oc-banner-banner-closed; }
+
+:host(.big) .banner {
+  height: auto;
+  background: var(--cells-oc-banner-background-color, #237ABA);
+  @apply --cells-oc-banner-banner-big; }
+  :host(.big) .banner .banner-content {
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    padding: 1.875rem;
+    width: 100%;
+    @apply --cells-oc-banner-banner-content-big; }
+  :host(.big) .banner__img {
+    width: 100%;
+    height: 8.125rem;
+    margin-bottom: 1.25rem;
+    @apply --cells-oc-banner-banner-img-big; }
+    :host(.big) .banner__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      @apply --cells-oc-banner-banner-img-img-big; }
+  :host(.big) .banner__info {
+    color: var(--bbva-white, #fff);
+    @apply --cells-oc-banner-banner-info-big; }
+    :host(.big) .banner__info__date {
+      color: var(--bbva-light-gold, #e6d5a4);
+      font-size: var(--cells-text-size-14, 14px);
+      @apply --cells-oc-banner-banner-info-date-big; }
+    :host(.big) .banner__info__description {
+      font-size: var(--cells-text-size-24, 24px);
+      margin: 10px 0;
+      @apply --cells-oc-banner-banner-info-description-big; }
+    :host(.big) .banner__info__amount__description {
+      display: block;
+      margin: 15px 0 20px;
+      font-size: var(--cells-text-size-16, 16px);
+      @apply --cells-oc-banner-banner-info-amount-description-big; }
+    :host(.big) .banner__info__iwant {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      -webkit-justify-content: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      color: var(--bbva-white, #fff);
+      background: var(--bbva-core-blue, #004481);
+      height: 3.125rem;
+      width: 9rem;
+      @apply --cells-oc-banner-banner-info-iwant-big; }
+  :host(.big) .banner__close {
+    display: none;
+    @apply --cells-oc-banner-banner-close-big; }
+
+:host(.big) cells-atom-date {
+  color: var(--bbva-light-gold, #e6d5a4);
+  @apply --cells-oc-banner-banner-atom-date-big; }
+
+:host(.big) cells-atom-amount {
+  color: var(--bbva-white, #fff);
+  font-size: 42px;
+  width: 100%;
+  --cells-atom-amount-fractional: { font-size: 24px; };
+  --cells-atom-amount-currency: { font-size: 26px; };
+  @apply --cells-oc-banner-banner-atom-amount-big; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+button:active {
+  @apply --cells-global-active; }
+
+</style></template></dom-module>

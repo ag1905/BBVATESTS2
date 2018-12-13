@@ -1,0 +1,31 @@
+{
+  "name": "cells-left-swipe-action",
+  "version": "3.1.3",
+  "description": "A container that allows swiping to the left to reveal action buttons.",
+  "keywords": [
+    "swipe",
+    "left-swipe",
+    "ios",
+    "action bar"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.1"
+  },
+  "devDependencies": {
+    "cells-atom-icon": "^2.1.3",
+    "cells-sass": "^1.0.15",
+    "chai-spies": "^0.7.1",
+    "coronita-icons": "^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.2.5",
+    "web-component-tester": "Polymer/web-component-tester#~4.1.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "main": [
+    "cells-left-swipe-action.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  }
+}

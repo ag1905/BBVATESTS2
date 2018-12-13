@@ -1,0 +1,53 @@
+<link rel="import" href="../polymer/polymer.html">
+<script>
+  (function () {
+    'use strict';
+
+    window.CellsBehaviors = window.CellsBehaviors || {};
+
+    var cellsAnalyticsBehavior = {
+
+      properties: {
+        node: Object,
+
+        /**
+          * Object instance of the data layer from Adobe Tag Manager.
+        */
+        data: Object
+      },
+
+      _trackEvent: function (e) {},
+      _setFootPrint: function (e) {},
+      sendEvent: function (action) {},
+
+      setVars: function (keys) {
+        for (var key in keys) {
+          if (keys.hasOwnProperty(key)) {
+            this.set('data.' + key, keys[key]);
+          }
+        }
+      },
+
+      startTracking: function (element) {
+        this.node = document.querySelector('#' + element);
+        if (this.node) {
+          this.listenerTrackEvent = this._trackEvent.bind(this);
+          this.listenerTemplateTransitionEnd = this._setFootPrint.bind(this);
+          this.node.addEventListener('track-event', this.listenerTrackEvent);
+          this.node.addEventListener('template-transition-end', this.listenerTemplateTransitionEnd);
+        }
+      },
+
+      stopTracking: function () {
+        if (this.node) {
+          this.node.removeEventListener('track-event', this.listenerTrackEvent);
+          this.node.removeEventListener('template-transition-end', this.listenerTemplateTransitionEnd);
+        }
+      }
+    };
+
+    window.CellsBehaviors.analyticsBehavior = cellsAnalyticsBehavior;
+
+  } ());
+
+</script>

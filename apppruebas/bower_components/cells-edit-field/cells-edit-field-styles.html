@@ -1,0 +1,43 @@
+<dom-module id="cells-edit-field-styles"><template><style>
+:host {
+  font-family: var(--cells-fontDefault);
+  box-sizing: border-box;
+  display: block;
+  padding: 30px;
+  --cells-btn--extend: { display: block; };
+  @apply (--cells-edit-field); }
+  :host .info {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin-top: 0.75rem;
+    @apply --cells-edit-field-info; }
+    :host .info__icon {
+      width: 2.0625rem;
+      margin-right: 0.6875rem;
+      color: var(--cells-edit-field-info__icon-color, #5bbeff);
+      @apply --cells-edit-field-info__icon; }
+    :host .info__label {
+      font-size: 14px;
+      @apply --cells-edit-field-info__label; }
+  :host cells-molecule-input {
+    --cells-molecule-input-text-error-color: var(--bbva-light-red, #e77d8e);
+    --cells-molecule-input-text-error: { padding-left: 0; font-size: var(--cells-text-size-14, 0.875rem); };
+    @apply --cells-edit-field-molecule-input; }
+
+.buttons {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+  .buttons .primary {
+    margin-bottom: 1.25rem; }
+  .buttons .transparent {
+    font-size: 14px; }
+
+</style></template></dom-module>

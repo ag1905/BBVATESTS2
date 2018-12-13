@@ -1,0 +1,79 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-step/cells-step.html">
+<link rel="import" href="../cells-step-behavior/cells-step-behavior.html">
+<link rel="import" href="../glomo-one-click-resume/glomo-one-click-resume.html">
+<link rel="import" href="../glomo-one-click-simulator/glomo-one-click-simulator.html">
+<link rel="import" href="cells-step-loan-offer-styles.html">
+<!--
+`<cells-step-loan-offer>` description.
+
+Example:
+
+```html
+<cells-step-loan-offer></cells-step-loan-offer>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-step-loan-offer  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-step-loan-offer">
+  <template>
+    <style include="cells-step-loan-offer-styles cells-step-loan-offer-shared-styles"></style>
+    <cells-step id="stepContainer"
+    class-to-toggle="step-active"
+    active="[[active]]"
+    max-steps="[[maxSteps]]"
+    title="[[title]]"
+    current-step="[[currentStep]]"
+    collapsed="{{collapsed}}"
+    fixed="{{fixed}}"
+    change-label="[[changeLabel]]"
+    previous="[[previous]]"
+    next="[[next]]"
+    scrolled="[[scrolled]]"
+    decorated="[[decorated]]"
+    info-message-key="[[infoMessageKey]]"
+    hide-header>
+      <div class="filled">
+        <glomo-one-click-resume id="resume"
+          title="cells-step-loan-offer-title-step"
+          local-currency="[[localCurrency]]"
+          response="[[offer]]"
+          hide-message-term
+          hide-product></glomo-one-click-resume>
+      </div>
+
+      <div class="full">
+        <glomo-one-click-simulator id="simulator"
+          header-title="[[t('loan-one-click-simulator-info-header-title')]]"
+          language="[[lang]]"
+          header-img="[[headerImg]]"
+          icon-code="[[icon]]"
+          icon-size="[[iconSize]]"
+          one-click-type="[[oneClickType]]"
+          amount-monthly-size="amount-large"
+          offer-data="{{offer}}"
+          is-simulation-allowed="[[isSimulationAllowed]]"
+          is-improved="[[isImproved]]"
+          local-currency="[[localCurrency]]"
+          scroll-top="{{scrollTop}}"
+          show-assistance-call="{{showAssistanceCall}}">
+        </glomo-one-click-simulator>
+      </div>
+  </cells-step>
+  </template>
+  <script src="cells-step-loan-offer.js"></script>
+</dom-module>

@@ -1,0 +1,268 @@
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../bgadp-loans/bgadp-loans.html" />
+<link rel="import" href="../cells-global-apis-behaviors/cells-global-apis-behaviors.html" />
+
+<!--
+# cells-dm-global-apis-loans
+
+CELLS Data Manager for GLOBAL APIS Loans
+
+## Example:
+
+```html
+<cells-dm-global-apis-loans></cells-dm-global-apis-loans>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="cells-dm-global-apis-loans">
+  <template></template>
+  <script>
+    /*global BGADPLoans*/
+    /*eslint new-cap: 0*/
+    (function(Polymer) {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'cells-dm-global-apis-loans',
+
+        behaviors: [
+          CellsBehaviors.CellsGlobalApisHandleRequest,
+          CellsBehaviors.CellsGlobalApisHandleRequestSign,
+          CellsBehaviors.CellsGlobalApisHandleRequestError
+        ],
+
+        properties: {
+          /**
+           * Chosen domain to make requests.
+           * @type {String}
+           */
+          host: String,
+          /**
+          * Loan Id
+          */
+          loanId: String,
+          /**
+           * Loan
+           * @type  {Array}
+           */
+          loan: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Loans list
+           * @type  {Array}
+           */
+          loans: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Balances
+           * @type  {Array}
+           */
+          balances: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * API version
+           * @type {String}
+           */
+          loansApiVersion: {
+            type: String,
+            value: '0'
+          }
+        },
+
+        /**
+        * Get Loans
+        */
+        getLoans: function(params) {
+          var service = this._serviceLoans({
+            host: this.host,
+            params: params,
+            version: this.loansApiVersion,
+            requiresTsec: true
+          });
+
+          return service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse());
+              this.set('loans', response);
+              this.fire('set-loans', response);
+            }.bind(this),
+            function(error) {
+              this.fire('error-on-get-loans');
+            }.bind(this)
+          );
+        },
+        /**
+        * Get Loan
+        */
+        getLoan: function(id, params) {
+          var service = this._serviceLoan({
+            host: this.host,
+            params: Object.assign({ 'loan-id': id }, params),
+            version: this.loansApiVersion,
+            requiresTsec: true
+          });
+
+          return service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse());
+              this.set('loan', response);
+              this.fire('set-loan', response);
+            }.bind(this),
+            function(error) {
+              this.fire('error-on-get-loan');
+            }.bind(this)
+          );
+        },
+        /**
+        * Loans balances
+        */
+        getLoansBalances: function() {
+          var service = this._serviceLoansBalances({
+            host: this.host,
+            version: this.loansApiVersion,
+            requiresTsec: true
+          });
+
+          return service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse()) || [];
+              this.set('balances', response);
+              this.fire('set-loans-balances', response);
+            }.bind(this),
+            function(error) {
+              this.fire('error-on-get-loans-balances');
+            }.bind(this)
+          );
+        },
+        /**
+        * Update alias
+        */
+        patchLoanAlias: function(alias) {
+          var service = this._serviceLoanPatch({
+            host: this.host,
+            body: { alias: alias },
+            params: Object.assign({ 'loan-id': this.loanId }),
+            version: this.loansApiVersion,
+            requiresTsec: true
+          });
+
+          return service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse());
+              this.set('loan', response);
+              this.fire('patch-alias', alias);
+              this.fire('patch-loan', response);
+            }.bind(this),
+            function(error) {
+              this.fire('error-on-patch-loan');
+            }.bind(this)
+          );
+        },
+        /**
+        * Get card offers detail
+        */
+        getOfferDetail: function() {
+          var service = this._serviceLoansOfferDetail({
+            host: this.host,
+            params: Object.assign({ 'loan-id': this.loanId, 'offer-id': this.offerId }),
+            requiresTsec: true
+          });
+          service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse());
+              this.set('offerDetail', response);
+              this.dispatchEvent(new CustomEvent('set-loan-offer-detail', {
+                detail: response,
+                bubbles: true,
+                composed: true
+              }));
+            }.bind(this),
+            this._generateErrorFireEventHandler('error-on-get-loan-offer-detail')
+          );
+        },
+        /**
+         * Get card offers detail
+         */
+        postOfferSimulation: function(offer) {
+          var service = this._serviceLoansOfferSimulation({
+            host: this.host,
+            params: Object.assign({ 'loan-id': this.loanId, 'offer-id': this.offerId }),
+            body: offer,
+            requiresTsec: true
+          });
+          service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse());
+              this.set('offerSimulation', response);
+              this.dispatchEvent(new CustomEvent('set-loan-offer-simulation', {
+                detail: response,
+                bubbles: true,
+                composed: true
+              }));
+            }.bind(this),
+            this._generateErrorFireEventHandler('error-on-get-loan-offer-simulation')
+          );
+        },
+        /**
+        * Service Loans
+        * /loans/v0/loans
+        */
+        _serviceLoans: function(params) {
+          return new BGADPLoans.loans.get(params);
+        },
+        /**
+        * Service Loan
+        * /loans/v0/loans/{loan-id}
+        */
+        _serviceLoan: function(params) {
+          var service = new BGADPLoans.loans.loan.get(params);
+          this._addSignListener(service);
+          return service;
+        },
+        /**
+        * Service Loan
+        * /loans/v0/loans/{loan-id}
+        */
+        _serviceLoanPatch: function(params) {
+          return new BGADPLoans.loans.loan.patch(params);
+        },
+        /**
+        * Service Loans Balances
+        * /loans/v0/balances
+        */
+        _serviceLoansBalances: function(params) {
+          return new BGADPLoans.loans.balances.get(params);
+        },
+        /**
+        * Parse Account
+        */
+        _parseResponse: function(response) {
+          return response && response.data || null;
+        }
+        /**
+         * Service Loan offer
+         * /loans/v0/offers/{offer-id}
+         */
+        // _serviceLoansOfferDetail: function(params) {
+        //   return new BGADPLoans.loans.loan.offers.offer.get(params);
+        // },
+        /**
+         * Service Loan offer simularion
+         * /loans/v0/offers/{offer-id}/quotations/simulate
+         */
+        // _serviceLoansOfferSimulation: function(params) {
+        //   return new BGADPLoans.loans.loan.offers.offer.quotations.post(params);
+        // }
+      });
+    }(Polymer));
+  </script>
+</dom-module>

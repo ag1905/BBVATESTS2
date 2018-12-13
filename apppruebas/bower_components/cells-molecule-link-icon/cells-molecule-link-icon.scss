@@ -1,0 +1,64 @@
+@import "bower_components/cells-sass/main";
+:host {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  @apply(--cells-text-size-m);
+  text-decoration: none;
+  color: var(--cells-molecule-link-icon-color, #006EC1);
+  @apply(--cells-molecule-link-icon);
+}
+
+span {
+  display: inline-block;
+  margin-left: rem(8px);
+  @include ellipsis;
+
+  @apply(--cells-molecule-link-icon-label);
+}
+
+
+:host(.cells-molecule-link-icon--reverse) {
+  span {
+    margin-left: 0;
+    margin-right: rem(8px);
+
+    @apply(--cells-molecule-link-icon-reverse-span);
+  }
+  cells-atom-icon {
+    order: 1;
+  }
+
+  @apply(--cells-molecule-link-icon-reverse);  
+}
+
+:host(.cells-molecule-link-icon--block) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: stretch;
+
+  span {
+    margin-left: 0;
+    margin-top: rem(8px);
+
+    @apply(--cells-molecule-link-icon-block-span);
+  }
+
+  @apply(--cells-molecule-link-icon-block);
+}
+
+@for $i from 8 through 64 {
+  @if $i % 2==0 {
+    :host(.icon-size-#{$i}) {
+      cells-atom-icon {
+        --cells-atom-icon-size: rem($i * 1px);
+      }
+    }
+  }
+}
+
+cells-atom-icon {
+  color: var(--cells-molecule-link-icon-icon-color, currentColor);
+  @apply(--cells-molecule-link-icon-atom-icon);
+}

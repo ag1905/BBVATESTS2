@@ -1,0 +1,13 @@
+{
+  "glomo-help-platform-android": "Ir a Playstore",
+  "glomo-help-platform-ios": "Ir a Apple Store",
+  "glomo-help-header-message": "Nuestro servicio de atención automatizada 24 horas le atenderá para las siguientes opciones:",
+  "glomo-help-info-option-1": "Denuncia por robo o extravío de Tarjeta",
+  "glomo-help-info-option-2": "Consultar horarios de Oficina y Tipo de cambio",
+  "glomo-help-additional-paragraph": "Y de lunes a viernes, de 9:00 a 20:00 horas, nuestros asesores le informarán sobre:",  
+  "glomo-help-additional-option-1": "Préstamos y cuentas",
+  "glomo-help-additional-option-2": "Tarjetas de crédito y débito",
+  "glomo-help-additional-option-3": "BBVA Net y cajeros automáticos",
+  "glomo-help-additional-call-button": "Llamar a Línea BBVA",  
+  "glomo-help-footer-message": "Desde el extranjero, utilice <strong><a href='tel:(598) 2409 8835' target=\"_blank\">(598) 2409 8835</a></strong>"
+}

@@ -1,0 +1,61 @@
+<dom-module id="cells-service-selector-styles"><template><style>
+:host {
+  font-family: var(--cells-fontDefault, --fontDefault);
+  display: block;
+  @apply (--cells-service-selector); }
+
+cells-atom-subheader {
+  padding: 0 1.875rem 1rem 1.875rem;
+  @apply (--cells-service-selector-subheader); }
+
+cells-avatar-item {
+  border-bottom: 1px solid var(--bbva-100);
+  padding: 1rem 1.875rem;
+  background: var(--bbva-white);
+  --cells-avatar-item-list-secondary: { color: var(--bbva-600, #121212); };
+  --cells-avatar-item-list-secondary-extra: { font-style: italic; };
+  --cells-avatar-item-list-info: { font-size: rem(14px); font-weight: 400; color: var(--bbva-500, #666666); };
+  @apply (--cells-fontDefaultNormal);
+  @apply (--cells-service-selector-avatar-item; }
+
+cells-avatar-item:active {
+  background-color: var(--bbva-100, #F4F4F4);
+  @apply (--cells-service-selector-avatar-item; }
+
+:host(.step-inactive) cells-atom-subheader ::content h2 {
+  color: var(--bbva-300); }
+
+:host[searching] {
+  @apply (--cells-service-selector-searching-mode); }
+
+filter-tags {
+  margin-left: 1.875rem; }
+
+cells-left-swipe-action-button span {
+  display: block;
+  font-size: 12px;
+  padding: 0.5rem 0 0;
+  @apply (--cells-service-selector-searching-mode); }
+
+cells-left-swipe-action-button {
+  width: 25%;
+  text-align: center;
+  padding: 0;
+  --cells-left-swipe-action-button: { display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; cursor: pointer; };
+  --cells-left-swipe-action-button-wrapper: { font-size: 1rem; };
+  @apply (--cells-service-selector-action-button); }
+
+cells-left-swipe-action {
+  --cells-left-swipe-action-swipe-content: { background: var(--bbva-white); };
+  @apply (--cells-left-swipe-action-content); }
+
+cells-atom-icon {
+  margin: 0 auto;
+  @apply (--cells-service-selector-icon); }
+
+cells-stripes-spinner-veil {
+  left: 8.75rem;
+  width: 120vw;
+  @apply (--cells-stripes-spinner-veil); }
+
+</style></template></dom-module>

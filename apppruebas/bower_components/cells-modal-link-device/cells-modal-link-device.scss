@@ -1,0 +1,73 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  padding: rem(30px);
+  
+  --cells-from-to-item-even: unquote('{
+    padding: 0 0 0 20px;
+  }');
+  --cells-from-to-item-odd: unquote('{
+    padding: 0 20px 0 0;
+  }');
+  --cells-checkbox-button: unquote('{
+    padding: 20px 0 0;
+  }');
+  @apply --cells-modal-link-device;
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+button:active { @apply --cells-global-active; }
+
+.img-container {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  @apply --cells-modal-link-device-img-container;
+}
+
+cells-from-to {
+  text-align: left;
+  margin: rem(20px) 0 rem(30px);
+  @apply --cells-modal-link-device-from-to;
+}
+
+.check-container {
+  position: relative;
+  margin-bottom: rem(37px);
+  @apply --cells-modal-link-device-check-wrapper;
+  .term-button {
+    position: absolute;
+    left: rem(82px);
+    top: rem(10px);
+    @apply --cells-modal-link-device-term-button;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @apply --cells-modal-link-device-actions-button;
+}
+

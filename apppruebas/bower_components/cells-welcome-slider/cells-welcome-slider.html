@@ -1,0 +1,74 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-atom-button/cells-atom-button.html">
+<link rel="import" href="../cells-full-screen-slider/cells-full-screen-slider.html">
+<link rel="import" href="cells-welcome-slider-styles.html">
+
+<!--
+`<cells-welcome-slider>` is a component for the start page of an application that shows a carousel
+with configurable images and texts for each slide, access and/or register buttons and an optional link to legal terms.
+
+Example:
+
+```html
+<cells-welcome-slider
+  logo-src="<path to logo>"
+  logo-alt="<alt text>"
+  slides="<slidesArray>">
+</cells-welcome-slider>
+```
+
+## Data model
+
+`slides` Array
+
+```js
+[{
+  animation: '<path-to-image>', // url of an APNG image shown over each slide
+  title: 'Slide title',
+  text: 'Slide text...',
+  backgroundColor: '#ccc', // slide background color
+  backgroundImage: '<path-to-background-image>', // background image for the slide
+  delay: 5000 // slide duration
+}]
+```
+
+Note: `image` property can be used instead of `animation` if you don't need an animated image (APNG).
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+ Custom property | Description     | Default
+:----------------|:----------------|:--------------
+--cells-welcome-slider_canvas-width | canvas width | auto
+--cells-welcome-slider_canvas-height | canvas height | 36vh
+--cells-welcome-slider_logo | empty mixin applied to the logo | {}
+--cells-welcome-slider_actions | empty mixin applied to the buttons container | {}
+--cells-welcome-slider_footer | empty mixin applied to the legal terms container | {}
+--cells-welcome-slider_legal-notice | empty mixin applied to the legal terms link | {}
+
+@demo demo/frame.html
+-->
+<dom-module id="cells-welcome-slider">
+  <template>
+    <style include="cells-welcome-slider-styles cells-welcome-slider-shared-styles"></style>
+    <cells-full-screen-slider id="slider" slides="[[slides]]" frozen="[[frozen]]" autoplay="[[autoplay]]" selected="{{slideActive}}" disable-swipe="[[disableSwipe]]" show-arrows="[[showArrows]]">
+      <div class="actions">
+        <template is="dom-if" if="[[showRegisterButton]]">
+          <button is="cells-atom-button" class="btn--l btn--full actions__btn" on-click="_onRegisterClick" id="btnRequestKey">{{t('cells-welcome-slider-request-key')}}</button>
+        </template>
+        <button is="cells-atom-button" class="btn--l btn--full actions__btn" on-click="_onAccessClick" id="btnAccess">{{t('cells-welcome-slider-access')}}</button>
+      </div>
+      <div class="footer">
+        <template is="dom-if" if="[[showLegalTerms]]">
+          <p class="legal-notice">{{t('cells-welcome-slider-conditions-agreement')}} <button id="btnLegalConditions" is="cells-atom-button" class="btn--transparent footer__btn" on-click="_onLegalTermsClick">{{t('cells-welcome-slider-conditions')}}</button></p>
+        </template>
+        <template is="dom-if" if="[[showRegisterText]]">
+          <p class="register-text"><button id="btnRegisterText" is="cells-atom-button" class="btn--transparent footer__btn" on-click="_onRegisterClick">{{t('cells-welcome-slider-register-text')}}</button></p>
+        </template>
+      </div>
+    </cells-full-screen-slider>
+  </template>
+  <script src="cells-welcome-slider.js"></script>
+</dom-module>

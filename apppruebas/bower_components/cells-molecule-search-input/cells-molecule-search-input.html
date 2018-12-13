@@ -1,0 +1,53 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../iron-input/iron-input.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="cells-molecule-search-input-styles.html">
+<!--
+`<cells-molecule-search-input>` description.
+
+Example:
+
+```html
+<cells-molecule-search-input></cells-molecule-search-input>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-molecule-search-input  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-molecule-search-input">
+  <template>
+    <style include="cells-molecule-search-input-styles cells-molecule-search-input-shared-styles"></style>
+    <div class="input">
+      <iron-input>
+        <input type="text"
+          id="input"
+          disabled$="[[disabled]]"
+          placeholder$="[[t(placeholder)]]"
+          autofocus$="[[autofocus]]"
+          value="{{value::input}}"
+          on-tap="notifyClick"/>
+      </iron-input>
+      <button hidden$="[[hideClean]]" on-click="notifyClean" class="close">
+        <cells-atom-icon icon="coronita:close" class="icon-size-24"></cells-atom-icon>
+      </button>
+    </div>
+    <button disabled$="[[disabled]]" on-click="notifySearch" class="secondary">
+      <cells-atom-icon icon="coronita:search" class="icon-size-24"></cells-atom-icon>
+    </button>
+  </template>
+  <script src="cells-molecule-search-input.js"></script>
+</dom-module>

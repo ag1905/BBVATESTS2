@@ -1,0 +1,223 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  --general-padding:rem(20px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--cells-fontDefault, sans-serif);
+  padding: var(--cells-product-summary-padding, var(--general-padding));
+  min-height: 255px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+  background-color: var(--cells-product-summary-card-background-color, var(--bbva-white, #fff));
+  width: calc(100% - var(--general-padding));
+  margin: rem(10px) auto;
+  box-sizing: border-box;
+  border-radius: var(--cells-product-summary-border-radius, 2px);
+  @apply --cells-product-summary;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: calc(100% + var(--general-padding));
+    height: calc(100% + rem(32px));
+    background-color: var(--cells-product-summary-background-color, var(--bbva-100, #F4F4F4));
+    z-index: -1;
+    top: rem(-10px);
+    bottom: rem(-12px);
+    left: rem(-10px);
+    right: rem(-10px);
+    @apply --cells-product-summary-after;
+  }
+}
+
+
+:host([loading]) {
+  .content-loading {
+    opacity: 1;
+  }
+}
+
+.content-loading {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  transition: opacity 0.5s linear;
+  opacity: 0;
+  z-index: 1;
+  background-color: var(--cells-product-summary-loading-background-color, var(--bbva-white, #fff));
+  border-radius: var(--cells-product-summary-border-radius, 2px);
+  @apply --cells-product-summary-loading;
+}
+
+.content-error {
+  margin: auto;
+}
+
+cells-spinner-stripes {
+  width: 50px;
+  height: 50px;
+  margin: auto;
+}
+
+
+.bottom-summary {
+  display: flex;
+  flex-direction: column-reverse;
+  @apply --cells-product-summary-bottom-summary;
+}
+
+.header {
+  @apply --cells-fontDefaultMedium;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: rem(28px) 0 rem(30px);
+  @apply --cells-product-summary-header;
+
+  &__img {
+    margin-right: rem(10px);
+    border-radius: 2px;
+    overflow: hidden;
+    @apply --cells-product-summary-header-img;
+  }
+
+  &__text {
+    font-size: rem(18px);
+    @include ellipsis;
+    @apply --cells-product-summary-header-span;
+  }
+
+  &__icon {
+    margin-left: rem(10px);
+    @apply --cells-product-summary-header-icon;
+  }
+
+  &__mask {
+    margin-left: rem(4px);
+    @apply --cells-product-summary-header-mask;
+
+    --cells-molecule-mask-wrapper: unquote("{
+      display: block;
+      @apply --cells-product-summary-header-mask-wrapper;
+    }");
+
+    --cells-molecule-mask-separator: unquote("{
+      line-height: initial;
+      @apply --cells-product-summary-header-mask-separator;
+    }");
+  }
+}
+
+// more info button container <cells-st-button>
+.more-info {
+  display: block;
+  margin: rem(27px) 0 0;
+  text-align: center;
+  @apply --cells-product-summary-more-info;
+
+  &__btn {
+    display: block;
+    margin: 0 auto;
+    @apply --cells-product-summary-more-info-btn;
+  }
+}
+
+.progress-bar {
+  margin-top: rem(16px);
+  margin-bottom: rem(14px);
+  @apply --cells-product-summary-content-progress-bar;
+
+  --cells-3d-horizontal-bar-chart-bar-left-color: var(--cells-product-summary-progress-bar-left-color, #1464A5);
+  --cells-3d-horizontal-bar-chart-bar-right-color: var(--cells-product-summary-progress-bar-right-color, #F4F4F4);
+  --cells-3d-horizontal-bar-chart-shadow-opacity: var(--cells-product-summary-progress-bar-shadow-opacity, 0.8);
+  --cells-3d-horizontal-bar-chart-shadow-left-color: var(--cells-product-summary-progress-bar-shadow-color, #eee);
+  --cells-3d-horizontal-bar-chart-shadow-right-color: var(--cells-product-summary-progress-bar-shadow-color, #eee);
+}
+
+
+// ----------------------------------
+// list items (items wrapper)
+// ----------------------------------
+.main-items {
+  @apply --cells-product-summary-content-main-items;
+}
+
+.optional-items {
+  @apply --cells-product-summary-optional-items;
+  .cells-key-values-list {
+    @apply --cells-product-summary-optional-items-list;
+    li {
+      @apply --cells-product-summary-optional-items-list-item;
+    }
+    li:not(:first-of-type) {
+      .inline {
+        @apply --cells-product-summary-optional-items-list-item-not-first-key-value;
+      }
+    }
+    .cells-key-values-list-key-icon {
+      color: var(--bbva-medium-blue, #237ABA);
+      margin-left: 5px;
+      @apply(--cells-product-summary-optional-items-list-key-icon);
+    }
+  }
+}
+
+.cells-key-values-list-key-icon {
+  color: var(--bbva-medium-blue, #237ABA);
+  margin-left: 5px;
+  @apply --cells-product-summary-optional-items-list-key-icon;
+}
+
+.additional-items {
+  padding-top: rem(30px);
+  @apply --cells-product-summary-additional-items;
+}
+
+// ----------------------------------
+// key values
+// ----------------------------------
+.value-italic {
+  --cells-key-values-value: unquote("{
+    font-style: italic;
+    @apply --cells-product-summary-value-italic;
+  }");
+}
+
+.cells-key-values-list.reversed {
+  > li:not(:first-of-type) {
+    margin-top: rem(14px);
+    @apply --cells-product-summary-content-main-items-not-first-child;
+  }
+}
+
+
+// ----------------------------------
+// full width layout (.full-width)
+// without shadows and border expanded
+// to the full width.
+// Use the attribute hide-more-info-button
+// to hide the Info button.
+// ----------------------------------
+:host(.full-width) {
+  width: 100%;
+  padding: rem(50px) rem(30px);
+  border-radius: 0;
+  box-shadow: none;
+  @apply --cells-product-summary-full-width;
+
+  .main-items,
+  .optional-items {
+    margin-bottom: rem(16px);
+    @apply --cells-product-summary-full-width-main-optional-items;
+  }
+}
+
+
+:host([hidden]), [hidden] { display: none; }

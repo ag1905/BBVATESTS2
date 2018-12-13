@@ -1,0 +1,103 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-molecule-card-cover-cvv-styles.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-cvv-card/cells-cvv-card.html">
+<link rel="import" href="../cells-molecule-card-cover/cells-molecule-card-cover.html">
+<link rel="import" href="../coronita-icons/coronita-icons.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../cells-stripes-spinner-veil/cells-stripes-spinner-veil.html">
+<link rel="import" href="../cells-moment-import/cells-moment-import.html">
+
+<!--
+
+Credit card with cvv, image and animation rotate.
+
+Example:
+
+```html
+<cells-molecule-card-cover-cvv class="demo"
+  cvv="123"
+  front-image="https://openapi.bbva.com/ccds/covers?&default_image=true&v=4&country=es&app_id=com.bbva.buzz&pg=0000003514"
+  back-image="https://openapi.bbva.com/ccds/covers?default_image=true&v=4&country=mx&app_id=com.bbva.wallet_mx&pg=DY&bin=481516&type=0011&width=404&height=256&back=true">
+  <span>Acocunt ***3454</span>
+</cells-molecule-card-cover-cvv>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-molecule-card-cover-cvv-scope      | scope description | default value  |
+| --cells-molecule-card-cover-cvv  | empty mixin     | {}             |
+| --cells-molecule-card-cover-cvv-card  | empty mixin | {}  |
+| --cells-molecule-card-cover-cvv-card-front-back | empty mixin | {}  |
+| --cells-molecule-card-cover-cvv-card-back | empty mixin | {}  |
+| --cells-molecule-card-cover-cvv-card-description  | empty mixin | {}  |
+| --cells-molecule-card-cover-cvv-card-container  | empty mixin | {}  |
+| --cells-molecule-card-cover-cvv-card-container-back | empty mixin | {}  |
+| --cells-molecule-card-cover-cvv-card-components | empty mixin | {}  |
+| --cells-molecule-card-cover-cvv-card-code | empty mixin | {}  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-molecule-card-cover-cvv">
+  <template>
+    <style include="cells-molecule-card-cover-cvv-styles cells-molecule-card-cover-cvv-shared-styles"></style>
+    <p class="card-alias">[[card.alias]]</p>
+    <div class$="card-status [[_cardStatus.key]]" hidden$="[[!isNotOperative]]">
+      <cells-icon-message class="inline" hidden$="[[!_cardStatus.icon]]"
+        icon-size="[[iconSize]]"
+        icon="[[_cardStatus.icon]]"
+        message="[[t(_cardStatus.title)]]">
+      </cells-icon-message>
+      <p class="card-status__link" hidden$="[[!_cardStatus.linkText]]">
+          <span>[[t(_cardStatus.preLinkText)]]</span>
+          <span class="link" on-click="_statusLinkClick" >[[t(_cardStatus.linkText)]]</span>
+      </p>
+      <div class="card-status__text">
+        <span>[[t(_cardStatus.text)]]</span>
+        <span hidden$="[[!_cardStatus.blockDate]]">
+            [[_cardStatus.blockDateText]][[t(_cardStatus.continueText)]]
+        </span>
+      </div>
+    </div>
+    <div class$="card-container [[_checkedStatus(frontDefault)]]">
+      <div class="card">
+        <cells-stripes-spinner-veil open="[[spinnerCardOpen]]"></cells-stripes-spinner-veil>
+        <div class$="card--front [[hasStatus]]">
+          <cells-molecule-card-cover
+            id="front"
+            image-src="[[frontImage]]"
+            default-image="[[defaultImages.front]]"
+            image-loaded={{frontImageLoaded}}>
+          </cells-molecule-card-cover>
+          <span class="card--front__number">[[cardNumber]]</span>
+          <span class="card--front__name">[[card.holderName]]</span>
+          <span class="card--front__date">[[cardDate]]</span>
+        </div>
+        <div class="card--back">
+          <cells-cvv-card id="back"
+            cvv="[[_cvv]]"
+            back-cover="[[backImage]]"
+            default-back-cover="[[defaultImages.back]]">
+          </cells-cvv-card>
+        </div>
+      </div>
+      <div class$="card__description [[hasCvvClass]]">
+        <cells-st-button id="copyCardNumber" class="card-copy link">
+          <button class="btn btn--show-copy" on-click="_cardNumberOperation">[[t(copyCard)]]</button>
+        </cells-st-button>
+        <template is="dom-if" if="[[hasCvv]]">
+          <cells-st-button class="link">
+            <button class="btn btn--view-cvv" on-click="_viewCvv">{{t('cells-molecule-card-cover-cvv-view')}}</button>
+          </cells-st-button>
+        </template>
+        <content></content>
+      </div>
+    </div>
+  </template>
+  <script src="cells-molecule-card-cover-cvv.js"></script>
+</dom-module>

@@ -1,0 +1,152 @@
+<script>
+  window.CellsBehaviors = window.CellsBehaviors || {};
+  window.CellsBehaviors.StepPropBehavior = {
+    properties: {
+      /**
+       * @desc  Whether the step is currently active
+       * @type  {Boolean}
+       */
+      active: {
+        notify: true,
+        reflectToAttribute: true,
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * @desc  Flags if this step is collapsed or not.
+       * @type  {Boolean}
+       */
+      collapsed: {
+        notify: true,
+        reflectToAttribute: true,
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * @desc  Flags if step should apply decoration styles.
+       * @type  {Boolean}
+       */
+      decorated: {
+        notify: true,
+        reflectToAttribute: true,
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * @desc Flags if this steps if fixed
+       * @type Boolean
+       */
+      fixed: {
+        notify: true,
+        reflectToAttribute: true,
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * @desc  Flags if this step was the previous one
+       * @type  {Boolean}
+       */
+      previous: {
+        notify: true,
+        reflectToAttribute: true,
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * @desc  Flags if this steps if disabled
+       * @type  {Boolean}
+       */
+      disabled: {
+        reflectToAttribute: true,
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * @desc  Flags if this step is the next one
+       * @type  {Boolean}
+       */
+      next: {
+        notify: true,
+        reflectToAttribute: true,
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * @desc  Step's title
+       * @type  {String}
+       */
+      title: {
+        type: String,
+        value: ''
+      },
+
+      /**
+       * @desc  Step's index order
+       * @type  {Number}
+       */
+      currentStep: {
+        type: Number
+      },
+
+      /**
+       * @desc Max available number of steps, sibblings in the same operative
+       * @type {Number}
+       */
+      maxSteps: {
+        type: Number
+      },
+
+      /**
+       * @desc  Label for the 'change' button
+       * @type  {String}
+       * @value 'Change'
+       */
+      changeLabel: {
+        type: String,
+        value: 'Change'
+      },
+
+      /**
+       * @desc  Whether this step's been scolled out of view or not
+       * @type  {Boolean}
+       */
+      scrolled: {
+        reflectToAttribute: true,
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * @desc  Step's unique identification.
+       * @type  {String}
+       */
+      id: {
+        type: String,
+        value: ''
+      },
+
+      /**
+       * @desc  Flags if this step is the last one.
+       * @type  {Boolean}
+       */
+      lastStep: {
+        reflectToAttribute: true,
+        type: Boolean,
+        value: false
+      }
+    },
+
+    attached: function() {
+      if (!this.id || this.id === '') {
+        console.warn('[%s] requires "id" property for OPX animation, avoid this message in other case', this.is);
+      }
+    }
+  };
+</script>

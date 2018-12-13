@@ -1,0 +1,61 @@
+<link rel="import" href="../cells-image-ccds-behavior/cells-image-ccds-behavior.html">
+<link rel="import" href="../cells-molecule-card-cover/cells-molecule-card-cover.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-molecule-card-cover-ccds-wrapper-styles.html">
+
+<!--
+`<cells-molecule-card-cover-ccds-wrapper>` wraps `cells-molecule-card-cover`, providing default sizes for it, and setting its image source URL in the 'BBVA CCDS' way (adding 'width' and 'height' as params). Width and height are doubled if the screen screen pixel ratio is 2 or higher.
+
+You can use `cells-molecule-card-cover` properties in this component.
+
+Example:
+```html
+<cells-molecule-card-cover-ccds-wrapper
+  image-src="https://url/pointing/to/image.png"
+  default-image="https://url/pointing/to/fallback-image.png"
+  icon="coronita:credit-card"
+  icon-size="12"
+  width="200"
+  height="100"
+  alt="Image alt text"
+  show-overlay>
+</cells-molecule-card-cover-ccds-wrapper>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                     | Description               | Default        |
+|:------------------------------------|:--------------------------|:--------------:|
+| --cells-molecule-card-cover-ccds-wrapper  | Empty mixin for component | {}             |
+
+@demo demo/index.html
+@hero cells-molecule-card-cover-ccds-wrapper.png
+-->
+<dom-module id="cells-molecule-card-cover-ccds-wrapper">
+  <template>
+    <style include="cells-molecule-card-cover-ccds-wrapper-styles cells-molecule-card-cover-ccds-wrapper-shared-styles"></style>
+    <cells-molecule-card-cover
+      image-src="[[_builtImgSrc]]"
+      show-overlay="[[showOverlay]]"
+      icon="[[icon]]"
+      icon-size="[[iconSize]]"
+      default-image="[[defaultImage]]"
+      text="[[text]]"
+      status="[[status]]"
+      width="[[width]]"
+      height="[[height]]"
+      alt="[[alt]]"
+      preload="[[preload]]"
+      fade="[[fade]]"
+      placeholder="[[placeholder]]">
+    </cells-molecule-card-cover>
+  </template>
+
+  <script src="cells-molecule-card-cover-ccds-wrapper.js"></script>
+</dom-module>

@@ -1,0 +1,180 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  height: 100%;
+  box-sizing: border-box;
+  @apply --layout-horizontal;
+  @apply --layout-center;
+  @apply --cells-molecule-spinner;
+
+  --iron-icon-fill-color: currentColor;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+
+:host([hidden]), [hidden] { display: none; }
+
+.wrapper {
+  width: 100%;
+  text-align: center;
+  @apply --cells-molecule-spinner-wrapper;
+}
+
+.spinner {
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  margin-bottom: var(--gutter-width-3, rem(30px));
+  &__ring {
+    width: var(--cells-molecule-spinner-size, rem(150px));
+    height: var(--cells-molecule-spinner-size, rem(150px));
+    border-radius: calc(var(--cells-molecule-spinner-size, 150px) / 2);
+    border: var(--cells-molecule-spinner-ring-border-width, rem(3px)) solid var(--cells-molecule-spinner-ring-content-color, #E9E9E9);
+    border-top: rem(3px) solid var(--cells-molecule-spinner-ring-color,  #2dcccd);
+    animation: spinner__ring--anim 2s linear infinite;
+  }
+  &__icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    color: var(--cells-molecule-spinner-icon-color,  #2dcccd);
+    @apply --cells-molecule-spinner-icon;
+  }
+  &__message {
+    color: var(--cells-molecule-spinner-message-color, #fff);
+    text-align: center;
+    font-size: rem(14px);
+    max-width: var(--cells-molecule-spinner-size, rem(150px));
+    @apply --cells-fontDefaultNormal;
+    @apply --cells-molecule-spinner-message;
+    &:empty {
+      margin-top: 0;
+    }
+  }
+}
+
+:host([process]) {
+  overflow: hidden;
+  color: var(--cells-molecule-spinner-process-message-color, #fff);
+  background: var(--cells-molecule-spinner-process-background, #072146);
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    @apply --cells-molecule-spinner-process-wrapper;
+  }
+
+  .spinner {
+    justify-content: center;
+    flex: 1;
+    margin: 0;
+    @apply --cells-molecule-spinner-process-spinner;
+  }
+
+  .text {
+    padding: 4.375rem 1rem;
+    background: var(--cells-molecule-spinner-process-text-background, #0c386f);
+
+    span {
+      display: block;
+      min-width: 100%;
+      font-weight: 500;
+      animation-name: text__appears;
+      animation-duration: 1s;
+      @apply --cells-molecule-spinner-process-text-span;
+    }
+
+    @apply --cells-molecule-spinner-process-text;
+  }
+
+  @apply --cells-molecule-spinner-process;
+}
+
+.text {
+  text-align: center;
+
+  cells-atom-icon {
+    margin: 0 0 1rem 0;
+    @apply --cells-molecule-spinner-text-icon;
+  }
+
+  span {
+    display: block;
+    min-width: 100%;
+    font-weight: 500;
+    @apply --cells-molecule-spinner-text-span;
+  }
+
+  @apply --cells-molecule-spinner-text;
+}
+
+:host([finish]) {
+  .spinner {
+    &__ring {
+      animation-play-state: paused;
+      border: var(--cells-molecule-spinner-ring-border-width--finished, rem(3px)) solid var(--cells-molecule-spinner-ring-color, #2dcccd);
+    }
+    &__icon {
+      color: var(--cells-molecule-spinner-ring-color,  #2dcccd);
+    }
+  }
+}
+
+:host([not-visible]) {
+  opacity: 0;
+  visibility: hidden;
+  .spinner__ring {
+    animation-play-state: paused;
+  }
+}
+
+:host([finish][process]) {
+  .text {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    top: 0;
+    padding-top: 50vh;
+    animation-name: spinner__end--anim;
+    animation-duration: 2s;
+    @apply --cells-molecule-spinner-process-finish-text;
+  }
+
+  @apply --cells-molecule-spinner-process-finish;
+}
+
+@keyframes spinner__end--anim {
+  0% {
+    transform: translate(0, 400px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+
+@keyframes spinner__ring--anim {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes text__appears {
+  0% {
+    transform: translate(0, 200px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}

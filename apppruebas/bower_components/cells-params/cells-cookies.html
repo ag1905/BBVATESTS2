@@ -1,0 +1,89 @@
+<!--
+/*\
+|*|
+|*|  :: cookies.js ::
+|*|
+|*|  A complete cookies reader/writer framework with full unicode support.
+|*|
+|*|  Revision #1 - September 4, 2014
+|*|
+|*|  https://developer.mozilla.org/en-US/docs/Web/API/document.cookie
+|*|  https://developer.mozilla.org/User:fusionchess
+|*|
+|*|  This framework is released under the GNU Public License, version 3 or later.
+|*|  http://www.gnu.org/licenses/gpl-3.0-standalone.html
+|*|
+|*|  Syntaxes:
+|*|
+|*|  * setItem(name, value[, end[, path[, domain[, secure]]]])
+|*|  * getItem(name)
+|*|  * removeItem(name[, path[, domain]])
+|*|  * hasItem(name)
+|*|  * keys()
+|*|
+\*/
+
+-->
+<script>
+Polymer.Cookies = {
+
+  getItem: function(sKey) {
+    if (!sKey) {
+      return null;
+    }
+
+    return decodeURIComponent(document.cookie.replace(new RegExp('(?:(?:^|.*;)\\s*' + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=\\s*([^;]*).*$)|^.*$'), '$1')) || null;
+  },
+
+  setItem: function(options) {
+    if (!options.sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(options.sKey)) {
+      return false;
+    }
+
+    var sExpires = '';
+    if (options.vEnd) {
+      switch (options.vEnd.constructor) {
+        case Number:
+          sExpires = options.vEnd === Infinity ? '; expires=Fri, 31 Dec 9999 23:59:59 GMT' : '; max-age=' + options.vEnd;
+          break;
+        case String:
+          sExpires = '; expires=' + options.vEnd;
+          break;
+        case Date:
+          sExpires = '; expires=' + options.vEnd.toUTCString();
+          break;
+      }
+    }
+
+    document.cookie = encodeURIComponent(options.sKey) + '=' + encodeURIComponent(options.sValue) + sExpires + (options.sDomain ? '; domain=' + options.sDomain : '') + (options.sPath ? '; path=' + options.sPath : '') + (options.bSecure ? '; secure' : '');
+    return true;
+  },
+
+  removeItem: function(options) {
+    if (!this.hasItem(options.sKey)) {
+      return false;
+    }
+
+    document.cookie = encodeURIComponent(options.sKey) + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT' + (options.sDomain ? '; domain=' + options.sDomain : '') + (options.sPath ? '; path=' + options.sPath : '');
+    return true;
+  },
+
+  hasItem: function(sKey) {
+    if (!sKey) {
+      return false;
+    }
+
+    return (new RegExp('(?:^|;\\s*)' + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=')).test(document.cookie);
+  },
+
+  keys: function() {
+    var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, '').split(/\s*(?:\=[^;]*)?;\s*/);
+    for (var nLen = aKeys.length, nIdx = 0; nIdx < nLen; nIdx++) {
+      aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]);
+    }
+
+    return aKeys;
+  }
+
+};
+</script>

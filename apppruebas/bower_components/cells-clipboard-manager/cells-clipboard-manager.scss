@@ -1,0 +1,26 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply(--cells-clipboard-manager);
+}
+
+:host([hidden]), [hidden] {
+  display:none;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+#textContainer {
+  height: 0px;
+}
+
+[contenteditable] {
+  -webkit-user-select: auto;
+  user-select: all;
+}
+

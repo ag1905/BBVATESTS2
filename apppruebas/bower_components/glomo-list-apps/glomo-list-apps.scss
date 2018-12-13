@@ -1,0 +1,122 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+    display: block;
+    box-sizing: border-box;
+    font-family: var(--cells-fontDefault, sans-serif);
+    background-color: var(--bbva-core-blue, #004481);
+    height: 100vh;
+
+    @apply --glomo-list-apps;
+}
+
+:host([hidden]), [hidden] {
+    display: none !important;
+}
+
+:host {
+    --cells-st-link-host: unquote("{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }");
+    --cells-st-link: unquote("{
+        font-weight: 500;
+        font-size: 0.75rem;
+        color: var(--bbva-100, #f4f4f4);
+        margin-top: 10px;
+        text-decoration: underline;
+        text-decoration-color: var(--bbva-core-blue, #004481);
+     }");
+    --cells-st-link-hover: unquote("{
+        color: var(--bbva-100, #f4f4f4);
+        text-decoration: underline;
+        text-decoration-color: var(--bbva-core-blue, #004481);
+     }");
+    --cells-st-link-focus: unquote("{
+        color: var(--bbva-100, #f4f4f4);
+        text-decoration: underline;
+        text-decoration-color: var(--bbva-core-blue, #004481);
+     }");
+    --cells-st-link-active: unquote("{
+        color: var(--bbva-100, #f4f4f4);
+        text-decoration: underline;
+        text-decoration-color: var(--bbva-core-blue, #004481);
+     }");
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+.app-list__header {
+    background-color: var(--bbva-navy, #072146);
+    height: rem(101px);
+    margin: 0;
+    padding: 0;
+
+    p {
+        padding: rem(30px);
+        margin: 0;
+        font-size: rem(14px);
+        line-height: 1.43;
+        text-align: center;
+        color: var(--bbva-100, #f4f4f4);
+    }
+}
+
+cells-molecule-grid-list {
+    --cells-molecule-grid-list-height: rem(140px);
+    --cells-molecule-grid-container: unquote("{
+      margin: 0;
+    }");
+    --cells-molecule-grid-link-item: unquote("{
+      padding: 1rem;
+      height: rem(140px);
+    }");
+}
+
+cells-skeleton-item {
+    width: 100%;
+    &.header {
+      --cells-skeleton-item-avatar-head-background-color: var(--bbva-navy, #072146);
+      --cells-skeleton-item-avatar-background-color: var(--bbva-navy,  #072146);
+    }
+    &.row {
+     width: 50%;
+     --cells-skeleton-item-avatar-head-background-color: var(--bbva-navy,  #072146);
+     --cells-skeleton-item-avatar-background-color: var(--bbva-core-blue, #004481);
+    }
+  }
+
+  cells-skeleton-custom {
+    width: 100%;
+    & .column {
+        display: flex;
+        width: 100%;
+    }
+    cells-skeleton-item {
+        padding: 0.625rem;
+        background-color: var(--bbva-core-blue, #004481);
+        min-height: 130px;
+        border: 1px solid var(--bbva-navy, #072146);
+    }
+  }
+
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in "focus", "active" {
+    *:#{$state} {
+        @apply --cells-global-#{$state};
+    }
+}
+
+button:active {
+    @apply --cells-global-active;
+}

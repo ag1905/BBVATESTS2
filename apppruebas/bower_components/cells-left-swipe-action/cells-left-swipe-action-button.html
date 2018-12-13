@@ -1,0 +1,35 @@
+<dom-module id="cells-left-swipe-action-button">
+  <style>
+    :host {
+      display: table;
+      height: 100%;
+      padding: 0 20px;
+      color: var(--bbva-white, --cells-left-swipe-action-button-color);
+
+      @apply(--cells-left-swipe-action-button);
+    }
+
+    .action-button-wrapper {
+      display: table-cell;
+      vertical-align: middle;
+      font-size: 1.8rem;
+      font-weight: 300;
+
+      @apply(--cells-left-swipe-action-button-wrapper);
+    }
+      .action-button-wrapper:active {
+        opacity: 0.5;
+
+        @apply(--cells-left-swipe-action-button-wrapper-active);
+      }
+  </style>
+  <template>
+    <div class="action-button-wrapper">
+      <content></content>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({is: 'cells-left-swipe-action-button'});
+</script>

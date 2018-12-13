@@ -1,0 +1,71 @@
+<dom-module id="cells-atom-message-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+  @apply (--cells-atom-message); }
+
+:host([type="success"]) {
+  background-color: var(--cells-atom-message-success-bg-color, --cells-GM6_colour);
+  color: var(--cells-atom-message-success-color, --cells-GM2_colour);
+  @apply (--cells-atom-message-success); }
+
+:host([type="error"]) {
+  background-color: var(--cells-atom-message-error-bg-color, --cells-RM6_colour);
+  color: var(--cells-atom-message-error-color, --cells-RM2_colour);
+  @apply (--cells-atom-message-error); }
+
+:host([type="warning"]) {
+  background-color: var(--cells-atom-message-warning-bg-color, --cells-YM3_colour);
+  color: var(--cells-atom-message-warning-color, --cells-KM3_colour);
+  @apply (--cells-atom-message-warning); }
+
+:host([type="info"]) {
+  background-color: var(--cells-atom-message-info-bg-color, --cells-YM5_colour);
+  color: var(--cells-atom-message-info-color, --cells-B1_colour);
+  @apply (--cells-atom-message-info); }
+
+.image {
+  @apply (--cells-atom-message-image); }
+  .image__fullscreen {
+    width: 100vw;
+    height: 100vh;
+    @apply (--cells-atom-message-image__fullscreen); }
+
+.message {
+  @apply (--cells-atom-message__message); }
+  .message__text {
+    @apply (--cells-atom-message__message--text); }
+  .message__icon {
+    @apply (--cells-atom-message__message--icon); }
+  .message__link {
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--cells-atom-message__message--link-color, --cells-KM3_colour);
+    @apply (--cells-atom-message__message--link); }
+  .message__link:hover {
+    @apply (--cells-atom-message__message--link-hover); }
+  .message__link:visited {
+    @apply (--cells-atom-message__message--link-visited); }
+  .message__link:active {
+    @apply (--cells-atom-message__message--link-active); }
+
+</style></template></dom-module>

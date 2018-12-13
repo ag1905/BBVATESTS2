@@ -1,0 +1,29 @@
+{
+  "glomo-notifications-dm-mx-alert-title": {
+    "message": "_Aviso_"
+  },
+  "glomo-notifications-dm-mx-promotion-title": {
+    "message": "_Promoción Bancomer_"
+  },
+  "glomo-notifications-dm-mx-income-title": {
+    "message": "_Abono_"
+  },
+  "glomo-notifications-dm-mx-expense-title": {
+    "message": "_Cargo_"
+  },
+  "glomo-notifications-dm-mx-default-title": {
+    "message": ""
+  },
+  "glomo-notifications-dm-message-ACCOUNTS-income": {
+    "message": "_Se depositó a tu cuenta_"
+  },
+  "glomo-notifications-dm-message-ACCOUNTS-expense": {
+    "message": "_Cargo a tu cuenta_"
+  },
+  "glomo-notifications-dm-message-CARDS-income": {
+    "message": "_Se depositó a tu tarjeta_"
+  },
+  "glomo-notifications-dm-message-CARDS-expense": {
+    "message": "_Cargo a tu tarjeta_"
+  }
+}

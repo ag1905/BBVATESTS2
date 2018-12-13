@@ -1,0 +1,177 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  font-family: var( --cells-fontDefault);
+  @apply(--cells-molecule-card-cover-cvv);
+}
+
+.card-alias {
+  font-size: var(--cells-text-size-18);
+  margin-bottom: 12px;
+  text-align: center;
+  word-wrap: break-word;
+  @apply(--cells-fontDefaultMedium);
+}
+
+.card-status {
+  color: var(--bbva-500, #666);
+
+  &.activate {
+    cells-icon-message {
+      --cells-icon-message-color: var(--bbva-core-blue, #004481);
+    }
+  }
+  &.locked, &.canceled, &.overdraft {
+    cells-icon-message {
+      --cells-icon-message-color: var(--bbva-dark-coral, #d44b50);
+    }
+  }
+  &.off {
+    cells-icon-message {
+      --cells-icon-message-color: var(--bbva-500, #666);
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+  }
+  &__link {
+    font-size: 14px;
+    text-align: center;
+    span.link {
+      color: #237aba;
+      font-weight: bold;
+    }
+  }
+  &__text {
+    text-align: center;
+    font-size: var(--cells-text-size-14, rem(875rem));
+    margin: 22px 0 20px 0;
+    width: 300px;
+  }
+
+  cells-icon-message {
+    --cells-icon-message-inline: unquote('{
+      display: block;
+      text-align: center;
+      font-style: italic;
+    }');
+    --cells-icon-message-message: unquote('{
+      font-weight: 500;
+    }');
+  }
+}
+
+.card {
+  width: 270px;
+  height: 170px;
+  margin: 0 auto;
+  transition: transform 0.7s;
+  transform-style: preserve-3d;
+  @apply(--cells-molecule-card-cover-cvv-card);
+
+  &--front,
+  &--back {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    display: block;
+    backface-visibility: hidden;
+
+    @apply(--cells-molecule-card-cover-cvv-card-front-back);
+  }
+
+  &--front {
+    color: var(--bbva-white, #fff);
+    &__number,
+    &__name,
+    &__date {
+      position: absolute;
+    }
+    &__number {
+      top: rem(97px);
+      left: rem(31px);
+      letter-spacing: 1.5px;
+      font-size: var(--cells-text-size-16);
+    }
+    &__name {
+      top: rem(140px);
+      left: rem(31px);
+      font-size: var(--cells-text-size-11);
+    }
+    &__date {
+      top: rem(120px);
+      left: rem(150px);
+      font-size: var(--cells-text-size-11);
+    }
+
+    &.off {
+      &:before {
+        width: 100%;
+        height: 100%;
+        content: '';
+        z-index: 1;
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.6);
+      }
+    }
+  }
+
+
+
+  &--back {
+    color: var(--bbva-600, #000);
+    transform: rotateY( 180deg);
+    @apply(--cells-molecule-card-cover-cvv-card-back);
+  }
+
+  &__description {
+    display: flex;
+    justify-content: space-between;
+    width: 270px;
+    margin: 0 auto rem(15px);
+    @apply(--cells-molecule-card-cover-cvv-card-description);
+    cells-st-button {
+      .btn {
+        min-width: 4rem;
+        padding: 5px 0;
+      }
+    }
+    &.noCvv {
+      justify-content: center;
+      @apply(--cells-molecule-card-cover-cvv-card-description-no-cvv);
+    }
+  }
+}
+
+.card-container {
+  perspective: 500px;
+  @apply(--cells-molecule-card-cover-cvv-card-container);
+
+  &.back .card {
+    transform: rotateY( 180deg);
+    @apply(--cells-molecule-card-cover-cvv-card-container-back);
+  }
+}
+
+cells-cvv-card,
+cells-molecule-card-cover {
+  width: 100%;
+  @apply(--cells-molecule-card-cover-cvv-card-components);
+}
+
+cells-cvv-card {
+  --cells-cvv-card-cvv: unquote('{
+ font-size: .7rem;
+  @apply(--cells-molecule-card-cover-cvv-card-code);
+}
+
+');
+
+}

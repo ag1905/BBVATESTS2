@@ -1,0 +1,32 @@
+{
+  "name": "cells-molecule-link-icon",
+  "version": "9.0.2",
+  "description": "<cells-molecule-link-icon> is a link with an icon. It extends <a> native element",
+  "keywords": [
+    "molecule",
+    "anchor",
+    "link",
+    "a",
+    "icon"
+  ],
+  "dependencies": {
+    "cells-atom-icon": "^9.0.0",
+    "polymer": "Polymer/polymer#^1.9.0"
+  },
+  "devDependencies": {
+    "cells-sass": "~1.0.16",
+    "cells-theme-base": "^9.0.0",
+    "coronita-icons": "^9.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#~1.0.5",
+    "iron-pages": "PolymerElements/iron-pages#~1.0.5",
+    "paper-tabs": "PolymerElements/paper-tabs#~1.0.4",
+    "web-component-tester": "Polymer/web-component-tester#~4.1.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "main": [
+    "cells-molecule-link-icon.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  }
+}

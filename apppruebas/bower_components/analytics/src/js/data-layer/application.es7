@@ -1,0 +1,229 @@
+/**
+ * Recoge la información relativa al proceso y funnel.
+ *
+ * Los datos de este apartado se rellenarían en caso de fichas de
+ * producto (datos del products), así como en todos los pasos que
+ * formen parte de un proceso relacionado con el producto.
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer
+ * @class     bgdmjs.analytics.dataLayer.Application
+ */
+export default class BgdmjsAnalyticsDataLayerApplication
+{
+    /**
+     * Monto al que asciende el producto seleccionado.
+     * No se deben poner comas en los números, sólo `.`
+     * para indicar los decimales.
+     *
+     * @property amount
+     * @type     {number}
+     */
+    amount           = 0.0;
+    /**
+     * Tipo de moneda utilizada en el proceso.
+     * Código ISO de 3 letras.
+     *
+     * @property currency
+     * @type     {string}
+     */
+    currency         = '';
+    /**
+     * Error ocurrido al completar un formulario.
+     *
+     * @property errorType
+     * @type     {string}
+     */
+    errorType        = '';
+    /**
+     * Recoge cómo se completa el proceso.
+     * Valores posibles:
+     * - offline        : Si el proceso se completa 0nline.
+     * - online         : Si el proceso, a pesar de iniciarse online, se termina offline (por
+     *                    ejemplo, un proceso de contratación que, en la última pantalla, envíe
+     *                    al cliente a las oficinas para que ésta sea efectiva).
+     * - online/offline : Para procesos que dependiendo de las casuísticas pueden acabar online u offline
+     *                    (ej. Dependiendo de los datos de usuario finaliza el proceso online u offline).
+     *
+     * @property fulfillmentModel
+     * @type     {string}
+     */
+    fulfillmentModel = '';
+    /**
+     * Interacción del usuario dentro del level que implique
+     * una identificación dentro del proceso `application`.
+     *
+     * @property currency
+     * @type     {string}
+     */
+    interactionLevel = '';
+    /**
+     * Tasa de interés.
+     *
+     * @property interestRate
+     * @type     {number}
+     */
+    interestRate     = '';
+    /**
+     * Nombre detallado del funnel.
+     *
+     * @property name
+     * @type     {string}
+     */
+    name             = '';
+    /**
+     * Cantidad de cuotas del producto seleccionado.
+     *
+     * @property numberOfPayments
+     * @type     {number}
+     */
+    numberOfPayments = 0;
+    /**
+     * Nombre de la oferta propuesta al usuario.
+     *
+     * @property offer
+     * @type     {string}
+     */
+    offer            = '';
+    /**
+     * Número serializado de la operación.
+     *
+     * @property operationNumber
+     * @type     {string}
+     */
+    operationNumber  = '';
+    /**
+     * Monto de las cuotas del producto seleccionado.
+     *
+     * @property paymentAmount
+     * @type     {number}
+     */
+    paymentAmount    = 0;
+    /**
+     * Día en el que se hará el pago del proceso actual.
+     * Formato ISO 8601.
+     *
+     * @property paymentDate
+     * @type     {string}
+     */
+    paymentDate      = '';
+    /**
+     * Tipo de pago usado en el proceso.
+     *
+     * @property paymentType
+     * @type     {string}
+     */
+    paymentType      = '';
+    /**
+     * Subcategoría del producto sobre el que se ejecuta el `application`.
+     * La variable `process` será informada sólo si su valor es diferente
+     * al de la variable `typology`, es decir, primero deberá informarse
+     * `tipology` y sólo si es necesario, la variable `process`.
+     *
+     * @property process
+     * @type     {string}
+     */
+    process          = '';
+    /**
+     * Tipo del programa contratado.
+     *
+     * @property programTypeHired
+     * @type     {string}
+     */
+    programTypeHired = '';
+    /**
+     * Valor de la comisión que se le aplica al cliente por el servicio.
+     *
+     * @property serviceCharge
+     * @type     {string}
+     */
+    serviceCharge    = '';
+    /**
+     * Estado en el que se encuentra el proceso.
+     * Posibles valores:
+     * - inicio
+     * - finalizado
+     * - contratado
+     * - aprobado
+     * - rechazado
+     * - en revision
+     *
+     * - inicio      : Este valor se informará en la primera pantalla de un proceso o funnel,
+     *                 pues se considera que en ese caso, el estado del proceso es `inicio`.
+     * - finalizado  : Este estado aplica a la pantalla final de un funnel (Thank you page)
+     *                 en aquellos casos en los que el funnel no finaliza con una contratación
+     *                 online y no se requiera aprobación, o el proceso haya finalizado pero
+     *                 la aprobación no sucede en esa navegación del proceso.
+     * - contratado  : Este estado aplica a la pantalla final de un funnel (Thank you page) en
+     *                 aquellos casos en los que el funnel finaliza con una contratación online.
+     * - aprobado    : Este estado aplica a la pantalla del proceso en la que el funnel sea aprobado.
+     * - rechazado   : Este estado aplica a la pantalla del proceso en la que el estado de la
+     *                 petición sea “rechazado”.
+     * - en revision : Este estado aplica a la pantalla del proceso en la que el estado de la
+     *                 petición sea “en revisión”.
+     *
+     * @property state
+     * @type     {string}
+     */
+    state            = '';
+    /**
+     * Paso del proceso en el que se encuentra el usuario que
+     * coincidirá con el último level de la variable page con valor.
+     *
+     * @property step
+     * @type     {string}
+     */
+    step             = '';
+    /**
+     * Plazo para el pago del producto especificado en días.
+     *
+     * @property term
+     * @type     {number}
+     */
+    term             = 0;
+    /**
+     * Identificador único de un proceso de contratación
+     * que se inicia online y finaliza offline para cada
+     * usuario que lo inicia.
+     *
+     * @property transactionID
+     * @type     {string}
+     */
+    transactionID    = '';
+    /**
+     * Almacena la categoría o finalidad del proceso.
+     * Valores posibles:
+     * - `alta clientes`
+     * - `autogestion`
+     * - `consulta`
+     * - `contratacion`
+     * - `formulario`
+     * - `operativa`
+     * - `simulador`
+     *
+     * @property type
+     * @type     {string}
+     */
+    type             = '';
+    /**
+     * Tipología del producto o del proceso que se selecciona
+     * una vez iniciado el funnel.
+     *
+     * @property typology
+     * @type     {string}
+     */
+    typology         = '';
+
+    /**
+     * Devuelve el nombre y tipo del funnel.
+     *
+     * @return {Object}
+     */
+    get application()
+    {
+        return {
+            name : this.name,
+            type : this.type
+        }
+    }
+};

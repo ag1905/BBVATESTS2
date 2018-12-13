@@ -1,0 +1,96 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-step-product-selector-styles.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-step-behavior/cells-step-behavior.html">
+<link rel="import" href="../cells-products-behavior/cells-products-behavior.html"/>
+<link rel="import" href="../global-products-lists-behavior/global-products-lists-behavior.html"/>
+<link rel="import" href="../cells-product-item/cells-product-item.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-product-selector/cells-product-selector.html">
+<link rel="import" href="../cells-step/cells-step.html">
+
+<!--
+Step product selector of payment operations
+
+Example:
+
+```html
+<cells-step-product-selector></cells-step-product-selector>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-step-product-selector-scope      | scope description | default value  |
+| --cells-step-product-selector | empty mixin for component| {} |
+| --cells-step-product-selector-item-name | empty mixin | {} |
+| --cells-step-product-selector-item-mask  | empty mixin | {} |
+| --cells-step-product-selector-item-amount | empty mixin | {} |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-step-product-selector">
+  <template>
+    <style include="cells-step-product-selector-styles cells-step-product-selector-shared-styles"></style>
+    <cells-step id="stepContainer"
+      active="[[active]]"
+      title="[[title]]"
+      current-step="[[currentStep]]"
+      max-steps="[[maxSteps]]"
+      change-label="[[changeLabel]]"
+      collapsed="{{collapsed}}"
+      fixed="[[fixed]]"
+      class-to-toggle="step-active"
+      disable-change="{{_changeHidden}}"
+      previous="[[previous]]"
+      next="[[next]]"
+      scrolled="[[scrolled]]"
+      decorated="[[decorated]]">
+      <div class="filled">
+        <cells-product-item id="item"
+          name="[[selected.name]]"
+          img-src="[[selected.imgSrc]]"
+          default-image="[[defaultImage]]"
+          description="[[selected.description]]"
+          primary-amount="[[selected.primaryAmount]]"
+          secondary-amount='[[selected.secondaryAmount]]'
+          local-currency="[[localCurrency]]"
+          visible-chars="[[visibleChars]]">
+          <template is="dom-if" if="[[selected.icon]]">
+            <cells-atom-icon slot="icons" class="icons icon-size-18"
+              icon="[[selected.icon]]"></cells-atom-icon>
+          </template>
+          <template is="dom-if" if="[[_selectedError]]">
+            <div class="text-info text-info--error">
+              <cells-atom-icon slot="icons" class$="icons icon-size-[[errorIconSize]]" icon="[[errorIcon]]"></cells-atom-icon>[[t(errorMessage)]]
+            </div>
+          </template>
+          <template is="dom-if" if="[[additionalMessage]]">
+            <div class="text-info">
+              <cells-atom-icon slot="icons" class$="icons icon-size-[[additionalIconSize]]" icon="[[additionalIcon]]"></cells-atom-icon>[[t(additionalMessage)]]
+            </div>
+          </template>
+        </cells-product-item>
+      </div>
+      <div class="full">
+        <cells-product-selector id="selector"
+          list-title="[[listTitle]]"
+          products="[[products]]"
+          max-products="{{maxProducts}}"
+          message="[[t('cells-product-selector-title')]]"
+          products-list-title="[[productsListLabel]]"
+          selectedProduct="[[selected]]"
+          visible-chars="[[visibleChars]]"
+          local-currency="[[localCurrency]]"
+          default-image="[[defaultImage]]"
+          error-message="[[errorMessage]]">
+          <p class="message__secundary-text">[[t('cells-product-selector-text')]]</p>
+        </cells-product-selector>
+      </div>
+    </cells-step>
+  </template>
+  <script src="cells-step-product-selector.js"></script>
+</dom-module>

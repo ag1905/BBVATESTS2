@@ -1,0 +1,49 @@
+@import "bower_components/cells-sass/_mixins";
+
+:host {
+  font-family: var(--cells-fontDefault);
+  box-sizing: border-box;
+  display: block;
+  padding: 30px;
+
+  --cells-btn--extend: unquote("{
+    display: block;
+  }");
+
+  .info {
+    display: flex;
+    margin-top: rem(12px);
+    @apply --cells-edit-field-info;
+    &__icon {
+      width: rem(33px);
+      margin-right: rem(11px);
+      color: var(--cells-edit-field-info__icon-color, #5bbeff);
+      @apply --cells-edit-field-info__icon;
+    }
+    &__label {
+      font-size: 14px;
+      @apply --cells-edit-field-info__label;
+    }
+  }
+
+  cells-molecule-input {
+    --cells-molecule-input-text-error-color: var(--bbva-light-red, #e77d8e);
+    --cells-molecule-input-text-error: unquote("{
+      padding-left: 0;
+      font-size: var(--cells-text-size-14, 0.875rem);
+    }");
+    @apply --cells-edit-field-molecule-input;
+  }
+  @apply(--cells-edit-field);
+};
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .primary {margin-bottom: rem(20px);}
+  .transparent {
+    font-size: 14px;
+  }
+}

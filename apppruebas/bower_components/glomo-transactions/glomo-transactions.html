@@ -1,0 +1,53 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-transactions-list/cells-transactions-list.html">
+<link rel="import" href="glomo-transactions-styles.html">
+<!--
+Transaction list with peding and settled transactions
+
+Example:
+
+```html
+<glomo-transactions></glomo-transactions>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --glomo-transactions  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-transactions">
+  <template>
+    <style include="glomo-transactions-styles glomo-transactions-shared-styles"></style>
+    <cells-transactions-list id="pending"
+      title="cells-transactions-list-pending-transactions"
+      transactions="[[pendings]]"
+      product-id="[[productId]]"
+      continue="[[continue]]"
+      disable-view-all
+      transaction-group-date-format="[[transactionGroupDateFormat]]"
+      local-currency="[[localCurrency]]"
+      hidden$="[[!_hasPendings]]">
+    </cells-transactions-list>
+    <cells-transactions-list id="settled"
+      title="cells-transactions-list-settled-transactions"
+      transactions="[[settleds]]"
+      product-id="[[productId]]"
+      continue="[[continue]]"
+      skeleton-items="[[skeletonItems]]"
+      image-empty-list="[[imageEmptyList]]"
+      spinner="{{spinner}}"
+      disable-view-all
+      transaction-group-date-format="[[transactionGroupDateFormat]]"
+      local-currency="[[localCurrency]]"
+      disable-message-empty="[[_onlyPendings(pendings, settleds)]]"
+      loaded="[[_checkedTransactions(pendings, settleds)]]">
+    </cells-transactions-list>
+  </template>
+  <script src="glomo-transactions.js"></script>
+</dom-module>

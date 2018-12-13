@@ -1,0 +1,2262 @@
+<dom-module id="cells-atom-subheader-shared-styles">
+  <template>
+    <style>
+       :host ::content a,
+       :host ::content a:visited {
+        @apply --group-total;
+        text-transform: none;
+        text-decoration: none;
+        color: var(--bbva-medium-blue, #237ABA);
+        @apply --cells-fontDefaultBold;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-atom-amount-shared-styles">
+  <template>
+    <style>
+      /* common styles for all atom-amounts */
+      /* default atom-amount styles: ; */
+
+       :host {
+        align-items: flex-start;
+        --cells-atom-amount-currency-left: {
+          margin-right: 0;
+        }
+        ;
+        --cells-atom-amount-currency-right: {
+          margin-left: 0;
+        }
+        ;
+      }
+      /* medium size atom-amount styles: ; */
+
+       :host(.amount-medium) {
+        @apply --cells-fontDefaultNormal;
+        font-size: var(--cells-text-size-16, 1rem);
+        height: var(--cells-text-size-16, 1rem);
+        --cells-atom-amount-fractional: {
+          padding-top: 0.05rem;
+          font-size: var(--cells-text-size-12, .75rem);
+          @apply --cells-atom-amount-medium-fractional;
+        }
+        ;
+        --cells-atom-amount-currency: {
+          padding-top: 0.05rem;
+          font-size: var(--cells-text-size-12, .75rem);
+          @apply --cells-atom-amount-medium-currency;
+        }
+        ;
+        --cells-atom-amount-separator: {
+          @apply --sr-only;
+          @apply --cells-atom-amount-medium-separator;
+        }
+        ;
+        --cells-atom-amount-currency-left: {
+          margin-right: 0;
+          @apply --cells-atom-amount-medium-currency-left;
+        }
+        ;
+        --cells-atom-amount-currency-right: {
+          margin-left: 0;
+          @apply --cells-atom-amount-medium-currency-right;
+        }
+        ;
+        @apply --cells-atom-amount-medium;
+      }
+      /* large size atom-amount styles: ; */
+
+       :host(.amount-large) {
+        @apply --cells-fontDefaultNormal;
+        font-size: var(--cells-text-size-20, 1.25rem);
+        height: var(--cells-text-size-20);
+        --cells-atom-amount-fractional: {
+          padding-top: 0.155rem;
+          font-size: var(--cells-text-size-13, .8125rem);
+          @apply --cells-atom-amount-large-fractional;
+        }
+        ;
+        --cells-atom-amount-currency: {
+          padding-top: 0.155rem;
+          font-size: var(--cells-text-size-13, .8125rem);
+          @apply --cells-atom-amount-large-currency;
+        }
+        ;
+        --cells-atom-amount-separator: {
+          @apply --sr-only;
+          @apply --cells-atom-amount-large-separator;
+        }
+        ;
+        --cells-atom-amount-currency-left: {
+          margin-right: 0;
+          @apply --cells-atom-amount-large-currency-left;
+        }
+        ;
+        --cells-atom-amount-currency-right: {
+          margin-left: 0;
+          @apply --cells-atom-amount-large-currency-right;
+        }
+        ;
+        @apply --cells-atom-amount-large;
+      }
+      /* huge size atom-amount styles: ; */
+
+       :host(.amount-huge) {
+        @apply --cells-fontDefaultNormal;
+        font-size: var(--cells-text-size-36, 2.25rem);
+        height: var(--cells-text-size-36, 2.25rem);
+        --cells-atom-amount-fractional: {
+          padding-top: 0.2rem;
+          font-size: var(--cells-text-size-22, 1.375rem);
+          @apply --cells-atom-amount-huge-fractional;
+        }
+        ;
+        --cells-atom-amount-currency: {
+          padding-top: 0.2rem;
+          font-size: var(--cells-text-size-22, 1.375rem);
+          @apply --cells-atom-amount-huge-currency;
+        }
+        ;
+        --cells-atom-amount-separator: {
+          @apply --sr-only;
+          @apply --cells-atom-amount-huge-separator;
+        }
+        ;
+        --cells-atom-amount-currency-left: {
+          margin-right: 0;
+          @apply --cells-atom-amount-huge-currency-left;
+        }
+        ;
+        --cells-atom-amount-currency-right: {
+          margin-left: 0;
+          @apply --cells-atom-amount-huge-currency-right;
+        }
+        ;
+        @apply --cells-atom-amount-huge;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-molecule-input-shared-styles">
+  <template>
+    <style>
+       :host(.secondary--input) {
+        border: none;
+        background: transparent;
+      }
+
+      ;
+       :host(.secondary--input) .text-field__input.has-content.cells-molecule-input~.text-field__label {
+        color: var(--bbva-400, #BDBDBD);
+      }
+
+      ;
+       :host(.secondary--input[disabled]) {
+        color: var(--bbva-300, #D3D3D3);
+        background: transparent;
+      }
+
+      ;
+       :host(.secondary--input[with-icon]) .text-field__icon {
+        color: var(--bbva-300, #D3D3D3);
+      }
+
+       :host(.secondary--input[with-icon]) .text-field__icon:hidden {
+        display: none;
+      }
+
+      :host {
+        --cells-molecule-input-text-error-color: var(--bbva-light-red, #b92a45);
+        --cells-molecule-input-invalid-background-color: var(--bbva-light-red, #e77d8e);
+        --cells-molecule-input-text-error-message-wrapper: {
+          align-items: center;
+          margin-top: 0.1875rem;
+        }
+        --cells-molecule-input-text-error: {
+          font-size: 0.875rem;
+        }
+        --cells-molecule-input-field-label: {
+          z-index: 0;
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+<dom-module id="cells-edit-field-shared-styles">
+  <template>
+    <style>
+      :host {
+        background: var(--bbva-white, #FFFFFF);
+      }
+      :host(.bg-light-grey) .app__main {
+        background-color: var(--bbva-white, #FFFFFF);
+      }
+      :host .buttons {
+        margin-top: 2.3125rem;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-molecule-grid-list-shared-styles">
+  <template>
+    <style>
+       :host {
+        --cells-molecule-grid-list-item: {
+          @apply --cells-molecule-grid-list-item-common;
+        }
+        ;
+        --cells-molecule-link-icon: {
+          color: var(--bbva-500, #666);
+          -webkit-justify-content: center;
+          -ms-flex-pack: center;
+          justify-content: center;
+          -webkit-flex-direction: column;
+          -ms-flex-direction: column;
+          flex-direction: column;
+        }
+        ;
+        --cells-molecule-link-icon-label: {
+          text-overflow: none;
+          white-space: normal;
+          text-align: center;
+          margin-left: 0;
+          max-width: 68px;
+          margin-top: 0.875rem;
+          font-size: var(--cells-text-size-13, .8125rem);
+        }
+        ;
+      }
+
+       :host(.nowrap) {
+        --cells-molecule-grid-list-wrapper: {
+          flex-wrap: nowrap;
+        }
+        ;
+        --cells-molecule-grid-list-item: {
+          @apply --cells-molecule-grid-list-item-common;
+          flex: 1 0 auto;
+        }
+        ;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-molecule-spinner-shared-styles">
+  <template>
+    <style>
+      :host {
+        --cells-molecule-spinner-message: {
+          font-family: var(--cells-fontDefault);
+          font-weight: 500;
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-bottom-modal-shared-styles">
+  <template>
+    <style>
+       :host ::content .buttons {
+        width: 100%;
+        text-align: right;
+        flex-direction: column;
+      }
+
+       :host ::content .btn--full {
+        justify-content: center;
+      }
+
+       :host(.no-shadow) .is-dragging ::content .footer,
+       :host(.no-shadow) .is-dragging ::content .header {
+        box-shadow: none;
+      }
+
+
+       :host ::content .btn-close:active {
+        opacity: 0.5;
+      }
+
+      --cells-bottom-modal-body: {
+        @apply --body-copy;
+      }
+
+      :host .body {
+        padding: var(--cells-bottom-modal-body-padding, var(--cells-bottom-modal-padding, 0 1.875rem));
+      }
+
+      :host(.full-height) .body {
+        padding: var(--cells-bottom-modal-body-padding, var(--cells-bottom-modal-padding, 0 1.875rem));
+      }
+
+      :host {
+        --cells-bottom-modal-heading: {
+            max-width: 80%;
+          }
+      }
+
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-markdown-modal-shared-styles">
+  <template>
+    <style>
+       :host(.modal-legal-terms) ::content h2 {
+        @apply --cells-fontDefaultMedium;
+        font-size: var(--cells-text-size-24, 1.5rem);
+        color: var(--bbva-600, #121212);
+      }
+
+       :host(.modal-legal-terms) ::content blockquote {
+        margin: 1.25rem;
+        font-style: italic;
+      }
+
+      cells-bottom-modal {
+        --cells-bottom-modal-body: {
+          @apply --body-copy;
+          line-height: 1.5;
+          color: var(--bbva-500, #666);
+        }
+        ;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-full-screen-slider-shared-styles">
+  <template>
+    <style>
+       :host {
+        --cells-full-screen-slider-content: {
+          display: -webkit-flex;
+          display: flex;
+          -webkit-flex-direction: column;
+          flex-direction: column;
+          -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+        }
+        ;
+        /* --cells-full-screen-slider-slide-image: {
+          width: auto;
+          height: var(--cells-full-screen-slider-slide-image_-_heigth, 40vh);
+          position: absolute;
+          margin: auto;
+          left: 0;
+          right: 0;
+        }
+        ; */
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-transactions-list-shared-styles">
+  <template>
+    <style>
+       :host {
+         display: block;
+        --cells-transactions-list-header: {
+          padding-top: 30px;
+        }
+        --cells-transactions-list-header-title: {
+          margin: 0;
+        }
+      }
+      :host(.revolut) {
+        background-color: #fff;
+      }
+
+      :host(.revolut) .list__header {
+        display: none;
+      }
+
+      :host(.revolut) cells-skeleton-item {
+        background-color: #fff;
+        border-top: 1rem solid #fff;
+        border-bottom: 1rem solid #fff;
+
+      }
+
+      :host(.revolut) cells-skeleton-item+cells-skeleton-item {
+        margin: 0;
+
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-molecule-transaction-list-item-shared-styles">
+  <template>
+    <style>
+      :host {
+        --cells-molecule-transaction-list-item-additional-info: {
+          font-style: italic;
+        }
+
+        --cells-molecule-transaction-list-item-additional-info-item: {
+          margin-top: 8px;
+        }
+      }
+      :host .additional-info__item:not(:last-of-type) {
+        --cells-molecule-transaction-list-item-additional-info-color: #121212;
+      }
+
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="transaction-list-shared-styles">
+  <template>
+    <style>
+       :host {
+        --cells-molecule-transaction-list-item: {
+          padding: 0.9375rem 1.875rem;
+        }
+        --cells-molecule-transaction-list-item-additional-info-item: {
+          padding-top: 5px
+        }
+        --cells-molecule-group-transactions-list-group-date {
+          padding-left: 1.875rem;
+        }
+        ;
+        --molecule-group-transactions-list-item: {
+          padding: 0;
+        }
+        ;
+        --cells-glomo-molecule-cells-transaction-list-item-associated-product: {
+          @apply --product-description;
+          line-height: 1.25rem;
+        }
+        ;
+        --cells-molecule-group-transactions-list-group-date: {
+          z-index: 0;
+        }
+        ;
+      }
+
+      .cells-atom-subheader {
+        /*        background: red;*/
+        border: 0.1875rem solid blue;
+      }
+
+      ;
+      .transactions-swipe__action {
+        cursor: pointer;
+        width: 16%;
+        padding: 0;
+        text-align: center;
+      }
+
+      .transactions-swipe__action:only-child {
+        margin-right: 16%;
+      }
+
+      .transactions-swipe__action:nth-child(2):last-child {
+        margin-right: 8%;
+      }
+
+      .transactions-swipe__action-icon {
+        color: var(--bbva-white, #fff);
+      }
+
+      .transactions-swipe:before {
+        background-color: var(--bbva-light-blue, #5BBEFF);
+      }
+
+      .amount-total {
+        --cells-atom-amount-currency: {
+          line-height: 1.2;
+        }
+        ;
+      }
+
+      .transaction-group {
+        position: relative;
+      }
+
+      .transaction-group:nth-last-child(2) {
+        margin-bottom: 0;
+        border-bottom: none;
+      }
+      /* Border declarations */
+      /*Todo(gorko): unificar elementos a iterar para evitar esto:*/
+
+      cells-left-swipe-action {
+        position: relative;
+      }
+
+      cells-left-swipe-action:not(:last-of-type):before,
+      .transaction-list__item:not(:last-of-type) ::shadow cells-left-swipe-action:before,
+      .transaction-group:after {
+        @apply --item-separator;
+        z-index: 0;
+      }
+
+      .transaction-list__item:not(:last-of-type) ::shadow cells-left-swipe-action:before {
+        margin: 0 1.875rem;
+      }
+
+      .transaction-list__item {
+        position: relative;
+      }
+
+      .transaction-list__item:not(:last-of-type) cells-left-swipe-action:after,
+      .transaction-list__item:not(:last-of-type):before {
+        @apply --item-separator;
+        width: calc(100% - 3.75rem);
+        left: 1.875rem;
+      }
+      :host-context(.revolut) .transaction-list__item {
+        padding-left: 48px;
+        position: relative;
+
+
+      }
+
+      :host-context(.revolut) cells-atom-icon {
+        background-color: #004481;
+        color: #fff;
+        border-radius: 50%;
+        padding: 10px;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(1rem, -50%);
+        z-index: 2;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-left-swipe-action-shared-styles">
+  <template>
+    <style>
+      /*This hides a very strange blue border that appears in mobile devices when using tranform3d */
+
+       :host {
+        --cells-left-swipe-action-content: {
+          box-shadow: 0 -0.0625rem 0 white, 0 0.0625rem 0 white;
+        }
+        ;
+      }
+      /* fix rounded corner issue on dashboard */
+
+       :host(.last-child) ::content cells-product-item {
+        border-radius: 0 0 0.0625rem 0.0625rem;
+      }
+      /* TODO (kus.camara): move styles to cells-molecule-transaction-list-item */
+
+       :host ::content cells-molecule-transaction-list-item {
+        background-color: var(--bbva-white, #fff);
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-atom-button-shared-styles">
+  <template>
+    <style>
+       :host(.btn--transparent) {
+        font: inherit;
+        min-height: initial;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: inherit;
+      }
+
+       :host(.btn--transparent:active) {
+        opacity: 0.5;
+        @apply --cells-btn--transparent-active;
+      }
+
+       :host(.btn-close) {
+        min-width: auto;
+      }
+
+       :host(.btn--link) {
+        font: inherit;
+        font-size: var(--cells-text-size-13, .8125rem);
+        color: var(--bbva-medium-blue, #237ABA);
+        padding: 1.125rem 0.75rem;
+        line-height: 1.1;
+        min-height: initial;
+        border: 0;
+        background: transparent;
+        @apply --cells-fontDefaultBold;
+        @apply --cells-btn--link;
+      }
+
+       :host(.btn--link:active) {
+        opacity: 0.5;
+        @apply --cells-btn--link-active;
+      }
+
+       :host(.btn--2-lines) {
+        min-height: 3.44rem;
+      }
+
+       :host(.btn--2-lines) ::content>span {
+        display: block;
+      }
+
+       :host(.btn--2-lines) ::content>span:last-child {
+        padding: .13rem 0;
+        font-size: var(--cells-text-size-11, .6875rem);
+        @apply --cells-fontDefaultNormal;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<!-- use this style ID to set full height in components excluding
+application header height -->
+<dom-module id="full-height-layout">
+  <template>
+    <style>
+       :host-context(.app__main) {
+        @apply --full-height-page;
+      }
+    </style>
+  </template>
+</dom-module>
+
+
+<!--
+common styles for list of operations
+-->
+<dom-module id="cells-operations-list-shared-styles">
+  <template>
+    <style>
+       :host {
+        --cells-operations-list-list__item: {
+          margin-top: 10px;
+          height: 6.5625rem ;
+         }
+        --cells-operations-list-list__link-grid: {
+          color: var(--bbva-white, #fff);
+          padding: 0 0.625rem 0!important;
+          height: 100%;
+        }
+        --cells-operations-list-list__link-active: {
+          color: var(--bbva-white-50);
+          background: transparent;
+          opacity: 1;
+        }
+
+        --cells-operations-list-list__link-active-icon: {
+          opacity: .7;
+        }
+      }
+
+      :host([layout="grid"]) .cardless .link__icon {
+        background-color: var(--bbva-dark-teal, #02A5A5);
+      }
+
+      /* bg--light */
+
+       :host(.bg--light) {
+        --cells-operations-list-list: {
+          overflow: hidden;
+          height: 6.5625rem;
+        }
+        --cells-operations-list-list__link: {
+          color: var(--bbva-500, #666);
+          padding: 1.5rem 0.625rem 0;
+          height: 100%;
+        }
+      }
+      /* review styles */
+
+       :host([layout="review"]) {
+        margin-bottom: 20px;
+      }
+
+       :host([layout="review"]) .list {
+        background: transparent;
+        justify-content: center;
+      }
+
+       :host([layout="review"]) .list__item {
+        text-align: center;
+        height: 100%;
+        max-width: var(--cells-operations-list-list-list-item-max-width, 100%);
+      }
+
+       :host([layout="review"]) .list .link {
+          color: var(--bbva-medium-blue, #237ABA);
+          margin: 0 1.625rem;
+          height: 4.8125rem;
+          justify-content: space-evenly;
+          font-size: var(--cells-text-size-12, .75rem);
+          --cells-molecule-link-icon-atom-icon: {
+            width: 1.75rem;
+            height: 1.75rem;
+          }
+       }
+
+       :host([layout="review"]) .list .link[aria-disabled] {
+        color: var(--bbva-300, #D3D3D3);
+      }
+    </style>
+  </template>
+</dom-module>
+
+
+<!--
+common styles for menu sidebar
+-->
+<dom-module id="cells-organism-menu-sidebar-shared-styles">
+  <template>
+    <style>
+       :host {
+        --cells-menu-sidebar-background: #062146 url(./images/fractal-bbva-navy.png) bottom left no-repeat;
+        --cells-organism-menu-sidebar-background-user: url(./images/fractal-bbva-core-blue.png) bottom left no-repeat;
+
+        --cells-organism-menu-sidebar-user-not-avatar: {
+          padding-left: 10px;
+        }
+        --cells-organism-menu-sidebar-nav-list-user-logged: {
+          padding-left: 10px;
+        }
+        --cells-organism-menu-sidebar-footer: {
+          padding-left: 10px;
+        }
+        --cells-st-button-text-color-transparent-focus: var(--bbva-white, #fff);
+        --cells-organism-menu-sidebar-user-info-button: {
+          padding: 5px 0 10px 0;
+        }
+      }
+
+       :host .section-list__link:active {
+        opacity: 0.5;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-template-paper-drawer-panel-shared-styles">
+  <template>
+    <style>
+       :host([menu-opened]) {
+        background-color: var(--bbva-navy, #072146);
+      }
+
+       :host ::content #main {
+        transition: transform ease-in-out 0.3s !important;
+        z-index: 1;
+      }
+
+       :host([menu-opened]) ::content #main .app__section {
+        background-color: transparent;
+      }
+
+       :host([menu-opened]) paper-scroll-header-panel ::content #mainContainer {
+        overflow-y: hidden;
+      }
+
+       :host([menu-opened]) ::content #main:not(.iron-selected) {
+        transform: scale(0.69) translateX(95%);
+      }
+      /* classes to set background color of the main content area */
+
+       :host(.bg-light-grey) .app__main {
+        background-color: var(--bbva-100, #F4F4F4);
+      }
+    </style>
+  </template>
+</dom-module>
+
+
+<dom-module id="cells-template-coronita-shared-styles">
+  <template>
+    <style>
+       :host {
+        --cells-sidebar-wow-panel-main-container: {
+          background-color: transparent;
+          box-shadow: none;
+        }
+        ;
+        --cells-sidebar-wow-panel-scrim: {
+          background-color: transparent !important;
+          transition: none;
+        }
+        ;
+        --cells-sidebar-wow-panel-drawer-container: {
+          background-color: transparent;
+          box-shadow: none;
+        }
+        ;
+      }
+
+       :host([menu-opened]) {
+        background-color: var(--bbva-navy, #072146);
+      }
+
+       :host([menu-opened]) #app__section {
+        background-color: transparent;
+      }
+
+       :host(.bg-light-grey) .app__main {
+        background-color: var(--bbva-100, #F4F4F4);
+      }
+
+      :host-context(.revolut) .app__section{
+        background-color: #0086ed;
+      }
+      :host-context(.revolut) .app__main {
+        background-color: #fff;
+       /*  padding-bottom: 50px; */
+      }
+
+      :host-context(.revolut) .app__main {
+        background: linear-gradient(to bottom, #0086ed, #009fef)
+      }
+    </style>
+  </template>
+</dom-module>
+
+
+<dom-module id="cells-molecule-header-shared-styles">
+  <template>
+    <style>
+      .btn--transparent {
+        padding: .9375rem;
+        margin: -.9375rem;
+      }
+
+      .btn--transparent:active {
+        opacity: 0.5;
+      }
+
+       :host {
+        --cells-molecule-header: {
+          padding-top: 0;
+          padding-bottom: 0;
+        };
+
+        --cells-molecule-header-title: {
+          display: flex;
+          font-size: var(--cells-text-size-18, 1.125rem)
+        }
+      }
+
+       :host(.header--success) {
+        background: var(--bbva-green, #48AE64);
+        color: var(--bbva-white, #FFFFFF);
+      }
+
+       :host(.header--morning) {
+        color: var(--bbva-white, #fff);
+        @apply --cells-avatar-actions-header-morning;
+      }
+
+       :host(.header--evening) {
+        color: var(--bbva-white, #fff);
+        @apply --cells-avatar-actions-header-evening;
+      }
+
+       :host(.header--night) {
+        color: var(--bbva-white, #fff);
+        @apply --cells-avatar-actions-header-night;
+      }
+
+      :host(.header--medium) {
+        background-color: var(--bbva-medium-blue, #237aba);
+        color: var(--bbva-white, #fff);
+      }
+
+      :host(.header--dark-medium) {
+        background-color: var(--bbva-dark-medium-blue, #1464A5);
+        color: var(--bbva-white, #fff);
+      }
+
+      cells-molecule-mask {
+        --cells-molecule-mask-number-font-size: var(--cells-text-size-18, 1.125rem);
+      }
+      :host(.revolut){
+        /* background: #fff!important;
+        justify-content: baseline;
+        align-items: center; */
+        background: #0086ed!important;
+      }
+
+      :host-context(.revolut) {
+        background: #0086ed!important;
+      }
+
+      .revolut  cells-molecule-mask {
+        display: none;
+      }
+
+      :host(.revolut) .title {
+        margin: 0;
+        transform: translateY(150%) translateX(1rem);
+      }
+
+      :host(.revolut) .title .header__title {
+        text-transform: uppercase;
+        letter-spacing: 9px;
+        color: #fff;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-atom-message-shared-styles">
+  <template>
+    <style>
+       :host {
+        text-align: center;
+        display: block;
+      }
+
+       :host(.image__fullscreen) {
+        --cells-atom-message__message--text: {
+          position: absolute;
+          bottom: 20vh;
+          left: 0;
+          width: 100vw;
+          color: var(--bbva-white, #FFF);
+          line-height: 1.875rem;
+          font-weight: 500;
+        }
+        ;
+      }
+
+       :host(.left-icon) .message {
+        display: block;
+        position: relative;
+        text-align: left;
+        padding-left: 2.5rem;
+        padding-top: 0.3125rem;
+      }
+
+       :host(.left-icon) .message__icon {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+       :host(.left-icon) .message__text {
+        margin-top: 0;
+        font-size: var(--cells-text-size-14, .875rem);
+      }
+
+       :host(.left-icon) ::content .message__secundary-text {
+        font-size: var(--cells-text-size-13, .8125rem);
+        margin: 0;
+        color: var(--bbva-600, #121212);
+      }
+
+       :host([type="info"]) {
+        --cells-atom-message: {
+          background: rgba(212, 237, 252, .5);
+          margin: 1.875rem;
+          padding: 1.25rem 1.25rem 1.875rem 1.25rem;
+        }
+        ;
+        --cells-atom-message__message--icon: {
+          color: var(--bbva-light-blue, #5BBEFF);
+        }
+        ;
+        --cells-atom-message__message--text: {
+          margin: 0.625rem 0;
+          color: var(--bbva-600, #121212);
+          font-size: var(--cells-text-size-13, .8125rem);
+        }
+        ;
+      }
+
+       :host([type="error"]) {
+        --cells-atom-message: {
+          margin: 1.25rem 1.875rem 1.875rem 1.875rem;
+        }
+        ;
+        --cells-atom-message__message--icon: {
+          color: var(--bbva-light-red, #e77d8e);
+        }
+        ;
+        --cells-atom-message__message--text: {
+          margin: 0.625rem 0 1.25rem;
+          color: var(--bbva-600, #121212);
+          font-size: var(--cells-text-size-13, .8125rem);
+        }
+        ;
+        --cells-atom-message__message--link: {
+          color: var(--bbva-medium-blue, #237ABA);
+          font-size: var(--cells-text-size-13, .8125rem);
+        }
+        ;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-avatar-item-shared-styles">
+  <template>
+    <style>
+       :host(:first-of-type) {
+        @apply --cells-avatar-item-first;
+      }
+
+       :host(:nth-of-type(2)) {
+        @apply --cells-avatar-item-second;
+      }
+
+       :host(:nth-of-type(3)) {
+        @apply --cells-avatar-item-third;
+      }
+
+       :host(:nth-of-type(4)) {
+        @apply --cells-avatar-item-fourth;
+      }
+
+       :host(:nth-of-type(5)) {
+        @apply --cells-avatar-item-fifth;
+      }
+
+       :host(:nth-of-type(6)) {
+        @apply --cells-avatar-item-sixth;
+      }
+
+       :host(:nth-of-type(7)) {
+        @apply --cells-avatar-item-seventh;
+      }
+
+       :host(:nth-of-type(8)) {
+        @apply --cells-avatar-item-eight;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-service-selector-shared-styles">
+  <template>
+    <style>
+      cells-left-swipe-action {
+        --cells-left-swipe-action-underlay-background: transparent;
+      }
+
+      cells-left-swipe-action.delete {
+        --cells-left-swipe-action: {
+          background: var(--bbva-red, #DA3851);
+          box-sizing: content-box;
+        }
+      }
+
+      cells-left-swipe-action.edit {
+        --cells-left-swipe-action: {
+          background: var(--bbva-medium-blue, #2A86CA);
+          box-sizing: content-box;
+        }
+      }
+
+      cells-left-swipe-action-button[data-type="edit"] {
+        --cells-left-swipe-action-button: {
+          background: var(--bbva-medium-blue, #237ABA);
+        }
+      }
+
+      cells-left-swipe-action-button[data-type="delete"] {
+        --cells-left-swipe-action-button: {
+          background: var(--bbva-red, #DA3851);
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="global-transactions-list-shared-styles">
+  <template>
+    <style>
+      cells-atom-subheader {
+        padding: 1.875rem 1.875rem 0;
+      }
+
+      ;
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="glomo-access-shared-styles">
+  <template>
+    <style>
+      cells-message {
+        @apply --body-copy;
+        line-height: 1.5;
+        --cells-message-title: {
+          @apply --cells-fontDefaultNormal;
+          font-size: var(--cells-text-size-20, 1.25rem);
+          margin-bottom: 1.25rem;
+        }
+        ;
+        --cells-message-content-text: {
+          margin: 1.25rem 0;
+        }
+        ;
+        --cells-message-content-list: {
+          margin: 1.875rem 0;
+          font-size: var(--cells-text-size-13, .8125rem);
+        }
+        --cells-message-decimal: {
+          font-size: var(--cells-text-size-13, .8125rem);
+        }
+        --cells-message-decimal-li: {
+          margin: 1.875rem 0;
+        }
+        --cells-message-decimal-list-li-before: {
+          height: 1.2rem;
+        }
+        --cells-message-top-subtitle: {
+          color: var(--bbva-400, #BDBDBD);
+          font-style: normal;
+          font-size: var(--cells-text-size-12, .75rem);
+        }
+      }
+
+       :host a,
+       :host a:visited {
+        @apply --group-total;
+        color: var(--bbva-medium-blue, #237ABA);
+        text-transform: none;
+        text-decoration: none;
+        @apply --cells-fontDefaultBold;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-navigation-bar-shared-styles">
+  <template>
+    <style>
+       :host {
+        z-index: 1;
+        --cells-navigation-bar: {
+          font-family: var(--cells-fontDefault);
+        }
+        ;
+        --cells-navigation-bar-list: {
+          justify-content: space-around;
+        }
+        ;
+      }
+      :host-context(.revolut) {
+        box-shadow: 0 0 19px 2px rgba(18, 18, 18, 0.33);
+      }
+
+      :host-context(.revolut) .center-icon {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        background-color: #da1e82;
+        border-radius: 50%;
+        padding: 8px;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-login-view-shared-styles">
+  <template>
+    <style>
+       :host {
+        will-change: transform;
+        transition: transform 230ms ease-in-out;
+        height: 100vh;
+        width: 100vw;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="filter-tags-shared-styles">
+  <template>
+    <style>
+       :host {
+        --filter-tags: {
+          background-color: var(--bbva-white, #FFF);
+        }
+        --filter-tags-link: {
+          width: inherit;
+        }
+        --cells-molecule-link-icon-atom-icon: {
+          width: 0.625rem;
+          height: 0.625rem;
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-bottom-modal-message-shared-styles">
+  <template>
+    <style>
+       :host([type="success"]) {
+        --cells-bottom-modal-content: {
+          background: var(--bbva-dark-green, #388d4f);
+          color: var(--bbva-white, #FFFFFF);
+        }
+      }
+
+       :host([type="warning"]) {
+        --cells-bottom-modal-content: {
+          background: var(--bbva-dark-orange, #d8732c);
+          color: var(--bbva-white, #FFFFFF);
+        }
+      }
+
+       :host([type="error"]) {
+        --cells-bottom-modal-content: {
+          background: var(--bbva-dark-red, #b92a45);
+          color: var(--bbva-white, #FFFFFF);
+        }
+      }
+
+      :host([type="info"]) {
+        --cells-bottom-modal-content: {
+          background: var(--bbva-dark-medium-blue, #1464A5);
+          color: var(--bbva-white, #FFFFFF);
+        }
+      }
+
+      /*Force modal height because sometimes not show correctly if type isn´t fullHeight*/
+        cells-bottom-modal {
+          --cells-bottom-modal-full-height: {
+            height: 5rem;
+            max-height: 5rem
+          }
+          --cells-bottom-modal-full-height-body: {
+           padding: 0rem;
+          }
+          --cells-atom-message__message--text: {
+            padding: 0rem;
+          }
+        }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-product-more-info-shared-styles">
+  <template>
+    <style>
+      :host(.infoCapitalized) {
+        --cells-product-more-info-list-dd-info: {
+          text-transform: capitalize;
+          font-size: var(--cells-text-size-16);
+          color:  var(--bbva-600);
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-product-summary-account-shared-styles">
+  <template>
+    <style>
+       :host {
+        --cells-product-summary-wrapper: {
+          min-height: 15.625rem;
+        }
+        ;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-product-summary-shared-styles">
+  <template>
+    <style>
+       :host {
+          --cells-product-summary-optional-items-list: {
+              display: flex;
+              justify-content: space-between;
+            }
+            --cells-product-summary-optional-items-list-item-inline: {
+             flex-direction: column-reverse;
+            }
+           --cells-key-values-list-inline-item-not-first-child: {
+              margin-top: 0;
+            }
+            --cells-product-summary-optional-items-list-item-not-first-key-value: {
+              align-items: flex-end;
+            }
+            --cells-key-values-reversed-value-not-first-child: {
+              color: var(--bbva-600, #121212);
+            }
+        };
+
+        :host .optional-items {
+          --cells-key-values-value: {
+            font-size: var(--cells-text-size-16, 1rem);
+          }
+        };
+        :host-context(.revolut) {
+        box-shadow: none;
+      }
+
+      :host-context(.revolut) .content-loading {
+        background: transparent!important;
+      }
+
+      :host-context(.revolut) {
+        background: transparent;
+      }
+      :host-context(.revolut)::after{
+        background: transparent!important;
+      }
+      :host-context(.revolut) .progress-bar,
+      :host-context(.revolut) .summary-content>* {
+        display: none;
+      }
+
+      :host-context(.revolut) .main-items {
+        display: block!important;
+        margin-top: 3rem;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-product-detail-more-info-shared-styles">
+  <template>
+    <style>
+       :host {
+        --cells-molecule-input: {
+          background-color: transparent;
+          border: none;
+        }
+
+        --cells-molecule-input-input-color: var(--bbva-white, #FFFFFF);
+
+        --box-rounded-shadow_-_box-shadow: none;
+
+        --cells-product-summary-header-span: {
+          display: none;
+        }
+
+        --cells-product-summary-more-info-btn: {
+          display: none;
+        }
+
+        --cells-product-summary-header: {
+          margin-top: rem(20px);
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-successful-response-shared-styles">
+  <template>
+    <style>
+       :host {
+        height: 86%;
+
+        --cells-operations-list-list-list-item-max-width: 150px;
+
+        --cells-successful-response-info: {
+          padding-top: 1.125rem;
+        }
+
+        --cells-successful-response-info-text: {
+          margin-bottom: 0;
+        }
+
+        --cells-atom-date-color: var(--bbva-white, #fff);
+
+        --cells-atom-date: {
+          @apply --cells-fontDefaultNormal;
+          font-size: var(--cells-text-size-14, .875rem);
+        }
+
+        --cells-atom-amount: {
+          @apply --cells-fontDefaultNormal;
+          padding-top: 2.5rem;
+          font-size: var(--cells-text-size-36, 2.25rem);
+        }
+
+        --cells-atom-amount-currency: {
+          font-size: inherit;
+        }
+
+        --cells-btn--tertiary_-_text-transform: none;
+
+        --cells-contact-avatar-initial: {
+          display: block;
+        }
+
+        --cells-successful-response-actions: {
+          position: fixed;
+          bottom: 0;
+          text-align: -webkit-center;
+          background-color: var(--bbva-white, #fff);
+          width: 100vw;
+          z-index: 10;
+        }
+
+        --cells-successful-response-actions-buttons: {
+          width: 14rem;
+        }
+
+        --cells-operations-list-list__link: {
+          outline: none;
+          cursor: default;
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-step-shared-styles">
+  <template>
+    <style>
+       :host {
+        --cells-step-header-button: {
+          display: none;
+        }
+        --cells-step-header-button-collapsed: {
+          text-align: right;
+          color: var(--bbva-light-blue, #5BBEFF);
+          font-size: 0.8125rem;
+          display: inline-block;
+          opacity: 1;
+          @apply (--cells-fontDefaultBold);
+        }
+        --cells-step-border: {
+          content: none;
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-step-product-selector-shared-styles">
+  <template>
+    <style>
+       :host {
+        cells-product-selector {
+          --cells-product-selector-item: {
+            padding: 1.25rem 1.875rem;
+          }
+        }
+      }
+      :host(#efi-origin) cells-product-item {
+        --cells-product-item-color: #ffffff;
+        --cells-product-item-description-value: {
+          color: #ffffff;
+        }
+      }
+      :host([collapsed]) {
+        --cells-product-item-amount-label-color: white;
+        --cells-atom-amount-medium: {
+          color: white;
+        };
+      };
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-modal-info-shared-styles">
+  <template>
+    <style>
+      .wrapper {
+        padding: 0 2rem;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-step-enter-amount-credit-card-shared-styles">
+  <template>
+    <style>
+      cells-icon-message:not([hidden]) ~ .other-amount {
+        margin-bottom: 3.75rem
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-modal-new-recipient-selector-mx-shared-styles">
+  <template>
+    <style>
+      section {
+        padding: 2.5rem 2rem;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-step-recipient-selector-shared-styles">
+  <template>
+    <style>
+      cells-atom-subheader {
+        --cells-atom-subheader: {
+          margin: 2rem;
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-modal-selector-shared-styles">
+  <template>
+    <style>
+      cells-middle-modal {
+        z-index: 200;
+        --cells-middle-modal-md-modal: {
+          width: 85%;
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-avatar-item-searcher-selector-shared-styles">
+  <template>
+    <style>
+      :host {
+        color: var(--bbva-600, #121212);
+      }
+
+      cells-avatar-item {
+        --cells-avatar-item: {
+          margin: 1rem 1.875rem 0.1rem;
+        }
+
+        --cells-avatar-item-list-title: {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 65vw;
+        }
+        --cells-avatar-item-list-secondary: {
+          font-style: italic;
+          margin-bottom: 1.25rem;
+        }
+
+        --cells-avatar-item-list-secondary-extra: {
+          color: var(--bbva-500, #666);
+          font-style: normal;
+        }
+      }
+
+      cells-molecule-input {
+        --cells-molecule-input-button-color: var(--bbva-300, #D3D3D3);
+        --cells-molecule-input: {
+          padding: 0 1.875rem 1.25rem;
+        }
+        --cells-st-button-text-color-transparent: var(--bbva-300, #D3D3D3);
+
+        --cells-molecule-input-background-color: var(--bbva-white, #fff);
+      }
+
+      cells-left-swipe-action {
+        --cells-left-swipe-action-underlay-background: transparent;
+      }
+
+      cells-left-swipe-action.delete {
+        --cells-left-swipe-action: {
+          background: var(--bbva-red, #DA3851);
+          box-sizing: content-box;
+        }
+      }
+
+      cells-left-swipe-action.edit {
+        --cells-left-swipe-action: {
+          background: var(--bbva-medium-blue, #2A86CA);
+          box-sizing: content-box;
+        }
+      }
+
+      cells-left-swipe-action-button[data-type="edit"] {
+        --cells-left-swipe-action-button: {
+          background: var(--bbva-medium-blue);
+        }
+      }
+
+      cells-left-swipe-action-button[data-type="delete"] {
+        --cells-left-swipe-action-button: {
+          background: var(--bbva-red);
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-step-searcher-shared-styles">
+  <template>
+    <style>
+       :host {
+        min-height: 90vh;
+      }
+
+       :host([collapsed]) {
+        min-height: auto;
+      }
+
+      :host([active]){
+        cells-step {
+          --cells-step-border: {
+            background: none;
+          }
+        }
+      }
+
+      :host([collapsed]) {
+        --cells-step-border_-_background: rgba(255, 255, 255, 0.2);
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-glomo-bill-payment-service-detail-shared-styles">
+  <template>
+    <style>
+      @media (max-width: 360px) {
+         :host {
+          --cells-glomo-bill-payment-service-detail-another-amount: {
+            margin: 0 1.3rem;
+          }
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+<dom-module id="cells-molecule-card-cover-ccds-wrapper-shared-styles">
+  <template>
+    <style>
+       :host {
+        --cells-molecule-card-cover: {
+          border-radius: 0.125rem;
+        }
+        ;
+        --cells-molecule-card-cover-locked: {
+          background: linear-gradient(75deg, transparent 35%, var(--bbva-coral, #f35e61) 36%);
+          border-radius: 0.125rem;
+        }
+        --cells-molecule-card-cover-icon-locked: {
+          background-color: var(--bbva-coral, #f35e61);
+          margin-left: 1.25rem;
+        }
+        --cells-molecule-card-cover-icon-color-locked: var(--bbva-white, #fff);
+
+        --cells-molecule-card-cover-activate: {
+          background: linear-gradient(75deg, transparent 35%, var(--bbva-core-blue, #004481) 36%);
+          border-radius: 0.125rem;
+        }
+        --cells-molecule-card-cover-icon-activate: {
+          background-color: var(--bbva-core-blue, #004481);
+          margin-left: 1.25rem;
+        }
+        --cells-molecule-card-cover-off: {
+          background: linear-gradient(75deg, transparent 35%, var(--bbva-500, #666) 36%);
+          border-radius: 0.125rem;
+        }
+        --cells-molecule-card-cover-icon-off: {
+          background-color: var(--bbva-500, #666);
+          color: var(--bbva-white, #fff);
+          margin-left: 1.25rem;
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+<dom-module id="cells-product-item-shared-styles">
+  <template>
+    <style>
+       ::content .text-right-image.off {
+        color: var(--bbva-500, #666);
+        line-height: 0.875rem;
+      }
+
+       ::content .text-right-image.locked {
+        color: var(--bbva-coral, #F35E61);
+        line-height: 0.875rem;
+      }
+
+       ::content .text-right-image.activate {
+        color: var(--bbva-core-blue, #004481);
+      }
+
+       :host(.locked) cells-atom-amount {
+        --cells-atom-amount-visible: {
+          color: var(--bbva-300, #D3D3D3);
+        };
+      }
+
+      :host(.off) cells-atom-amount {
+        --cells-atom-amount-visible: {
+          color: var(--bbva-600, #121212);
+        };
+      }
+
+      :host(.activate) cells-atom-amount {
+        --cells-atom-amount-visible: {
+          color: var(--bbva-600, #121212);
+        };
+      }
+
+       :host(.locked) {
+        --cells-product-item-amount-label-color: var(--bbva-300, #D3D3D3);
+      }
+    </style>
+  </template>
+</dom-module>
+<dom-module id="cells-avatar-actions-header-shared-styles">
+  <template>
+    <style>
+       :host(.header--morning) {
+        @apply --cells-avatar-actions-header-morning;
+      }
+
+       :host(.header--evening) {
+        @apply --cells-avatar-actions-header-evening;
+      }
+
+       :host(.header--night) {
+        @apply --cells-avatar-actions-header-night;
+      }
+
+       :host {
+        --cells-avatar-actions-header-after: {
+          border-bottom: 4.4rem solid var(--bbva-100, #F4F4F4);
+        }
+        ;
+      }
+
+       :host(.header--morning) cells-skeleton-item {
+        --cells-skeleton-item-avatar-background-color: var(--bbva-medium-blue, #237ABA);
+        --cells-skeleton-item-actions: {
+          margin-top: 4.4rem;
+          height: 8.3rem;
+        };
+        --cells-skeleton-item-actions-box-item-before: {
+          top:15%;
+        }
+      }
+
+       :host(.header--evening) cells-skeleton-item {
+        --cells-skeleton-item-avatar-background-color: var(--bbva-core-blue, #004481);
+         --cells-skeleton-item-actions: {
+          margin-top: 4rem;
+          height: 8.1rem;
+        };
+        --cells-skeleton-item-actions-box-item-before: {
+          top:15%;
+        }
+      }
+
+       :host(.header--night) cells-skeleton-item {
+        --cells-skeleton-item-avatar-background-color: var(--bbva-navy, #072146);
+         --cells-skeleton-item-actions: {
+          margin-top: 4rem;
+          height: 8.3rem;
+        };
+        --cells-skeleton-item-actions-box-item-before: {
+          top:15%;
+        }
+      }
+
+      cells-operations-list.morning {
+        --cells-operations-list-list: {
+          min-height: 9.5rem;
+          @apply --cells-avatar-actions-header-morning;
+        }
+        ;
+      }
+
+      cells-operations-list.evening {
+        --cells-operations-list-list: {
+          min-height: 9.5rem;
+          @apply --cells-avatar-actions-header-evening;
+        }
+        ;
+      }
+
+      cells-operations-list.night {
+        --cells-operations-list-list: {
+          min-height: 9.5rem;
+          @apply --cells-avatar-actions-header-night;
+        }
+        ;
+      }
+
+      cells-operations-list {
+        margin-top: 10px;
+        --cells-operations-list__link-icon-label: {
+          font-size: 12px;
+        };
+        --cells-atom-icon-size: 1.375rem;
+      }
+    </style>
+  </template>
+</dom-module>
+<dom-module id="global-accounts-list-shared-styles">
+  <template>
+    <style>
+       :host {
+        position: relative;
+        top: -6rem;
+        background: none;
+      }
+    </style>
+  </template>
+</dom-module>
+<dom-module id="global-cards-list-shared-styles">
+  <template>
+    <style>
+       :host {
+        position: relative;
+        top: -6rem;
+      }
+    </style>
+  </template>
+</dom-module>
+<dom-module id="global-funds-list-shared-styles">
+  <template>
+    <style>
+       :host {
+        position: relative;
+        top: -6rem;
+      }
+    </style>
+  </template>
+</dom-module>
+<dom-module id="global-products-list-shared-styles">
+  <template>
+    <style>
+       :host {
+        position: relative;
+        top: -5rem;
+      }
+
+      :host(#skeleton1:not([started])) {
+        --cells-skeleton-loading-page-group-delay: 1s;
+      }
+
+      :host(#skeleton2:not([started])) {
+        --cells-skeleton-loading-page-group-delay: 1.25s;
+      }
+
+       :host(#skeleton3:not([started])) {
+        --cells-skeleton-loading-page-group-delay: 1.5s;
+      }
+
+      :host(#skeleton4:not([started])) {
+        --cells-skeleton-loading-page-group-delay: 1.75s;
+      }
+
+      :host(#skeleton5:not([started])) {
+        --cells-skeleton-loading-page-group-delay: 2s;
+      }
+      :host(.mask-gray) {
+        --cells-molecule-mask: {
+          --cells-product-item-color: var(--bbva-500, #666);
+        }
+      }
+      :host(.amount-gray) {
+        --cells-atom-subheader: {
+          --cells-atom-amount-visible_-_color: var(--bbva-500, #666);
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="global-loans-list-shared-styles">
+  <template>
+    <style>
+       :host {
+        position: relative;
+        top: -6rem;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-operations-list-indicators-shared-styles">
+  <template>
+    <style>
+      cells-operations-list {
+        width: 100%;
+         background-color: var(--cells-transparent_colour, transparent);
+        --cells-operations-list__link-icon-label: {
+          font-size: 12px;
+        };
+      }
+
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-st-button-shared-styles">
+  <template>
+    <style>
+      :host ::content button:focus {
+        outline: none;
+      }
+      :host {
+        --cells-st-button-bg-color-tertiary: var(--bbva-dark-teal, #02A5A5);
+        --cells-st-button-bg-color-tertiary-hover: var(--bbva-light-teal, #5ac4c4);
+        --cells-st-button-bg-color-tertiary-active: var(--bbva-light-teal, #5ac4c4);
+        --cells-st-button-bg-color-tertiary-active: var(--bbva-light-teal, #5ac4c4);
+        --cells-st-button-bg-color-tertiary-disabled: var(--bbva-200, #e9e9e9);
+        --cells-st-button-bg-color-quaternary: var(--bbva-core-blue, #02A5A5);
+        --cells-st-button-bg-color-quaternary-hover: var(--bbva-dark-core-blue, #043263);
+        --cells-st-button-bg-color-quaternary-active: var(--bbva-core-blue, #004481);
+        --cells-st-button-bg-color-quaternary-active: var(--bbva-core-blue, #004481);
+        --cells-st-button-bg-color-quaternary-disabled: var(--bbva-200, #e9e9e9);
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-checkbox-button-shared-styles">
+  <template>
+    <style>
+      :host{
+        outline: none;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-otp-sms-modal-shared-styles">
+  <template>
+    <style>
+      @media (max-width: 350px) {
+         :host {
+          --cells-otp-sms-modal-info: {
+            margin-top: 1rem;
+            padding: 1rem 1.5rem;
+          }
+          --cells-sign-text: {
+            margin: 1rem 0;
+          }
+      }
+      cells-input-digits{
+        --cells-input-digits-button: {
+          margin-top: 1.25rem;
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-enter-limited-amount-shared-styles">
+  <template>
+    <style>
+      @media (max-width: 350px) {
+        cells-molecule-amount-input {
+          margin: 0 0.8rem 0.625rem 1.875rem;
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-radio-tabs-shared-styles">
+  <template>
+    <style>
+      :host {
+        font-size: 14px;
+        font-family: var(--cells-fontDefault);
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-transaction-detail-shared-styles">
+    <template>
+      <style>
+        :host(.withSubheaders) {
+          --cells-transaction-detail-section-transaction-info-subheader: {
+            margin-bottom: 0;
+          }
+          --cells-transaction-detail-section-transaction-info-group: {
+            border: 0;
+            padding-top: 0;
+            margin-top: 0;
+          }
+        }
+      </style>
+    </template>
+  </dom-module>
+  
+  <dom-module id="cells-transactions-slider-shared-styles">
+  <template>
+    <style>
+      :host {
+        height: 100%;
+        background: var(--bbva-white, #FFFFFF);
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-sign-operation-modal-shared-styles">
+  <template>
+    <style>
+      cells-bottom-modal {
+        --cells-bottom-modal-body-padding: 0;
+      }
+
+      h1 {
+        color: var(--bbva-white, #FFFFFF)
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-modal-select-amount-shared-styles">
+  <template>
+    <style>
+      :host {
+        --cells-bottom-modal-body-padding: 48px 24px 24px;
+      }
+    </style>
+  </template>
+</dom-module>
+<dom-module id="cells-welcome-slider-shared-styles">
+  <template>
+    <style>
+      :host {
+        --cells-welcome-slider_actions__btn: {
+          background-color: var(--bbva-medium-blue, #237ABA)
+        }
+      }
+
+      :host(.big-font){
+        --cells-full-screen-slider-slide-title: {
+          font-size: 1.25rem;
+        }
+        ;
+        --cells-full-screen-slider-slide-text: {
+          font-size: 0.875rem;
+        }
+        ;
+        --cells-full-screen-slider-slide-image: {
+          width: 35%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: absolute;
+        }
+        ;
+      }
+    </style>
+  </template>
+</dom-module>
+<dom-module id="cells-credentials-form-shared-styles">
+  <template>
+    <style>
+      :host {
+        --cells-st-button-text-color-transparent-focus: #fff;
+        --cells-molecule-input-right-icon-button: {
+          color: var(--bbva-white, #FFFFFF);
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+<dom-module id="glomo-atm-locator-shared-styles">
+  <template>
+    <style>
+      :host {
+        --glomo-atm-locator: {
+          height: 100%;
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+<dom-module id="cells-map-shared-styles">
+    <template>
+      <style>
+        :host {
+          --cells-map: {
+            height: 100%;
+          }
+        }
+      </style>
+    </template>
+  </dom-module>
+
+<dom-module id="cells-molecule-search-input-shared-styles">
+  <template>
+    <style>
+      :host {
+        --cells-molecule-search-input: {
+          padding: 0 30px 30px 30px;
+        };
+      }
+      :host(#inputMap){
+        --cells-molecule-search-input: {
+          padding: 0 30px 45px 30px;
+        };
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-input-place-shared-styles">
+  <template>
+    <style>
+      :host {
+        --cells-input-place: {
+          height: 100vh;
+        };
+        --cells-input-place-pac-container: {
+          margin: -1.875rem 0 0 -1.875rem;
+        };
+      }
+    </style>
+  </template>
+</dom-module>
+<dom-module id="cells-options-list-shared-styles">
+  <template>
+    <style>
+      :host {
+        --cells-options-list: {
+          position: absolute;
+          width: 70%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        };
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-collapsible-list-shared-styles">
+  <template>
+    <style>
+      :host {
+        --cells-collapsible-list-complete: {
+          padding-top: 30px;
+        };
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-oc-banner-shared-styles">
+  <template>
+    <style>
+      :host(.oc-banner-dashboard) {
+        top: -5rem;
+        margin: 0.625rem;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-step-loan-offer-shared-styles">
+  <template>
+    <style>
+      :host {
+        --cells-molecule-amount-input-icon: {
+          width: 1.65rem;
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-notification-list-shared-styles">
+  <template>
+    <style>
+      :host {
+        height: 100%;
+        padding-bottom: 60px;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-event-button-shared-styles">
+  <template>
+    <style>
+      :host(#notificationEventButton) {
+        background: var(--bbva-navy, #072146);
+        padding: 15px 30px;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-stripes-spinner-veil-shared-styles">
+  <template>
+    <style>
+       :host(.solid-spinner) {
+        margin-top: 60px;
+        --cells-stripes-spinner-veil-background-color: var(--bbva-white, #ffffff);
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="glomo-help-shared-styles">
+    <template>
+      <style>
+        :host(.small-font) {
+          font-size: var(--cells-text-size-14, .875rem);
+          --glomo-help-content-message: {
+            margin-left: 1.25rem;
+            margin-right: 1.25rem;
+            min-height: initial;
+            text-align: left;
+          }
+          --glomo-help-content-list-li: {
+            margin-left: 1.25rem;
+          }
+        }
+      </style>
+    </template>
+  </dom-module>
+
+  <dom-module id="cells-3d-horizontal-bar-chart-shared-styles">
+    <template>
+      <style>
+         :host {
+            --cells-3d-horizontal-bar-chart-shadow-opacity: 1;
+            --cells-3d-horizontal-bar-chart-shadow: {
+              fill: #000;
+            }
+          };
+      </style>
+    </template>
+  </dom-module>
+  <dom-module id="cells-contact-avatar-shared-styles">
+    <template>
+      <style>
+        :host {
+          --cells-contact-avatar-initial: {
+           z-index: 0;
+          }
+        }
+      </style>
+    </template>
+  </dom-module>
+
+  <dom-module id="cells-product-selector-modal-shared-styles">
+    <template>
+      <style>
+          cells-product-selector {
+            min-height: calc(90vh - 60px);
+          }
+      </style>
+    </template>
+  </dom-module>

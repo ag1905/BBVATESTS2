@@ -1,0 +1,100 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  font-family: var(--cells-fontDefault, 'sans-serif');
+  background-color: transparent;
+  display: block;
+  transform: translateZ(0);
+  --cells-product-summary-bottom-summary: unquote("{
+    flex-direction: column;
+  }");
+
+ --cells-product-summary-additional-items-list-item : unquote("{
+    padding-bottom: 10px;
+  }");
+
+  --cells-product-summary-progress-bar-left-color: unquote("var(--bbva-light-blue, #5bbeff)");
+
+  .card-product--negative-value {
+    --cells-product-summary-progress-bar-left-color: var(--bbva-coral, #f35e61);
+  }
+
+  .noAdditionalInfo{
+      margin-top: 1.875rem;
+      @apply(--cells-product-summary-card-additional-info);
+
+      .data {
+        border-top:  none;
+        margin: 0;
+        padding: 0;
+        @apply(--cells-product-summary-card-additional-info-data);
+      }
+
+      .data__row {
+        margin: 0;
+        padding-bottom: 10px;
+        @apply(--cells-product-summary-card-additional-info-data-row);
+      };
+
+  @apply(--cells-product-summary-card);
+  }
+
+  .data {
+    margin: 1rem 0 0 0;
+    padding: 2rem 0 0 0;
+    border-top: 1px solid var(--bbva-200,#e9e9e9);
+    font-size: .8125rem;
+    @apply(--cells-product-summary-loan-product-fees);
+
+    &__header {
+      margin: 0 0 1.25rem 0;
+      @apply(--cells-product-summary-loan-product-fees-header);
+    }
+
+    &__row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: rem(30px);
+      @apply(--cells-product-summary-loan-product-fees-row);
+      cells-atom-icon {
+        color: var(--bbva-medium-blue, #237ABA);
+      }
+      cells-atom-amount {
+        display: block;
+        margin-bottom: rem(10px);
+      }
+      &--new-block {
+        border-top: 1px solid var(--bbva-200,#e9e9e9);
+        padding-top: rem(30px);
+      }
+    }
+
+    .desc {
+      display: block;
+      margin-bottom: rem(10px);
+      color: var(--bbva-500, #666666);
+      @apply(--cells-product-summary-loan-product-desc);
+      &--title {
+        margin-bottom: 0;
+      }
+    }
+
+    .info {
+      font-style: italic;
+      color: var(--bbva-400, #BDBDBD);
+      display: flex;
+      align-items: center;
+      cells-atom-icon {
+        color: var(--bbva-light-blue, #5bbeff);
+        margin-right: rem(11px);
+      }
+    }
+
+    .date {
+      font-style: italic;
+      color: var(--bbva-dark-gold, #b79e5e);
+      @apply(--cells-product-summary-loan-product-date);
+    }
+  }
+}

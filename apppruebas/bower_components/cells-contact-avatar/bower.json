@@ -1,0 +1,51 @@
+{
+  "name": "cells-contact-avatar",
+  "version": "10.0.1",
+  "description": "Component that displays a letter or an image as avatar",
+  "keywords": [
+    "avatar",
+    "image",
+    "contact"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "cells-demo-helper": "9 - 10",
+    "cells-coronita-theme": "9 - 10",
+    "cells-sass": "^2.0.1",
+    "coronita-icons": "9 - 10",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "cells-molecule-input": "9 - 10",
+    "webcomponentsjs": "^1.0.0"
+  },
+  "main": [
+    "cells-contact-avatar.html"
+  ],
+  "resolutions": {
+    "iron-icon": "^2.0.0",
+    "iron-input": "^2.0.0",
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9.0"
+      },
+      "devDependencies": {
+        "cells-demo-helper": "^9.0.0",
+        "cells-coronita-theme": "^9.0.0",
+        "cells-sass": "^2.0.1",
+        "coronita-icons": "^9.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "cells-molecule-input": "^9.0.0",
+        "webcomponentsjs": "^0.7"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

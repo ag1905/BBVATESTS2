@@ -1,0 +1,677 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-generic-dp/cells-generic-dp.html" />
+<link rel="import" href="../cells-moment-import/cells-moment-import.html">
+<link rel="import" href="../cells-moment-import/cells-moment-locale-es-import.html">
+
+
+<!--
+`<glomo-one-click-loans-dm>` description.
+
+Example:
+
+```html
+<glomo-one-click-loans-dm></glomo-one-click-loans-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-one-click-loans-dm">
+  <template>
+    <cells-generic-dp id="dpGetOffers" host="[[host]]" path="[[offerPath]]" method="[[method]]" requires-tsec on-request-success="_successfulOfferResponse"
+      on-request-error="_errorOfferResponse">
+    </cells-generic-dp>
+    <cells-generic-dp id="dpQuotations" host="[[host]]" path="[[quotationsPath]]" method="POST" body="[[body]]" requires-tsec
+      on-request-success="_successfulQuotationsResponse" on-request-error="_errorOfferResponse">
+    </cells-generic-dp>
+    <cells-generic-dp id="dpPostOffer" host="[[host]]" path="[[doOfferPath]]" method="POST" body="[[body]]" requires-tsec on-request-success="_successDoOfferResponse"
+      on-request-error="_errorOfferResponse">
+    </cells-generic-dp>
+  </template>
+  <script>
+    (function() {
+      /*global moment*/
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-one-click-loans-dm',
+
+        properties: {
+          /**
+          * Chosen host to make requests to. Check providers.
+          * @type {String}
+          */
+          host: String,
+          /**
+          * Loans API version
+          * @type {String}
+          */
+          loansApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+          * Loans method
+          * @type {String}
+          */
+          method: {
+            type: String,
+            value: 'GET'
+          },
+
+          /**
+          * Loans body request
+          * @type {Object}
+          */
+          body: {
+            type: Object,
+            value: function() {
+              return {};
+            }
+          },
+          /**
+          * Generate path to request
+          */
+          offerPath: {
+            type: String,
+            computed: '_computedOfferPath(loansApiVersion, offerId)'
+          },
+          /**
+          * Generate path to request
+          */
+          quotationsPath: {
+            type: String,
+            computed: '_computedQuotationsPath(loansApiVersion, offerId)'
+          },
+          /**
+          * Generate path to request
+          */
+          doOfferPath: {
+            type: String,
+            computed: '_computedDoOfferPath(loansApiVersion)'
+          },
+          /**
+          * Offer id
+          * @type {String}
+          */
+          offerId: String,
+          /**
+          * Offer
+          * @type {Object}
+          */
+          offer: {
+            type: Object,
+            notify: true
+          },
+          /**
+          * Offer
+          * @type {Object}
+          */
+          _offer: {
+            type: Object,
+            observer: '_parseOfferResponse'
+          },
+
+          /**
+          * Simulation status from campaigns dm
+          */
+          isSimulationAllowed: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+          * Offer Simulation
+          * @type {Object}
+          * @private
+          */
+          _quotationSimulation: {
+            type: Object,
+            observer: '_parseQuotationSimulationResponse'
+          },
+
+          /**
+          * Date format
+          * @type {String}
+          */
+          formatDate: {
+            type: String,
+            value: 'd [de] MMMM [de] YYYY'
+          },
+
+          lang: String,
+
+          /**
+          * Result
+          * @type {Object}
+          */
+          loanOfferResult: {
+            type: Object,
+            notify: true
+          },
+
+          /**
+          * Contact data
+          */
+          contact: Object,
+
+          /**
+          * Title page
+          * @type {String}
+          */
+          title: {
+            type: String,
+            notify: true,
+            value: 'glomo-header-title-loan-offer'
+          },
+          /**
+          * State campaing on fetch detail and dashboard
+          */
+          stateCampaings: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+          * State loan on fetch detail and dashboard
+          */
+          stateLoans: {
+            type: Boolean,
+            notify: true
+          }
+        },
+
+        init: function() {
+          if (this.offerId && !this.offer) {
+            this._spinnerStatus('open-solid');
+            this.getOfferDetail();
+
+            this.dispatchEvent(new CustomEvent('get-contact-detail', {
+              bubbles: true,
+              composed: true
+            }));
+          }
+        },
+
+        reset: function() {
+          this.offer = undefined;
+          this.defaultProductId = undefined;
+          this.title = 'glomo-header-title-loan-offer';
+        },
+
+        _computedOfferPath: function(loansApiVersion, offerId) {
+          return 'loans/v' + loansApiVersion + '/offers/' + offerId;
+        },
+
+        _computedQuotationsPath: function(loansApiVersion, offerId) {
+          return 'loans/v' + loansApiVersion + '/offers/' + offerId + '/quotations/simulate';
+        },
+
+        _computedDoOfferPath: function(loansApiVersion) {
+          return 'loans/v' + loansApiVersion + '/loans';
+        },
+
+        getOfferDetail: function() {
+          this.$.dpGetOffers.generateRequest();
+        },
+
+        _successfulOfferResponse: function(offer) {
+          this.set('_offer', offer.detail.data);
+        },
+
+        _errorOfferResponse: function(error) {
+          this.dispatchEvent(new CustomEvent('close-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+
+          this.dispatchEvent(new CustomEvent('error-on-loan-offer', {
+            detail: error,
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+
+        _parseOfferResponse: function(offer) {
+          var insuranceInfo = this._getAdditionalProducts(offer.details.contractingOffer.additionalProducts, 'INSURANCES');
+          var additionalAmountInfo = this._getLoanBreakDownInfo(offer.details.contractingOffer.loanBreakDown, 'INSTALLMENT');
+          var additionalTotalAmountInfo = this._getLoanBreakDownInfo(offer.details.contractingOffer.loanBreakDown, 'TOTAL_COST');
+          var amounts = this._getAmount(offer.details.contractingOffer);
+          var rate = this._getCalculationDate(offer.rates);
+          var date = rate.calculationDate || null;
+          var itemizeFee = offer.details && offer.details.fees && offer.details.fees.itemizeFees && offer.details.fees.itemizeFees[0];
+          var preapproved = offer.details && offer.details.hasExternalValidation;
+          offer.details.suggestedAmount = Array.isArray(offer.details.suggestedAmount) ? this._getRequestAmount(offer.details.suggestedAmount) : offer.details.suggestedAmount;
+
+          var offerDetail = {
+            id: offer.id,
+            type: {
+              id: 'CONTRACTING',
+              name: offer.offerType.name
+            },
+            details: {
+              itemizeFeeAmount: itemizeFee && itemizeFee.itemizeFeeUnit && itemizeFee.itemizeFeeUnit.amount
+            },
+            monthTax: 1.8,
+            editable: offer.isEditable,
+            isSimulationAllowed: this.isSimulationAllowed,
+            amount: Object.assign(amounts, {
+              monthlyPayment: additionalAmountInfo && additionalAmountInfo.amount,
+              totalAmount: additionalTotalAmountInfo && additionalTotalAmountInfo.amount
+            }
+            ),
+            terms: this._getTerms(offer.details.contractingOffer),
+            endDate: this._getEndDate(offer.period),
+            fees: offer && offer.fees,
+            receivingAccount: this._getProduct(offer.details.contractingOffer),
+            rates: this._getRates(offer.rates),
+            installmentAmount: offer.details.contractingOffer.installmentAmount,
+            requestedAmount: offer.details.contractingOffer.suggestedAmount,
+            insuranceInfo: {
+              label: 'cells-one-click-loan-insurance',
+              amount: {
+                amount: insuranceInfo.amount.amount,
+                currency: insuranceInfo.amount.currency
+              }
+            }
+          };
+          var legalTermsOfferDetail = {
+            preapproved: preapproved,
+            product: this._getRelatedContractsNumber(offer.details.contractingOffer.relatedContracts),
+            amount: {
+              amount: additionalAmountInfo.amount,
+              currency: additionalAmountInfo.currency
+            },
+            totalAmount: {
+              amount: additionalTotalAmountInfo.amount,
+              currency: additionalTotalAmountInfo.currency
+            }
+          };
+
+          // Dispatch offer detail
+          this.title = this.title + (preapproved ? '-pre' : '') + '-approval';
+          this.set('offer', offerDetail);
+
+          // Dispatch legal terms offer detail
+          this.dispatchEvent(new CustomEvent('set-legal-terms-offer-detail', {
+            bubbles: true,
+            composed: true,
+            detail: legalTermsOfferDetail
+          }));
+
+          this._spinnerStatus('close');
+          this._spinnerStatus('close-solid');
+        },
+
+        _getEndDate: function(period) {
+          return period && period.endDate && moment(period.endDate).locale(this.lang).format(this.formatDate);
+        },
+
+        _getProduct: function(product) {
+          return product && product.receivingAccount ? {
+            id: product.receivingAccount.id,
+            number: product.receivingAccount.number,
+            numberType: {
+              id: 'SIMPLE_ACCOUNT'
+            }
+          } : undefined;
+        },
+
+        _getRelatedContractsNumber: function(contracts) {
+          if (contracts) {
+            return contracts.reduce(function(acc, contract) {
+              return acc = contract.number;
+            }, 0);
+          }
+        },
+
+        _getRelatedContract: function(contracts) {
+          if (contracts) {
+            return contracts[0];
+          }
+        },
+
+        _getAmount: function(amount) {
+          var minimumAmount = this._formatAmount(!Array.isArray(amount.minimumAmount) ? [ amount.minimumAmount ] : amount.minimumAmount);
+          var maximumAmount = this._formatAmount(!Array.isArray(amount.maximumAmount) ? [ amount.maximumAmount ] : amount.maximumAmount);
+          return {
+            suggestedAmount: amount && amount.suggestedAmount && amount.suggestedAmount.amount,
+            minimumAmount: amount && amount.minimumAmount && amount.minimumAmount.amount,
+            minimumAmountCurrency: amount && amount.minimumAmount && amount.minimumAmount.currency,
+            maximunAmount: amount && amount.maximumAmount && amount.maximumAmount.amount,
+            maximunAmountCurrency: amount && amount.maximumAmount && amount.maximumAmount.currency
+          };
+        },
+
+        _getRates: function(rawRates) {
+          return rawRates.reduce(function(total, item) {
+            var id = item.rateType && item.rateType.id;
+            var percentage = item.unit && item.unit.percentage;
+
+            if (id) {
+              var rates = {
+                'CAT': 'yearly',
+                'TASA ANUAL SALDO': 'ponderate',
+                'TASA MENSUAL': 'monthly',
+                'TASA REVIRE': 'revire'
+              };
+
+              total[rates[id]] = {
+                type: id,
+                percentage: percentage
+              };
+              if (id === 'CAT') {
+                total[rates['CAT']] = {
+                  type: id,
+                  percentage: percentage,
+                  date: moment(item.calculationDate).locale(this.lang).format(this.formatDate),
+                  dateUnFormated: item.calculationDate
+                };
+              }
+            }
+            return total;
+          }.bind(this), {});
+        },
+
+
+        _getCalculationDate: function(rates) {
+          return rates && rates.find(function(rate) {
+            return rate.calculationDate;
+          });
+        },
+
+        _formatAmount: function(amount) {
+          return amount.filter(function(item) {
+            return { amount: item.amount, currency: item.currency } ? (item.currency === this.localCurrency) : '';
+          }.bind(this));
+        },
+
+        _getTerms: function(term) {
+          var allowedTerms = this._generateAllowedTerms(term.allowedTerms);
+          var frequency = term.suggestedTerm && term.suggestedTerm.frequency.toLowerCase();
+
+          return {
+            allowedTerms: allowedTerms,
+            minimumTerms: term && term.minimumTerms && term.minimumTerms.number,
+            maximumTerms: term && term.maximumTerms && term.maximumTerms.number,
+            suggestedTerm: term && term.suggestedTerm && term.suggestedTerm.number,
+            suggestedTermFrequency: frequency,
+            number: term && term.suggestedTerm && term.suggestedTerm.number,
+            stepTerm: allowedTerms ? this._calculateStepTerm(allowedTerms) : null,
+            frequency: term.allowedTerms && term.allowedTerms.length && term.allowedTerms[0].frequency
+          };
+        },
+
+        _generateAllowedTerms: function(terms) {
+          return terms && terms.map(function(term) {
+            return term.number;
+          });
+        },
+
+        _calculateStepTerm: function(terms) {
+          return terms && terms.length ? terms[1] - terms[0] : terms[0];
+        },
+
+        _getAdditionalProducts: function(products, type) {
+          if (products && products.length) {
+            return products.find(function(product) {
+              return product.productType.id === type;
+            });
+          }
+        },
+
+        _getLoanBreakDownInfo: function(loans, type) {
+          if (loans) {
+            return loans.find(function(loan) {
+              return loan.id === type;
+            });
+          }
+        },
+
+        setSimulationAllowed: function(isSimulationAllowed) {
+          this.isSimulationAllowed = this.isEditable = isSimulationAllowed || false;
+        },
+
+        getQuotationsSimulation: function(offer) {
+          var additionalProducts = this._getAdditionalProducts(this._offer.details.contractingOffer.additionalProducts, 'INSURANCES');
+          this._spinnerStatus('open');
+          this.set('body', {
+            'internalCode': {
+              'id': this._offer && this._offer.preApprovalCode && this._offer.preApprovalCode.id,
+              'name': this._offer && this._offer.preApprovalCode && this._offer.preApprovalCode.name
+            },
+            'initialAmount': {
+              'amount': this._offer && this._offer.details && this._offer.details.contractingOffer && this._offer.details.contractingOffer.suggestedAmount && this._offer.details.contractingOffer.suggestedAmount.amount,
+              'currency': this._offer && this._offer.details && this._offer.details.contractingOffer && this._offer.details.contractingOffer.suggestedAmount && this._offer.details.contractingOffer.suggestedAmount.currency,
+            },
+            'product': {
+              'id': '0HIP',
+              'subproduct': {
+                'id': 'AH30',
+                'subproductType': {
+                  'id': 'ACQUISITION'
+                }
+              }
+            },
+            'terms': {
+              'number': offer.terms,
+              'frequency': 'MONTHLY'
+            },
+            'additionalProducts': [ {
+              'id': additionalProducts.id,
+              'isMandatory': additionalProducts.isMandatory,
+              'amount': {
+                'amount': additionalProducts.amount.amount,
+                'currency': additionalProducts.amount.currency
+              },
+              'productType': {
+                'id': additionalProducts.productType.id
+              },
+              'isDefaultSelected': additionalProducts.isDefaultSelected
+            } ],
+            'currentInstallment': {
+              'maturityDate': this._offer && this._offer.period && this._offer.period.endDate
+            }
+          });
+          this.$.dpQuotations.generateRequest();
+        },
+
+        _successfulQuotationsResponse: function(rawSimulation) {
+          var simulation = rawSimulation.detail.data;
+          this._spinnerStatus('close');
+          var additionalAmountInfo = this._getLoanBreakDownInfo(simulation.loanBreakDown, 'INSTALLMENT');
+
+          if (simulation.terms) {
+            this.offer.terms.number = simulation.terms.number;
+            this.offer.terms.frequency = simulation.terms.frequency;
+          }
+
+          this.offer.ratesSimulation = simulation.rates;
+          this.offer.amount.monthlyPayment = additionalAmountInfo && additionalAmountInfo.amount;
+
+          this.offer = Object.assign({}, this.offer, {
+            simulate: true
+          });
+        },
+
+        _successDoOfferResponse: function(offer) {
+          this.stateCampaings = true;
+          this.stateLoans = true;
+          this.set('loanOfferResult', this._parseDoOffer(offer.detail.data));
+        },
+
+
+        doOffer: function() {
+          this._spinnerStatus('open');
+          this.set('body', {
+            'loanType': {
+              'id': 'CONSUME_PERSONAL',
+              'name': this.offer.type.name
+            },
+            'purpose': {
+              'purposeGroup': {
+                'id': this.offer.id
+              }
+            },
+            'initialAmount': {
+              'amount': this._offer.details.contractingOffer.suggestedAmount.amount,
+              'currency': this._offer.details.contractingOffer.suggestedAmount.currency
+            },
+            'currencies': [
+              {
+                'currency': 'USD',
+                'isMajor': false
+              },
+              {
+                'currency': 'CLP',
+                'isMajor': false
+              },
+              {
+                'currency': 'MXN',
+                'isMajor': true
+              },
+              {
+                'currency': 'UDI',
+                'isMajor': false
+              },
+              {
+                'currency': 'SVM',
+                'isMajor': false
+              }
+            ],
+            'contractingDate': '2017-07-01',
+            'terms': {
+              'number': 120,
+              'frequency': this.offer.terms.frequency
+            },
+            'relatedContracts': [
+              this._getRelatedContract(this._offer.details.contractingOffer.relatedContracts)
+            ],
+            'paymentMethod': {
+              'id': 'PAC'
+            },
+            'additionalProducts': [
+              {
+                'id': '3456789',
+                'number': '3456789',
+                'numberType': {
+                  'id': 'LIC'
+                },
+                'managementCompany': {
+                  'id': '765175'
+                }
+              }
+            ]
+
+          });
+          this.$.dpPostOffer.generateRequest();
+        },
+
+
+        _parseDoOffer: function(response) {
+          var relatedContract = this._getRelatedContract(this._offer.details.contractingOffer.relatedContracts);
+          var rates = this._getRates(this._offer.rates);
+          var result = {
+            date: response && response.currentInstallment && response.currentInstallment.maturityDate,
+            title: 'loan-successful-response-success',
+            origin: {
+              product: {
+                id: '1002',
+                name: '1002'
+              },
+              number: '6573548902',
+              avatar: {
+                src: './images/oneClicks/itemAccount.png',
+                type: 'card'
+              }
+            },
+            amount: response && response.initialAmount,
+            amountLabel: 'loan-successful-response-amount-label',
+            amountDescription: 'loan-successful-response-amount-description',
+            headerAdditionalInfo: {
+              amount: {
+                text: 'loan-successful-response-monthly',
+                amount: response && response.pendingAmount && response.pendingAmount.total && response.pendingAmount.total.amount,
+                currency: response && response.pendingAmount && response.pendingAmount.total && response.pendingAmount.total.currency
+              },
+              term: {
+                text: 'loan-successful-response-term',
+                months: 'loan-successful-response-months',
+                value: this.offer && this.offer.terms && this.offer.terms.number
+              },
+              rates: {
+                text: 'loan-successful-response-rate',
+                value: rates.monthly.percentage + ' %'
+              }
+            },
+            topInfo: [
+              {
+                value: relatedContract && relatedContract.relationType.id,
+                musk: {
+                  value: relatedContract && relatedContract.relatedContractId,
+                  chars: '5',
+                  simbol: '•'
+                },
+                class: 'bold spacing'
+              },
+              {
+                key: 'loan-successful-page-number',
+                value: response && response.loanId,
+                class: 'inline spacing separator'
+              },
+              {
+                key: 'loan-successful-response-query-zone',
+                class: 'inline spacing secondary'
+              },
+              {
+                key: 'loan-successful-response-receive',
+                class: 'inline secondary'
+              },
+              {
+                value: this.contact.info[1].value,
+                class: 'bold spacing'
+              }
+            ],
+            operations: [
+              {
+                label: 'Consultar documentación',
+                id: 'query',
+                icon: 'coronita:pdf',
+                disabled: true
+              }
+            ],
+            buttons: {
+              primary: {
+                text: 'loan-successful-response-next',
+                action: 'go-to-next',
+                'class': 'btn--primary btn--l'
+              },
+              secondary: {
+                hidden: true
+              }
+            }
+          };
+
+          this._spinnerStatus('close');
+          this.dispatchEvent(new CustomEvent('navigate-to-review', {
+            bubbles: true,
+            composed: true,
+            detail: {
+              productId: this.loanId,
+              offerId: this.offerId
+            }
+          }));
+
+          return result;
+        },
+
+        _spinnerStatus: function(action) {
+          this.dispatchEvent(new CustomEvent(action + '-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+        }
+      });
+    }());
+  </script>
+</dom-module>

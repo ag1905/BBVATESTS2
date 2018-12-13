@@ -1,0 +1,26 @@
+<dom-module id="my-greeting">
+
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+  </template>
+
+  <script>
+    class MyGreeting extends Polymer.Element {
+      static get is() {
+        return 'my-greeting';
+      }
+
+      // Declare properties for the element's public API
+      static get properties() {
+        return {};
+      }
+    }
+
+    customElements.define(MyGreeting.is, MyGreeting);
+    </script>
+
+</dom-module>

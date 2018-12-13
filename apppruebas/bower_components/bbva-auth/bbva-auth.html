@@ -1,0 +1,229 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-bgadp-user-dm/cells-bgadp-user-dm.html"/>
+<link rel="import" href="../cells-dm-global-apis-customers/cells-dm-global-apis-customers.html"/>
+<link rel="import" href="../cells-params/cells-params.html">
+
+<!--
+# bbva-auth
+
+Data provider description.
+
+Example:
+```html
+<bbva-auth></bbva-auth>
+```
+
+It exposes `last-response`, `last-error` and `last-request` as properties that will be updated (as the case may be) once `generateRequest` is called.
+Also, It fires `response`, `error` and `request-in-progress`.
+
+@demo demo/index.html
+-->
+<dom-module is="bbva-auth">
+  <template>
+    <cells-bgadp-user-dm id="user"
+      host="[[host]]"
+      country="[[country]]"
+      consumer-id="[[consumerId]]"
+      granting-ticket-api-version="[[grantingTicketApiVersion]]"
+      clear-environment-when-error></cells-bgadp-user-dm>
+    <cells-dm-global-apis-customers id="dm"
+      host="[[host]]"
+      customers-api-version="[[customersApiVersion]]"></cells-dm-global-apis-customers>
+    <cells-params id="params"></cells-params>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+
+        is: 'bbva-auth',
+
+        properties: {
+          /**
+           * Host of DP
+           * @type {String}
+           */
+          host: String,
+          /**
+           * ConsumerId of user
+           * @type {String}
+           */
+          consumerId: String,
+          /**
+           * User
+           * @type {Object}
+           */
+          user: {
+            type: Object,
+            notify: true,
+            value: function() {
+              return {};
+            }
+          },
+          /**
+           * User Id
+           * @type {String}
+           */
+          userId: {
+            type: String,
+            notify: true
+          },
+          /**
+           * User logged
+           * @type {Boolean}
+           */
+          isLogged: {
+            type: Boolean,
+            notify: true,
+            value: false
+          },
+          /**
+           * Country code to generate GrantingTicket path
+           * @type {String}
+           */
+          country: String,
+          /**
+           * Acces method to request
+           * @type {String}
+           */
+          accessMethod: String,
+          /**
+           * Hide Header on login
+           * @type {Object}
+           */
+          headerHidden: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * Account API version
+           * @type {String}
+           */
+          grantingTicketApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * Customers API version
+           * @type {String}
+           */
+          customersApiVersion: {
+            type: String,
+            value: '0'
+          }
+        },
+
+        listeners: {
+          'login-request-success': 'getUserCustomers',
+          'login-request-error': '_onErrorLoginPost',
+          'logout-request-success': '_onSuccessLoginDelete',
+          'set-customers': '_parseCustomersResponse'
+        },
+
+        /**
+         * Login request
+         */
+        login: function(user) {
+          this.headerHidden = true;
+          this.$.user.set('user', this._parseUser(user));
+        },
+        /**
+         * Confirm type logout
+         */
+        confirmLogout: function() {
+          var method = (this.accessMethod === 'automatic') ? 'automatic-' : '';
+          this.dispatchEvent(new CustomEvent('confirm-' + method + 'logout', {
+            bubbles: true,
+            composed: true
+          }));
+
+        },
+        /**
+         * Logout
+         */
+        logout: function() {
+          this.headerHidden = false;
+          this.$.user.logout();
+        },
+        /**
+         * Logout client side only
+         */
+        logoutClientOnly: function() {
+          this._onSuccessLoginDelete();
+        },
+        /**
+         * On success Login delete
+         */
+        _onSuccessLoginDelete: function(service) {
+          this.$.params.setData('isLogged', false, 'session');
+          this.set('isLogged', false);
+          sessionStorage.removeItem('tsec');
+          this.set('user', {});
+          this.dispatchEvent(new CustomEvent('logout-success'));
+        },
+
+        /*
+        * Checked if has user info
+        */
+        checkedUser: function(active) {
+          if (active && active.value && !this.user || this.user && !this.user.customerId) {
+            this.getUserCustomers();
+          }
+        },
+        /**
+         * On success Login
+         */
+        getUserCustomers: function() {
+          this.$.dm.getCustomers({expand: 'avatars'});
+        },
+        /**
+         * On error Login
+         */
+        _onErrorLoginPost: function(service) {
+          this.headerHidden = false;
+          this.set('isLogged', false);
+          this.dispatchEvent(new CustomEvent('error', {
+            detail: true,
+            bubbles: true,
+            composed: true
+          }));
+        },
+        /**
+         * Parse response on login
+         */
+        _parseCustomersResponse: function(response) {
+          if (response && response.detail) {
+            if (response.detail.length) {
+              response = response.detail.pop();
+            }
+
+            this.set('isLogged', true);
+            this.$.params.setData('isLogged', true, 'session');
+
+            this.userId = response && response.customerId;
+            this.set('user', response);
+            this.dispatchEvent(new CustomEvent('login-success', {
+              detail: response,
+              bubbles: true,
+              composed: true
+            }));
+
+          } else {
+            this._onErrorLoginPost();
+          }
+        },
+        /**
+         * Parses user and concat document type key at the begining of the
+         * userId if documentType isn't empty and current country is Peru.
+         */
+        _parseUser: function(user) {
+          if (user.documentType && this.country === 'pe') {
+            user.userId = user.documentType.id + user.userId;
+          }
+          return user;
+        }
+      });
+    }());
+  </script>
+</dom-module>

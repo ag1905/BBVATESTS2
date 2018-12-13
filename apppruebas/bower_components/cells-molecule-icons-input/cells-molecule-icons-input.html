@@ -1,0 +1,53 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-molecule-icons-input-styles.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-molecule-input/cells-molecule-input.html">
+
+<!--
+`<cells-molecule-icons-input>` displays an input with 2 or 3 more icons. If you want a third icon, only add 'third-icon' property.
+
+Example:
+
+```html
+  <cells-molecule-icons-input
+    icon-size="icon-size-24"
+    icon-code="coronita:barcode"
+    icon-info="coronita:info"
+    third-icon>
+  </cells-molecule-icons-input>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                                          | Description | Default        |
+|:---------------------------------------------------------|:------------|:--------------:|
+|  --cells-molecule-icons-input                            | empty mixin | {}             |
+|  --cells-molecule-icons-input-auxiliar-container         | empty mixin | {}             |
+|  --cells-molecule-icons-input-auxiliar-icon              | empty mixin | {}             |
+|  --cells-molecule-icons-input-auxiliar-icon-bar-code     | empty mixin | {}             |
+|  --cells-molecule-icons-input-auxiliar-icon-active       | empty mixin | {}             |
+|  --cells-molecule-icons-input-text-field                 | empty mixin | {}             |
+|  --cells-molecule-icons-input-secondary-input            | empty mixin | {}             |
+|  --cells-molecule-icons-input-second-icon                | empty mixin | {}             |
+|  --cells-molecule-icons-input-second-icon-active         | empty mixin | {}             |
+|  --cells-molecule-icons-input-third-icon-active          | empty mixin | {}             |
+|  --cells-molecule-icons-input-auxiliar-third-icon        | empty mixin | {}             |
+|  --cells-molecule-icons-input-third-icon-secondary-input | empty mixin | {}             |
+|  --cells-molecule-icons-input-third-icon                 | empty mixin | {}             |
+|  --cells-molecule-icons-input-auxiliar-container-third   | empty mixin | {}             |
+@demo demo/index.html
+-->
+<dom-module id="cells-molecule-icons-input">
+  <template>
+    <style include="cells-molecule-icons-input-styles cells-molecule-icons-input-shared-styles"></style>
+        <cells-molecule-input text-field-icon-size="30" class="secondary--input" label="[[placeholder]]" disabled$="[[!false]]" with-icon value="{{inputValue}}"></cells-molecule-input>
+        <div class="cells-molecule-icons-input__auxiliar-container">
+          <cells-atom-icon aria-hidden="true" icon="[[iconInfo]]" id="infoIcon" class$="second-icon [[iconSize]]" on-click="_onIconClick"></cells-atom-icon>
+          <cells-atom-icon aria-hidden="true" icon="[[iconCode]]" id="barCodeIcon" class$="third-icon [[iconSize]]" on-click="_onIconClick"></cells-atom-icon>
+        </div>
+    <content></content>
+  </template>
+  <script src="cells-molecule-icons-input.js"></script>
+</dom-module>

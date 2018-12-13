@@ -1,0 +1,10 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  --cells-bottom-modal-full-height-header-wrapper: unquote("{
+    background-color: var(--bbva-100);
+  }");
+  --cells-bottom-modal-body-padding: 0;
+  @apply(--cells-product-selector-modal);
+}

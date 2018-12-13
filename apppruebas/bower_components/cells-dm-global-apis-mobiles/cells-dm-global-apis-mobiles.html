@@ -1,0 +1,229 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../bgadp-mobiles/bgadp-mobiles.html" />
+<link rel="import" href="../cells-global-apis-behaviors/cells-global-apis-behaviors.html" />
+
+
+<!--
+`<cells-dm-global-apis-mobiles>` description.
+
+Example:
+
+```html
+<cells-dm-global-apis-mobiles></cells-dm-global-apis-mobiles>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="cells-dm-global-apis-mobiles">
+  <template>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+      /*global BGADPMobiles*/
+      /*eslint new-cap: 0*/
+
+      Polymer({
+
+        is: 'cells-dm-global-apis-mobiles',
+
+        behaviors: [
+          CellsBehaviors.CellsGlobalApisHandleRequest,
+          CellsBehaviors.CellsGlobalApisHandleRequestSign
+        ],
+
+        properties: {
+          /**
+           * Chosen host to make requests to
+           * @type {String}
+           */
+          host: {
+            type: String
+          },
+
+          /**
+          * Mobiles API version
+          * @type {String}
+          */
+          mobilesApiVersion: {
+            type: String,
+            value: '0'
+          },
+
+          providers: {
+            type: Object,
+            notify: true
+          },
+
+          providerAmounts: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Local currency
+           * @type {String}
+           */
+          localCurrency: String
+        },
+        /**
+         * Post new mobile top up
+         */
+        createMobileTopUp: function(selectedSource, destination, amount) {
+          if (!destination) {
+            destination = {
+              mobile: '',
+              alias: '',
+              number: '',
+              name: '',
+              bank: {
+                id: ''
+              }
+            };
+          }
+          var body = {
+            sender: {
+              contractId: selectedSource.contract.contractId,
+              product: {
+                id: selectedSource.productType,
+                name: selectedSource.name
+              }
+            },
+            receiver: {
+              mobile: destination.number,
+              alias: destination.alias || destination.name,
+              serviceProvider: {
+                id: destination.bank.id
+              }
+            },
+            sentMoney: {
+              amount: amount,
+              currency: this.localCurrency
+            },
+            additionalInformation: 'New top up'
+          };
+
+          var service = this._mobileTopUpPostService({
+            host: this.host,
+            body: body,
+            version: this.mobilesApiVersion,
+            requiresTsec: true
+          });
+
+          service.generateRequest().then(
+            function() {
+              var response = service.getLastResponse();
+              this.dispatchEvent(new CustomEvent('mobile-top-up-created', {
+                detail: response && response.data,
+                bubbles: true,
+                composed: true
+              }));
+            }.bind(this),
+
+            function() {
+              this.dispatchEvent(new CustomEvent('error-on-create-mobile-top-up', {
+                bubbles: true,
+                composed: true
+              }));
+            }.bind(this)
+          );
+        },
+
+        /**
+         * Get mobile providers
+         */
+        getProviders: function(params) {
+          var service = this._mobileProvidersService({
+            host: this.host,
+            params: params,
+            version: this.mobilesApiVersion,
+            requiresTsec: true
+          });
+
+          service.generateRequest().then(
+            function() {
+              this.set('providers', this._parseResponseProv(service.getLastResponse()));
+              this.dispatchEvent(new CustomEvent('set-providers', {
+                bubbles: true,
+                composed: true,
+                detail: this._parseResponseProv(service.getLastResponse())
+              }));
+            }.bind(this),
+            function() {
+              this.dispatchEvent(new CustomEvent('error-on-get-providers', {
+                bubbles: true,
+                composed: true
+              }));
+            }.bind(this));
+        },
+        /**
+         * Service - Get mobile provider amount
+         */
+        getProviderAmounts: function(params) {
+          var service = this._mobileProviderAmountService({
+            host: this.host,
+            params: { 'service-provider-id': params.id },
+            version: this.mobilesApiVersion,
+            requiresTsec: true
+          });
+
+          service.generateRequest().then(
+            function() {
+              this.set('providerAmounts', this._parseResponseProv(service.getLastResponse()));
+              this.dispatchEvent(new CustomEvent('set-provider-amounts', {
+                bubbles: true,
+                composed: true,
+                detail: this._parseResponseProv(service.getLastResponse())
+              }));
+            }.bind(this),
+            function() {
+              this.dispatchEvent(new CustomEvent('error-on-get-provider-amount', {
+                bubbles: true,
+                composed: true
+              }));
+            }.bind(this));
+        },
+        /**
+         * Parse response
+         */
+        _parseResponseProv: function(response) {
+          return response && response.data;
+        },
+        /**
+         * Service - Get mobile providers
+         * /mobiles/v0/service-providers
+         * @method {GET}
+         */
+        _mobileProvidersService: function(params) {
+          /* istanbul ignore next */
+          var service = new BGADPMobiles.mobiles.serviceProvers.get(params);
+          this._addSignListener(service);
+          return service;
+        },
+        /**
+         * Service - Get mobile provider possible amounts
+         * /mobiles/v0/service-providers/{service-provider-id}
+         * @method {GET}
+         */
+        _mobileProviderAmountService: function(params) {
+          /* istanbul ignore next */
+          var service = new BGADPMobiles.mobiles.serviceProvers.serviceProver.get(params);
+          this._addSignListener(service);
+          return service;
+        },
+
+        /**
+         * Service - Post mobile top up
+         * /mobiles/v0/top-ups
+         * @method {POST}
+         */
+        _mobileTopUpPostService: function(params) {
+          var service = new BGADPMobiles.topUps.post(params);
+          this._addSignListener(service);
+          return service;
+        },
+      });
+
+    }());
+
+  </script>
+</dom-module>

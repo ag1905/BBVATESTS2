@@ -1,0 +1,13 @@
+{
+  "cells-new-cellular-alias": "Alias del contacto",
+  "cells-new-cellular-continue-button": "Continuar",
+  "cells-new-cellular-continue-info": "Al continuar se registrará la operación",
+  "cells-new-cellular-form-mobile-provider": "Compañía",
+  "cells-new-cellular-invalid-alias": "Ya tienes un contacto guardado con este Alias",
+  "cells-new-cellular-name": "Nombre del beneficiario",
+  "cells-new-cellular-number": "Número celular",
+  "new-recipient-save-label": "Guardar contacto",
+  "new-recipient-save-sub-label": "Este contacto quedará guardado para futuras operaciones",
+  "new-recipient-saved-label": "Agregar teléfono",
+  "new-recipient-saved-sub-label": "Este teléfono se agregará al contacto de “${alias}” que tienes guardado"
+}

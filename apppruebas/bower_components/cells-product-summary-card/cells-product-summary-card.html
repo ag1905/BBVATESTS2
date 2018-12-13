@@ -1,0 +1,168 @@
+<link rel="import" href="../cells-product-summary/cells-product-summary.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="cells-product-summary-card-styles.html">
+<link rel="import" href="../cells-molecule-card-cover-cvv/cells-molecule-card-cover-cvv.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html" />
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../cells-switch-item/cells-switch-item.html">
+<link rel="import" href="../cells-moment-import/cells-moment-import.html">
+<link rel="import" href="../cells-moment-import/cells-moment-locale-es-import.html">
+<!--
+`<cells-product-summary-card>` is a wrapper of 'cells-product-summary' that understands
+the 'card' the Canonical Data Model (CMD). That card is binded into 'cells-product-summary',
+which displays it.
+
+Example:
+```html
+<cells-product-summary-card card="[[myCard]]" localCurrency="EUR"></cells-product-summary-card>
+
+<cells-product-summary-card card="[[myCard]]" has-additional-items localCurrency="USD"></cells-product-summary-card>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-product-summary-card-scope      | scope description | default value  |
+| --cells-product-summary-card  | empty mixin     | {}             |
+
+@demo demo/index.html
+@hero random-3.svg
+@composer
+@description wrapper of cells-product-summary that understands the card the Canonical Data Model.
+@type UI
+@platforms android, ios, desktop
+@family cells-catalog-widgets-family
+-->
+<dom-module id="cells-product-summary-card">
+  <template>
+    <style include="cells-product-summary-card-styles cells-product-summary-card-shared-styles"></style>
+    <cells-product-summary
+      class$="card-product [[negativeClass]]"
+      loading="[[loading]]"
+      progress-value="[[_progressValue]]"
+      progress-max="[[_progressMax]]"
+      main-items="[[_mainItems]]"
+      optional-items="[[_optionalItems]]"
+      optional-items-align="[[optionalItemsAlign]]"
+      additional-items="[[_additionalItems]]"
+      additional-items-align="[[additionalItemsAlign]]"
+      label-more-info="cells-product-summary-card-more-info">
+      <div slot="header">
+        <cells-molecule-card-cover-cvv
+          class="demo"
+          has-cvv="[[hasCvv]]"
+          card="[[card]]"
+          overdraft="[[_overdraft]]"
+          front-image="[[_imgSrc.frontImg]]"
+          back-image="[[_imgSrc.backImg]]"
+          is-card-masked="[[isCardMasked]]"
+          default-images="[[defaultImages]]"
+          spinner-card-open="{{_spinnerCardOpen}}"
+          front-image-loaded="{{frontImageLoaded}}">
+        </cells-molecule-card-cover-cvv>
+      </div>
+      <div slot="footer" class$="[[_additionalInfo]]">
+        <template is="dom-if" if="[[_paymentMethods]]">
+          <div class="data">
+            <div class="data__row">
+              <span class="desc desc--title">{{t('cells-product-summary-card-copy-number-cutoff-date')}}</span>
+              <span class="date">[[_formatDate(card.cutOffDate)]]</span>
+            </div>
+            <template is="dom-if" if="[[hasAdditionalItems]]">
+              <template is="dom-if" if="[[_paymentMethodsAmounts.totalDebtAmount]]">
+                <div class="data__row">
+                  <div>
+                    <span class="desc">[[_paymentMethodsAmounts.totalDebtAmount.name]]</span>
+                    <cells-atom-amount
+                      class="amount-large"
+                      amount="[[_paymentMethodsAmounts.totalDebtAmount.values.amount]]"
+                      currency-code="[[_paymentMethodsAmounts.totalDebtAmount.values.currency]]"
+                      local-currency="[[localCurrency]]">
+                    </cells-atom-amount>
+                  </div>
+                  <cells-st-button class="link transparent">
+                    <button id="debt" on-tap="_onTapIcon">
+                      <cells-atom-icon icon="coronita:help" class="icon-size-20">
+                      </cells-atom-icon>
+                    </button>
+                  </cells-st-button>
+                </div>
+              </template>
+            </template>
+          </div>
+          <div class="data">
+            <div class="data__row">
+              <span class="desc desc--title">{{t('cells-product-summary-card-copy-number-limit-date')}}</span>
+              <span class="date">[[_formatDate(_paymentMethods.endDate)]]</span>
+            </div>
+            <template is="dom-if" if="[[hasAdditionalItems]]">
+              <template is="dom-if" if="[[_paymentMethodsAmounts.minimumAmount]]">
+                <div class="data__row">
+                  <div>
+                    <span class="desc">[[_paymentMethodsAmounts.minimumAmount.name]]</span>
+                    <cells-atom-amount
+                      class="amount-large"
+                      amount="[[_paymentMethodsAmounts.minimumAmount.values.amount]]"
+                      currency-code="[[_paymentMethodsAmounts.minimumAmount.values.currency]]"
+                      local-currency="[[localCurrency]]">
+                    </cells-atom-amount>
+                    <span class="info">
+                      <cells-atom-icon
+                        id="minimun"
+                        icon="coronita:info"
+                        class="icon-size-20">
+                      </cells-atom-icon>
+                      {{t('cells-product-summary-card-copy-number-could-fees')}}
+                    </span>
+                  </div>
+                  <cells-st-button class="link transparent">
+                    <button id="minimun" on-tap="_onTapIcon">
+                      <cells-atom-icon icon="coronita:help" class="icon-size-20">
+                      </cells-atom-icon>
+                    </button>
+                  </cells-st-button>
+                </div>
+              </template>
+            </template>
+
+            <template is="dom-if" if="[[hasAdditionalItems]]">
+              <template is="dom-if" if="[[_paymentMethodsAmounts.minimumAmountToAvoidInterest]]">
+                <div class="data__row">
+                  <div>
+                    <span class="desc">[[_paymentMethodsAmounts.minimumAmountToAvoidInterest.name]]</span>
+                    <cells-atom-amount
+                      class="amount-large"
+                      amount="[[_paymentMethodsAmounts.minimumAmountToAvoidInterest.values.amount]]"
+                      currency-code="[[_paymentMethodsAmounts.minimumAmountToAvoidInterest.values.currency]]"
+                      local-currency="[[localCurrency]]">
+                    </cells-atom-amount>
+                  </div>
+                  <cells-st-button class="link transparent">
+                    <button id="interest" on-tap="_onTapIcon">
+                      <cells-atom-icon icon="coronita:help" class="icon-size-20">
+                      </cells-atom-icon>
+                    </button>
+                  </cells-st-button>
+                </div>
+              </template>
+            </template>
+          </div>
+        </template>
+      </div>
+    </cells-product-summary>
+    <template is="dom-if" if="[[showOnOffSwitch]]">
+      <cells-switch-item
+        id="ON_OFF"
+        title="[[titleSwitch]]"
+        label="[[labelSwitch]]"
+        enabled="[[enabledSwitch]]"
+        checked="[[checkedSwitch]]">
+      </cells-switch-item>
+    </template>
+  </template>
+  <script src="cells-product-summary-card.js"></script>
+</dom-module>

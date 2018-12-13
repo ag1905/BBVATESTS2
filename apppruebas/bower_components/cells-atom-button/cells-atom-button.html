@@ -1,0 +1,154 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-atom-button-styles.html">
+
+<!--
+The `<cells-atom-button>` is a reusable atomic element. It's extended from button native tag.
+
+See all the available classes in the demo.
+
+Example:
+
+    <button is="cells-atom-button"></button>
+
+__Button with icon and text__
+
+Use `btn--composed` class on the button and `btn__icon` and `btn__text` classes for the icon and text.
+
+Example:
+
+    <button is="cells-atom-button" class="btn--composed">
+      <cells-atom-icon icon="banking:A01" class="btn__icon"></cells-atom-icon>
+      <span class="btn__text">Button with icon</span>
+    </button>
+
+__Button with only icon__
+
+Does not need the `btn-composed` class.
+
+    <button is="cells-atom-button">
+      <cells-atom-icon icon="banking:A01" class="btn__icon"></cells-atom-icon>
+    </button>
+
+__Alignment classes__
+
+By default, the text content is centered. Use the following classes to change the alignment.
+
+- `btn--content-left`: all nodes aligned to left
+- `btn--content-right`: all nodes aligned to right
+- `btn--content-centered`: all nodes centered
+
+__!Note__
+If you use a button without text (only icon), it's recomended that you provide a descriptive label via the `aria-label` attribute.
+
+Example:
+
+    <button is="cells-atom-button" icon="banking:N09" aria-label="Search"></button>
+
+
+## Styling
+
+The following custom properties and mixins are available for styling: __(*thbb = theme-base-buttons)__
+
+Default button:
+
+| Custom property | Description     | Default        |
+|-----------------|-----------------|----------------|
+| --cells-btn             | mixin :host default   | thbb:  --cells-btn  |
+| --cells-btn--font        | mixin :host default   | thbb:  --cells-btn-font  |
+| --cells-btn--decorator   | mixin :host default   | thbb:  --cells-btn-decorator  |
+| --cells-btn--animations  | mixin :host default   | thbb:  --cells-btn-animations  |
+| --cells-btn--hover       | empty mixin :host:hover default    | {} |
+| --cells-btn--focus       | empty mixin for :host:focus by default     | {} |
+| --cells-btn--active      | mixin for :host:active by default    | thbb:  --cells-btn--active |
+| --cells-btn--disabled    | mixin for :host:disabled by default    | thbb:  --cells-btn--disabled |
+| --cells-btn--composed    | empty mixin for :host(.btn--composed)    | {} |
+| --cells-btn--composed-content    | empty mixin for :host(.btn--composed) ::content    | {} |
+
+Types of buttons:
+
+| Custom property | Description     | Default        |
+|-----------------|-----------------|----------------|
+| --cells-btn--primary    | mixin :host.btn--primary default    | thbb:  --cells-btn--primary |
+| --cells-btn--primary-hover    | mixin :host.btn--primary:hover default    | thbb:  --cells-btn--primary-hover |
+| --cells-btn--primary-active    | mixin :host.btn--primary:active default    | thbb:  --cells-btn--primary-active |
+| --cells-btn--primary-disabled    | mixin :host.btn--primary:disabled default    | thbb:  --cells-btn--primary-disabled |
+| --cells-btn--secondary    | mixin :host.btn--secondary default    | thbb:  --cells-btn--secondary |
+| --cells-btn--secondary-hover    | mixin :host.btn--secondary:hover default    | thbb:  --cells-btn--secondary-hover |
+| --cells-btn--secondary-active    | mixin :host.btn--secondary:active default    | thbb:  --cells-btn--secondary-active |
+| --cells-btn--secondary-disabled    | mixin :host.btn--secondary:disabled default    | thbb:  --cells-btn--secondary-disabled |
+| --cells-btn--tertiary    | mixin :host.btn--tertiary default    | thbb:  --cells-btn--tertiary |
+| --cells-btn--tertiary-hover    | mixin :host.btn--tertiary:hover default    | thbb:  --cells-btn--tertiary-hover |
+| --cells-btn--tertiary-active    | mixin :host.btn--tertiary:active default    | thbb:  --cells-btn--tertiary-active |
+| --cells-btn--tertiary-disabled    | mixin :host.btn--tertiary:disabled default    | thbb:  --cells-btn--tertiary-disabled |
+| --cells-btn--quaternary    | mixin :host.btn--quaternary default    | thbb:  --cells-btn--quaternary |
+| --cells-btn--quaternary-hover    | mixin :host.btn--quaternary:hover default    | thbb:  --cells-btn--quaternary-hover |
+| --cells-btn--quaternary-active    | mixin :host.btn--quaternary:active default    | thbb:  --cells-btn--quaternary-active |
+| --cells-btn--quaternary-disabled    | mixin :host.btn--quaternary:disabled default    | thbb:  --cells-btn--quaternary-disabled |
+| --cells-btn--neutral    | mixin :host.btn--neutral default    | thbb:  --cells-btn--neutral |
+| --cells-btn--neutral-hover    | mixin :host.btn--neutral:hover default    | thbb:  --cells-btn--neutral-hover |
+| --cells-btn--neutral-active    | mixin :host.btn--neutral:active default    | thbb:  --cells-btn--neutral-active |
+| --cells-btn--neutral-disabled    | empty mixin :host.btn--neutral:disabled default    | {} |
+| --cells-btn--transparent | empty mixin for .btn--transparent | {} |
+| --cells-btn--transparent-hover | empty mixin for .btn--transparent:hover | {} |
+| --cells-btn--transparent-active | empty mixin for .btn--transparent:active | {} |
+| --cells-btn--transparent-disabled | empty mixin for .btn--transparent[disabled] | {} |
+| --cells-btn--link | empty mixin for .btn--link | {} |
+| --cells-btn--link-hover | empty mixin for .btn--link:hover | {} |
+| --cells-btn--link-active | empty mixin for .btn--link:active | {} |
+| --cells-btn--link-disabled | empty mixin for .btn--link[disabled] | {} |
+
+Sizes:
+
+| Custom property | Description     | Default        |
+|-----------------|-----------------|----------------|
+| --cells-btn--xxl    | mixin :host.btn--xxl default    | thbb:  --cells-btn--xxl |
+| --cells-btn--xl    | mixin :host.btn--xl default    | thbb:  --cells-btn--xl |
+| --cells-btn--l    | mixin :host.btn--l default    | thbb:  --cells-btn--l |
+| --cells-btn--m    | mixin :host.btn--m default    | thbb:  --cells-btn--m |
+| --cells-btn--s    | mixin :host.btn--s default    | thbb:  --cells-btn--s |
+| --cells-btn--xs    | mixin :host.btn--xs default    | thbb:  --cells-btn--xs |
+| --cells-btn--xxs    | mixin :host.btn--xxs default    | thbb:  --cells-btn--xxs |
+
+
+Mixins available to extend:
+
+| Custom property                        | Description                             | Default   |
+|:---------------------------------------|:---------------------------------------|:---------:|
+| --cells-btn--extend                    | extends --cells-btn                     | {}        |
+| --cells-btn-content--extend            | extends --cells-btn--neutral-active     | {}        |
+| --cells-btn--hover--extend            | extends --cells-btn--hover             | {}        |
+| --cells-btn--focus--extend            | extends --cells-btn--foucs             | {}        |
+| --cells-btn--active--extend            | extends --cells-btn--active             | {}        |
+| --cells-btn--disabled--extend          | extends --cells-btn--disabled   | {}        |
+| --cells-btn--primary--extend           | extends --cells-btn--primary            | {}        |
+| --cells-btn--primary-hover--extend     | extends --cells-btn--primary-hover      | {}        |
+| --cells-btn--primary-active--extend    | extends --cells-btn--primary-active     | {}        |
+| --cells-btn--primary-disabled--extend  | extends --cells-btn--primary-disabled   | {}        |
+| --cells-btn--secondary--extend         | extends --cells-btn--secondary          | {}        |
+| --cells-btn--secondary-hover--extend   | extends --cells-btn--secondary-hover    | {}        |
+| --cells-btn--secondary-active--extend  | extends --cells-btn--secondary-active   | {}        |
+| --cells-btn--secondary-disabled--extend| extends --cells-btn--secondary-disabled | {}        |
+| --cells-btn--tertiary--extend          | extends --cells-btn--tertiary           | {}        |
+| --cells-btn--tertiary-hover--extend    | extends --cells-btn--tertiary-hover     | {}        |
+| --cells-btn--tertiary-active--extend   | extends --cells-btn--tertiary-active    | {}        |
+| --cells-btn--tertiary-disabled--extend | extends --cells-btn--tertiary-disabled  | {}        |
+| --cells-btn--quaternary--extend        | extends --cells-btn--quaternary         | {}        |
+| --cells-btn--quaternary-hover--extend  | extends --cells-btn--quaternary-hover   | {}        |
+| --cells-btn--quaternary-active--extend | extends --cells-btn--quaternary-active  | {}        |
+| --cells-btn--quaternary-disabled--extend| extends --cells-btn--quaternary-disabled | {}        |
+| --cells-btn--neutral--extend           | extends --cells-btn--neutral            | thbb: --cells-btn--neutral--extend |
+| --cells-btn--neutral-hover--extend     | extends --cells-btn--neutral-hover      | {}        |
+| --cells-btn--neutral-active--extend    | extends --cells-btn--neutral-active     | {}        |
+| --cells-atom-button                          | applies to :host                        | {}        |
+
+
+@demo demo/index.html
+@hero cells-atom-button.jpg
+-->
+<dom-module id="cells-atom-button">
+  <template>
+    <style include="cells-atom-button-styles cells-atom-button-shared-styles"></style>
+    <content></content>
+  </template>
+  <script src="cells-atom-button.js"></script>
+</dom-module>

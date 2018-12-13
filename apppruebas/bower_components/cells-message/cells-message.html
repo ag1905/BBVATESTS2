@@ -1,0 +1,183 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-message-styles.html">
+
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+
+<!--
+`<cells-message>` A message displays information, this message can contain title, content and list
+
+
+__Example without List:__
+
+
+```html
+  properties: {
+    topSubtitle: "cells-message-example-date",
+    title: "cells-message-example-title",
+    subtitle: "cells-message-example-subtitle",
+    contentText: "cells-message-example-content"
+  }
+```
+
+
+```json
+  {
+   "cells-message-example-date": {
+      "message": "03 Julio 2017"
+    },
+    "cells-message-example-title": {
+      "message": "Sed nunc lectus convallis sed"
+    },
+    "cells-message-example-subtitle": {
+      "message": "Sed nunc lectus, convallis sed turpis eget, porta suscipit ante"
+    },
+    "cells-message-example-content": {
+      "message": "Donec commodo nisl in mauris cursus, et vestibulum nisl pellentesque. Nam cursus eu metus eget dapibus. Nunc pulvinar metus diam, on egestas erat imperdiet vitae. Duis vehicula ornare erat, quis gravida nunc eleifend sit amet. Nunc tellus lectus, tempor quis ipsum sit amet, hendrerit accumsan dolor. In fringilla molestie ullamcorper."
+    }
+  }
+```
+
+```html
+ <cells-message
+   top-subtitle="[[topSubtitle]]"
+   title="[[title]]"
+   subtitle="[[subtitle]]"
+   content-text="[[contentText]]">
+ </cells-message>
+```
+
+__Example with list:__
+
+
+```html
+  properties: {
+    topSubtitle: "cells-message-example-date",
+    title: "cells-message-example-title",
+    subtitle: "cells-message-example-subtitle",
+    contentText: "cells-message-example-content",
+    list: [
+      'cells-message-example-list1-1',
+      'cells-message-example-list1-2',
+      'cells-message-example-list1-3'
+    ]
+  }
+```
+
+
+```json
+  {
+   "cells-message-example-date": {
+      "message": "03 Julio 2017"
+    },
+    "cells-message-example-title": {
+      "message": "Sed nunc lectus convallis sed"
+    },
+    "cells-message-example-subtitle": {
+      "message": "Sed nunc lectus, convallis sed turpis eget, porta suscipit ante"
+    },
+    "cells-message-example-content": {
+      "message": "Donec commodo nisl in mauris cursus, et vestibulum nisl pellentesque. Nam cursus eu metus eget dapibus. Nunc pulvinar metus diam, on egestas erat imperdiet vitae. Duis vehicula ornare erat, quis gravida nunc eleifend sit amet. Nunc tellus lectus, tempor quis ipsum sit amet, hendrerit accumsan dolor. In fringilla molestie ullamcorper."
+    },
+    "cells-message-example-list1-1": {
+      "message": "Maecenas sed sapien pretium, malesuada massa sit amet."
+    },
+    "cells-message-example-list1-2": {
+      "message": "Lacus in gravida eleifend, purusIn elementum, lacus in gravida eleifend, purus lacus aliquet leo, eu tincidunt quam massa vel eros. Praesent fnibus lorem ac magna pellentesque tristique. Sed sapien orci,lobortis at ullamcorper sit amet, laoreet non nulla."
+    },
+    "cells-message-example-list1-3": {
+      "message": "Etiam dapibus elementum dictum. Mauris vehicula tellus fnibus accumsan faucibus. Quisque fermentum nulla libero, sit amet blandit massa scelerisque vel."
+    }
+  }
+```
+
+```html
+ <cells-message
+   top-subtitle="[[topSubtitle]]"
+   title="[[title]]"
+   subtitle="[[subtitle]]"
+   content-text="[[contentText]]"
+   list="[[list]]">
+ </cells-message>
+```
+
+
+__Example ordered list:__
+
+```html
+ <cells-message
+   top-subtitle="[[topSubtitle]]"
+   title="[[title]]"
+   subtitle="[[subtitle]]"
+   content-text="[[contentText]]"
+   list="[[list]]"
+   list-order>
+ </cells-message>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-message                          | empty mixin host                  | {}      |
+| --cells-message-color                    | color for title                   | #121212 |
+| --cells-message-subtitle-color           | color for sub title               | #797F85 |
+| --cells-message-top-subtitle             | empty mixin for top subtitle      | {}      |
+| --cells-message-title                    | empty mixin for top title         | {}      |
+| --cells-message-subtitle                 | empty mixin for top subtitle      | {}      |
+| --cells-message-content-text             | empty mixin content text          | {}      |
+| --cells-message-content-list             | empty mixin for list              | {}      |
+| --cells-message-content-list-li          | empty mixin for li oflist         | {}      |
+| --cells-message-content-list-li-before   | empty mixin for before li of list | {}      |
+| --cells-message-decimal                  | empty mixin for order list        | {}      |
+| --cells-message-content-decimal-li        | empty mixin for li of list        | {}      |
+| --cells-message-content-decimal-li-before | empty mixin for before li of list | {}      |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-message">
+  <template>
+    <style include="cells-message-styles cells-message-shared-styles"></style>
+
+    <template is="dom-if" if="[[topSubtitle]]">
+      <time class="top-subtitle">[[t(topSubtitle)]]</time>
+    </template>
+
+    <template is="dom-if" if="[[title]]">
+      <h2 class="title">[[t(title)]]</h2>
+    </template>
+
+    <template is="dom-if" if="[[title]]">
+      <p class="subtitle">[[t(subtitle)]]</p>
+    </template>
+
+    <template is="dom-if" if="[[contentText]]">
+      <p class="content-text">[[t(contentText)]]</p>
+    </template>
+
+    <template id="list-items" is="dom-if" if="[[list]]">
+      
+      <template is="dom-if" if="[[!listOrder]]">
+        <ul id="list-items-ul" class="list">
+          <template is="dom-repeat" items="[[list]]" as="itemsList">
+          	<li class="item-list">[[t(itemsList)]]</li>
+          </template>
+        </ul>
+      </template>
+
+      <template is="dom-if" if="[[listOrder]]">
+        <ol>
+          <template is="dom-repeat" items="[[list]]" as="itemsList">
+            <li class="item-list">[[t(itemsList)]]</li>
+          </template>
+        </ol>
+      </template>
+
+    </template>
+
+  
+    <content></content>
+  </template>
+  <script src="cells-message.js"></script>
+</dom-module>

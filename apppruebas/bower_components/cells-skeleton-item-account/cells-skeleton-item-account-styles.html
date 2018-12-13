@@ -1,0 +1,51 @@
+<dom-module id="cells-skeleton-item-account-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  @apply (--cells-skeleton-item-account); }
+
+.item__wrapper {
+  width: 100%;
+  padding: 20px; }
+  .item__wrapper .item__header,
+  .item__wrapper .item__content--top,
+  .item__wrapper .item__content--bottom {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    overflow: hidden; }
+  .item__wrapper .item__header {
+    padding-bottom: 20px; }
+  .item__wrapper .item__content--top {
+    margin-bottom: 5px; }
+  .item__wrapper .item-mask {
+    width: 40%;
+    height: 1.125rem; }
+    .item__wrapper .item-mask.item-mask:first-child {
+      width: 55%; }
+    .item__wrapper .item-mask.item-mask--xs {
+      width: 20%;
+      height: 0.9375rem; }
+      .item__wrapper .item-mask.item-mask--xs:first-child {
+        width: 20%; }
+  .item__wrapper .item__content--bottom .item-mask--xs {
+    width: 15%; }
+  .item__wrapper .item__content--border-top {
+    border-top: 1px solid #E9E9E9;
+    margin-top: 20px;
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px; }
+
+</style></template></dom-module>

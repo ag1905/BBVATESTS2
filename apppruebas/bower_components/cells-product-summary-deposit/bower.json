@@ -1,0 +1,29 @@
+{
+  "name": "cells-product-summary-deposit",
+  "version": "1.0.7",
+  "description": "Wraps deposit type product detail",
+  "keywords": [
+    "i18n"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "cells-product-summary": "~4.0.2",
+    "moment": "~2.12.0",
+    "polymer": "Polymer/polymer#^1.6.0"
+  },
+  "devDependencies": {
+    "cells-coronita-theme": "~3.0.2",
+    "cells-demo-helper": "^1.0.11",
+    "cells-glomo-theme": "ssh://git@globaldevtools.bbva.com:7999/tp/cells-glomo-theme.git#^5.1.8",
+    "cells-sass": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-sass.git#^1.0.15",
+    "coronita-icons": "ssh://git@globaldevtools.bbva.com:7999/ct/coronita-icons.git#^1.1.3",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0"
+  },
+  "main": [
+    "cells-product-summary-deposit.html"
+  ],
+  "resolutions": {
+    "polymer": "^1.2.1"
+  }
+}

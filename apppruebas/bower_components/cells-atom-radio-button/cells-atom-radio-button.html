@@ -1,0 +1,56 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-behaviors/iron-button-state.html">
+<link rel="import" href="../iron-checked-element-behavior/iron-checked-element-behavior.html">
+<link rel="import" href="../iron-signals/iron-signals.html">
+<link rel="import" href="cells-atom-radio-button-styles.html">
+<!--
+`<cells-atom-radio-button>` has the behavior of a native radio-button
+
+radioButtonChangeHandler is implemented in the cells-atom-radio-button JS file.
+
+If you want a set of cells-atom-radio-button's to only allow one within the set,
+give them the same 'name' attribute value.
+
+Example:
+
+```html
+  <cells-atom-radio-button name="name" checked>Label 1</cells-atom-radio-button>
+  <cells-atom-radio-button name="name">Label 2</cells-atom-radio-button>
+```
+
+Example of disabled radio buttons:
+
+```
+  <cells-atom-radio-button checked disabled>Label 3</cells-atom-radio-button>
+  <cells-atom-radio-button disabled>Label 4</cells-atom-radio-button>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:---------------:|:---------------:| :-------------:|
+| --cells-atom-radio-button-checked-color  | Color of the point that shows the radio button when checked | #44A718|
+| --cells-btn--radio-disabled | Radio button disabled | {} |
+| --cells-btn--radio-focus | Radio button disabled | {} |
+| --cells-text-size-m | Font size of the label | {} |
+| --cells-atom-radio-button-radius | Radius of the radio button| 50%|
+| --cells-btn--radio-outter| Radio button's outter circle styles | {}|
+| --cells-btn--radio-inner| Radio button's inner circle styles | {}|
+| --cells-atom-radio-button  | Empty mixin     | {} |
+
+@demo demo/index.html
+@hero cells-atom-radio-button.jpg
+-->
+<dom-module id="cells-atom-radio-button">
+  <template>
+    <style include="cells-atom-radio-button-styles cells-atom-radio-button-shared-styles"></style>
+    <div class="radio-button">
+      <input name$="{{name}}" type="radio" checked$="{{checked}}" disabled$="{{disabled}}">
+      <iron-signals on-iron-signal-radio-change="radioButtonChangeHandler"></iron-signals>
+      <content></content>
+    </div>
+  </template>
+  <script src="cells-atom-radio-button.js"></script>
+</dom-module>

@@ -1,0 +1,12 @@
+{
+  "cells-molecule-header-open-menu-label": "Abrir menú",
+  "cells-molecule-header-search-label": "Buscar",
+  "cells-molecule-header-greeting": "Hola",
+  "cells-molecule-header-back-label": "Atrás",
+  "cells-molecule-header-close-label": "Cerrar",
+  "cells-product-summary-account-header-title": "Cuenta",
+  "cells-product-summary-card-header-title": "Tarjeta",
+  "cells-product-summary-deposit-header-title": "Inversión a plazo",
+  "cells-product-summary-fund-header-title": "Fondo",
+  "cells-product-summary-loan-header-title": "Crédito"
+}

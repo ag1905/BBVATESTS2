@@ -1,0 +1,19 @@
+{
+  "cells-glomo-bill-payment-service-detail_calculate-amount": "Calculate amount",
+  "cells-glomo-bill-payment-service-detail_continue": "Continue",
+  "cells-glomo-bill-payment-service-detail_apply-changes": "Apply changes",
+  "cells-glomo-bill-payment-service-detail_choose-another-service": "Choose another service",
+  "cells-glomo-bill-payment-service-detail_reference": "Reference",
+  "cells-glomo-bill-payment-service-detail_amount": "Amount",
+  "cells-glomo-bill-payment-service-detail_select-reactive-amount": "Minimum amount",
+  "cells-glomo-bill-payment-service-detail_select-total-amount": "Total debt amount",
+  "cells-glomo-bill-payment-service-detail_select-other-amount": "Other amount",
+  "cells-glomo-bill-payment-service-detail-close": "Close",
+  "cells-glomo-bill-payment-service-detail_agreement-number": "__Agreement number__",
+  "cells-glomo-bill-payment-service-detail_reference-number": "__Reference number__",
+  "cells-glomo-bill-payment-service-detail_save-service": "__Save service__",
+  "cells-glomo-bill-payment-service-detail_optional-alias": "__Alias (Optional)__",
+  "cells-glomo-bill-payment-service-detail_modal-title": "_Datos del servicio_",
+  "cells-glomo-bill-payment-service-detail_modal-button-primary": "_Entendido_",
+  "cells-glomo-bill-payment-service-detail_maturity-date": "Maturity date:"
+}

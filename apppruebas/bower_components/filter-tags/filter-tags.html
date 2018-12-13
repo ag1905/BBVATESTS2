@@ -1,0 +1,37 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-molecule-link-icon/cells-molecule-link-icon.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+
+<link rel="import" href="filter-tags-styles.html">
+<!--
+`<filter-tags>` description.
+
+Example:
+
+```html
+<filter-tags></filter-tags>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --filter-tags-scope      | scope description | default value  |
+| --filter-tags  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="filter-tags">
+  <template>
+    <style include="filter-tags-styles filter-tags-shared-styles"></style>
+    <template is="dom-repeat" items={{selectedFilters}} as=tag index-as="index">
+      <a is="cells-molecule-link-icon" class="icon-size-10 tag" icon="coronita:close" on-click="_removeFilter" data-index$=[[index]]>{{tag.value}}</a>
+    </template>
+    <content></content>
+  </template>
+  <script src="filter-tags.js"></script>
+</dom-module>

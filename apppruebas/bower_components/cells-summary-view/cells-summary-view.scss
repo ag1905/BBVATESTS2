@@ -1,0 +1,143 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display:block;
+  background-color: var(--cells-summary-view-bg-color, var(--bbva-white, #fff));
+  font-family: var(--cells-fontDefault, sans-serif);
+  padding: rem(30px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @apply --cells-summary-view;
+}
+
+:host([hidden]), [hidden] {
+  display: none;
+}
+
+.cells-summary-view-operations-total {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @apply --cells-summary-view-operations-total;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  @apply --cells-summary-view-container;
+}
+
+.cells-summary-view--title {
+  font-size: rem(11px);
+  margin: rem(20px) 0 0;
+  color: var(--cells-summary-view-title-color, var(--bbva-400, #BDBDBD));
+  @apply --cells-fontDefaultMedium;
+  @apply --cells-summary-view-title;
+}
+
+.cells-summary-view--quantity {
+  margin: 0 0 rem(4px);
+  color: var(--cells-summary-view-quantity-color, var(--bbva-core-blue, #004481));
+  @apply --cells-fontDefaultNormal;
+  @apply --cells-summary-view-quantity;
+}
+
+.cells-summary-view--commission {
+  font-size: rem(13px);
+  margin: 0 0 rem(2px);
+  color: var(--cells-summary-view-comission-color, var(--bbva-600, #121212));
+  @apply --cells-fontDefaultNormalItalic;
+  @apply --cells-summary-view-comission;
+}
+
+.cells-summary-view--commission:last-of-type {
+  margin: 0 0 rem(30px);
+  @apply --cells-summary-view-comission-last;
+}
+
+.cells-summary-view--submit-button {
+  width: rem(144px);
+  margin-bottom: rem(20px);
+  @apply --cells-summary-view-submit-button;
+}
+
+.cells-summary-view--legal-terms {
+  font-size: rem(13px);
+  margin: 0;
+  color: var(--cells-summary-view-legal-terms-color, var(--bbva-600, #121212));
+  text-align: center;
+  @apply --cells-summary-view-legal-terms;
+}
+
+
+.cells-summary-view--legal-terms--text {
+  color: var(--cells-summary-view-legal-terms-text-color, var(--bbva-medium-blue, #2A86CA));
+  @apply --cells-fontDefaultBold;
+  @apply --cells-summary-view-legal-terms-text;
+}
+
+.skeleton {
+  width: 90%;
+  margin-bottom: rem(18px);
+
+  .row {
+    background-color: var(--cells-summary-view-skeleton-color, var(--bbva-200, #E9E9E9));;
+    margin-left: -5px;
+    height: rem(18px);
+    margin-top: rem(18px);
+    transform: skewX(160deg);
+  }
+}
+
+.animate-layer {
+    height: rem(60px);
+    background: var(--cells-summary-view-skeleton-background-color, var(--bbva-white, #FFF));
+    opacity: .5;
+    position: absolute;
+    width: 120%;
+    right: -70%;
+    top: 40%;
+    transform: skewX(160deg) translateX(200%) scaleX(1);
+    transform-origin: right bottom;
+    animation: skeletonAnimation 3s 1.3s ease-in-out infinite;
+  }
+
+  @keyframes skeletonAnimation {
+    from {
+      opacity: 0.5;
+      right: -130%;
+    }
+
+    50% {
+      opacity: 0.6;
+      right: -5%;
+    }
+
+    60% {
+      opacity: 0.6;
+      right: -5%;
+    }
+
+    70% {
+      opacity: 0.3;
+      right: -5%;
+    }
+
+    90% {
+      opacity: 0.1;
+      right: -5%;
+    }
+
+    100% {
+      transform: skewX(160deg) translateX(0%) scaleX(2);
+      opacity: 0;
+    }
+  }

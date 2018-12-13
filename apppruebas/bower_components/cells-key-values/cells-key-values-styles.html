@@ -1,0 +1,91 @@
+<dom-module id="cells-key-values-styles"><template><style>
+:host {
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  color: var(--cells-key-values-color, #121212);
+  @apply --cells-key-values; }
+
+:host([hidden]), [hidden] {
+  display: none; }
+
+/**
+ * Default layout (stacked)
+ * key above value
+ */
+.key {
+  color: var(--cells-key-values-key-color, #666);
+  margin-bottom: var(--cells-key-values-key-value-margin, 0.3125rem);
+  @apply --cells-key-values-key; }
+  .key span {
+    @apply --cells-key-values-key-span; }
+
+.value {
+  margin: 0;
+  font-size: var(--cells-key-values-value-font-size, 1rem);
+  @apply --cells-key-values-value; }
+
+/**
+ * Inline layout
+ * value to the right of the key
+ */
+:host(.inline) {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  @apply --cells-key-values-inline; }
+  :host(.inline) .key {
+    flex: 1;
+    margin-bottom: 0;
+    @apply --cells-key-values-inline-key; }
+  :host(.inline) .value {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    @apply --cells-key-values-inline-value; }
+    :host(.inline) .value > div:not(:first-of-type) {
+      margin-top: 0.125rem;
+      margin-bottom: 0.5rem;
+      color: var(--cells-key-values-key-color, #666);
+      @apply --cells-key-values-inline-value-not-first-child; }
+
+/**
+ * Stacked reversed layout
+ * Value above key, both centered
+ */
+:host(.reversed) {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  @apply --cells-key-values-reversed; }
+  :host(.reversed) .key {
+    margin-bottom: 0;
+    @apply --cells-key-values-reversed-key; }
+  :host(.reversed) .value {
+    text-align: center;
+    margin-bottom: var(--cells-key-values-key-value-margin, 0.3125rem);
+    flex-direction: column;
+    @apply --cells-key-values-reversed-value; }
+    :host(.reversed) .value > div:not(:first-child) {
+      color: var(--cells-key-values-key-color, #666);
+      @apply --cells-key-values-reversed-value-not-first-child; }
+    :host(.reversed) .value .value-item-1 {
+      margin-top: 0.3125rem;
+      margin-bottom: -0.1875rem;
+      @apply --cells-key-values-reversed-value-second-child; }
+
+.value-item {
+  @apply --cells-key-values-value-item; }
+
+.value-amount {
+  @apply --cells-key-values-value-amount; }
+
+.value-mask {
+  @apply --cells-key-values-value-mask; }
+
+.value-simple {
+  @apply --cells-key-values-value-simple; }
+
+</style></template></dom-module>

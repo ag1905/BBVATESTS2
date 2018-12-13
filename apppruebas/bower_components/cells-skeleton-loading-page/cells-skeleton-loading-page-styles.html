@@ -1,0 +1,56 @@
+<dom-module id="cells-skeleton-loading-page-styles"><template><style>
+:host {
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity 150ms linear;
+  z-index: 100;
+  background-color: var(--cells-skeleton-loading-page-bg-color, #F4F4F4);
+  position: fixed;
+  top: 3.75rem;
+  height: 100%;
+  left: 0;
+  width: 100%;
+  padding: 0.625rem;
+  pointer-events: none;
+  box-sizing: border-box;
+  @apply --cells-skeleton-loading-page; }
+
+:host([hidden]) {
+  display: none !important; }
+
+:host([visible]) {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0ms;
+  @apply --cells-skeleton-loading-page-visible; }
+
+cells-skeleton-group {
+  -webkit-transform: translateY(100vh);
+          transform: translateY(100vh);
+  transition: -webkit-transform cubic-bezier(0.4, 0, 0.2, 1) 800ms;
+  transition: transform cubic-bezier(0.4, 0, 0.2, 1) 800ms;
+  transition: transform cubic-bezier(0.4, 0, 0.2, 1) 800ms, -webkit-transform cubic-bezier(0.4, 0, 0.2, 1) 800ms;
+  transition-delay: 150ms;
+  will-change: transform;
+  @apply --cells-skeleton-loading-page-group; }
+
+:host([visible]) cells-skeleton-group {
+  -webkit-transform: translateY(0);
+          transform: translateY(0); }
+
+:host([visible]:not([no-entry-animation])) cells-skeleton-group {
+  display: block; }
+  :host([visible]:not([no-entry-animation])) cells-skeleton-group:nth-of-type(1) {
+    transition-delay: calc(var(--cells-skeleton-loading-page-delay, 70ms) * 0); }
+  :host([visible]:not([no-entry-animation])) cells-skeleton-group:nth-of-type(2) {
+    transition-delay: calc(var(--cells-skeleton-loading-page-delay, 70ms) * 1); }
+  :host([visible]:not([no-entry-animation])) cells-skeleton-group:nth-of-type(3) {
+    transition-delay: calc(var(--cells-skeleton-loading-page-delay, 70ms) * 2); }
+  :host([visible]:not([no-entry-animation])) cells-skeleton-group:nth-of-type(4) {
+    transition-delay: calc(var(--cells-skeleton-loading-page-delay, 70ms) * 3); }
+  :host([visible]:not([no-entry-animation])) cells-skeleton-group:nth-of-type(5) {
+    transition-delay: calc(var(--cells-skeleton-loading-page-delay, 70ms) * 4); }
+  :host([visible]:not([no-entry-animation])) cells-skeleton-group:nth-of-type(6) {
+    transition-delay: calc(var(--cells-skeleton-loading-page-delay, 70ms) * 5); }
+
+</style></template></dom-module>

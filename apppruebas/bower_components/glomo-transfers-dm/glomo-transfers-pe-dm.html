@@ -1,0 +1,172 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-dm-global-apis-transfer/cells-dm-global-apis-transfer.html">
+<link rel="import" href="../cells-global-apis-behaviors/cells-global-apis-behaviors.html" />
+<link rel="import" href="../cells-moment-import/cells-moment-import.html">
+
+<!--
+`<glomo-transfers-pe-dm>` description.
+
+Example:
+
+```html
+<glomo-transfers-pe-dm></glomo-transfers-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-transfers-pe-dm">
+  <template>
+    <cells-dm-global-apis-transfer id="dm"
+      host="[[host]]"
+      transfer-api-version="[[transferApiVersion]]"
+      on-set-mobile-transfers="_parseTransfers"
+      on-set-more-mobile-transfers="_parseMoreTransfers"
+      pagination="{{pagination}}"
+      native="[[native]]">
+    </cells-dm-global-apis-transfer>
+  </template>
+  <script>
+    (function() {
+      /*global moment*/
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-transfers-pe-dm',
+
+        behaviors: [
+          CellsBehaviors.CellsGlobalApisHandleRequest,
+          CellsBehaviors.i18nBehavior
+        ],
+
+        properties: {
+          /**
+           * Host
+           * @type {String}
+           */
+          host: String,
+          /**
+           * API Version
+           */
+          transferApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * Mobile transfers array
+           */
+          mobileTransfersParsed: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Pagination of last request
+           */
+          pagination: Object,
+          /**
+           * Show spinner in ui
+           */
+          loading: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * Native request
+           */
+          native: {
+            type: Boolean,
+            value: false
+          },
+        },
+        /**
+         * Reset
+         */
+        reset: function() {
+          this.loading = false;
+          this.set('pagination', {});
+        },
+        /*
+         * Get all transfers types
+         */
+        getMobileTransfers: function() {
+          this.$.dm.getMobileTransfers();
+        },
+        /**
+         * Get more settleds
+         */
+        getMoreTransfers: function() {
+          if (this.pagination && this.pagination.page <= this.pagination.totalPages && !this.loading) {
+            var params = {'paginationKey': this._getPaginationKey(this.pagination.links.next)};
+
+            this.loading = true;
+            this.$.dm.getMobileTransfers(params, true);
+          }
+        },
+
+        /**
+         * Parse transfers
+         */
+        _parseTransfers: function(payload) {
+          var msgDate = this.t('glomo-transfers-overcome');
+          var parseResponse = payload && payload.detail.map(function(transfer, i) {
+            var status = this._getTransferStatus(transfer.status);
+            transfer.operationDate = transfer.date;
+            transfer.id = transfer.mobileTransferId;
+            transfer.concept = this.t('cells-cardless-withdrawal-operation-number') + transfer.mobileTransferId;
+            transfer.additionalInformation = [{
+              'key': 'cells-cardless-withdrawal-receiver-number',
+              'type': 'text',
+              'value': transfer.receiver && transfer.receiver.mobile ? this._formatMobileNumber(transfer.receiver.mobile) : ''
+            },
+            {
+              'type': 'text',
+              'value': this.t(status)
+            }];
+            transfer.localAmount = transfer.sentMoney.find(function(amount) {
+              return amount.isMajor;
+            });
+          }.bind(this));
+
+          this.set('mobileTransfersParsed', payload.detail);
+        },
+
+        _formatMobileNumber: function(mobile) {
+          return mobile.replace('+', '');
+        },
+
+        _getTransferStatus: function(status) {
+          var statusKey = '';
+          if (status.id === 'PENDING' || status.id === 'SENT' || status.id === 'EXPIRED') {
+            statusKey = 'glomo-transfers-status-' + status.id.toLowerCase();
+          } else if (status.id === 'BLOCK') {
+            statusKey = 'glomo-transfers-status-';
+            statusKey += status.reason && status.reason.id === 'F' ? 'block-fraud' : 'block-max-attempt';
+          }
+          return statusKey;
+        },
+        /**
+         * Parse more transfers
+         */
+        _parseMoreTransfers: function(payload) {
+          this.dispatchEvent(new CustomEvent('set-more-transfers', {
+            bubbles: true,
+            composed: true,
+            detail: this._parseTransfers(payload)
+          }));
+        },
+
+        /*
+         * Notify copy code
+         */
+        copyCode: function() {
+          this.dispatchEvent(new CustomEvent('clipboard-code', {
+            bubbles: true,
+            composed: true,
+            detail: this.code
+          }));
+        }
+      });
+    }());
+  </script>
+</dom-module>

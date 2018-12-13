@@ -1,0 +1,68 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../cells-amount-behavior/cells-amount-behavior.html">
+<link rel="import" href="cells-atom-amount-styles.html">
+
+<!--
+`<cells-atom-amount>` is a component formatting an amount and its currency code into different combinations of sizes.
+
+If amount is a negative value, .negative class is added to give a visual cue.
+
+Amount can be abbreviated if a scale is indicated. E.g.: 1.240.000 can be abbreviated as
+1.24M if scale 6 is set and if is present (in abbreviations property).
+
+Example:
+
+```html
+<cells-atom-amount
+  amount="6423525.45"
+  currency-code="EUR"
+  local-currency="USD"
+  language="en">
+</cells-atom-amount>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------| :-------------:|
+|--cells-atom-amount | empty mixin for :host | {} |
+|--cells-atom-amount-color | Text color | #121212 |
+|--cells-atom-amount-negative | empty mixin for :host(.negative) | {} |
+|--cells-atom-amount-sr | empty mixin for .sr-amount | {} |
+|--cells-atom-amount-visible | empty mixin for .visible-amount | {} |
+|--cells-atom-amount-currency | empty mixin for .currency | {} |
+|--cells-atom-amount-currency-left | empty mixin for .currency--left | {} |
+|--cells-atom-amount-currency-right | empty mixin for .currency--right| {} |
+|--cells-atom-amount-minus | empty mixin for .minus | {} |
+|--cells-atom-amount-minus-left | empty mixin for .minus--left | {} |
+|--cells-atom-amount-minus-right| empty mixin for .minus--right | {} |
+|--cells-atom-amount-integer | empty mixin for .integer | {} |
+|--cells-atom-amount-separator | empty mixin for .separator | {} |
+|--cells-atom-amount-fractional | empty mixin for .fractional | {} |
+|--cells-atom-amount-abbreviation | empty mixin for .abbreviation | {} |
+
+
+@demo demo/index.html
+@hero amount.svg
+-->
+<dom-module id="cells-atom-amount">
+  <template>
+    <style include="cells-atom-amount-styles cells-atom-amount-shared-styles"></style>
+    <span class="sr-amount">[[_srAmount]]</span>
+    <span class="visible-amount" aria-hidden="true" hidden>
+      <span class="minus minus--left" hidden$="[[!_showMinusBeforeSymbol]]">-</span>
+      <span class="currency currency--left" hidden$="[[_alignRight]]">[[_currency]]</span>
+      <span class="minus minus--right" hidden$="[[!_showMinusAfterSymbol]]">-</span>
+      <span class="integer">[[_integer]]</span>
+      <span class="separator" hidden$="[[_decimalsHidden]]">[[_separator]]</span>
+      <span class="fractional" hidden$="[[_decimalsHidden]]">[[_fractional]]</span>
+      <span class="abbreviation" hidden$="[[_abbreviationHidden]]">[[_abbreviation]]</span>
+      <span class="currency currency--right" hidden$="[[!_alignRight]]">[[_currency]]</span>
+    </span>
+
+  </template>
+  <script src="cells-atom-amount.js"></script>
+</dom-module>

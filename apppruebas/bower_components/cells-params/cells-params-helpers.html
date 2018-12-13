@@ -1,0 +1,65 @@
+<!--
+    Utilities functions based on Ramda
+    http://ramdajs.com/0.17/index.html
+-->
+<script>
+Polymer.CellsParamsHelpers = {
+  /**
+   * Flatten an array
+   *
+   * @param {Array} the array to be flatten
+   * @return {Array}  */
+  flatten: function(array) {
+    return [].concat.apply([], array);
+  },
+
+  /**
+   * Creates an array excluding all provided values.
+   *
+   * @param {Array} itemsToExclude Items to be exclude
+   * @param {Array} items Array to find exclude elements
+   * @return {Array}  */
+  without: function(itemsToExclude, items) {
+    var result = [];
+    items.forEach(function(el) {
+      if (itemsToExclude.indexOf(el) === -1) {
+        result.push(el);
+      }
+    });
+
+    return result;
+  },
+
+  /**
+   * Searchs an item inside array. It returns the index in the array.
+   *
+   * @param {String} item The item to find in the array
+   * @param {Array} lis Array to find the item
+   * @return {Integer}  */
+  contains: function(item, list) {
+    return list.indexOf(item) >= 0;
+  },
+
+  /**
+   * Finds the set (i.e. no duplicates) of all elements in the first list not contained in the second list.
+   *
+   * @param {Array} first First list to compare
+   * @param {Array} second Second list to compare
+   * @return {Array} */
+
+  difference: function(first, second) {
+    var out = [];
+    var idx = 0;
+    var firstLen = first.length;
+    while (idx < firstLen) {
+      if (!this.contains(first[idx], second) && !this.contains(first[idx], out)) {
+        out[out.length] = first[idx];
+      }
+
+      idx += 1;
+    }
+
+    return out;
+  }
+};
+</script>

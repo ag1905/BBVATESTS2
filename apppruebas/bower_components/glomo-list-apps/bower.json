@@ -1,0 +1,64 @@
+{
+  "name": "glomo-list-apps",
+  "version": "1.2.9",
+  "description": "grid links to others bbva apps",
+  "keywords": [
+    "i18n",
+    "web-component"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "cells-i18n-behavior": "9 - 10",
+    "cells-molecule-grid-list": "~9.0.1",
+    "cells-molecule-link-icon": "~9.0.1",
+    "cells-st-link": "~1.0.1",
+    "cells-atom-icon": "~9.0.1",
+    "cells-skeleton-custom": "~1.1.2",
+    "cells-skeleton-item": "9 - 10"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "cells-molecule-link-icon": "~9.0.1",
+    "cells-demo-helper": "9 - 10",
+    "cells-shadow-query-selector": "^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "cells-coronita-theme": "9 - 10",
+    "coronita-icons": "9 - 10"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9",
+        "cells-i18n-behavior": "^9.0.0",
+        "cells-molecule-grid-list": "~9.0.1",
+        "cells-molecule-link-icon": "~9.0.1",
+        "cells-st-link": "~1.0.1",
+        "cells-atom-icon": "~9.0.1",
+        "cells-skeleton-custom": "~1.1.2",
+        "cells-skeleton-item": "~9.0.1"
+      },
+      "devDependencies": {
+        "cells-sass": "^2.0.0",
+        "cells-demo-helper": "^9.0.0",
+        "cells-shadow-query-selector": "^1.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+        "cells-coronita-theme": "^9.0.0",
+        "coronita-icons": "^9.0.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  },
+  "main": [
+    "glomo-list-apps.html"
+  ]
+}

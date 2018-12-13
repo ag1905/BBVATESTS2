@@ -1,0 +1,64 @@
+<dom-module id="cells-atom-subheader-styles"><template><style>
+:host {
+  box-sizing: border-box;
+  color: var(--cells-atom-subheader-text-color, #BDBDBD);
+  font-family: var(--cells-fontDefault, sans-serif);
+  font-size: var(--cells-atom-subheader-font-size, 0.8125rem);
+  font-weight: 700;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  @apply (--cells-atom-subheader); }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+.left-field {
+  -webkit-flex: 1 1 auto;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  @apply (--cells-atom-subheader-left-field); }
+
+.right-field {
+  margin-left: var(--cells-atom-subheader-margin-between-left-right, 1.25em);
+  white-space: nowrap;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  @apply (--cells-atom-subheader-right-field); }
+
+:host([inverse]) {
+  -webkit-flex-direction: row-reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+  @apply (--cells-atom-subheader-inverse); }
+  :host([inverse]) .left-field {
+    -webkit-flex: 0 1 auto;
+        -ms-flex: 0 1 auto;
+            flex: 0 1 auto;
+    white-space: nowrap;
+    margin-left: var(--cells-atom-subheader-margin-between-left-right, 1.25em);
+    @apply (--cells-atom-subheader-inverse-left-field); }
+  :host([inverse]) .right-field {
+    -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+    white-space: normal;
+    margin-left: 0;
+    @apply (--cells-atom-subheader-inverse-right-field); }
+
+#heading ::content > * {
+  text-transform: uppercase;
+  color: var(--cells-atom-subheader-content-heading-color, #666);
+  @apply (--cells-atom-subheader-heading); }
+
+</style></template></dom-module>

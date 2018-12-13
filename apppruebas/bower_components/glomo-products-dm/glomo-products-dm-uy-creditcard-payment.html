@@ -1,0 +1,243 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../global-products-lists-behavior/global-products-lists-behavior.html" />
+<link rel="import" href="../cells-dm-global-apis-accounts/cells-dm-global-apis-accounts.html">
+<link rel="import" href="../cells-dm-global-apis-cards/cells-dm-global-apis-cards.html">
+<link rel="import" href="../cells-products-behavior/cells-products-transforms-behavior.html">
+
+<!--
+`<glomo-products-dm-uy-creditcard-payment>` description.
+
+Example:
+
+```html
+<glomo-products-dm-uy-creditcard-payment></glomo-products-dm-uy-creditcard-payment>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --glomo-products-dm-uy-creditcard-payment  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-products-dm-uy-creditcard-payment">
+  <template>
+    <cells-dm-global-apis-accounts id="globalAccounts"
+      host="[[host]]"
+      accounts="{{_accounts}}"
+      accounts-api-version="[[accountsApiVersion]]"
+      api-aggregator-api-version="[[apiAggregatorApiVersion]]"
+      required-token="[[requiredToken]]"></cells-dm-global-apis-accounts>
+    <cells-dm-global-apis-cards id="globalCards"
+      host="[[host]]"
+      cards="{{_cards}}"
+      cards-api-version="[[cardsApiVersion]]"></cells-dm-global-apis-cards>
+  </template>
+  <script>
+    (function() {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-products-dm-uy-creditcard-payment',
+
+        behaviors: [
+          CellsBehaviors.i18nBehavior,
+          CellsBehaviors.ProductsTransforms,
+          CellsBehaviors.GlobalProductsListsBehavior
+        ],
+
+        properties: {
+
+          accounts: {
+            type: Array,
+            notify: true
+          },
+
+          cards: {
+            type: Array,
+            notify: true
+          },
+
+          products: {
+            type: Array,
+            computed: 'setProducts(_accounts, _cards)',
+            notify: true
+          },
+
+          typeCardName: {
+            type: String,
+            value: 'CREDIT_CARD'
+          },
+
+          productsListLabel: {
+            type: String,
+            notify: true
+          },
+
+          maxLimit: {
+            type: String,
+            notify: true
+          },
+
+          /**
+          * Accounts API version
+          * @type {String}
+          */
+          accountsApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+          * Cards API version
+          * @type {String}
+          */
+          cardsApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+          * Api agreggator API version
+          * @type {String}
+          */
+          apiAggregatorApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * Type of token is required, 'tsec' or 'jwt'
+           * @type {String}
+           */
+          requiredToken: {
+            type: String,
+            value: 'tsec'
+          }
+        },
+
+        getProducts: function() {
+          this._accounts = undefined;
+          this._cards = undefined;
+
+          this.$.globalAccounts.getFullAccounts();
+          this.$.globalCards.getCards({expand: 'activations'});
+        },
+
+        setProducts: function(accounts, cards) {
+          var _accounts = (accounts || {}).items || [];
+          var products = {
+            accounts: this._parseAccounts(_accounts) || [],
+            cards: this._parseCards(cards)
+          };
+
+          this.maxLimit = this._getMaxLimitAccounts(products.accounts);
+
+          this.dispatchEvent(new CustomEvent('set-products-operative', {
+            bubbles: true,
+            composed: true,
+            detail: products
+          }));
+
+          return products.accounts;
+        },
+
+        _getMaxLimitAccounts: function(accounts) {
+          var response;
+          var parser = accounts && accounts.map(function(account) {
+            if (account.primaryAmount.amount > response || !response) {
+              response = account.primaryAmount.amount;
+            }
+          });
+
+          return response;
+        },
+
+        _formatAccounts: function(account, originalAccount, currency) {
+          var amount = this._getBalanceByCurrency(originalAccount.availableBalance.currentBalances, currency);
+          account.imgSrc = '';
+          account.primaryAmount = {
+            amount: amount.amount,
+            currency: amount.currency
+          };
+
+          var simpleNumber = this._getSimpleNumber(originalAccount);
+
+          if (simpleNumber) {
+            account.simpleNumber = simpleNumber;
+            account.description = null;
+          }
+
+          if (originalAccount.accountMobile) {
+            account.icon = 'glomo:mobile';
+          }
+
+          if (originalAccount.customizedFormats && originalAccount.customizedFormats.length) {
+            var isSpei = originalAccount.customizedFormats.find(function(customFormat) {
+              return customFormat.customizedFormatId === 'SPEI';
+            });
+
+            if (isSpei) {
+              account.icon = 'coronita:mobile';
+              account.isSpei = true;
+            }
+          }
+
+          if (!account.name) {
+            account.name = this._getProductName(originalAccount, 'cells-global-dashboard-account-description', 'Cuenta BBVA');
+          }
+
+          account.productType = 'ACCOUNTS';
+          account.contract = {
+            contractId: originalAccount.accountId,
+            number: originalAccount.number,
+            numberType: originalAccount.numberType,
+            contractType: {
+              id: 'ACCOUNT',
+              name: 'Accounts'
+            }
+          };
+        },
+
+        _extractCards: function(card) {
+          if (card) {
+            var cardCurrencyMajor = this._obtainCurrencyMajor(card);
+            var _extractedCard = {};
+            _extractedCard.description = {};
+            _extractedCard.id = card.cardId;
+            _extractedCard.name = (card.alias) ? card.alias : card.cardType.name;
+            _extractedCard.description.value = card.number;
+            _extractedCard.description.masked = true;
+            _extractedCard.imgSrc = (card.images && Array.isArray(card.images)) ? card.images[0].url : null;
+            _extractedCard.currencies = (card.currencies) ? card.currencies : null;
+            _extractedCard.productType = 'CARDS';
+            _extractedCard.status = card.status.id;
+            _extractedCard.contract = {
+              contractId: card.cardId,
+              number: card.number,
+              numberType: card.numberType,
+              contractType: card.cardType
+            };
+
+            if (this.typeCardName !== 'DEBIT_CARD') {
+              if (card.availableBalance) {
+                this._extractAvailableBalance(this.typeCardName, _extractedCard, cardCurrencyMajor, card);
+              }
+            }
+
+            _extractedCard.primaryAmount.label = this.doTranslation('cells-global-card-current-balance', 'Saldo actual');
+            delete _extractedCard.secondaryAmount;
+            return _extractedCard;
+          }
+        },
+
+        _getIsOperative: function(card) {
+          return card.status.id === 'OPERATIVE';
+        }
+      });
+    }());
+  </script>
+</dom-module>

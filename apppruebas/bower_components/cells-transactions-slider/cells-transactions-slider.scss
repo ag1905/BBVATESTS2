@@ -1,0 +1,71 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-transactions-slider;
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+button:active { @apply --cells-global-active; }
+
+cells-sections-slider {
+  --cells-sections-slider-pages-content: unquote('{
+    justify-content: flex-start;
+    align-items: flex-start
+  }');
+}
+
+cells-transactions-list {
+  width: 100%;
+  padding: 0 0 2rem 0;
+
+  --cells-transactions-list-empty-list: unquote('{
+    font-size: .875rem;
+  }');
+
+  --cells-transactions-list-skeleton: unquote('{
+    margin: 2rem 0 0 0;
+  }');
+
+  --cells-molecule-group-transactions-list-group: unquote('{
+    border-bottom: 1px solid var(--bbva-200, #E9E9E9);
+  }');
+
+  --cells-avatar-item-list-title: unquote('{
+    margin: 0 0 .625rem 0;
+    color: var(--bbva-600, #121212);
+    font-size: 1rem;
+  }');
+
+  --cells-avatar-item-list-secondary: unquote('{
+    margin: 0 0 .625rem 0;
+    color: var(--bbva-600, #121212);
+    font-style: italic;
+    font-size: .875rem;
+  }');
+
+  --cells-avatar-item-list-secondary-extra: unquote('{
+    color: var(--bbva-500, #666);
+    font-size: .875rem;
+  }');
+}

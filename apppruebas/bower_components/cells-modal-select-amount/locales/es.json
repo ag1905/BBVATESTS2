@@ -1,0 +1,6 @@
+{
+  "cells-modal-select-amount-amout": "Importe",
+  "cells-modal-select-amount-continue": "Continuar",
+  "cells-modal-select-amount-other-amount": "Otro importe",
+  "cells-modal-select-amount-message-max": "Esta operación sólo podrá completarse con un importe inferior o igual a"
+}

@@ -1,0 +1,143 @@
+<dom-module id="cells-operations-list-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-operations-list; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/* default layout (grid) + common styles */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  background-color: var(--cells-operations-list-list-bg-color, var(--bbva-medium-blue, #237ABA));
+  overflow: hidden;
+  @apply --cells-operations-list-list; }
+  .list__item {
+    display: flex;
+    @apply --cells-operations-list-list__item; }
+  .list .link {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    background-color: var(--cells-operations-list-list-bg-color, var(--bbva-medium-blue, #237ABA));
+    border: none;
+    color: var(--cells-operations-list-list__link-color, var(--bbva-white, #fff));
+    text-decoration: none;
+    @apply --cells-operations-list-list__link; }
+    .list .link:active {
+      opacity: 0.5;
+      @apply --cells-operations-list-list__link-active; }
+      .list .link:active .link__icon {
+        @apply --cells-operations-list-list__link-active-icon; }
+    .list .link[aria-disabled] {
+      pointer-events: none;
+      @apply --cells-operations-list-disabled; }
+
+/* layoud = grid */
+:host([layout="grid"]) [data-columns="2"] .list__item {
+  width: 50%; }
+
+:host([layout="grid"]) [data-columns="3"] .list__item {
+  width: 33.33333%; }
+
+:host([layout="grid"]) [data-columns="4"] .list__item {
+  width: 25%; }
+
+:host([layout="grid"]) [data-columns="5"] .list__item {
+  width: 20%; }
+
+:host([layout="grid"]) [data-columns="6"] .list__item {
+  width: 16.66667%; }
+
+:host([layout="grid"]) [data-columns="7"] .list__item {
+  width: 14.28571%; }
+
+:host([layout="grid"]) [data-columns="8"] .list__item {
+  width: 12.5%; }
+
+:host([layout="grid"]) [data-columns="9"] .list__item {
+  width: 11.11111%; }
+
+:host([layout="grid"]) [data-columns="10"] .list__item {
+  width: 10%; }
+
+:host([layout="grid"]) [data-columns="11"] .list__item {
+  width: 9.09091%; }
+
+:host([layout="grid"]) [data-columns="12"] .list__item {
+  width: 8.33333%; }
+
+:host([layout="grid"]) .list__item {
+  align-items: baseline;
+  justify-content: center;
+  min-height: 6.5625rem;
+  text-align: center; }
+  :host([layout="grid"]) .list__item:not(:first-child) {
+    @apply --cells-operations-list-list__item-not-first-child; }
+  :host([layout="grid"]) .list__item:not(:last-child) {
+    @apply --cells-operations-list-list__item-not-last-child; }
+
+:host([layout="grid"]) .link {
+  justify-content: center;
+  align-items: center;
+  padding: 1.8125rem 0.625rem;
+  position: relative;
+  @apply --cells-operations-list-list__link-grid; }
+  :host([layout="grid"]) .link[aria-disabled] {
+    color: rgba(255, 255, 255, 0.3); }
+    :host([layout="grid"]) .link[aria-disabled] .link__icon {
+      background-color: rgba(255, 255, 255, 0.03);
+      border-radius: 50%;
+      padding: 1.25rem;
+      width: 4.125rem;
+      height: 4.125rem;
+      @apply --cells-operations-list__link-disabled-icon; }
+  :host([layout="grid"]) .link__label {
+    white-space: normal;
+    margin-left: 0;
+    margin-top: 0.5rem;
+    line-height: 1.2;
+    font-size: 0.6875rem;
+    max-width: var(--cells-operations-list-list__link-width, 4.375rem);
+    @apply --cells-operations-list__link-icon-label;
+    @apply --cells-operations-list-item-label--grid; }
+  :host([layout="grid"]) .link__icon {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    padding: 1.25rem;
+    width: 4.125rem;
+    height: 4.125rem;
+    @apply --cells-operations-list__link-icon-atom-icon; }
+
+/* layoud = list */
+:host([layout="list"]) .list {
+  flex-wrap: nowrap;
+  flex-direction: column;
+  align-items: inherit; }
+  :host([layout="list"]) .list .link {
+    flex-direction: row;
+    flex: 1;
+    color: #fff;
+    align-items: center;
+    padding: 0.375rem 0.75rem; }
+    :host([layout="list"]) .list .link__label {
+      font-size: 0.75rem;
+      margin-left: 0.3125rem;
+      @apply --cells-operations-list-item-label--list; }
+    :host([layout="list"]) .list .link__icon {
+      width: 1.875rem;
+      height: 1.875rem;
+      @apply --cells-operations-list-list__link-icon; }
+
+</style></template></dom-module>

@@ -1,0 +1,220 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  --general-dimension-avatar: rem(80px);
+  --cells-st-button-text-color-transparent: var(--cells-organism-menu-sidebar-user-info-color, var(--bbva-white, #fff));
+  --cells-st-button-text-color-transparent-hover: var(--cells-organism-menu-sidebar-user-info-hover, var(--bbva-white, #fff));
+  --cells-st-button-text-color-transparent-active: var(--cells-organism-menu-sidebar-user-info-active, var(--bbva-white, #fff));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  position: relative;
+  z-index: 1;
+
+  box-sizing: border-box;
+  height: 100%;
+
+  font-family: var(--cells-fontDefault, sans-serif);
+  font-size: rem(13px);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--cells-organism-menu-sidebar-color, var(--bbva-white, #fff));
+  // Enough right padding for the drawer to scale and translate without overlapping any content from the menu. 20.3vw is the width the page will occupy to the right when it's scaled to 0.66 and translated 95vw
+  padding: rem(30px) calc(20.3vw + 0.625rem) rem(30px) rem(30px);
+
+  background: var(--cells-organism-menu-sidebar-bg, #062146 url("https://bbva-files.s3.amazonaws.com/cells/assets/glomo/images/access/fractal-bbva-navy.svg") bottom left no-repeat);
+  background-size: cover;
+  @apply --cells-organism-menu-sidebar;
+}
+
+:host([hidden]), [hidden] { display: none!important; }
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+:host([user-reminded]) {
+  background: var(--cells-organism-menu-sidebar-user-logged-bg, url("https://bbva-files.s3.amazonaws.com/cells/assets/glomo/images/access/fractal-bbva-core-blue.svg") bottom left no-repeat);
+  background-size: cover;
+  @apply --cells-organism-menu-sidebar-user-logged;
+}
+
+:host:before {
+  content: "";
+  position: absolute;
+  top: -12px; left: 0; right: 0;
+  height: 200px;
+  background-color: var(--cells-organism-menu-sidebar-before-bg-color, var(--bbva-navy, #072146));
+  transform: skewY(3.1deg);
+  z-index: -1;
+  opacity: .7;
+  @apply --cells-organism-menu-sidebar-before;
+}
+
+.user {
+  padding-bottom: rem(26px);
+  flex: 0 1 auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  @apply --cells-organism-menu-sidebar-user;
+
+  &--not-avatar {
+    padding-left: rem(47px);
+
+    .user__info {width: 100%;}
+    @apply --cells-organism-menu-sidebar-user-not-avatar;
+  }
+
+  &.disabled {
+    pointer-events: none;
+    cursor: none;
+    @apply --cells-organism-menu-sidebar-text-user-disabled;
+
+    .user__info-profile {
+      opacity: .35;
+      @apply --cells-organism-menu-sidebar-text-user-disabled-info-profile;
+    }
+  }
+
+  &__avatar {
+    border-radius: 50%;
+    margin-right: rem(15px);
+    min-width: var(--general-dimension-avatar);
+    min-height: var(--general-dimension-avatar);
+    @apply --cells-organism-menu-sidebar-user-avatar;
+  }
+
+  &__info {
+    width: calc(100% - var(--general-dimension-avatar));
+    @apply --cells-organism-menu-sidebar-user-info;
+    &-name,
+    &-profile {
+      display: block;
+      text-align: left;
+    }
+
+    &-name {
+      font-size: rem(20px);
+      font-weight: 700;
+      @apply --cells-organism-menu-sidebar-user-info-name;
+    }
+    &-profile {
+      color: var(--bbva-light-blue, #5BBEFF);
+      font-size: rem(13px);
+      font-weight: 500;
+      margin-top: rem(5px);
+      @apply --cells-organism-menu-sidebar-user-info-profile;
+    }
+    &-button {
+      width: 100%;
+      text-align: left;
+      @apply --cells-organism-menu-sidebar-user-info-button;
+    }
+  }
+}
+
+.nav-list {
+  @include list-unstyled();
+  flex: 1 1 auto;
+  margin: 0;
+  overflow-y: auto;
+  overflow-x: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 0;
+  position: relative;
+  z-index: 1;
+  @apply --cells-organism-menu-sidebar-nav-list;
+
+  :host([user-reminded]) & {
+    justify-content: flex-start;
+    padding-left: rem(47px);
+    @apply --cells-organism-menu-sidebar-nav-list-user-logged;
+  }
+
+  &-li {
+    display: block;
+    width: 100%;
+    @apply --cells-organism-menu-sidebar-nav-list-user-logged-li;
+    [disabled] {
+      pointer-events: none;
+      cursor: none;
+      opacity: .35;
+    }
+  }
+}
+
+// link-item is valid both for buttons and links
+.link-item {
+  margin-bottom: rem(6px);
+  display: flex;
+  align-items: center;
+  color: var(--cells-organism-menu-sidebar-link-item-color, inherit);
+  padding: rem(15px);
+  margin: 0 rem(-15px);
+  text-decoration: none;
+  background: var(--cells-organism-menu-sidebar-link-item-bg, transparent);
+  border: none;
+  text-align: left;
+  font-size: rem(13px);
+  font-weight: 500;
+  width: 100%;
+  @apply --cells-organism-menu-sidebar-link-item;
+
+  &.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    cursor: none;
+    @apply --cells-organism-menu-sidebar-link-item-disabled;
+  }
+
+  &-icon {
+    flex: 0 0 rem(48px);
+    display: block;
+    @apply --cells-organism-menu-sidebar-link-item-icon;
+  }
+  &-text {
+    @apply --cells-organism-menu-sidebar-link-item-text;
+  }
+
+  &-count {
+    font-weight: 400;
+    background-color: var(--cells-organism-menu-sidebar-link-item-count-bg-color, var(--bbva-red, #DA3851));
+    padding: rem(2px) rem(6px);
+    border-radius: rem(10px);
+    position: relative;
+    @apply --cells-organism-menu-sidebar-link-item-count;
+  }
+
+  &-count iron-icon {
+    position: absolute;
+    bottom: rem(-4px);
+    right: rem(-10px);
+    transform: scale(0.8);
+    filter: drop-shadow(0px 0px 2px var(--cells-organism-menu-sidebar-link-item-count-icon-color, var(--bbva-navy, #072146)));
+    @apply --cells-organism-menu-sidebar-link-item-count-icon;
+  }
+}
+
+.footer {
+  flex: 0 1 auto;
+  padding-left: rem(47px);
+  @apply --cells-organism-menu-sidebar-footer;
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  @apply --cells-organism-menu-sidebar-text-ellipsis;
+}
+
+.user-profile {
+  display: inline;
+}

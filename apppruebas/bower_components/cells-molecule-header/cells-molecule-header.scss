@@ -1,0 +1,156 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  --cells-toggle-button-font-size: rem(11px);
+  --cells-toggle-button-height: rem(24px);
+  --cells-toggle-button-text-height: rem(26px);
+  --cells-toggle-button-border-radius: rem(20px);
+  --cells-toggle-button-button-switch-color: var(--bbva-medium-blue);
+  --cells-toggle-button-background-color: var(--bbva-dark-navy, #041836);
+  --cells-toggle-button-switch-top: rem(1px);
+  --cells-toggle-button-switch-height: rem(22px);
+  --cells-toggle-button-switch-border-radius: rem(20px);
+  --cells-toggle-button-text-container-top: 0;
+  --cells-molecule-mask-margin-right: rem(3px);
+  --cells-molecule-header-header__title-max-with: inherit;
+
+  height: rem(60px);
+  padding: rem(20px);
+  will-change: transform;
+  color: var(--cells-molecule-header-color, initial);
+  background-color: var(--cells-molecule-header-bg-color, transparent);
+
+  @apply(--layout-horizontal);
+  @apply(--layout-center);
+  @apply(--layout-justified);
+  @apply(--cells-molecule-header);
+}
+
+:host-context(.header--dark) {
+  --cells-molecule-mask: unquote("{
+    color: var(--bbva-white, #FFF);
+    margin-left: 10px;
+    @apply(--cells-fontDefaultNormalItalic);
+  }");
+
+  @apply(--cells-molecule-header-dark);
+}
+
+:host-context(.header--medium) {
+  @apply(--cells-molecule-header-medium);
+}
+
+
+:host-context(.header--on-dark) {
+  @apply(--cells-molecule-header-on-dark);
+}
+:host-context(.header--on-dark) {
+  --cells-molecule-mask: unquote("{
+    color: var(--bbva-white, #FFF);
+    margin-left: 10px;
+  }");
+
+  @apply(--cells-molecule-header-on-dark);
+}
+
+:host-context(.header--light-grey) {
+  @apply(--cells-molecule-header-light-grey);
+}
+
+:host-context(.header--light-grey) {
+  @apply(--cells-molecule-header-light-grey);
+}
+
+.title {
+  font-size: rem(20px);
+  height: 100%;
+  align-items: center;
+  transition: all 0.4s;
+
+  &.translate {
+    transform: translateY(-60px);
+  }
+
+  .header__title {
+    display: block;
+    overflow: hidden;
+    max-width: var(--cells-molecule-header-header__title-max-with);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  @apply(--cells-fontDefaultLight);
+  @apply(--cells-molecule-header-title);
+}
+
+.switch-container {
+  display: flex;
+}
+.menu-icon {
+  z-index: 10;
+  color: inherit;
+  @apply(--cells-molecule-header-menu-icon);
+}
+
+.back-icon {
+  display: none;
+}
+
+.close-icon {
+  display: none;
+}
+
+.search-icon {
+  visibility: hidden;
+}
+
+.header__button-settings {
+  display: inherit;
+}
+
+.btn--transparent {
+  margin: rem(-10px);
+  padding: rem(10px);
+  border: 0;
+  outline: none;
+  background: transparent;
+}
+
+:host([back]) {
+  .menu-icon {
+    display: none;
+  }
+
+  .close-icon {
+    display: none;
+  }
+
+  .back-icon {
+    display: block;
+    color: inherit;
+    @apply(--cells-molecule-header-back-icon);
+  }
+}
+
+:host([close]) {
+  .menu-icon {
+    display: none;
+  }
+
+  .back-icon {
+    display: none;
+  }
+
+  .close-icon {
+    display: block;
+    color: inherit;
+    @apply(--cells-molecule-header-back-icon);
+  }
+}
+
+:host([search]) {
+  .search-icon {
+    visibility: visible;
+    color: inherit;
+    @apply(--cells-molecule-header-search-icon);
+  }
+}

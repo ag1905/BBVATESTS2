@@ -1,0 +1,178 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../cells-dm-global-apis-investment-funds/cells-dm-global-apis-investment-funds.html"/>
+
+<!--
+# glomo-investment-funds-dm
+
+Data manager element for Glomo Investment Funds.
+
+Example:
+```html
+<glomo-investment-funds-dm></glomo-investment-funds-dm>
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="glomo-investment-funds-dm">
+  <template>
+    <cells-dm-global-apis-investment-funds id="dm"
+    host="[[host]]"
+    investment-funds="{{_investmentFunds}}"
+    balances="{{_balances}}"
+    investment-funds-api-version="[[investmentFundsApiVersion]]"></cells-dm-global-apis-investment-funds>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-investment-funds-dm',
+
+        properties: {
+          /**
+           * Chosen host to make requests to. Check providers.
+           * @type {String}
+           */
+          host: {
+            type: String
+          },
+          /**
+           * Investment Funds list
+           * @type {Object}
+           */
+          investmentFunds: {
+            type: Array,
+            computed: '_setInvestmentFunds(_investmentFunds)'
+          },
+          /**
+           * Investment Funds list
+           * @type {Array}
+           */
+          _investmentFunds: Array,
+          /**
+           * Balances
+           * @type {Array}
+           */
+          _balances: Array,
+          /**
+           * Total balances
+           * @type {Object}
+           */
+          _totalBalance: {
+            type: Object,
+            value: {
+              amount: 0
+            }
+          },
+          /**
+          * Investment funds API version
+          * @type {String}
+          */
+          investmentFundsApiVersion: {
+            type: String,
+            value: '0'
+          }
+        },
+
+        /**
+        * Reset
+        */
+        reset: function() {
+          this.set('_investmentFunds', undefined);
+          this.set('_balances', undefined);
+          this.set('_totalBalance', {
+            amount: 0
+          });
+        },
+        /**
+        * Fetch Investment Funds
+        */
+        fetch: function() {
+          this.$.dm.getInvestmentFunds();
+        },
+        /**
+        * Set investment Funds
+        */
+        _setInvestmentFunds: function(_investmentFunds) {
+          var response = this._parseInvestmentFunds(_investmentFunds);
+          this.fire('investment-funds-fetched', response);
+          return response;
+        },
+
+        _parseInvestmentFunds: function(_investmentFunds) {
+          var response = [];
+          var funds = _investmentFunds && _investmentFunds.length && _investmentFunds.reduce(function(acc, investmentFund) {
+            return acc.concat(this._parseFunds(investmentFund, investmentFund.funds));
+          }.bind(this), []);
+
+          if (funds && funds.length) {
+            response.push({
+              headerAmount: (funds && funds.length > 1) ? this._totalBalance : undefined,
+              headerTitle: 'cells-global-dashboard-funds-header',
+              order: 1,
+              products: funds
+            });
+          }
+
+          return response;
+        },
+
+        _parseFunds: function(investmentFund, funds) {
+          return funds && funds.reduce(function(acc, fund) {
+            var number = fund.numberFormats && fund.numberFormats.length && fund.numberFormats[0];
+            var response = {
+              alias: fund.alias,
+              currency: fund.currency,
+              description: {
+                value: number.number,
+                masked: true
+              },
+              id: [investmentFund.investmentFundId, fund.fundId].join('-'),
+              name: fund.alias,
+              number: number && number.number
+            };
+
+
+            if (fund.fundPosition) {
+              this._calcTotalBalance(fund.fundPosition);
+              response.primaryAmount = {
+                amount: fund.fundPosition.amount,
+                currency: fund.fundPosition.currency,
+                label: 'cells-global-dashboard-available'
+              };
+            }
+
+            if (fund.ownedShares) {
+              response.secondaryAmount = {
+                amount: fund.ownedShares,
+                currency: fund.currency.currency,
+                label: 'cells-global-dashboard-funds-shares'
+              };
+            }
+
+            acc.push(response);
+            return acc;
+          }.bind(this), []);
+        },
+        /**
+        * Calc total balance
+        */
+        _calcTotalBalance: function(amount) {
+          var currency = amount && amount.currency;
+
+          if (this._totalBalance && !this._totalBalance.currency) {
+            this.set('_totalBalance.currency', currency);
+          }
+
+          if (this._totalBalance && this._totalBalance.currency === currency) {
+            this.set('_totalBalance.amount',  this._totalBalance.amount + amount.amount);
+          } else {
+            this.set('_totalBalance', undefined);
+          }
+        }
+      });
+    }());
+  </script>
+</dom-module>

@@ -1,0 +1,16 @@
+{
+  "cells-sign-operation-modal-heading-otp": "Firma de seguridad",
+  "cells-sign-operation-modal-heading-usr-pass": "Clave de seguridad",
+  "cells-sign-operation-modal-confirm": "Confirmar",
+  "cells-sign-operation-modal-text": "Introduce la clave que recibirás a través de <strong>SMS</strong>",
+  "cells-sign-operation-modal-info-text": "Esta operación es totalmente segura",
+  "cells-sign-operation-modal-info-text-pass":"Introduce tu clave de acceso a BBVA Bancomer",
+  "cells-sign-operation-pass-label-toggle-icon":"Ver/ocultar clave de acceso",
+  "cells-sign-operation-pass-label": "Bancomer pass",
+  "cells-sign-operation-pass-label-clear-icon": "Borrar campo",
+  "cells-sign-operation-modal-exit": "Salir",
+  "cells-sign-operation-modal-accept": "Confirmar",
+  "cells-sign-operation-modal-resend": "Solicitar nuevo SMS",
+  "cells-sign-operation-modal-unit-time": "min",
+  "cells-sign-operation-modal-info": "Si no recibes el SMS prodrás solicitar uno nuevo en: "
+}

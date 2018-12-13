@@ -1,0 +1,51 @@
+{
+  "name": "cells-armadillo-login-dm",
+  "version": "1.0.3",
+  "description": "Your Data Manager description",
+  "keywords": [
+    "dm"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "bgadp-armadillo-login": "~1.10.0",
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "cells-coronita-theme": "9 - 10",
+    "cells-credentials-form": "9 - 10",
+    "cells-demo-helper": "9 - 10",
+    "cells-st-button": "9 - 10",
+    "coronita-icons": "9 - 10",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "bgadp-armadillo-login": "~1.10.0",
+        "polymer": "Polymer/polymer#^1.9"
+      },
+      "devDependencies": {
+        "cells-credentials-form": "^9.0.0",
+        "cells-coronita-theme": "^9.0.0",
+        "cells-demo-helper": "^9.0.0",
+        "cells-st-button": "^9.0.0",
+        "coronita-icons": "^9.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.1.5",
+        "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7",
+        "iron-input": "^1.0.0"
+      }
+    }
+  },
+  "main": [
+    "cells-armadillo-login-dm.html"
+  ]
+}

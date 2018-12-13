@@ -1,0 +1,209 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="import" href="cells-params-helpers.html">
+<link rel="import" href="cells-cookies.html">
+<!--
+A component to manage params in the application.
+
+Example:
+    <cells-params></cells-params>
+
+@demo
+-->
+<dom-module id="cells-params">
+  <template>
+    <app-localstorage-document id="sessionStorage"
+    key="[[key]]"
+    data="{{sessionData}}"
+    storage="window.sessionStorage" session-only>
+    </app-localstorage-document>
+
+    <app-localstorage-document id="localStorage"
+    key="[[key]]"
+    storage="window.localStorage"
+    data="{{localData}}">
+    </app-localstorage-document>
+  </template>
+  <script>
+    'use strict';
+
+    var LOCAL_STORAGE = 'local';
+    var SESSION_STORAGE = 'session';
+    var COOKIE_STORAGE = 'cookie';
+
+    Polymer({
+      is: 'cells-params',
+
+      properties: {
+        /**
+        * Key of name to set values
+        */
+        key: {
+          type: String,
+          value: 'cells-params'
+        },
+
+        /**
+        * Binding to localStorage Data
+        **/
+        localData: {
+          type: Object,
+          value: {}
+        },
+
+        /**
+        * Binding to sessionStorage Data
+        **/
+        sessionData: {
+          type: Object,
+          value: {}
+        },
+
+        /**
+        * Cookie value
+        **/
+        cookieData: {
+          type: Object,
+          value: {}
+        }
+      },
+
+      /**
+      * Removes the key variable from the storage indicated
+      */
+      clear: function(storage) {
+        storage = (storage) ? storage.toLowerCase() : LOCAL_STORAGE;
+        if (storage === COOKIE_STORAGE) {
+          this._clearCookie();
+        } else {
+          return this.$[storage + 'Storage'].destroy();
+        }
+      },
+
+      /**
+      * Saves data key and value in a storage
+      * @param {string} storage session, local or cookie
+      * @param {string} dataKey Object key to save
+      * @param {string} dataValue Object value to save
+      */
+      setData: function(dataKey, dataValue, storage) {
+        storage = (storage) ? storage.toLowerCase() : LOCAL_STORAGE;
+        try {
+          if (storage === COOKIE_STORAGE) {
+            this._saveIntoCookie(dataKey, dataValue);
+          } else {
+            this._addParam(storage + 'Data', dataKey, dataValue);
+          }
+        } catch (e) {
+          return Promise.reject(e);
+        }
+
+        return Promise.resolve(dataValue);
+      },
+
+      /**
+      * Adds a param to the indicated storage
+      * @param {string} storageProp binded properties: sessionData, localData or CookieData
+      * @param {string} key Object key to save
+      * @param {string} value Object value to save
+      */
+      _addParam: function(storageProp, key, value) {
+        var saved = this[storageProp] || {};
+        var obj = {};
+        saved[key] = value;
+
+        if (storageProp === 'cookieData') {
+          this.set(storageProp, saved);
+          this._saveIntoCookie(saved);
+        } else {
+          this[storageProp] = saved;
+          if (storageProp === 'sessionData') {
+            this.$.sessionStorage.saveValue(this.key);
+          } else {
+            this.$.localStorage.saveValue(this.key);
+          }
+        }
+      },
+
+      /**
+      * Loads a value from the selected storage
+      * @param {string} storage session, local or cookie
+      * @param {string} path to the required object
+      */
+      getData: function(path, storage) {
+        storage = (storage) ? storage.toLowerCase() : LOCAL_STORAGE;
+        var result;
+
+        try {
+          if (storage === COOKIE_STORAGE) {
+            result = this._getFromCookie(path);
+          } else {
+            result = (this[storage + 'Data'] || {})[path];
+          }
+        } catch (e) {
+          return Promise.reject(e);
+        }
+
+        return Promise.resolve(result);
+      },
+
+      _onCookieDataChanged: function(data) {
+        this._saveIntoCookie(data);
+      },
+
+      /**
+      * Gets the parameters from cookie
+      * @param {string} key The key cookie to find
+      * @return {Object} */
+      _getCookie: function() {
+        return JSON.parse(Polymer.Cookies.getItem(this.key));
+      },
+
+      /**
+       * Set the parameters in cookie
+       * @param {string} key The key cookie name
+       * @return {Object} params The params to save cookie */
+      _saveIntoCookie: function(key, value) {
+        var result = {};
+        var obj = {};
+        obj[key] = value;
+
+        this._syncCookieToMemory();
+        Object.assign(result, this.cookieData, obj);
+        this.set('cookieData', result);
+
+        Polymer.Cookies.setItem({
+          sKey: this.key,
+          sValue: JSON.stringify(result)
+        });
+      },
+
+      /**
+      * synchronizes cookies and local property
+      **/
+      _syncCookieToMemory: function() {
+        var cookie = this._getCookie(this.key) || {};
+        this.set('cookieData', cookie);
+      },
+
+      /**
+      * Gets a value from the cookie
+      **/
+      _getFromCookie: function(key) {
+        this._syncCookieToMemory();
+        return this.cookieData[key];
+      },
+
+      /**
+      * Clears the cookie param
+      **/
+      _clearCookie: function() {
+        this.set('cookieData', {});
+        Polymer.Cookies.setItem({
+          sKey: this.key,
+          sValue: JSON.stringify({})
+        });
+      }
+    });
+  </script>
+</dom-module>

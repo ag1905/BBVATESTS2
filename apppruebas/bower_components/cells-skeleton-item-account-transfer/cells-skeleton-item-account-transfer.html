@@ -1,0 +1,42 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-skeleton-item-account-transfer-styles.html">
+
+<!--
+`<cells-skeleton-item-account-transfer>` description.
+
+Example:
+
+```html
+<cells-skeleton-item-account-transfer></cells-skeleton-item-account-transfer>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-skeleton-item-account-transfer-scope      | scope description | default value  |
+| --cells-skeleton-item-account-transfer  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-skeleton-item-account-transfer">
+  <template>
+    <style include="cells-skeleton-item-account-transfer-styles cells-skeleton-item-account-transfer-shared-styles"></style>
+    <div class="item__wrapper">
+      <div class="item__content">
+        <div class="item__content--top">
+          <div class="item-mask" item-mask></div>
+          <div class="item-mask" item-mask></div>
+        </div>
+        <div class="item__content--bottom">
+          <div class="item-mask item-mask--xs" item-mask></div>
+        </div>
+      </div> <!-- item__content -->
+    </div> <!-- item__wrapper -->
+
+    <content></content>
+  </template>
+  <script src="cells-skeleton-item-account-transfer.js"></script>
+</dom-module>

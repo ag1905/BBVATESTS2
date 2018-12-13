@@ -1,0 +1,59 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+
+  /**
+   * Adds width and height to request's depending on the
+   * device pixel ratio and the image containers dimensions
+   * @polymerBehavior Polymer.CCDSImagesBehavior
+   */
+  Polymer.CCDSImagesBehavior = {
+
+    properties: {
+
+      /**
+      * Screens pixel ratio to request for double sized
+      * image to CCDS if the screen has a high pixel ratio.
+      * @type {Object}
+      * @return {Number} (2 if pixel ratio >= 2 and 1 if less than 2)
+      */
+      scale: {
+        type: Number,
+        value: function() {
+          var pixelRatio = Math.floor(window.devicePixelRatio);
+
+          return (pixelRatio >= 2) ? 2 : 1;
+        },
+        readOnly: true
+      }
+    },
+
+    /**
+    * Appends width and height query params to a URL with the original or the double
+    * the width and height (depending on 'scale') of the passed container.
+    * @method {buildImgSrc}
+    * @param {String} imgSrc URL to the image
+    * @param {Object} imgContainer Object to pass imgSrc
+    * @return {Number} (2 if pixel ratio >= 2 and 1 if less than 2)
+    */
+    buildImgSrcWithContainer: function(imgSrc, imgContainer) {
+      return this.buildImgSrcWithDimensions(imgSrc, imgContainer.width, imgContainer.height);
+    },
+
+    /**
+    * Appends width and height query params to a URL with the original or the double
+    * the width and height (depending on 'scale') of the passed container.
+    * @method {buildImgSrc}
+    * @param {String} imgSrc URL to the image
+    * @param {Number} width Width of the image container
+    * @param {Number} height Width of the image container
+    * @return {Number} (2 if pixel ratio >= 2 and 1 if less than 2)
+    */
+    buildImgSrcWithDimensions: function(imgSrc, width, height) {
+      width *= this.scale;
+      height *= this.scale;
+      return imgSrc + ((imgSrc.indexOf('?') > -1) ? '&' : '?') + 'width=' + width + '&height=' + height;
+    }
+
+  };
+</script>

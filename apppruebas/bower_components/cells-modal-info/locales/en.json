@@ -1,0 +1,20 @@
+{
+  "cells-modal-info-bill-payment": "Bill payment",
+  "cells-modal-info-transfer": "Transfer",
+  "cells-modal-info-retry": "Retry",
+  "cells-modal-info-back-to-summary": "Back to summary",
+  "cells-modal-info-exit": "Exit",
+  "cells-modal-info-error": "Error",
+  "cells-modal-info-operation-failed": "Operation failed",
+  "cells-modal-info-operation-failed-try-again": "Operation failed. Try later",
+  "cells-modal-info-operation-transfer-failed-try-again":"Transfer operation failed. Try later",
+  "cells-modal-info-continue": "Continue",
+  "cells-modal-info-without-associating": "without associating",
+  "cells-modal-info-know-what": "Did you know what?",
+  "cells-modal-info-spei": "The account selected after 17:00 allows only to operate <strong>Bancomer Accounts</strong>",
+  "cells-modal-info-spei-motification": "To operate the 24 hours to any destination associate this account with your cell phone",
+  "cells-modal-info-cardless-withdrawal-header": "Cardless withdrawal",
+  "cells-modal-info-cardless-withdrawal-title": "Retiro no realizado",
+  "cells-modal-info-cardless-withdrawal-text": "La operación ha fallado.<br/><br/>Intentalo de nuevo.",
+  "cells-modal-info-cancel": "Cancel"
+}

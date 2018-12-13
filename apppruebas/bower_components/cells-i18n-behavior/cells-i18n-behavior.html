@@ -1,0 +1,441 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-shadow-query-selector/cells-shadow-query-selector.html">
+<script>
+
+window.CellsBehaviors = window.CellsBehaviors || {};
+/**
+* cells-i18n-behavior
+* =======================
+*
+* `CellsBehaviors.i18nBehavior` provides a normalized interface for translate strings.
+*
+* ## Import
+*
+* 1) Import the behavior in your component:
+*
+* ```html
+* <link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+* ```
+*
+* 2) Add `CellsBehaviors.i18nBehavior` to the behaviors list in the JS file or script of your component:
+*
+* ```js
+* ...
+* behaviors: [
+*   window.CellsBehaviors.i18nBehavior
+* ],
+* ...
+* ```
+*
+* ## Usage
+*
+* **string-to-translate** is the key to the string or message ('locale') in the corresponding language, in your **locales/{lang}.json** files.
+*
+* __Note:__ It is recommended that the keys have the name of the component as suffix. E.g. 'cells-basic-login-greeting' or 'cells-basic-login-username'
+*
+* 1. Basic usage
+*
+*    ```html
+*    {{doTranslation('string-to-translate')}}
+*    ```
+*
+*    or, in a shorter but equivalent way (t() is just an alias of doTranslation()):
+*
+*    ```html
+*    {{t('string-to-translate')}}
+*    ```
+*
+* 2. Define an optional 'fallback' string with the second parameter (the **Fallback string** will display if **string-to-translate** key doesn't exist in 'locales'.)
+*
+*    ```html
+*    {{t('string-to-translate', 'Fallback string')}}
+*     ```
+*
+* 3. For asynchronous translation on attached:
+*
+*    ```js
+*    attached: function() {
+*      this.getMsg('string-to-translate').then(function(translation) {
+*        this.set('readyTranslation', translation);
+*      }.bind(this));
+*    }
+*    ```
+*
+* 4. Define an optional 'interpolation' string object with the third parameter::
+*
+*    ```html
+*    {{t('string-to-translate', '', '{"attribute": "value"}')}}
+*     ```
+*
+*    Interpolation can be self-properties:
+*
+*    ```html
+*    [[t('self-property-message')]] //see bellow
+*    ```
+*
+* __Note:__ If **string-to-translate** contains a comma (,) it must be escaped by preceding it with a '\'
+*
+* Example:
+*
+* ```html
+* <p>
+*   {{t('Welcome')}}
+*   <input type="text" placeholder="{{t('Username\, Email or UserID')}}">
+* </p>
+* ```
+*
+* ## Locales (translations)
+*
+* Finally, have the translations for each language on the *locales* folder.
+*
+* This folder will have one JSON file for each supported language (en.json, es.json, en-US.json, etc).
+*
+* For every language the Object defined contains all translated strings indexed by a unique ID, which is the same across all languages.
+*
+* ***en.json:***
+*
+*```json
+*{
+*  "your-component-name-cancel": {            // valid old syntax
+*    "message": "Cancel"
+*  },
+*  "your-component-name-info": "Information", //simple syntax
+*  "explicitText": { "${attribute}, hello!" },
+*  "arrayText": ["part1", "part2", "...", "partN"],
+*  "self-property-message": "My property message is ${propertyName}"
+*}
+*```
+*
+* ***es.json:***
+*
+*```json
+*{
+*  "your-component-name-cancel": "Cancelar", //simple syntax
+*  "explicitText": { "Hola ${attribute}!" },
+*  "arrayText": ["part1", "part2", "...", "partN"]
+*}
+*```
+*
+* ## Disable translations
+*
+* To disable the translation functionality (for instance, in applications that don't have locales folder), set `window.I18nMsg.disabled` to `true` to
+* prevent network requests to non-existent locales files.
+*
+* In your main html file (index.html):
+* ```js
+*  window.I18nMsg = window.I18nMsg || {};
+*  window.I18nMsg.disabled = true;
+* ```
+*
+* @demo demo/index.html
+* @polymerBehavior CellsBehaviors.i18nBehavior
+* @hero cells-i18n-behavior.jpg
+*/
+
+window.CellsBehaviors.i18nBehavior = {
+
+  /**
+   * The `i18n-language-ready` is fired in `document` after the locale was fetched.
+   *
+   * @event i18n-language-ready
+   * @detail {{language: String}}
+   */
+
+  /**
+   * Fired when language of global Object (I18nMsg) changes
+   * @event i18n-lang-changed
+   */
+
+  properties: {
+    /**
+     * Puts a readonly attribute to the component to mark this node has i18n.
+     * @private
+     */
+    hasI18n: {
+      type: Boolean,
+      value: true,
+      readOnly: true,
+      reflectToAttribute: true
+    },
+
+    /**
+     * Translates a string to the current language from html code.
+     */
+    doTranslation: {
+      type: Function,
+      computed: '_translateComputed(translationService)'
+    },
+
+    /**
+     * doTranslation() alias
+     */
+    t: {
+      type: Function,
+      computed: '_translateComputed(translationService)'
+    },
+
+    translationService: {
+      type: Function,
+      value: function(/*msgId, fallback, interpolation*/) {
+        return this._doTranslation.bind(this);
+      }
+    }
+  },
+
+  _translateComputed: function(translationService) {
+    return function(msgId, fallback, interpolation) {
+      return translationService(msgId, fallback, interpolation);
+    };
+  },
+
+  attached: function() {
+    this.getMsg().then(this.updateTranslation.bind(this));
+  },
+
+  /**
+   * Refresh the printed translated text with the current language.
+   */
+  updateTranslation: function() {
+    this.set('translationService', function(msgId, fallback, interpolation) {
+      return this._doTranslation(msgId, fallback, interpolation);
+    }.bind(this));
+  },
+
+  /**
+   * Translates a string to the current language.
+   *
+   * @param  {String}           msgId String to translate.
+   * @param  {String | Object} interpolation  (optional) Object String for interpolate
+   * @return {String}           Translated text. If it doesn't exists, returns null.
+   */
+  getTranslation: function(msgId, interpolation) {
+    var locale = I18nMsg.currentLocale;
+
+    msgId = msgId || this.msgid;
+
+    // check all posibilities of interpolation
+    try {
+      if (typeof interpolation === 'string') {
+        interpolation = JSON.parse(interpolation);
+      }
+    } catch (e) {
+      interpolation = '';
+    }
+
+    if (msgId && locale && locale[msgId]) {
+      var localeString = (typeof locale[msgId] !== 'object')
+        ? locale[msgId]
+        : Array.isArray(locale[msgId])
+          ? locale[msgId].join('')
+          : locale[msgId].message;
+
+      if (interpolation !== '') {
+        interpolation = Object.assign(interpolation || {}, this);
+        return this._interpolateMsg(localeString, interpolation);
+      } else {
+        return localeString;
+      }
+    }
+
+    return null;
+  },
+
+  /**
+   * Translates a string to the current language from html code.
+   *
+   * @param {String} msgId String id to translate.
+   * @param {String} fallback (optional) A string to be returned if {{msgId}} doesn't exists in the dictionary. If this param is not defined and the translated text doesn't exists, the original {{msgId}} is returned.
+   * @param {String|Object} interpolation  (optional) Object or String for interpolate
+   *
+   * @return {String} Translated text. If it doesn't exists, returns a fallback text.
+   */
+  _doTranslation: function(msgId, fallback, interpolation) {
+    return this.getTranslation(msgId, interpolation) || this.getTranslation(msgId) || fallback || msgId;
+  },
+
+  /**
+   * getAsyncTranslation() alias
+   */
+  getMsg: function(msgId, interpolation) {
+    return this.getAsyncTranslation(msgId, interpolation);
+  },
+
+  /**
+   * Translates a string when the dictionary is loaded from the js.
+   *
+   * @param {String} msgId          (optional) String id to translate.
+   * @param {String} interpolation  (optional) Object String for interpolate variables.
+   *
+   * @return {Promise} Returns a Promise that is resolved when the dictionary is ready.
+   */
+  getAsyncTranslation: function(msgId, interpolation) {
+    var _this = this;
+    return new Promise(function(resolve) {
+      if (I18nMsg.currentLocale) {
+        resolve(_this.getTranslation(msgId, interpolation));
+      } else {
+        var langReadyAction = function() {
+          document.removeEventListener('i18n-language-ready', langReadyAction);
+          resolve(_this.getTranslation(msgId, interpolation));
+        };
+
+        document.addEventListener('i18n-language-ready', langReadyAction);
+      }
+    });
+  },
+
+  /**
+   * interpolate variables into a string
+   *
+   * @param  {String} msg       String with "placeholder" variables to interpolate `${var}` syntax
+   * @param  {Object} msgObject Object with attribute vars to interpolate in {msg}
+   * @return {String}           Interpolated string
+   */
+  _interpolateMsg: function(msg, msgObject) {
+    return msg.replace(/\${(.*?)}/g, function(_, code) {
+      var scoped = code.replace(/(["'.\w$]+)/g, function(match) {
+        return /["']/.test(match[0]) ? match : 'scope.' + match;
+      });
+      try {
+        return new Function('scope', 'return ' + scoped)(msgObject);
+      } catch (e) {
+        return '';
+      }
+    });
+  }
+};
+
+(function(window) {
+  'use strict';
+  /* global Shadow */
+
+  window.I18nMsg = window.I18nMsg || {};
+
+  var _xhr;
+  var _url = window.I18nMsg.url || 'locales/';
+  var _lang = window.I18nMsg.lang || document.documentElement.lang;
+  var _locales = window.I18nMsg.locales || {};
+
+  var _removeXHR = function(e) {
+    _xhr = null;
+  };
+
+  var _refreshNodes = function() {
+    //find components with cells-i18n-behavior
+    var items = Shadow.querySelectorAll('[has-i18n]');
+    for (var i = items.length - 1; i >= 0; i--) {
+      items[i].updateTranslation();
+    }
+
+    items = null;
+  };
+
+  var _onLoadLanguage = function(e) {
+    if (e.target.status !== 200 && e.target.status !== 0) {
+      return;
+    }
+
+    I18nMsg.locales[I18nMsg.lang] = JSON.parse(e.target.response);
+
+    _refreshNodes();
+    _removeXHR();
+
+    var event = new CustomEvent('i18n-language-ready', {language: I18nMsg.lang});
+    document.dispatchEvent(event);
+  };
+
+  var _fetchLanguage = function() {
+    if (I18nMsg.disabled) {
+      return;
+    }
+
+    if (!I18nMsg.lang) {
+      return;
+    }
+
+    if (I18nMsg.locales[I18nMsg.lang] && !_xhr) {
+      _refreshNodes();
+      return;
+    }
+
+    if (_xhr) {
+      _xhr.abort();
+    }
+
+    var url = I18nMsg.url + I18nMsg.lang + '.json';
+
+    _xhr = new XMLHttpRequest();
+    _xhr.open('GET', url);
+    _xhr.onload = _onLoadLanguage.bind(this);
+    _xhr.onerror = _removeXHR.bind(this);
+    _xhr.send();
+  };
+
+  I18nMsg.getCurrentLocale = function() {
+    return this.currentLocale;
+  };
+
+  if (!I18nMsg.hasOwnProperty('currentLocale')) {
+    Object.defineProperty(I18nMsg, 'currentLocale', {
+      get: function() {
+        return _locales ? _locales[_lang] : false;
+      }
+    });
+
+    Object.defineProperty(I18nMsg, 'locales', {
+      set: function(val) {
+        _locales = val;
+      },
+
+      get: function() {
+        return _locales;
+      }
+    });
+
+    Object.defineProperty(I18nMsg, 'lang', {
+      set: function(val) {
+        if (val !== _lang) {
+          document.documentElement.lang = val;
+          _lang = val;
+          _fetchLanguage();
+
+          var event = new CustomEvent('i18n-lang-changed', {
+            detail: {
+              language: val
+            },
+            bubbles: true,
+            composed: true
+          });
+          document.dispatchEvent(event);
+        }
+      },
+
+      get: function() {
+        return _lang;
+      }
+    });
+
+    Object.defineProperty(I18nMsg, 'url', {
+      set: function(val) {
+        // Make sure url ends on slash.
+        if (val.substr(-1) !== '/') {
+          val += '/';
+        }
+
+        if (val !== I18nMsg.url) {
+          _url = val;
+          _fetchLanguage();
+        }
+      },
+
+      get: function() {
+        return _url;
+      }
+    });
+  }
+
+  window.I18nMsg.url = _url;
+  window.I18nMsg.lang = _lang;
+  _fetchLanguage();
+}(window));
+</script>

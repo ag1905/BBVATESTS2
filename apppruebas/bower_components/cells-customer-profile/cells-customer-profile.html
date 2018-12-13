@@ -1,0 +1,143 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-key-values/cells-key-values.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-atom-date/cells-atom-date.html">
+<link rel="import" href="../cells-contact-avatar/cells-contact-avatar.html">
+<link rel="import" href="cells-customer-profile-styles.html">
+<!--
+`<cells-customer-profile>` description.
+
+Example:
+
+```html
+<cells-customer-profile></cells-customer-profile>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-customer-profile  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-customer-profile">
+  <template>
+    <style include="cells-customer-profile-styles cells-customer-profile-shared-styles"></style>
+
+    <section class="customer-avatar">
+        <div class="portrait">
+          <cells-contact-avatar src="[[customer.avatar.url]]" alt="[[customer.completeName]]">
+          </cells-contact-avatar>
+        </div>
+      <cells-st-button class="link transparent edit-button" on-click="_editAvatar">
+        <button id="address">[[t('cells-customer-profile-edit')]]</button>
+      </cells-st-button>
+    </section>
+
+    <section class="customer-name">
+      <p class="first-name"> [[customer.firstName]] </p>
+      <p class="last-name"> [[customer.lastName]]</p>
+    </section>
+
+    <section class="customer-info">
+
+      <ul class="customer-info__group password">
+        <li class="customer-info__item">
+          <cells-key-values class="masked" key="cells-customer-profile-password" value='"&bull;&bull;&bull;&bull;&bull;&bull;"'>
+            <cells-st-button slot="after-key" class="link transparent after-key" on-click="_changeField">
+              <button id="password">[[t('cells-customer-profile-change')]]</button>
+            </cells-st-button>
+          </cells-key-values>
+        </li>
+      </ul>
+
+      <ul class="customer-info__group contact-details">
+        <template is="dom-repeat" items="[[customerContactDetails]]">
+          <li class="customer-info__item">
+            <template is="dom-if" if=[[item.isMobile]]>
+              <img src="[[mobileImgSource]]" alt="Mobile icon"/>
+            </template>
+            <template is="dom-if" if=[[!item.isMobile]]>
+              <img src="[[emailImgSource]]" alt="Email icon"/>
+            </template>
+            <cells-key-values class="italic-value" key="[[item.key]]" 
+              value="[[item.value]]" 
+              masked="[[!item.unmasked]]"
+              visible-chars="[[item.visibleChars]]"
+              mask-chars="&bull;">
+              <cells-st-button slot="after-key" hidden$="[[!item.isMobile]]" class="link transparent info-button"> 
+                <button id="mobile"  on-click="_openModalInfo" >
+                  <cells-atom-icon id="mobile" icon="coronita:info" class="icon-size-18"></cells-atom-icon>
+                </button>
+              </cells-st-button>
+                <cells-st-button hidden$="[[_showButton(item, contactUnmasked)]]" slot="after-key" class="link transparent after-key" on-click="_onContactButtonClick">
+                  <button id="contact">[[_computeButtonText(item, contactUnmasked)]]</button>
+                </cells-st-button>
+            </cells-key-values>
+          </li>
+        </template>
+      </ul>
+    
+      <ul class="customer-info__group birthday">
+        <li class="customer-info__item">
+          <cells-key-values class="masked" hidden$="[[birthdayUnmasked]]" key="cells-customer-profile-birthdate" 
+            value='"&bull;&bull;/&bull;&bull;/&bull;&bull;"'>
+            <cells-st-button slot="after-key" class="link transparent info-button"> 
+              <button id="birthdate"  on-click="_openModalInfo" >
+                <cells-atom-icon  icon="coronita:info" class="icon-size-18"></cells-atom-icon>
+              </button>
+            </cells-st-button>
+              <cells-st-button slot="after-key" class="link transparent after-key" on-click="_computeButtonAction">
+                <button id="birthday">[[_computeButtonText('', birthdayUnmasked)]]</button>
+              </cells-st-button>
+            </cells-key-values>
+          <cells-key-values hidden$="[[!birthdayUnmasked]]" key="cells-customer-profile-birthdate">
+            <cells-atom-date hidden$="[[!birthdayUnmasked]]"
+              date="[[customer.birthData.birthDate]]">
+            </cells-atom-date>
+            <cells-st-button  slot="after-key" class="link transparent info-button">
+              <button id="birthdate"  on-click="_openModalInfo" >
+                <cells-atom-icon  icon="coronita:info" class="icon-size-18"></cells-atom-icon>
+              </button> 
+            </cells-st-button>
+            <cells-st-button slot="after-key" class="link transparent after-key" on-click="_computeButtonAction">
+              <button id="birthday">[[_computeButtonText('', birthdayUnmasked)]]</button>
+            </cells-st-button>
+          </cells-key-values>
+        </li>
+      </ul>
+
+      <ul class="customer-info__group address">
+        <li class="customer-info__item">
+          <cells-key-values
+            key="cells-customer-profile-address"
+            value="[[customerAddress.addressName]]" 
+            masked="[[!customerAddress.unmasked]]"
+            visible-chars="20"
+            mask-chars="&bull;">
+            <cells-st-button slot="after-key" class="link transparent info-button" > 
+              <button id="address" on-click="_openModalInfo">
+                <cells-atom-icon  icon="coronita:info" class="icon-size-18"></cells-atom-icon>
+              </button>
+            </cells-st-button>
+              <cells-st-button slot="after-key" class="link transparent after-key" on-click="_onAddressButtonClick">
+                <button id="address">[[_computeButtonText('', addressUnmasked)]]</button>
+              </cells-st-button>
+          </cells-key-values>
+        </li>
+      </ul>
+
+    </section>
+  </template>
+  <script src="cells-customer-profile.js"></script>
+</dom-module>

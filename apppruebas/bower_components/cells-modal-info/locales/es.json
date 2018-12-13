@@ -1,0 +1,20 @@
+{
+  "cells-modal-info-bill-payment": "Pagar servicio",
+  "cells-modal-info-transfer": "Transferir",
+  "cells-modal-info-retry": "Reintentar",
+  "cells-modal-info-back-to-summary": "Volver al resumen",
+  "cells-modal-info-exit": "Salir",
+  "cells-modal-info-error": "Error",
+  "cells-modal-info-operation-failed": "Operación no realizada",
+  "cells-modal-info-operation-failed-try-again": "La operación ha fallado. Inténtalo de nuevo",
+  "cells-modal-info-operation-transfer-failed-try-again": "El proceso de transferencia ha fallado. Inténtalo de nuevo",
+  "cells-modal-info-continue": "Continuar",
+  "cells-modal-info-without-associating": "sin asociar",
+  "cells-modal-info-know-what": "¿Sabías que?",
+  "cells-modal-info-spei": "La cuenta seleccionada después de las 17:00 sólo te permite operar a <strong>Cuentas Bancomer</strong>",
+  "cells-modal-info-spei-motification": "Para operar 24 horas a cualquier destino, deberás vincular la cuenta a tu celular",
+  "cells-modal-info-cardless-withdrawal-header": "Retiro sin tarjeta",
+  "cells-modal-info-cardless-withdrawal-title": "Retiro no realizado",
+  "cells-modal-info-cardless-withdrawal-text": "La operación ha fallado.<br/><br/>Intentalo de nuevo.",
+  "cells-modal-info-cancel": "Cancel"
+}

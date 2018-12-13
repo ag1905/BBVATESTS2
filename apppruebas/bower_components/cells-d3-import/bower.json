@@ -1,0 +1,23 @@
+{
+  "name": "cells-d3-import",
+  "version": "9.0.1",
+  "main": "cells-d3-import.html",
+  "description": "html-import wrapper for d3 library",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "d3"
+  ],
+  "dependencies": {
+    "d3": "^3.5.17",
+    "polymer": "Polymer/polymer#^1.9.0"
+  },
+  "devDependencies": {
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  }
+}

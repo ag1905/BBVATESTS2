@@ -1,0 +1,113 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  // private foo bars
+  --cells-icon-message__icon-margin: var(--cells-icon-message-icon-margin, rem(20px));
+
+  // Default alignment: icon over text
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+
+  font-family: var(--cells-fontDefault, sans-serif);
+  font-size: rem(14px);
+  line-height: 1.4285;
+  color: var(--cells-icon-message-color, #121212);
+  padding: rem(30px);
+  @apply --cells-icon-message;
+}
+
+:host([hidden]), [hidden] { display: none !important; }
+
+
+/**
+ * Default valid types
+ */
+:host([type="info"]) {
+  background-color: var(--cells-icon-message-background-color-info, #D4EDFC);
+  @apply --cells-icon-message-info;
+}
+:host([type="warning"]) {
+  background-color: var(--cells-icon-message-background-color-warning, #fde7d8);
+  @apply --cells-icon-message-warning;
+}
+:host([type="error"]) {
+  background-color: var(--cells-icon-message-background-color-error, #fddfdf);
+  @apply --cells-icon-message-error;
+}
+:host([type="success"]) {
+  background-color: var(--cells-icon-message-background-color-success, #daefe0);
+  @apply --cells-icon-message-success;
+}
+
+:host(.inline) {
+  flex-direction: row;
+  align-items: flex-start;
+  text-align: left;
+  padding: 0;
+  background-color: transparent;
+  @apply --cells-icon-message-inline;
+}
+
+:host(.inline[type="info"])    { @apply --cells-icon-message-inline-info; }
+:host(.inline[type="warning"]) { @apply --cells-icon-message-inline-warning; }
+:host(.inline[type="error"])   { @apply --cells-icon-message-inline-error; }
+:host(.inline[type="success"]) { @apply --cells-icon-message-inline-success; }
+
+.icon {
+  flex: 0 0 auto;
+  color: var(--cells-icon-message-icon-color, inherit);
+  margin-bottom: var(--cells-icon-message__icon-margin);
+  @apply --cells-icon-message-icon;
+
+  :host(.inline) & {
+    margin-bottom: 0;
+    margin-right: calc(var(--cells-icon-message__icon-margin) / 2);
+    @apply --cells-icon-message-icon-inline;
+  }
+
+  :host([type="info"]) & {
+    color: var(--cells-icon-message-icon-color-info, #5BBEFF);
+    @apply --cells-icon-message-icon-info;
+  }
+
+  :host([type="warning"]) & {
+    color: var(--cells-icon-message-icon-color-warning, #fab27f);
+    @apply --cells-icon-message-icon-warning;
+  }
+
+  :host([type="error"]) & {
+    color: var(--cells-icon-message-icon-color-error, #f79698);
+    @apply --cells-icon-message-icon-error;
+  }
+
+  :host([type="success"]) & {
+    color: var(--cells-icon-message-icon-color-success, #48ae64);
+    @apply --cells-icon-message-icon-success;
+  }
+}
+
+.message {
+  @apply --cells-icon-message-message;
+}
+
+/**
+ * No mixins needed for distributed nodes
+ * since they can be styled from the :host component
+ */
+::slotted(.heading) {
+  font-size: rem(16px);
+  font-weight: normal;
+  margin: 0;
+}
+
+::slotted(p) {
+  margin-top: rem(20px);
+  margin-bottom: 0;
+}
+
+::slotted([slot="actions"]) {
+  margin-top: rem(30px);
+}

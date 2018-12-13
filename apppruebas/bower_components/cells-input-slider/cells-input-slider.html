@@ -1,0 +1,83 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="custom-cells-paper-slider.html">
+<link rel="import" href="cells-input-slider-styles.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<!--
+`<cells-input-slider>` description.
+
+Example:
+
+```html
+<cells-input-slider></cells-input-slider>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-input-slider                  | Mixin applied to :host                    | {}      |
+| --cells-input-slider-height           | Bar height                                | 2px     |
+| --cells-input-slider-active-color     | Background color of active part of bar    | #5bbeff |
+| --cells-input-slider-container-color  | Background color of inactive part of bar  | #004481 |
+| --cells-input-slider-knob-bg-color    | Knob background color                     | #237aba |
+| --cells-paper-slider-knob-text-color  | Knob inner content color                  | white   |
+| --cells-input-slider-text-color               | Knob inner content color                  | white   |
+| --cells-input-slider-timeline-width           | Timeline width                            | 90%     |
+| --cells-input-slider-timeline            | Mixin
+| --cells-input-slider-label            | Mixin
+| --cells-input-slider-label-title           | Mixin
+| --cells-input-slider-label-value           | Mixin
+| --cells-input-slider-label-value-counter   | Counter
+| --cells-input-slider-label-value-unit      | Unit
+
+
+@demo demo/index.html
+-->
+<dom-module id="cells-input-slider">
+  <template>
+    <style include="cells-input-slider-styles"></style>
+    <article>
+      <div class="wrapper-slider">
+
+        <div class="slider-label">
+          <template is="dom-if" if=[[!hideTitle]]>
+            <p class="slider-label__title">[[title]]</p>
+          </template>
+          <template is="dom-if" if=[[!hideValue]]>
+            <p class="slider-label__value">
+              <span class="counter">[[_getCounter(counter, dirty, valueOnPristine)]]</span>
+              <span class="unit">&nbsp;[[tag]]</span>
+            </p>
+          </template>
+        </div>
+
+        <div class="range" hidden$="[[hideSlider]]">
+          <custom-cells-paper-slider dir="ltr"
+                                     step="[[step]]"
+                                     min="[[min]]"
+                                     max="[[max]]"
+                                     value="{{sliderValue}}"
+                                     live-label="{{liveLabel}}">
+          </custom-cells-paper-slider>
+
+          <span class="label-right" hidden$="[[!endLabel]]">[[endLabel]]</span>
+
+          <div class="timeline" hidden$="[[hideTimeline]]">
+            <ul>
+              <template is="dom-repeat" items="[[snaps]]" as="snap">
+                <li>[[_getSnapText(snap)]]</li>
+              </template>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </article>
+  </template>
+  <script src="cells-input-slider.js"></script>
+</dom-module>

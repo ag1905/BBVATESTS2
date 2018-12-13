@@ -1,0 +1,78 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  background-color: var(--cells-skeleton-group-background-color, var(--bbva-white, #FFFFFF));
+
+  @apply --cells-skeleton-group;
+}
+
+:host([hidden]), [hidden] {
+  display: none;
+}
+
+.skeleton-group {
+  width: 100%;
+  margin-bottom: rem(10px);
+  overflow: hidden;
+  position: relative;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+
+  @apply --cells-skeleton-group-skeleton-group;
+
+  cells-skeleton-item {
+    padding: rem(20px);
+
+    &:last-of-type {
+      border-top: 1px solid var(--cells-skeleton-group-item-last-border-color, var(--bbva-200, #E9E9E9));
+
+      @apply --cells-skeleton-group--item-last;
+    }
+
+    @apply --cells-skeleton-group--item;
+  }
+
+  .animate-layer {
+    contain: strict;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: var(--cells-skeleton-group-background-color, var(--bbva-white, #FFFFFF));
+    opacity: .5;
+    transform: skewX(160deg) translateX(200%) scaleX(1);
+    transform-origin: right bottom;
+    animation: skeletonAnimation 1600ms 300ms ease-out infinite both;
+
+    @apply --cells-skeleton-group-animate-layer;
+  }
+
+  @keyframes skeletonAnimation {
+    from {
+      opacity: 0.5;
+    }
+
+    50% {
+      opacity: 0.6;
+    }
+
+    60% {
+      opacity: 0.6;
+    }
+
+    70% {
+      opacity: 0.3;
+    }
+
+    90% {
+      opacity: 0.1;
+    }
+
+    100% {
+      transform: skewX(160deg) translateX(0%) scaleX(2);
+      opacity: 0;
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "cells-enter-limited-amount-amount": "Amount",
+  "cells-enter-limited-amount-continue": "Continue",
+  "cells-enter-limited-amount-available": "_In your account",
+  "cells-enter-limited-amount-and": "and",
+  "cells-enter-limited-amount-available-balance": "_Insufficient balance. Choose an amount equal to or less than your balance of ",
+  "cells-enter-limited-amount-available-balance-after": " or select another account to complete the transaction.",
+  "cells-enter-limited-amount-only-multiple": "_Solo múltiplos de ${multiple}_",
+  "cells-enter-limited-amount-multiple-range": "_Ingresa una cifra múltiplo de ${multiple}, entre_",
+  "cells-enter-limited-amount-multiple-range-and": "_y_",
+  "cells-enter-limited-amount-multiple-range-error": "_Por favor, el importe ingresado debe ser múltiplo de ${multiple}_",
+  "cells-enter-limited-amount-error-max-limit": "_El importe que deseas transferir supera el monto máximo permitido para esta operación._",
+  "cells-enter-limited-amount-available-balance-default-message": "_El importe ingresado supera el saldo disponible en tu cuenta",
+  "cells-enter-limited-amount-change-amount-label": "Change currency"
+}

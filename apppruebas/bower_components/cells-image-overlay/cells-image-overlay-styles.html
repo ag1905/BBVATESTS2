@@ -1,0 +1,39 @@
+<dom-module id="cells-image-overlay-styles"><template><style>
+:host {
+  position: relative;
+  display: inline-block; }
+
+:host([hidden]),
+.inactive[hidden] {
+  display: none; }
+
+iron-image {
+  display: block;
+  margin: 0;
+  --iron-image-width: 100%;
+  @apply (--cells-image-overlay-img); }
+
+cells-atom-icon {
+  @apply (--cells-image-overlay-icon); }
+
+.inactive {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.9;
+  color: var(--cells-image-overlay-color, #FFF);
+  background-color: var(--cells-image-overlay-background-color, #CC0966);
+  @apply (--cells-image-overlay-layer); }
+
+</style></template></dom-module>

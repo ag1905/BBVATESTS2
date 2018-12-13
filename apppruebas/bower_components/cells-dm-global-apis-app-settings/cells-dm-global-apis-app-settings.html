@@ -1,0 +1,151 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-generic-dp/cells-generic-dp.html">
+
+<!--
+`<cells-dm-global-apis-app-settings>` description.
+
+Example:
+
+```html
+<cells-dm-global-apis-app-settings></cells-dm-global-apis-app-settings>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="cells-dm-global-apis-app-settings">
+  <template>
+
+    <cells-generic-dp id="dp" host="[[host]]" path="[[path]]" method="GET" on-request-success="_onRequestSuccess" on-request-error="_onRequestError">
+    </cells-generic-dp>
+
+  </template>
+  <script>
+    (function() {
+
+      'use strict';
+      Polymer({
+        is: 'cells-dm-global-apis-app-settings',
+
+        properties: {
+          /**
+          Services Host
+          **/
+          host: {
+            type: String
+          },
+
+          /**
+          Services namespace
+          **/
+          namespace: {
+            type: String
+          },
+
+          /**
+          Services API Version
+          **/
+          apiVersion: {
+            type: String,
+            value: '0'
+          },
+
+          /**
+          Service endpoint
+          **/
+          endpoint: {
+            type: String
+          },
+
+          /**
+           * Path of the service
+           **/
+          path: {
+            type: String,
+            computed: '_computePath(namespace, apiVersion, endpoint, appSettingsId)'
+          },
+
+          appSettingsId: {
+            type: String
+          },
+
+          /**
+           * App settings
+           */
+          settings: {
+            type: Object,
+            notify: true
+          },
+
+          /**
+          * Campaigns config
+          **/
+          campaignsConfig: {
+            type: Object,
+            notify: true,
+            observer: '_onSetCampaignsConfig'
+          }
+        },
+
+        /**
+         * Retrieves appSettings for the current configuration
+         **/
+        getAppSettings: function() {
+          this.$.dp.generateRequest();
+        },
+
+        /**
+         * computed method for create the service path
+         **/
+        _computePath: function(namespace, apiVersion, endpoint, appSettingsId) {
+          return namespace + '/v' + apiVersion + '/' + endpoint + '/' + appSettingsId;
+        },
+
+        /**
+         * Handler method for request Success
+         **/
+        _onRequestSuccess: function(data) {
+          this._parseAppSettings(data);
+        },
+
+        /**
+         * Handler method for Error request
+         **/
+        _onRequestError: function(error) {
+          this.dispatchEvent(new CustomEvent('app-settings-retrieve-error', {
+            detail: error,
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+        * Parses App Settings
+        */
+        _parseAppSettings: function(data) {
+          var campaigns = ((data || {}).detail || {}).campaigns;
+          if (campaigns) {
+            this._parseCampaignsConfig(campaigns);
+          }
+        },
+
+        /**
+        * Parse the campaigns config section
+        **/
+        _parseCampaignsConfig: function(data) {
+          this.set('campaignsConfig', data);
+        },
+
+        /**
+        * Observer executed when campaignsConfig is set
+        **/
+        _onSetCampaignsConfig: function(campaigns) {
+          this.dispatchEvent(new CustomEvent('app-settings-dashboard-campaigns-config', {
+            detail: campaigns,
+            bubbles: true,
+            composed: true
+          }));
+        }
+      });
+    }());
+  </script>
+</dom-module>

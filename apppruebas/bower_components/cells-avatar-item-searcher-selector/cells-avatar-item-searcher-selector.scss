@@ -1,0 +1,122 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  font-family: var(--cells-fontDefault, --fontDefault);
+  display: block;
+  --cells-stripes-spinner-veil: unquote("{
+    left: calc(0px + 50%);
+  }");
+  @apply(--cells-avatar-item-searcher-selector);
+}
+
+cells-atom-subheader {
+  padding: 0 rem(30px) rem(16px) rem(30px);
+  @apply(--cells-avatar-item-searcher-selector-subheader);
+}
+
+.searcher {
+  background-color: var(--bbva-100, #f4f4f4);
+  margin-bottom: rem(20px);
+  @apply(--cells-avatar-item-searcher-selector-searcher);
+}
+cells-molecule-input {
+  padding-top: rem(15px);
+  z-index: 0;
+  --cells-molecule-input-icon-button: unquote("{
+    color:var(--bbva-300, #D3D3D3)}");
+}
+
+cells-avatar-item {
+  border-bottom: 1px solid var(--bbva-100);
+  padding: rem(16px) rem(16px);
+  background: var(--bbva-white);
+  margin: 0 1rem;
+
+  --cells-avatar-item-list-secondary: unquote("{
+    color: var(--bbva-600, #121212);
+  }");
+  --cells-avatar-item-list-secondary-extra: unquote("{
+    font-style: italic;
+  }");
+  --cells-avatar-item-list-info: unquote("{
+    font-size: rem(14px);
+    font-weight: 400;
+    color: var(--bbva-500, #666666);
+  }");
+  @apply(--cells-fontDefaultNormal);
+  @apply(--cells-avatar-item-searcher-selector-avatar-item);
+}
+
+cells-avatar-item:active {
+  background-color: var(--bbva-100, #F4F4F4);
+  @apply(--cells-avatar-item-searcher-selector-avatar-item);
+}
+
+:host(.step-inactive) cells-atom-subheader ::content h2 {
+  color: var(--bbva-300);
+}
+
+:host[searching] {
+  @apply(--cells-avatar-item-searcher-selector-searching-mode);
+}
+
+filter-tags {
+  margin-left: rem(30px);
+}
+
+cells-left-swipe-action-button span{
+  display: block;
+  font-size: 12px;
+  padding: 0.5rem 0 0;
+  @apply(--cells-avatar-item-searcher-selector-searching-mode);
+}
+
+cells-left-swipe-action-button {
+  width: 25%;
+  text-align: center;
+  padding: 0;
+  --cells-left-swipe-action-button: unquote("{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }");
+
+  --cells-left-swipe-action-button-wrapper: unquote("{
+    font-size: 1rem;
+  }");
+
+  @apply(--cells-avatar-item-searcher-selector-action-button);
+}
+
+cells-left-swipe-action {
+  --cells-left-swipe-action-swipe-content: unquote("{
+    background: var(--bbva-white);
+  }");
+  @apply(--cells-left-swipe-action-content);
+}
+
+cells-atom-icon {
+  margin:0 auto;
+  @apply(--cells-avatar-item-searcher-selector-icon);
+}
+
+.spinner-container {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 117px;
+  @apply(--cells-avatar-item-searcher-selector-spinner-container);
+}
+
+.spinner-container cells-stripes-spinner-veil {
+  width: 100%;
+  height: 50%;
+  position: relative;
+  left: 0;
+  @apply(--cells-avatar-item-searcher-selector-spinner);
+}
+.spinner-container[hidden] {
+  display: none;
+}

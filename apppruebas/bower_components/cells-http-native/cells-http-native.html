@@ -1,0 +1,199 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-ajax/iron-request.html">
+
+<!--
+The `cells-http-native` element exposes network request functionality.
+
+    <cells-http-native
+        url="http://gdata.youtube.com/feeds/api/videos/"
+        params='{"alt":"json", "q":"chrome"}'
+        on-response="handleResponse"
+    ></cells-http-native>
+
+You can trigger a request explicitly by calling `generateRequest` on the
+element.
+
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<script>
+'use strict';
+
+Polymer({
+  is: 'cells-http-native',
+
+  properties: {
+    headers: {
+      type: Object,
+      value: {}
+    },
+    params: {
+      type: Object,
+      value: {}
+    },
+    url: {
+      type: String
+    },
+    method: {
+      type: String,
+      value: 'get'
+    },
+    /**
+     * The most recent request made by this cells-http-native element.
+     */
+    lastRequest: {
+      type: Object,
+      notify: true,
+      readOnly: true
+    },
+    /**
+     * True while lastRequest is in flight.
+     */
+    loading: {
+      type: Boolean,
+      notify: true,
+      readOnly: true
+    },
+    /**
+     * Will be set to the most recent response received by a request
+     * that originated from this element.
+     */
+    lastResponse: {
+      type: Object,
+      notify: true,
+      readOnly: true
+    },
+    /**
+     * Will be set to the most recent error that resulted from a request
+     * that originated from this element.
+     */
+    lastError: {
+      type: Object,
+      notify: true,
+      readOnly: true
+    }
+  },
+
+  /**
+   * Performs an native request to the specified URL.
+   *
+   * @return {!IronRequestElement}
+   */
+  generateRequest: function() {
+
+    if (window.cordovaCells.Http) {
+      var request = document.createElement('iron-request');
+      var response;
+      var requestOptions = this.toRequestOptions();
+
+      request.completes.then(
+        this._handleResponse.bind(this)
+      ).catch(
+        this._handleError.bind(this, request)
+      ).then(
+        this._discardRequest.bind(this, request)
+      );
+
+      if (requestOptions.params === '') {
+        requestOptions.params = {};
+      }
+
+      window.cordovaCells.Http[requestOptions.method](
+        requestOptions.url,
+        requestOptions.params, // optional params
+        requestOptions.headers, // optional headers
+        function(msg) {
+          var data = msg.data;
+
+          if (this.checkIsAJson(msg.data)) {
+            data = JSON.parse(data);
+          } else {
+            var parser = new DOMParser();
+            data = parser.parseFromString(data, 'text/xml');
+          }
+
+          var status = msg.status ? JSON.parse(msg.status) : 0;
+          var headers = msg.headers ? JSON.parse(msg.headers) : {};
+          response = {
+            status: status,
+            data: data,
+            headers: headers
+          };
+          var extendedResponse = Object.assign({}, response.data, { headers : response.headers });
+          request._setResponse(extendedResponse);
+          this._setLastResponse(response);
+          request.resolveCompletes(request);
+        }.bind(this),
+        function(msg) {
+          this._setLastError(msg);
+          request.rejectCompletes(msg);
+        }.bind(this)
+      );
+
+      return request;
+    } else {
+      console.warn('Cordova Plugin SecureHTTP is not initialized');
+    }
+  },
+
+  /**
+   * Check if 'str' is a valid JSON
+   */
+  checkIsAJson: function(str) {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  },
+
+  /**
+   * Request options suitable for generating an `iron-request` instance based
+   * on the current state of the `cells-http-native` instance's properties.
+   *
+   * @return {{
+   *   url: string,
+   *   method: (string|undefined),
+   *   headers: (Object|undefined),
+   *   params: (string|undefined)
+   */
+  toRequestOptions: function() {
+    return {
+      url: this.url,
+      method: this.method.toLowerCase(),
+      headers: this.headers,
+      params: this.body ? this.body : this.params
+    };
+  },
+  _handleResponse: function(request) {
+    if (request === this.lastRequest) {
+      this._setLastResponse(request.response);
+      this._setLastError(null);
+      this._setLoading(false);
+    }
+    this.fire('response', request, {bubbles: false});
+  },
+  _handleError: function(request, error) {
+    if (this.verbose) {
+      console.error(error);
+    }
+    if (request === this.lastRequest) {
+      this._setLastError({
+        request: request,
+        error: error
+      });
+      this._setLastResponse(null);
+      this._setLoading(false);
+    }
+    this.fire('error', {
+      request: request,
+      error: error
+    }, {bubbles: false});
+  },
+  _discardRequest: function(request) {
+    //TODO: nothing here for the moment...
+  }
+});
+</script>

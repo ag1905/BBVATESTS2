@@ -1,0 +1,41 @@
+{
+  "name": "cells-step-legal-terms",
+  "version": "2.4.8",
+  "description": "Component containing inputs for an operation concept and reference",
+  "keywords": [
+    "i18n"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "cells-atom-button": "^4.0.1",
+    "cells-checkbox-button": "^9.0.1",
+    "cells-st-button": "~10.0.8",
+    "cells-amount-behavior": "~10.2.0",
+    "cells-i18n-behavior": "^3.0.1",
+    "cells-icon-message": "^9.0.1",
+    "cells-step-behavior": "^3.2.0",
+    "cells-step": "^3.0.0",
+    "polymer": "Polymer/polymer#^1.6.0"
+  },
+  "devDependencies": {
+    "cells-demo-helper": "^9.0.0",
+    "cells-coronita-theme": "^9.0.0",
+    "cells-sass": "^1.0.3",
+    "coronita-icons": "^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "^1.2.5",
+    "paper-button": "^1.0.14",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "main": [
+    "cells-step-legal-terms.html"
+  ],
+  "resolutions": {
+    "cells-i18n-behavior": "~10.2.0",
+    "cells-atom-button": "~9.0.0",
+    "iron-icon": "^2.0.0"
+  }
+}

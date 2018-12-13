@@ -1,0 +1,56 @@
+{
+  "name": "cells-params",
+  "version": "2.0.3",
+  "description": "An element to manage params in the application",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer",
+    "seed"
+  ],
+  "main": [
+    "cells-params.html"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-core.git"
+  },
+  "homepage": "https://globaldevtools.bbva.com/bitbucket/projects/CEL/repos/cells-core/",
+  "dependencies": {
+    "polymer": "Polymer/polymer#1 - 2",
+    "app-storage": "PolymerElements/app-storage#1 - 2"
+  },
+  "devDependencies": {
+    "cells-st-button": "^10.0.0",
+    "cells-molecule-input": "^11.0.0",
+    "cells-sass": "^2.0.0",
+    "cells-demo-helper": "^10.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "cells-coronita-theme": "^10.0.0",
+    "coronita-icons": "^10.0.0",
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.0.0",
+        "app-storage": "PolymerElements/app-storage#^2.0.2"
+      },
+      "devDependencies": {
+        "cells-st-button": "^10.0.0",
+        "cells-molecule-input": "^11.0.0",
+        "cells-sass": "^2.0.0",
+        "cells-demo-helper": "^10.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "cells-coronita-theme": "^10.0.0",
+        "coronita-icons": "^10.0.0",
+        "webcomponentsjs": "^0.7.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+@import "bower_components/cells-sass/main";
+:host {
+  box-sizing: border-box;
+  color: var(--cells-atom-subheader-text-color, #BDBDBD);
+  font-family: var(--cells-fontDefault, sans-serif);
+  font-size: var(--cells-atom-subheader-font-size, rem(13px));
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  @apply(--cells-atom-subheader);
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+.left-field {
+  flex: 1 1 auto;
+  display: flex;
+  @apply(--cells-atom-subheader-left-field);
+}
+
+.right-field {
+  margin-left: var(--cells-atom-subheader-margin-between-left-right, 1.25em);
+  white-space: nowrap;
+  display: flex;
+  @apply(--cells-atom-subheader-right-field);
+}
+
+:host([inverse]) {
+  flex-direction: row-reverse;
+  @apply(--cells-atom-subheader-inverse);
+  .left-field {
+    flex: 0 1 auto;
+    white-space: nowrap;
+    margin-left: var(--cells-atom-subheader-margin-between-left-right, 1.25em);
+    @apply(--cells-atom-subheader-inverse-left-field);
+  }
+  .right-field {
+    flex: 1 1 auto;
+    white-space: normal;
+    margin-left: 0;
+    @apply(--cells-atom-subheader-inverse-right-field);
+  }
+}
+
+#heading ::content > * {
+  text-transform: uppercase;
+  color: var(--cells-atom-subheader-content-heading-color, #666);
+  @apply(--cells-atom-subheader-heading);
+}

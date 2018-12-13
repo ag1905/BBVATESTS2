@@ -1,0 +1,41 @@
+{
+  "name": "cells-avatar-item-searcher-selector",
+  "version": "1.0.2",
+  "description": "A simple list of avatar items selector and an optional searcher",
+  "keywords": [
+    "i18n",
+    "cells",
+    "contacts",
+    "selector",
+    "searcher"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "cells-atom-message": "~2.2.0",
+    "cells-avatar-item": "~1.0.0",
+    "cells-i18n-behavior": "~3.3.0",
+    "cells-left-swipe-action": "~3.1.0",
+    "cells-molecule-input": "~5.2.2",
+    "cells-stripes-spinner-veil": "~1.1.0",
+    "polymer": "~1.9.0"
+  },
+  "devDependencies": {
+    "cells-atom-icon": "~2.1.4",
+    "cells-banking-theme": "^0.X.0",
+    "cells-coronita-theme": "^2.1.0",
+    "cells-demo-helper": "^1.0.7",
+    "cells-glomo-theme": "~5.3.0",
+    "cells-sass": "~2.0.0",
+    "coronita-icons": "~2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#~1.1.5",
+    "iron-demo-helpers": "~1.2.5",
+    "iron-pages": "~1.0.8",
+    "paper-tabs": "~1.6.2",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0"
+  },
+  "main": [
+    "cells-account-selector.html"
+  ]
+}

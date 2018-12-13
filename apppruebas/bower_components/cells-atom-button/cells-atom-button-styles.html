@@ -1,0 +1,207 @@
+<dom-module id="cells-atom-button-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  font-family: var(--cells-fontDefault, sans-serif);
+  margin: 0;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0 0.75rem;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+  position: relative;
+  background-repeat: no-repeat;
+  -webkit-tap-highlight-color: transparent;
+  @apply (--cells-btn);
+  @apply (--cells-btn--font);
+  @apply (--cells-btn--decorator);
+  @apply (--cells-btn--animations);
+  @apply (--cells-btn--m);
+  @apply (--cells-btn--extend); }
+  :host ::content > * {
+    vertical-align: middle;
+    @apply (--cells-btn-content--extend); }
+  :host::-moz-focus-inner {
+    padding: 0;
+    border: 0; }
+
+:host(.btn--full) {
+  width: 100%; }
+
+:host(:hover) {
+  @apply (--cells-btn--hover);
+  @apply (--cells-btn--hover--extend); }
+
+:host(:focus) {
+  @apply (--cells-btn--focus);
+  @apply (--cells-btn--focus--extend); }
+
+:host(:active) {
+  @apply (--cells-btn--active);
+  @apply (--cells-btn--active--extend); }
+
+:host(:disabled), :host(:disabled:hover) {
+  @apply (--cells-btn--disabled); }
+
+:host(:disabled) {
+  @apply (--cells-btn--disabled);
+  @apply (--cells-btn--disabled--extend); }
+
+:host(.btn--primary) {
+  @apply (--cells-btn--primary);
+  @apply (--cells-btn--primary--extend); }
+
+:host(.btn--primary:hover:not(:disabled)) {
+  @apply (--cells-btn--primary-hover);
+  @apply (--cells-btn--primary-hover--extend); }
+
+:host(.btn--primary:active:not(:disabled)) {
+  @apply (--cells-btn--primary-active);
+  @apply (--cells-btn--primary-active--extend); }
+
+:host(.btn--primary:disabled) {
+  @apply (--cells-btn--primary-disabled);
+  @apply (--cells-btn--primary-disabled--extend); }
+
+:host(.btn--secondary) {
+  @apply (--cells-btn--secondary);
+  @apply (--cells-btn--secondary--extend); }
+
+:host(.btn--secondary:hover:not(:disabled)) {
+  @apply (--cells-btn--secondary-hover);
+  @apply (--cells-btn--secondary-hover--extend); }
+
+:host(.btn--secondary:active:not(:disabled)) {
+  @apply (--cells-btn--secondary-active);
+  @apply (--cells-btn--secondary-active--extend); }
+
+:host(.btn--secondary:disabled) {
+  @apply (--cells-btn--secondary-disabled);
+  @apply (--cells-btn--secondary-disabled--extend); }
+
+:host(.btn--tertiary) {
+  @apply (--cells-btn--tertiary);
+  @apply (--cells-btn--tertiary--extend); }
+
+:host(.btn--tertiary:hover:not(:disabled)) {
+  @apply (--cells-btn--tertiary-hover);
+  @apply (--cells-btn--tertiary-hover--extend); }
+
+:host(.btn--tertiary:active:not(:disabled)) {
+  @apply (--cells-btn--tertiary-active);
+  @apply (--cells-btn--tertiary-active--extend); }
+
+:host(.btn--tertiary:disabled) {
+  @apply (--cells-btn--tertiary-disabled);
+  @apply (--cells-btn--tertiary-disabled--extend); }
+
+:host(.btn--quaternary) {
+  @apply (--cells-btn--quaternary);
+  @apply (--cells-btn--quaternary--extend); }
+
+:host(.btn--quaternary:hover:not(:disabled)) {
+  @apply (--cells-btn--quaternary-hover);
+  @apply (--cells-btn--quaternary-hover--extend); }
+
+:host(.btn--quaternary:active:not(:disabled)) {
+  @apply (--cells-btn--quaternary-active);
+  @apply (--cells-btn--quaternary-active--extend); }
+
+:host(.btn--quaternary:disabled) {
+  @apply (--cells-btn--quaternary-disabled);
+  @apply (--cells-btn--quaternary-disabled--extend); }
+
+:host(.btn--neutral) {
+  @apply (--cells-btn--neutral);
+  @apply (--cells-btn--neutral--extend); }
+
+:host(.btn--neutral:hover) {
+  @apply (--cells-btn--neutral-hover);
+  @apply (--cells-btn--neutral-hover--extend); }
+
+:host(.btn--neutral:active) {
+  @apply (--cells-btn--neutral-active);
+  @apply (--cells-btn--neutral-active--extend); }
+
+:host(.btn--neutral:disabled) {
+  @apply (--cells-btn--neutral-disabled); }
+
+:host(.btn--composed) {
+  @apply (--cells-btn--composed); }
+  :host(.btn--composed) ::content {
+    @apply (--cells-btn--composed-content); }
+    :host(.btn--composed) ::content .btn__icon, :host(.btn--composed) ::content .btn__text {
+      padding: 0 0.375rem; }
+
+:host(.btn--content-centered) {
+  text-align: center; }
+
+:host(.btn--content-left) {
+  text-align: left; }
+
+:host(.btn--content-right) {
+  text-align: right; }
+
+:host(.btn--transparent) {
+  min-height: initial;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  @apply (--cells-btn--transparent); }
+
+:host(.btn--transparent:hover) {
+  @apply (--cells-btn--transparent-hover); }
+
+:host(.btn--transparent:active) {
+  @apply (--cells-btn--transparent-active); }
+
+:host(.btn--transparent:disabled) {
+  @apply (--cells-btn--transparent-disabled); }
+
+:host(.btn--link) {
+  border: 0;
+  background-color: transparent;
+  @apply (--cells-btn--link); }
+
+:host(.btn--link:hover) {
+  @apply (--cells-btn--link-hover); }
+
+:host(.btn--link:active) {
+  @apply (--cells-btn--link-active); }
+
+:host(.btn--link:disabled) {
+  @apply (--cells-btn--link-disabled); }
+
+:host(.btn--xxl) {
+  @apply (--cells-btn--xxl); }
+
+:host(.btn--xl) {
+  @apply (--cells-btn--xl); }
+
+:host(.btn--l) {
+  @apply (--cells-btn--l); }
+
+:host(.btn--m) {
+  @apply (--cells-btn--m); }
+
+:host(.btn--s) {
+  @apply (--cells-btn--s); }
+
+:host(.btn--xs) {
+  @apply (--cells-btn--xs); }
+
+:host(.btn--xxs) {
+  @apply (--cells-btn--xxs); }
+
+:host {
+  @apply (--cells-atom-button); }
+
+</style></template></dom-module>

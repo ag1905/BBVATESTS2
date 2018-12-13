@@ -1,0 +1,25 @@
+{
+  "name": "cells-atom-input",
+  "version": "3.1.1",
+  "description": "An atomic element extending input native tag",
+  "keywords": [
+    "input",
+    "atom"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.1"
+  },
+  "devDependencies": {
+    "cells-sass": "~1.0.15",
+    "cells-theme-base": "~4.0.12",
+    "web-component-tester": "Polymer/web-component-tester#4.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#~1.1.4",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "main": [
+    "cells-atom-input.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  }
+}

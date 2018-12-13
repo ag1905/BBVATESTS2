@@ -1,0 +1,104 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  @apply(--cells-step-product-selector);
+
+  cells-step {
+    --cells-step-iron-collapse: {
+      transition-duration: 1ms;
+      -webkit-transition-duration: 1ms;
+    }
+  }
+
+  cells-product-item  {
+    background: transparent;
+    padding: 0;
+    min-height: rem(37px);
+
+    --cells-product-item-description-value: unquote("{
+      color: #ffffff;
+    }");
+    
+    .text-info {
+      display: flex;
+      align-items: flex-start;
+      margin-top: rem(12px);
+      @apply(--cells-fontDefaultNormalItalic);
+      font-size: var(--cells-text-size-14);
+
+      &--error {
+        color:var(--bbva-light-red, #e77d8e);
+        @apply(--cells-product-selector-item-text-info-error);
+      }
+  
+      cells-atom-icon {
+        margin: 0 rem(10px) 0 0;
+        @apply(--cells-product-selector-item-text-info-icon);
+      }
+
+      @apply(--cells-product-selector-item-text-info);
+    }
+  
+    &.disabled {
+      --cells-product-item-item-info: unquote('{
+        opacity: .3;
+      }');
+      --cells-product-item-item-quantities: unquote('{
+        opacity: .3;
+      }');
+    }
+
+    @apply(--cells-step-product-selector-item);
+
+    ::content .item__name {
+      color: var(--bbva-white);
+      @apply(--cells-step-product-selector-item-name);
+    }
+    ::content cells-molecule-mask {
+      color: var(--bbva-white);
+      @apply(--cells-step-product-selector-item-mask);
+    }
+    ::content cells-atom-amount {
+      color: var(--bbva-white);
+      @apply(--cells-step-product-selector-item-amount);
+    }
+  }
+  ::content .full  {
+    margin-bottom: rem(14px);
+  }
+  ::content .full cells-product-item {
+    background: transparent;
+  }
+  ::content .full cells-product-item:active {
+    background: var(--cells-product-item-active-background-color, #F4F4F4);
+  }
+  ::content .full cells-product-item:last-of-type {
+    border-bottom: none;
+  }
+}
+
+:host(:not([active])) {
+  pointer-events: none;
+  --cells-atom-subheader-heading: unquote("{color:var(--bbva-300, #D3D3D3);}");
+  --cells-product-item-title-color: unquote("var(--bbva-300, #D3D3D3)");
+  --cells-atom-amount-large:unquote("{color:var(--bbva-300, #D3D3D3);}");
+  --iban: unquote("{color: var(--bbva-300, #D3D3D3);}");
+  --bbva-medium-blue: unquote("var(--bbva-300, #D3D3D3)");
+}
+
+:host(.fixed) {
+  cells-product-item  {
+    ::content .item__name {
+      font-size: rem(14px);
+    }
+    ::content cells-atom-amount {
+      font-size: rem(16px);
+    }
+    ::content cells-atom-amount ::content .fractional,
+    ::content cells-atom-amount ::content .currency--left,
+    ::content cells-atom-amount ::content .currency--right  {
+      font-size: rem(12px);
+      padding-top: rem(1px);
+    }
+  }
+}

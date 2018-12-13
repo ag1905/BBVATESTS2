@@ -1,0 +1,122 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-input-slider;
+
+  --cells-paper-slider-height: var(--cells-input-slider-height, 2px);
+  --cells-paper-slider-active-color: var(--cells-input-slider-active-color, #5bbeff);
+  --cells-paper-slider-container-color: var(--cells-input-slider-container-color, #004481);
+  --cells-paper-slider-knob-start-color: var(--cells-input-slider-knob-bg-color, #237aba);
+  --cells-paper-slider-knob-start-border-color: var(--cells-input-slider-knob-bg-color, #237aba);
+  --cells-paper-slider-knob-bg-color: var(--cells-input-slider-knob-bg-color, #237aba);
+  --cells-paper-slider-knob-text-color: var(--cells-input-slider-knob-text-color, var(--bbva-white));
+  --cells-paper-slider-text-color: var(--cells-input-slider-text-color, var(--bbva-white));
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.wrapper-slider {
+  /*width: 50%;*/
+  position: relative;
+  padding-top: var(--cells-input-slider-padding, 4.5em);
+
+  .label-left {
+    float: left;
+  }
+
+  .label-right {
+    float: right;
+  }
+
+  .range {
+    width: var(--cells-input-slider-range-width, 100%);
+    height: var(--cells-input-slider-range-height, 3.125rem);
+    @apply --cells-input-slider-range;
+
+    .timeline {
+      width: var(--cells-input-slider-timeline-width, 100%);
+      margin: var(--cells-input-slider-timeline-margin, rem(20px) rem(20px) rem(20px) rem(20px));
+      ul {
+        display: flex;
+        list-style: none;
+        justify-content: space-between;
+        padding: 0;
+        margin: 0;
+        color: var(--cells-input-slider-timeline-color, var(--bbva-white));
+        @apply --cells-input-slider-timeline-ul;
+      }
+      @apply --cells-input-slider-timeline;
+    }
+  }
+
+  .slider-label {
+    width: 100%;
+    text-align: center;
+
+    &__title {
+      color: var(--cells-input-slider-timeline-color, var(--bbva-white));
+      font-size: var(--cells-text-size-20, .875rem);
+      @apply --cells-input-slider-label-title;
+    }
+
+    &__value {
+      color: var(--cells-input-slider-timeline-color, var(--bbva-white));
+      font-weight: var(--cells-fontDefaultMedium, 500);
+      font-size: var(--cells-text-size-20, 1.25rem);
+      @apply --cells-input-slider-label-value;
+
+      .counter {
+        @apply --cells-input-slider-label-value-counter;
+      }
+
+      .unit {
+        @apply --cells-input-slider-label-value-unit;
+      }
+    }
+
+    @apply --cells-input-slider-label;
+  }
+}
+
+.wrapper-slider [class^="label-"] {
+  color: var(--cells-paper-slider-text-color);
+  display: inline-block;
+  padding: 1em 0;
+  font-family: var(--cells-fontDefault, sans-serif);
+  font-weight: 300;
+  font-size: 15px;
+  margin-top: 10px;
+  /*margin-right: calc(15px + var(--cells-paper-slider-height)/2);*/
+}
+
+.wrapper-slider > * {
+  display: inline-block;
+  vertical-align: top;
+}
+
+custom-cells-paper-slider,
+cells-paper-slider {
+  outline: none !important;
+}
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+button:active { @apply --cells-global-active; }

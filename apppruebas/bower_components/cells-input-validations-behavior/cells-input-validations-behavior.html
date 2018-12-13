@@ -1,0 +1,120 @@
+<link rel="import" href="../polymer/polymer.html">
+<script>
+  window.CellsBehaviors = window.CellsBehaviors || {};
+  /**
+   * `Cells.InputValidationsBehavior` is a behavior to validate
+   * and format a valid input user, password login field
+   *
+   * @polymerBehavior Cells.InputValidationsBehavior
+   * @demo demo/index.html
+   */
+  window.CellsBehaviors.InputValidationsBehavior = {
+    properties: {
+      /**
+       * Regex pattern for each validation type.
+       */
+      regexps: {
+        type: Object,
+        value: {
+          rut: '\\d{3}.\\d{3}.\\d{3}-k|\\d{3}.\\d{3}.\\d{3}-\\d{1}|\\d{9}?k|\\d{10}',
+          mxPhone: '\\d{2}\\s\\d{8}|\\d{10}',
+          ciUruguay: '^\\d{7}(\-\\d{1})?$',
+          mxRepeatPassword: '^(?!.*(.)\\1{3})',
+          mxFollowedPassword: '^(?!.*(0123|1234|2345|3456|4567|5678|6789))'
+        }
+      },
+      /**
+       * Translation keys for each validation type.
+       */
+      messages: {
+        type: Object,
+        value: {
+          rutMsg: 'cells-rut-error-message',
+          mxPhoneMsg: 'cells-mx-phone-error-message',
+          ciUruguayMsg: 'cells-ciUruguay-error-message',
+          mxRepeatPassword: 'cells-mx-password-repeat-error-message',
+          mxFollowedPassword: 'cells-mx-password-followed-error-message'
+        }
+      },
+      /**
+       * Mask formats for each validation type.
+       */
+      masks: {
+        type: Object,
+        value: {
+          rut: ['', '', '', '.', '', '', '', '.', '', '', '', '-', ''],
+          mxPhone: ['', '', ' ', '', '', '', '', '', '', '', ''],
+          peAccountNumber: ['', '', '', '', '-', '', '', '', '', '-',  '', '', '', '', '', '', '', '', '', ''],
+          ciUruguay: ['', '', '', '', '', '', '', '-', ''],
+          mxPassword: ['', '', '', '', '', '']
+        }
+      }
+    },
+
+    _getPattern: function(value) {
+      return this.regexps[value] || value;
+    },
+
+    _getMultiplePattern: function(value) {
+      if (!Array.isArray(value)) {
+        value = [ value ];
+      }
+      return value && value.length && value.reduce(function(acc, item) {
+        acc.push(this.regexps[item]);
+        return acc;
+      }.bind(this), []);
+    },
+
+    _getErrorMessages: function(value) {
+      return this.t(this.messages[value] || value) || '';
+    },
+    _getMultipleErrorMessages: function(value) {
+      return this.t(this.messages[value] || value) || '';
+    },
+
+    _getMasked: function(value, type, maskEnabled) {
+      if (value && type && maskEnabled) {
+        value = value.replace(/[^a-zA-Z 0-9.]|\s/g, '');
+        var pattern = this.masks[type];
+        var aux = value.split('').slice(0, pattern.length);
+        var mask = [];
+        var acc = 0;
+        aux.some(function(item) {
+          if (!pattern[acc]) {
+            mask.push(item);
+          } else {
+            if (pattern[acc] !== item) {
+              // copy
+              mask.push(pattern[acc], item);
+              acc++;
+            } else {
+              // write
+              mask.push(item);
+            }
+          }
+          acc++;
+        });
+        return mask.join('').toString();
+      }
+
+      return value;
+    },
+
+    _getUnMasked: function(value, type) {
+      if (value && type) {
+        var aux = value.split('');
+        var pattern = this.masks[type];
+        var input = '';
+        var acc = 0;
+        aux.some(function(item) {
+          if (!pattern[acc] || pattern[acc] !== item) {
+            input += item;
+          }
+          acc++;
+        });
+        return input;
+      }
+    }
+  };
+
+</script>

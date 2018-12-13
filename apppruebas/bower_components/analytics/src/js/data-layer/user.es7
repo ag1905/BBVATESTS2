@@ -1,0 +1,85 @@
+import BgdmjsAnalyticsDataLayerUserDevice from './user/device';
+import BgdmjsAnalyticsDataLayerUserSegment from './user/segment';
+/**
+ * Almacena la información relativa al perfil del cliente.
+ *
+ * Debe informarse tanto para los eventos síncronos como asíncronos.
+ *
+ * Datos como “logado/no logado” o el profile ID se informarán en toda la
+ * navegación, mientras que el tipo de cliente (profile) sólo se informará
+ * en aquellos funnels en los que el cliente es clasificado por tipología
+ * (como sucede por ejemplo en el funnel de Agendamiento).
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer
+ * @class     bgdmjs.analytics.dataLayer.User
+ */
+export default class BgdmjsAnalyticsDataLayerUser
+{
+    /**
+     * Edad del usuario.
+     *
+     * @property age
+     * @type     {number}
+     */
+    age       = 0;
+    /**
+     * País de origen del usuario.
+     *
+     * @property country
+     * @type     {string}
+     */
+    country   = '';
+    /**
+     * Información del dispositivo.
+     *
+     * @property device
+     * @type     {bgdmjs.analytics.dataLayer.user.Device|null}
+     */
+    device    = null;
+    /**
+     * Género del usuario.
+     *
+     * @property gender
+     * @type     {string}
+     */
+    gender    = '';
+    /**
+     * Identificador único del cliente.
+     *
+     * Este valor debe estar encriptado y NUNCA debe coincidir con el
+     * número interno que el Banco guarda en sus bases de datos de Clientes.
+     *
+     * Cada país generará un único identificador por usuario que
+     * permita ser cruzado con el back-end interno. .
+     *
+     * @property profileID
+     * @type     {string}
+     */
+    profileID = '';
+    /**
+     * Información del segmento del cliente.
+     *
+     * @type {bgdmjs.analytics.dataLayer.user.Segment|null}
+     */
+    segment   = null;
+    /**
+     * Si el usuario está logado o no.
+     * Valores posibles: `logado`, `no logado`.
+     *
+     * @property userState
+     * @type     {string}
+     */
+    userState = '';
+
+    /**
+     * Constructor de la clase.
+     *
+     * @constructor
+     */
+    constructor()
+    {
+        this.device  = new BgdmjsAnalyticsDataLayerUserDevice();
+        this.segment = new BgdmjsAnalyticsDataLayerUserSegment();
+    }
+};

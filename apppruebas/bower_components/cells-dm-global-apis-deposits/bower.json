@@ -1,0 +1,27 @@
+{
+  "name": "cells-dm-global-apis-deposits",
+  "version": "1.3.4",
+  "description": "CELLS Data Manager for GLOBAL APIS Deposits",
+  "keywords": [
+    "dm",
+    "data",
+    "manager",
+    "global-apis",
+    "deposits"
+  ],
+  "dependencies": {
+    "bgadp-deposits": "~1.6.0",
+    "cells-global-apis-behaviors": "~0.4.0",
+    "polymer": "Polymer/polymer#^1.7.0"
+  },
+  "devDependencies": {
+    "cells-demo-dm-helper": "^0.2.1",
+    "cells-demo-helper": "^1.3.5",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "test-fixture": "polymerelements/test-fixture#^1.0.0",
+    "web-component-tester": "^3.0.0"
+  },
+  "main": [
+    "cells-dm-global-apis-deposits.html"
+  ]
+}

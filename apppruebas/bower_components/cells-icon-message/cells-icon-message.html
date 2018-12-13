@@ -1,0 +1,117 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="cells-icon-message-styles.html">
+
+<!--
+`<cells-icon-message>` displays an inline informative message, such an error, warning, info or success message with an icon.
+It has two different layouts. The default layout displays the icon above the text and the "inline" layout displays the icon
+to the left of the text.
+
+The `aria-label` of the icon is set automatically for three of the default valid types (info, warning and error), but you can override that value by setting the
+`icon-label` attribute. If no `icon-label` is set and none of the valid types is used, the icon will not have `aria-label` as it will be considered presentational.
+
+An image can be used instead of an icon by setting the `src` attribute. The image will be square.
+
+Inline level HTML tags are allowed for the message. Also custom content can be used as light DOM.
+
+__Example:__
+
+```html
+<cells-icon-message
+  type="info"
+  icon="coronita:info"
+  message="Informative message">
+</cells-icon-message>
+```
+
+__Example with custom label for the icon:__
+
+```html
+<cells-icon-message
+  type="warning"
+  icon-label="Important message"
+  icon="coronita:alert"
+  message="Lorem ipsum dolor sit amet.">
+</cells-icon-message>
+```
+
+__Example with an image used as icon:__
+
+```html
+<cells-icon-message
+  src="http://domain/image.png"
+  message="Lorem ipsum dolor sit amet.">
+</cells-icon-message>
+```
+
+__Example with format (inline level tags):__
+
+```html
+<cells-icon-message
+  message="Lorem <i>ipsum</i> dolor sit amet.">
+</cells-icon-message>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html).
+In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-icon-message | Empty mixin applied to the component | {} |
+| --cells-icon-message-info | Empty mixin applied to the component for the info type | {} |
+| --cells-icon-message-error | Empty mixin applied to the component for the error type | {} |
+| --cells-icon-message-warning | Empty mixin applied to the component for the warning type | {} |
+| --cells-icon-message-success | Empty mixin applied to the component for the success type | {} |
+| --cells-icon-message-inline | Empty mixin applied to the component using inline layout | {} |
+| --cells-icon-message-inline-info | Empty mixin applied to the component for the info type using inline layout | {} |
+| --cells-icon-message-inline-warning | Empty mixin applied to the component for the warning type using inline layout | {} |
+| --cells-icon-message-inline-error | Empty mixin applied to the component for the error type using inline layout | {} |
+| --cells-icon-message-inline-success | Empty mixin applied to the component for the success type using inline layout | {} |
+| --cells-icon-message-color | Default text color | #121212 |
+| --cells-icon-message-icon-margin | `margin-bottom` for the icon in default layout. `margin-right` in inline layout. In inline layout the value is divided by 2. | 1.25rem (20px) |
+| --cells-icon-message-background-color-info | Background color for the info type | #D4EDFC |
+| --cells-icon-message-background-color-warning | Background color for the warning type | #fde7d8 |
+| --cells-icon-message-background-color-error | Background color for the error type | #fddfdf |
+| --cells-icon-message-background-color-success | Background color for the success type | #daefe0 |
+| --cells-icon-message-icon | Empty mixin applied to the icon | {} |
+| --cells-icon-message-icon-color | Icon color | inherit |
+| --cells-icon-message-icon-color-info | Icon color for the info type | #5BBEFF |
+| --cells-icon-message-icon-color-warning | Icon color for the warning type | #fab27f |
+| --cells-icon-message-icon-color-error | Icon color for the error type | #f79698 |
+| --cells-icon-message-icon-color-success | Icon color for the success type | #48ae64 |
+| --cells-icon-message-icon-inline | Empty mixin applied to the icon using inline layout | {} |
+| --cells-icon-message-icon-info | Empty mixin applied to the icon for the info type | {} |
+| --cells-icon-message-icon-warning | Empty mixin applied to the icon for the warning type | {} |
+| --cells-icon-message-icon-error | Empty mixin applied to the icon for the error type | {} |
+| --cells-icon-message-icon-success | Empty mixin applied to the icon for the success type | {} |
+| --cells-icon-message-message | Empty mixin applied to the message | {} |
+
+@demo demo/index.html
+@hero cells-icon-message.png
+-->
+
+<dom-module id="cells-icon-message">
+  <template strip-whitespace>
+    <style include="cells-icon-message-styles cells-icon-message-shared-styles"></style>
+    <iron-icon class="icon"
+      style$="width: [[iconSize]]px; height: [[iconSize]]px;"
+      icon="[[icon]]"
+      src="[[src]]"
+      hidden$="[[!_hasIconOrImage]]"
+      aria-hidden$="[[_computeIconLabelHidden(_iconLabel)]]"
+      aria-label$="[[t(_iconLabel)]]">
+    </iron-icon>
+    <span class="message" inner-h-t-m-l="[[message]]" hidden$="[[!message]]"></span>
+    <slot></slot>
+    <slot name="actions"></slot>
+  </template>
+
+  <script src="cells-icon-message.js"></script>
+</dom-module>

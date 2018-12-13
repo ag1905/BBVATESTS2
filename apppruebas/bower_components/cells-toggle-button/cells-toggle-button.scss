@@ -1,0 +1,63 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: inline-block;
+  position: relative;
+  width: var(--cells-toggle-button-width, rem(75px));
+  height: var(--cells-toggle-button-height, rem(24px));
+  border-radius: var(--cells-toggle-button-border-radius, rem(20px));
+  background-color: var(--cells-toggle-button-background-color, var(--bbva-300));
+  @apply --cells-toggle-button;
+}
+
+.toggle-button__switch {
+  position: absolute;
+  transition: all .15s ease;
+  top: var(--cells-toggle-button-switch-top, rem(1px));
+  left: var(--cells-toggle-button-switch-left, rem(1px));
+  height: var(--cells-toggle-button-switch-height, rem(22px));
+  width: var(--cells-toggle-button-switch-width, rem(36px));
+  border-radius: var(--cells-toggle-button-switch-border-radius, rem(20px));
+  background-color: var(--cells-toggle-button-button-switch-color, var(--bbva-medium-blue));
+  @apply --cells-toggle-button-button;
+
+  &.active:not(.dragging){
+    transform: translateX(rem(37px));
+    @apply --cells-toggle-button-switch-active;
+  }
+
+  &.dragging {
+    @apply --cells-toggle-button-switch-dragging;
+  }
+}
+
+.text-container {
+  width: var(--cells-toggle-button-switch-width, rem(36px));
+  text-align: center;
+  font-size: var(--cells-toggle-button-font-size, rem(13px));
+  line-height: var(--cells-toggle-button-text-height, rem(22px));
+  color: var(--cells-toggle-button-text-color, var(--bbva-white));
+  position: absolute;
+  top: var(--cells-toggle-button-text-container-top, rem(2px));
+  left: 0;
+  @apply --cells-fontDefaultMedium;
+  @apply --cells-toggle-button-text-container;
+  &:last-of-type {
+    left: auto;
+    right: 0;
+    @apply --cells-toggle-button-text-container-last;
+  }
+  &__icon {
+    position: absolute;
+    top: rem(2px);
+    left: 0;
+    margin: 0 rem(12px);
+    color: var(--cells-toggle-button-text-color, var(--bbva-white));
+    @apply --cells-toggle-button-text-container-icon;
+    &:last-of-type {
+      left: auto;
+      right: 0;
+      @apply --cells-toggle-button-text-container-icon-last;
+    }
+  }
+}

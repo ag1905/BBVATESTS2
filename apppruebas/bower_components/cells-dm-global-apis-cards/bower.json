@@ -1,0 +1,28 @@
+{
+  "name": "cells-dm-global-apis-cards",
+  "version": "1.9.2",
+  "description": "CELLS Data Manager for GLOBAL APIS Cards",
+  "keywords": [
+    "dm",
+    "data",
+    "manager",
+    "global-apis",
+    "cards"
+  ],
+  "dependencies": {
+    "bgadp-cards": "~1.9.0",
+    "cells-global-apis-behaviors": "~0.4.1",
+    "polymer": "Polymer/polymer#^1.9.1"
+  },
+  "devDependencies": {
+    "cells-demo-dm-helper": "^0.2.1",
+    "cells-demo-helper": "^1.3.5",
+    "cells-product-item-list": "^1.0.1",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "test-fixture": "polymerelements/test-fixture#^1.0.0",
+    "web-component-tester": "^4.0.0"
+  },
+  "main": [
+    "cells-dm-global-apis-cards.html"
+  ]
+}

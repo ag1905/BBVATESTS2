@@ -1,0 +1,217 @@
+/**
+ * Recoge la información relativa a la página visualizada por el usuario,
+ * de manera que esta información deberá actualizarse con cada carga de pantalla,
+ * pero también para los eventos asíncronos.
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer.page
+ * @class     bgdmjs.analytics.dataLayer.page.Info
+ */
+export default class BgdmjsAnalyticsDataLayerPageInfo
+{
+    /**
+     * Listado de dominios considerados como privados.
+     *
+     * @property privateDomains
+     * @type    {string[]}
+     * @static
+     */
+    static privateDomains = ['localhost'];
+    /**
+     * Listado de dominios considerados como públicos.
+     *
+     * @property publicDomains
+     * @type     {string[]}
+     * @static
+     */
+    static publicDomains  = [];
+    /**
+     * Si el usuario se encuentra en la parte pública o en la parte privada del sitio.
+     * Valores posibles: `publica`, `privada`.
+     *
+     * @property area
+     * @type     {string}
+     */
+    area                  = '';
+    /**
+     * Banco o unidad de negocio.
+     * Valores en función del país: 'BBVA España', 'BBVA Bancomer', etc.
+     *
+     * @property businessUnit
+     * @type     {string}
+     */
+    businessUnit          = '';
+    /**
+     * Categoría del canal (en la web siempre será online).
+     * Valores posibles:
+     * - branch
+     * - atm
+     * - call center
+     * - online
+     *
+     * @property channel
+     * @type     {string}
+     */
+    channel               = 'online';
+    /**
+     * Especifica el error que se ha producido en la página.
+     * Si está vacío, no se ha producido ningún error.
+     *
+     * @property errorPage
+     * @type     {string}
+     */
+    errorPage             = '';
+    /**
+     * Región de visita.
+     * Terminología ISO 3166-2 igual a la de la propiedad `language`.
+     *
+     * @property geoRegion
+     * @type     {string}
+     */
+    geoRegion             = '';
+    /**
+     * Idioma seleccionado por el usuario.
+     * Se informará usando la terminología ISO de 2 caracteres.
+     * Así, por ejemplo, para el español se usará `ES`, para el inglés `EN`.
+     *
+     * @property language
+     * @type     {string}
+     */
+    language              = '';
+    /**
+     * Niveles de profundidad de la navegación (conceptualmente, sería
+     * similar al funcionamiento de las migas de pan de la web).
+     *
+     * @property levels
+     * @type     {string[]}
+     */
+    levels                = [];
+    /**
+     * Tipo de página (objetivo de la misma).
+     * Valores posibles:
+     * - Informacion          : Englobaría consultas, simuladores, formularios y páginas que sean de
+     *                          información como el buscador, el localizador de cajeros, posición global etc..
+     * - Transaccion          : Serían páginas que estén contenidas en procesos para los que es necesario
+     *                          introducir una clave, como operativas y contrataciones.
+     * - Landing Page         : Nuevas páginas creadas para aterrizaje de campañas.
+     * - Home                 : La home del site
+     * - Subhome              : Serían las Subhomes de productos, dependiendo del país en algunos casos
+     *                          podemos encontrarnos con dos niveles de subhome.
+     *                          La subhome sería el nivel más alto y la subhome1 el nivel más bajo.
+     * - Catalogo de Producto : Dentro de esta tipología de página se encontrarían todas las fichas de producto.
+     *
+     * @property pageIntent
+     * @type     {string}
+     */
+    pageIntent            = '';
+
+    /**
+     * El campo pageName tiene la función de registrar el nombre de
+     * las páginas del site de forma que puedan ser identificadas.
+     *
+     * Se obtiene a partir del `area`, `pageSegment` y de los
+     * `levels`, todos separados por ':'.
+     *
+     * @property pageName
+     * @type     {string}
+     * @readonly
+     */
+    get pageName()
+    {
+        return [this.area, this.pageSegment, ...this.levels.filter(l => !!l)].join(':');
+    }
+
+    /**
+     * Esta variable indica el nivel más general del canal al que
+     * pertenece cada una de las páginas etiquetadas.
+     *
+     * Se empleará para indicar en qué secciones se encuentra la página.
+     *
+     * Valores cerrados en función del país.
+     *
+     * @property pageSegment
+     * @type     {string}
+     */
+    pageSegment = '';
+    /**
+     * Servidor donde está alojada la página actual.
+     *
+     * @property server
+     * @type     {string}
+     */
+    server      = window.location.hostname;
+    /**
+     * Entorno de la web por dispositivo.
+     * Posibles valores:
+     * - app
+     * - escritorio
+     * - web-movil
+     *
+     * @property sysEnv
+     * @type     {string}
+     */
+    sysEnv      = 'app';
+    /**
+     * Número identificador de versión de la web que está cargada.
+     *
+     * @property version
+     * @type     {string}
+     */
+    version     = '';
+
+    /**
+     * Constructor de la clase.
+     *
+     * @method constructor
+     *
+     * @constructor
+     */
+    constructor()
+    {
+        this.__initArea();
+    }
+
+    /**
+     * Inicializa el área en función del dominio actual.
+     *
+     * @method __initArea
+     *
+     * @private
+     */
+    __initArea()
+    {
+        if (!this.area)
+        {
+            for (let _domain of BgdmjsAnalyticsDataLayerPageInfo.publicDomains)
+            {
+                if (_domain === this.server)
+                {
+                    this.area = 'publica';
+                }
+            }
+            if (!this.area)
+            {
+                for (let _domain of BgdmjsAnalyticsDataLayerPageInfo.privateDomains)
+                {
+                    if (_domain === this.server)
+                    {
+                        this.area = 'privada';
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Asigna al nivel especificado el valor indicado.
+     *
+     * @method setLevel
+     *
+     * @param {number} index Índice del nivel.
+     * @param {string} value Valor a asignar.
+     */
+    setLevel(index, value)
+    {
+        this.levels[index] = value;
+    }
+}

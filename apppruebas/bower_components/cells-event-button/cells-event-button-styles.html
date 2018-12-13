@@ -1,0 +1,36 @@
+<dom-module id="cells-event-button-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-event-button; }
+
+button {
+  padding: 0.6875rem 1.25rem;
+  outline: none;
+  @apply --cells-event-button-button; }
+
+.btn-wrapper {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  @apply --cells-event-button-wrapper; }
+  .btn-wrapper__text {
+    font-size: 1rem;
+    @apply --cells-event-button-wrapper-text; }
+  .btn-wrapper__icon {
+    @apply --cells-event-button-wrapper-icon; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+</style></template></dom-module>

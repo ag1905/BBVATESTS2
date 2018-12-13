@@ -1,0 +1,70 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  --cells-radio-tabs-border-radius: 0;
+  --radio-tabs-item-width: 100%; // This var is set by the component itself and is not meant to be set from outside.
+
+  display: flex;
+  position: relative;
+  font-size: rem(13px);
+  font-weight: 500;
+  color: var(--cells-radio-tabs-color, var(--bbva-300, #D3D3D3));
+  height: var(--cells-radio-tabs-item-height, rem(55px));
+  background-color: var(--cells-radio-tabs-bg-color, var(--bbva-white, #fff));
+  border-radius: var(--cells-radio-tabs-border-radius);
+  box-sizing: border-box;
+  @apply --cells-radio-tabs;
+}
+
+label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  flex: 1;
+  height: 100%;
+  cursor: pointer;
+  border-bottom: 1px solid var(--cells-radio-tabs-border-bottom-color, var(--bbva-200, #E9E9E9));
+  @apply --cells-radio-tabs-option;
+}
+
+input {
+  @include visuallyhidden;
+}
+
+input:checked + .tab-content {
+  color: var(--cells-radio-tabs-color-selected, var(--bbva-core-blue, #004481));
+  @apply --cells-radio-tabs-selected;
+}
+
+.tab-content {
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  @apply --cells-radio-tabs-content;
+}
+
+.icon {
+  margin: var(--cells-radio-tabs-icon-margin, 0 rem(10px) 0 0);
+  @apply --cells-radio-tabs-icon;
+}
+
+#indicator {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: var(--radio-tabs-item-width);
+  height: rem(2px);
+  transition: transform 0.2s;
+  border-radius: var(--cells-radio-tabs-border-radius);
+  background-color: var(--cells-radio-tabs-indicator-bg-color, var(--bbva-core-blue, #004481));
+  @apply --cells-ratio-tabs-indicator;
+}
+
+:host([hidden]), [hidden] {
+  display: none;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}

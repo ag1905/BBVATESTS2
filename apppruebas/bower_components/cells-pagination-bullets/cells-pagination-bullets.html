@@ -1,0 +1,80 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-pagination-bullets-styles.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+
+<!--
+`<cells-pagination-bullets>` is an element that displays a set of customizable pagination bullets
+To use, either set its bullet-number property, or its slides property with an array with a size matching the number of bullets to show.
+
+Example:
+
+```html
+<cells-pagination-bullets bullet-number="5"></cells-pagination-bullets>
+
+<cells-pagination-bullets activate-event="bullet-selected"></cells-pagination-bullets>
+
+<cells-pagination-bullets bullet-number="5"></cells-pagination-bullets>
+
+<cells-pagination-bullets slides="[1,2,3]"></cells-pagination-bullets>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-pagination-bullets  | empty mixin     | {}             |
+| --cells-pagination-bullets-inactive  | empty mixin     | {}             |
+| --cells-pagination-bullets-active  | empty mixin     | {}             |
+| --cells-pagination-bullets-icon-inactive  | empty mixin     | {}             |
+| --cells-pagination-bullets-icon-active  | empty mixin     | {}             |
+| --cells-pagination-bullets-size  | size (height and width) to be set to the default bullets     | 8px             |
+| --cells-pagination-bullets-separation  | margin button and icon    | 5px            |
+| --cells-pagination-bullets-color  | color to be set to the default bullets (inactive)    | rgba(64, 64, 64,.5)             |
+| --cells-pagination-bullets-color-active  | color to be set to the default bullets (active)    | rgba(51, 153, 255,.5)             |
+| --cells-pagination-bullets-icon-color  | color to be set to the default bullets (inactive)    | rgba(64, 64, 64,.5)              |
+| --cells-pagination-bullets-icon-color-active  | color to be set to the default bullets (active)    | rgba(51, 153, 255,.5)             |
+
+
+@demo demo/index.html
+@hero cells-pagination-bullets.jpg
+-->
+<dom-module id="cells-pagination-bullets">
+  <template>
+    <style include="cells-pagination-bullets-styles cells-pagination-bullets-shared-styles"></style>
+    <template is="dom-if" if="[[!_hasIcon]]">
+      <template is="dom-if" if="[[!_hasSlides]]">
+        <template is="dom-repeat" items="[[_positions]]">
+          <button on-click="_bulletClicked">
+            <span aria-label$="[[index]]" class$="bullet {{_computeActive(selected,index)}}"></span>
+          </button>
+        </template>
+      </template>
+      <template is="dom-if" if="[[_hasSlides]]">
+        <template is="dom-repeat" items="[[slides]]">
+          <button on-click="_bulletClicked">
+            <span aria-label$="[[index]]" class$="bullet {{_computeActive(selected,index)}}"></span>
+          </button>
+        </template>
+      </template>
+    </template>
+    <template is="dom-if" if="[[_hasIcon]]">
+      <template is="dom-if" if="[[!_hasSlides]]">
+        <template is="dom-repeat" items="[[_positions]]">
+          <button on-click="_bulletClicked">
+            <cells-atom-icon aria-label$="[[index]]" icon="[[icon]]" class$="icon-size-[[iconSize]] icon {{_computeActive(selected,index)}}"></cells-atom-icon>
+          </button>
+        </template>
+      </template>
+      <template is="dom-if" if="[[_hasSlides]]">
+        <template is="dom-repeat" items="[[slides]]">
+          <button on-click="_bulletClicked">
+            <cells-atom-icon aria-label$="[[index]]" icon="[[icon]]" class$="icon-size-[[iconSize]] icon {{_computeActive(selected,index)}}"></cells-atom-icon>
+          </button>
+        </template>
+      </template>
+    </template>
+  </template>
+  <script src="cells-pagination-bullets.js"></script>
+</dom-module>

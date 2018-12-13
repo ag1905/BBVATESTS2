@@ -1,0 +1,184 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  --cells-bottom-modal-header-shadow-dragging: none;
+  --cells-bottom-modal-header-shadow: none;
+  --cells-bottom-modal-footer-shadow: none;
+  --cells-bottom-modal-body: unquote("{
+    padding: 0;
+  }");
+  --cells-bottom-modal-header-wrapper: unquote("{
+    position: fixed;
+    width: 100%;
+    color: var(--bbva-white, #fff);
+    padding: 0;
+    z-index: 1;
+    transition: all .3s ease-out;
+  }");
+  --cells-bottom-modal-btn-close: unquote("{
+    color: var(--bbva-white, #fff);
+  }");
+
+  --cells-bottom-modal-heading: unquote("{
+    line-height: 1.4rem;
+    font-size: 1.2rem;
+    font-weight: normal;
+    color: var(--bbva-white, #fff);
+  }");
+
+  --cells-bottom-modal-content: unquote("{
+    text-align:center;
+  }");
+
+  /** cells-sign **/
+  
+  --cells-sign-subheader: unquote("{
+    min-height: 240px;
+  }");
+
+  --cells-sign-text: unquote("{
+    text-align: center;
+    line-height: 1rem;
+  }");
+
+  @apply --cells-sign-operation-modal;
+}
+
+cells-sign {
+  height: 100vh;
+  overflow: hidden;
+  @apply --cells-sign-operation-modal-sign;
+}
+
+.btn {
+  height: 3.125rem;
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.signForm {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  flex-direction: column;
+  height: 48%;
+  align-items: center;
+  @apply --cells-sign-operation-modal-sign-form;
+}
+
+.signButtons {
+  display: flex;
+  flex-direction: column;
+  bottom: 0;
+  margin-top: rem(16px);
+  min-height: rem(125px);
+  @apply --cells-sign-operation-modal-sign-buttons;
+}
+
+.info {
+  background: rgba(91,190,255,0.1);
+  padding:rem(30px);
+  margin-top: rem(30px);
+  font-size: var(--cells-text-size-14);
+  @apply --cells-sign-operation-modal-info;
+}
+
+$inputFields: 6;
+
+cells-input-digits {
+  max-width: calc(#{$inputFields} * 50px + 50px);
+
+  --cells-input-digits-button: unquote("{
+    margin-top: 50px;
+  };");
+
+  --cells-input-digits-button-color: unquote("var(--bbva-medium-blue, #237ABA)");
+  --cells-input-digits: unquote("{
+    flex-direction: column;
+    align-items: center;
+  };");
+
+  --cells-input-digits-input: unquote("{
+    width: 3.125rem;
+  };");
+
+  @apply --cells-sign-operation-modal-input-digits;
+}
+
+cells-molecule-input {
+  border-bottom: solid 1px var(--bbva-500, #666);  
+  width: 18.75rem;
+  --cells-molecule-input-right-icon-button: unquote("{
+    color:var(--bbva-medium-blue, #237ABA);
+  }
+  ");
+  --cells-molecule-input-left-icon-button: unquote("{
+    color: var(--bbva-300, #D3D3D3);
+  }");
+}
+
+cells-circular-timer {
+  --cells-circular-timer-count-text-color: #237ABA;
+  --cells-circular-timer-wrapper: unquote("{
+    height: 3.125rem;
+    width: 3.125rem;
+  }");
+  --cells-circular-timer-count: unquote("{
+    font-size: 0.875rem;
+    font-weight: bold;
+  }");
+}
+
+.timer {
+  align-items: center;
+  display: flex;
+  font-size: 0.875rem;
+  justify-content: center;
+  color: var(--bbva-medium-blue, #237ABA);
+  p {
+    color: var(--bbva-medium-blue, #237ABA);
+    font-weight: bold;
+  }
+  @apply --cells-circular-timer
+}
+
+.timer__header {
+  align-items: flex-start;
+  text-align: left;
+  margin-top: 1.25rem;
+  cells-atom-icon {
+    color: #5bbeff;
+    margin-right: 0.625rem;
+  }
+  p {
+    width: 17rem;
+    color: #666666;
+    font-style: italic;
+    font-weight: normal;
+    height: 2.5rem;
+    margin: 0;
+  }
+  @apply --cells-circular-timer-header
+}
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+button:active { @apply --cells-global-active; }

@@ -1,0 +1,104 @@
+@import "bower_components/cells-sass/main";
+:host {
+  height: 100%;
+  width: 100%;
+  background-color: var(--cells-stripes-spinner-veil-background-color, rgba(255, 255, 255, .8));
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  display: none;
+  @apply(--cells-stripes-spinner-veil);
+
+}
+
+:host(.is-visible) {
+  display: block;
+	@apply(--cells-stripes-spinner-veil-is-visible);
+}
+
+.spinner {
+  position: relative;
+  transform: translate(0, -50%);
+  margin: 0 auto;
+  width: 54px;
+  height: 18px;
+  top: 50%;
+  @apply(--cells-stripes-spinner-veil-main);
+}
+
+.spinner .ball {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  border-radius: 18px;
+  transition: all .5s ease-in-out;
+  @apply(--cells-stripes-spinner-veil-ball);
+}
+
+.spinner .ball.dark {
+  background-color: var(--spinner-veil-ball-dark-background-color, #006cc4);
+  animation: anim-dark 2s infinite ease-in-out;
+  @apply(--cells-stripes-spinner-veil-ball-dark);
+}
+
+.spinner .ball.light {
+  background-color: var(--spinner-veil-ball-light-background-color, #4cbbee);
+  animation: anim-light 2s infinite ease-in-out;
+  @apply(--cells-stripes-spinner-veil-ball-light);
+}
+
+@keyframes anim-dark {
+  0% {
+    left: 0;
+    transform: scale(1);
+    z-index: 1
+  }
+  25% {
+    transform: scale(1.2);
+    z-index: 1
+  }
+  50% {
+    left: (100%);
+    transform: scale(1);
+    z-index: 0
+  }
+  75% {
+    transform: scale(0.8);
+    z-index: 0
+  }
+  100% {
+    left: 0;
+    transform: scale(1);
+    z-index: 0
+  }
+}
+
+ @keyframes anim-light {
+  0% {
+    left: (100%);
+    transform: scale(1);
+    z-index: 0
+  }
+  25% {
+    transform: scale(0.8);
+    z-index: 0
+  }
+  50% {
+    left: 0;
+    transform: scale(1);
+    z-index: 0
+  }
+  75% {
+    transform: scale(1.2);
+    z-index: 1
+  }
+  100% {
+    left: (100%);
+    transform: scale(1);
+    z-index: 1
+  }
+}

@@ -1,0 +1,270 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  ::content cells-step .filled ::content cells-atom-amount {
+    height: rem(36px);
+    @apply --cells-step-enter-amount-credit-card-number;
+  }
+
+  @apply --cells-step-enter-amount-credit-card;
+}
+
+:host(:not([active])) {
+  pointer-events: none;
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+  }
+
+  .list {
+    opacity: .3;
+
+    &__item {
+      &--icon {
+        color: var(--bbva-400, #BDBDBD);
+        @apply --cells-step-enter-amount-credit-card-not-active-list-item-icon;
+      }
+
+      @apply --cells-step-enter-amount-credit-card-not-active-list-item;
+    }
+
+    &__alert {
+      &--error, &--info {
+        color: var(--bbva-400, #BDBDBD);
+        @apply --cells-step-enter-amount-credit-card-not-active-alert;
+      }
+
+      &--info {
+        cells-atom-icon {
+          color: var(--bbva-400, #BDBDBD);
+        }
+
+        @apply --cells-step-enter-amount-credit-card-not-active-alert-info;
+      }
+    }
+
+    @apply --cells-step-enter-amount-credit-card-not-active-list;
+  }
+
+  .other-amount {
+    color: var(--bbva-400, #BDBDBD);
+
+    cells-atom-icon {
+      background: linear-gradient(110deg, #e9e9e9 50%, rgba(#ccc, 0.8) 51%);
+      @apply --cells-step-enter-amount-credit-card-not-active-other-amount-icon;
+    }
+
+    @apply --cells-step-enter-amount-credit-card-not-active-other-amount;
+  }
+
+  @apply --cells-step-enter-amount-credit-card-not-active;
+}
+
+.filled {
+  &__label {
+    display: block;
+    margin: 0 0 .625rem 0;
+    color: var(--bbva-white, #FFF);
+    @apply --cells-step-enter-amount-credit-card-filled-label;
+  }
+}
+
+.separator {
+  display: block;
+  height: 1px;
+  margin: 0 1.875rem 1rem 1.875rem;
+  background: var(--bbva-200, #e9e9e9);
+  @apply --cells-step-enter-amount-credit-card-separator;
+}
+
+.list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  &__intro {
+    margin-bottom: 2rem;
+    padding: 0 1.875rem;
+    
+    li {
+      display: flex;
+      justify-content: space-between;
+      font-size: rem(14px);
+  
+      & + li {margin: .625rem 0 0 0;}
+  
+      span {
+        color: var(--bbva-500, #666);
+      }
+
+      @apply --cells-step-enter-amount-credit-card-list-intro-li;
+    }
+
+    @apply --cells-step-enter-amount-credit-card-list-intro;
+  }
+
+  &__amounts {
+    position: relative;
+    margin: 0 0 1rem 0;
+
+    &.disabled {
+      .list {
+        opacity: .3;
+  
+        &__alert {
+          &--error, &--info {
+            color: var(--bbva-400, #BDBDBD);
+            @apply --cells-step-enter-amount-credit-card-not-active-alert;
+          }
+    
+          &--info {
+            cells-atom-icon {
+              color: var(--bbva-400, #BDBDBD);
+            }
+    
+            @apply --cells-step-enter-amount-credit-card-not-active-alert-info;
+          }
+        }
+      }   
+    }
+
+    @apply --cells-step-enter-amount-credit-card-list-amounts;
+  }
+
+  &__item {
+    button {
+      display: block;
+      width: 100%;
+      padding: 1rem 1.875rem;
+      text-align: left;
+      font-weight: 300;
+
+      &:active {
+        background: var(--bbva-100, #f4f4f4);
+        @apply --cells-step-enter-amount-credit-card-list-item-button-active;
+      };
+
+      &[disabled="disabled"] {
+        .list__item--label, .list__item--amount {opacity: .3;}
+        @apply --cells-step-enter-amount-credit-card-list-item-button-disabled;
+      }
+
+      @apply --cells-step-enter-amount-credit-card-list-item-button;
+    }
+
+    &-selectable {
+      position: relative;
+      @apply --cells-step-enter-amount-credit-card-list-item-selecteable;
+    }
+
+    &--label {
+      display: block;
+      margin-bottom: .625rem;
+      font-size: rem(14px);
+      color: var(--bbva-600, #121212);
+      @apply --cells-step-enter-amount-credit-card-list-item-label;
+    }
+    &--amount {
+      font-size: rem(20px);
+      @apply --cells-step-enter-amount-credit-card-list-item-amount;
+    }
+    &--icon {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.875rem;
+      color: var(--bbva-medium-blue, #237aba);
+      cursor: pointer;
+      padding: .5rem;
+      z-index: 3;
+      @apply --cells-step-enter-amount-credit-card-list-item-icon;
+    }
+
+    cells-atom-amount {
+      color: var(--bbva-600, #121212);
+    }
+
+    @apply --cells-step-enter-amount-credit-card-list-item;
+  }
+
+  &__alert {
+    display: flex;
+    align-items: center;
+    margin: .6875rem 0 0 0;
+    font-size: rem(14px);
+    font-style: italic;
+    font-weight: 300;
+    
+    &--error {
+      color: var(--bbva-dark-red, #b92a45);
+      @apply --cells-step-enter-amount-credit-card-alert-error;
+    }
+
+    &--info {
+      color: var(--bbva-500, #666);
+
+      cells-atom-icon {
+        color: var(--bbva-white-medium-blue, #49A5E6);
+        @apply --cells-step-enter-amount-credit-card-alert-info-icon;
+      }
+
+      @apply --cells-step-enter-amount-credit-card-alert-info;
+    }
+
+    cells-atom-icon { margin: 0 .625rem 0 0;}
+    @apply --cells-step-enter-amount-credit-card-alert;
+  }
+
+  @apply --cells-step-enter-amount-credit-card-list;
+}
+
+.other-amount {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: .5rem 1.875rem;
+  color: var(--bbva-medium-blue, #2a86ca);
+  font-size: rem(18px);
+  cursor: pointer;
+
+  &:active {
+    background: var(--bbva-100, #f4f4f4);
+    @apply --cells-step-enter-amount-credit-card-other-amount-active;
+  };
+
+  cells-atom-icon {
+    margin: 0 1.25rem 0 0;
+    color: var(--bbva-white, #FFF);
+    background: linear-gradient(110deg, var(--bbva-teal, #2dcccd) 50%, #008484 51%);
+    border-radius: 50%;
+    @apply --cells-step-enter-amount-credit-card-other-amount-icon;
+  }
+
+  @apply --cells-step-enter-amount-credit-card-other-amount;
+}
+
+button {
+  border: 0;
+  background: transparent;
+  outline: none;
+  @apply --cells-step-enter-amount-credit-card-button;
+}
+
+cells-atom-date {
+  color: var(--bbva-dark-gold, #b79e5e);
+  font-weight: 500;
+  font-style: italic;
+  @apply --cells-step-enter-amount-credit-card-date;
+}
+
+cells-icon-message {
+  min-height: 185px;
+  margin: 2rem 1.875rem;
+  padding: 2rem;
+  @apply --cells-step-enter-amount-credit-card-message;
+}

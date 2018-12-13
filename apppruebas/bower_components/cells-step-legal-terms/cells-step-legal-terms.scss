@@ -1,0 +1,111 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+    @apply (--cells-step-legal-terms);
+}
+
+p {
+    margin: 0;
+}
+
+:host(:not([active])) {
+    pointer-events: none;
+    .check-text {
+        color: var(--bbva-400, #BDBDBD);
+    }
+    cells-icon-message {
+        --cells-st-button-bg-color-primary: var(--bbva-400, #BDBDBD);
+        --cells-icon-message-icon-color-info: var(--bbva-400, #BDBDBD);
+        &.btn--message__info{
+            background: var(--bbva-200, #e9e9e9);
+            --cells-icon-message-icon-color-info: var(--bbva-400, #BDBDBD);
+        }
+    }
+    cells-checkbox-button {
+        --cells-checkbox-button-icon-color-checked: var(--bbva-400, #BDBDBD);
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: .7;
+        background: var(--bbva-200, #e9e9e9);
+        @apply(--cells-step-legal-terms-veil);
+    }
+}
+
+.full {
+    box-sizing: border-box;
+    padding: 0 rem(32px) rem(32px) rem(32px);
+    margin-bottom:  rem(10px);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    --cells-checkbox-button: unquote("{
+    padding: 0;
+    margin: 0;
+  }");
+    --cells-checkbox-button-label: unquote("{
+    padding: 0;
+    margin-top: 0;
+  }");
+
+    cells-atom-icon {
+        --cells-checkbox-button-icon-icon-size: 50px;
+    }
+
+    cells-checkbox-button {
+        margin-bottom: rem(10px);
+        outline: none;
+    }
+
+    cells-icon-message {
+        margin-bottom: rem(30px);
+        &.cursive {
+            color: var(--bbva-500, #666666);
+            font-size: rem(14px);
+            font-style: italic;
+        }
+    }
+
+    .btn--message__info {
+        margin-bottom: rem(10px);
+    }
+
+    .btn-message__buttons {
+        --cells-icon-message-icon-margin: 0px;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    --cells-checkbox-button-checkbox-size: rem(50px);
+
+    .additonalInfoCheck {
+        --cells-checkbox-button-checkbox-size: rem(30px);
+    }
+
+    @apply (--cells-step-legal-terms-full);
+}
+
+.filled {
+    font-size: rem(18px);
+    --cells-icon-message: unquote("{
+      color: var(--bbva-white);
+      font-style: italic;
+    }");
+    --cells-icon-message-inline: unquote("{
+      align-items: center;
+    }");
+    --cells-icon-message-icon-info: unquote("{
+      color: var(--bbva-white);
+    }");
+
+    @apply (--cells-step-legal-terms-filled-p);
+}

@@ -1,0 +1,714 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-global-apis-behaviors/cells-global-apis-behaviors.html" />
+<link rel="import" href="../bgadp-pois/bgadp-pois.html"/>
+
+<!--
+# cells-dm-global-apis-pois
+
+> CELLS Data Manager for GLOBAL APIS Transfer
+
+Provides *step-by-step* transfer operation resolution and performs AJAX in order to complete transfer operation.
+
+## Services
+
+## Example:
+
+```html
+<cells-dm-global-apis-pois></cells-dm-global-apis-pois>
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="cells-dm-global-apis-pois">
+<template></template>
+<script>
+/* global BGADPPois */
+/* eslint new-cap: 0 */
+(function() {
+  'use strict';
+
+  Polymer({
+
+    is: 'cells-dm-global-apis-pois',
+
+    behaviors: [
+      CellsBehaviors.i18nBehavior,
+      CellsBehaviors.CellsGlobalApisHandleRequest,
+      CellsBehaviors.CellsGlobalApisHandleRequestSign
+    ],
+
+    properties: {
+      /**
+      * Host
+      */
+      host: {
+        type: String
+      },
+      /**
+      * Services API Version
+      */
+      apiVersion: {
+        type: String,
+        value: '0'
+      },
+      /**
+      * Current location
+      */
+      location: {
+        type: Object,
+        notify: true,
+        observer: '_onLocationChanged'
+      },
+
+      place: {
+        type: Object,
+        observer: '_onPlaceLocation'
+      },
+      /**
+      * Search value of finder
+      */
+      searchValue: {
+        type: String,
+        notify: true
+      },
+      /**
+      * Pois list
+      */
+      pois: {
+        type: Array,
+        value: function() {
+          return [];
+        }
+      },
+      /**
+      * Filter applied to the pois list
+      */
+      filter: {
+        type: Array
+      },
+      /**
+        * Pois id
+      */
+      poisId: String,
+      /**
+        * Pois type
+      */
+      type: {
+        type: String,
+        observer: '_typeObserver'
+      },
+      /**
+      * Item selected in map
+      */
+      itemSelected: Object,
+      /**
+      * Params to set in the url to navigate
+      */
+      urlParams: Object,
+      /**
+        * Pois detail visited flag
+        */
+      poisDetailVisited: {
+        type: Boolean,
+        value: false
+      },
+
+      /**Filtered pois**/
+      closestPois: {
+        type: Array,
+        value: []
+      },
+
+      /**
+       * Filtered Branches. Used for cache
+       * **/
+      filteredBranches: {
+        type: Array,
+        value: []
+      },
+
+      /**
+       * Filtered ATMs. Used for cache
+       * **/
+      filteredAtms: {
+        type: Array,
+        value: []
+      }
+
+    },
+    /**
+      * Set continue and url params
+      * @return boolean
+      */
+    setContinueWithParams: function(params) {
+      if (params) {
+        this.urlParams = params.urlParams;
+        this.poisDetailVisited = true;
+      }
+    },
+    /**
+      * Control navigation from map to pois detail
+      * @return boolean
+      */
+    controlNavigationToPoisDetail: function() {
+      if (this.poisDetailVisited) {
+        this.async(() => this.dispatchEvent(new CustomEvent('navigation-to-pois-detail', {
+          detail: {
+            poisId: this.urlParams.poisId,
+            type: this.urlParams.type
+          },
+          bubbles: true,
+          composed: true
+        })), 250);
+
+        this.poisDetailVisited = false;
+      }
+    },
+
+    _onPlaceLocation: function(place) {
+      if (place && place.latLng && place.latLng.lat && place.latLng.lng) {
+        var location = {
+          latitude: place.latLng.lat,
+          longitude: place.latLng.lng
+        };
+
+        this.searchValue = place.search;
+        this.getPois(location);
+        this.dispatchEvent(new CustomEvent('set-location', {
+          bubbles: true,
+          composed: true,
+          detail: location
+        }));
+      }
+    },
+
+    /**
+    * Filter the current pois with the options and notify the result
+    **/
+    filterMarkers: function(filter) {
+
+      filter = filter || this.filter;
+      var type;
+      var filteredList;
+
+      if ((filter || []).length === 1) {
+        this._openSpinner(true);
+        type = filter[0];
+        filteredList = (type === 'atm') ? this.filteredAtms : this.filteredBranches;
+
+        if ((filteredList || []).length === 0) {
+          this._searchFiltered(type);
+        } else {
+          this._notifyPois(filteredList);
+        }
+
+      } else {
+        this.getPois();
+      }
+    },
+
+    /**
+     * Search for a filtered type
+     * **/
+    _searchFiltered: function(type) {
+      var params = {
+        latitude: this.location.latitude,
+        longitude: this.location.longitude
+      };
+      var serviceToCall = (type === 'atm') ? '_serviceAtms' : '_serviceBranches';
+      var service = this[serviceToCall]({
+        host: this.host,
+        params: params,
+        version: this.apiVersion,
+        requiresTsec: false
+      });
+
+      service.generateRequest().then(
+        function() {
+          var pois = this._parseResponse(service.getLastResponse());
+
+          (pois || []).forEach(function(item) {
+            item.type = type;
+          });
+
+          pois = this._parsePois(pois);
+
+          if (type === 'atm') {
+            this.set('filteredAtms', pois);
+          } else {
+            this.set('filteredBranches', pois);
+          }
+
+          this._notifyPois(pois);
+        }.bind(this),
+        function(error) {
+          this.dispatch(new CustomEvent('error-filtering-pois', {
+            bubbles: true,
+            composed: true,
+          }));
+          this._openSpinner(false);
+        }.bind(this)
+      );
+    },
+
+
+    /**
+    * Does the request to retrieve the POIs
+    **/
+    getPois: function(params) {
+      this._openSpinner(true);
+
+      params = params || {};
+      var searchLocation = {
+        latitude: params.latitude || this.location.latitude,
+        longitude: params.longitude || this.location.longitude
+      };
+
+      if (this.location && searchLocation.latitude === this.location.latitude && searchLocation.longitude === this.location.longitude) {
+        this._notifyPois(this.pois);
+      } else {
+        var parsedParams = this._generateParams(searchLocation);
+
+        var service = this._servicePois({
+          host: this.host,
+          params: parsedParams,
+          version: this.apiVersion,
+          requiresTsec: false
+        });
+
+        this.set('location', parsedParams);
+
+        return service.generateRequest().then(
+          function() {
+            var response = this._parseResponse(service.getLastResponse());
+            this._successResponse(response);
+          }.bind(this),
+          function(error) {
+            this.dispatchEvent(new CustomEvent('error-on-get-pois', {
+              detail: error,
+              bubbles: true,
+              composed: true
+            }));
+          }.bind(this)
+        );
+      }
+    },
+    /**
+      Generates the request params
+      */
+    _generateParams: function(params) {
+      var result = params;
+
+      if (params.radius) {
+        result.radius = params.radius;
+      }
+
+      return result;
+    },
+
+    /**
+      * Handles successful response
+      **/
+    _successResponse: function(data) {
+      var pois = this._parsePois(data);
+      this.set('pois', pois);
+      this._notifyPois(pois);
+    },
+
+    /**
+    * Notify the pois list passed as param.
+    */
+    _notifyPois: function(pois) {
+      this.dispatchEvent(new CustomEvent('set-pois-list', {
+        detail: pois,
+        bubbles: true,
+        composed: true
+      }));
+
+      this._openSpinner(false);
+    },
+
+    /**
+      * Parses all ATMs and branches received from the server
+      **/
+    _parsePois: function(data) {
+      var result = [];
+      var poiTypeMessage;
+      var extraClass;
+      var tertiary;
+      var secondary;
+      var isAtm;
+
+      result = (data || []).map(function(item) {
+        var branches = item.links.reduce(function(acc, link) {
+          if (link.rel === 'ATM') {
+            acc++;
+          }
+          return acc;
+        }, 0);
+
+        isAtm = item.type.toLowerCase() === 'atm';
+        poiTypeMessage = 'cells-collapsible-list-check-' + (isAtm ? (branches > 1 ? 'atms' : 'atm') : 'branch') + '-at';
+        extraClass = isAtm ? 'secondary' : 'primary';
+        tertiary = isAtm ? '' : this.t('cells-collapsible-list-check-remaining-time');
+        secondary = this.t(poiTypeMessage, '', {
+          number: branches > 1 ? branches : '',
+          distance: item.distance
+        });
+
+        var related = item.links.map(function(link) {
+          return {
+            id: link.id,
+            type: link.rel
+          };
+        });
+
+        return {
+          id: item.id,
+          description: item.description,
+          geolocation: item.address.geolocation,
+          distance: item.distance,
+          type: item.type.toLowerCase(),
+          related: related,
+          extraClass: extraClass,
+          main: item.description,
+          secondary: secondary,
+          tertiary: tertiary,
+          iconList: 'coronita:walkingdirections',
+          iconSize: 24,
+          textIcon: 'cells-collapsible-list-route',
+          links: item.links,
+          operations: [
+            {
+              label: 'Compartir',
+              id: 'share',
+              icon: 'coronita:share',
+              disabled: true
+            },
+            {
+              label: 'Ruta',
+              id: 'route',
+              icon: 'coronita:walkingdirections'
+            }
+          ]
+        };
+      }.bind(this));
+
+      return result;
+    },
+    /**
+      * Control pois type to set header in pois detail
+      */
+    _typeObserver: function() {
+      this.dispatchEvent(new CustomEvent('set-pois-type', {
+        bubbles: true,
+        composed: true,
+        detail: this.t('cells-atm-branch-pois-detail-header', '', {
+          type: this.type === 'atm' ? 'Cajero' : 'Sucursal'
+        })
+      }));
+    },
+    /**
+      * Get atm or branch detail
+      */
+    getPoiDetail: function(params) {
+      var poiDetail = '';
+      var serviceToCall =  this.type === 'atm' ? '_serviceAtmDetail' : '_serviceBranchDetail';
+      var service = this[serviceToCall]({
+        host: this.host,
+        params: Object.assign({[this.type + '-id']: this.poisId}, params),
+        version: this.apiVersion,
+        requiresTsec: false
+      });
+
+      return service.generateRequest().then(
+        function() {
+          var response = this._parseResponse(service.getLastResponse());
+          this._getClosestPois(response);
+        }.bind(this),
+        function(error) {
+          this.fire('error-on-get-pois-detail');
+        }.bind(this)
+      );
+
+    },
+    /**
+      * Get closest atms or branches
+      */
+    _getClosestPois: function(poi) {
+      var closestPois = [];
+      var type = this.type;
+      var params = {
+        latitude: poi && poi.address.geolocation.latitude,
+        longitude: poi && poi.address.geolocation.longitude
+      };
+      var serviceToCall =  (type === 'atm') ? '_serviceAtms' : '_serviceBranches';
+      var service = this[serviceToCall]({
+        host: this.host,
+        params: params,
+        version: this.apiVersion,
+        requiresTsec: false
+      });
+
+      service.generateRequest().then(
+        function() {
+          closestPois = this._parseResponse(service.getLastResponse());
+          this.set('closestPois', this._parseClosestPois(closestPois.slice(1, 3)));
+
+          this.dispatchEvent(new CustomEvent('set-poi-detail', {
+            bubbles: true,
+            composed: true,
+            detail: this._parsePoiDetail(poi)
+          }));
+        }.bind(this),
+        function(error) {
+          this.fire('error-on-get-closest-pois');
+        }.bind(this)
+      );
+    },
+    /**
+      * Parse closest pois
+      */
+    _parseClosestPois: function(pois) {
+      return pois.map(function(item) {
+        var poiType = this.type === 'atm' ? 'cells-collapsible-list-check-atm-at' : 'cells-collapsible-list-check-branch-at';
+        return {
+          key: item.description,
+          value: this.t(poiType, '', {
+            number: '',
+            distance: item.distance
+          }),
+          waitTime: item.estimatedWaitingTime || '',
+          id: item.links[0].id,
+          type: this.type,
+          distance: item.distance,
+          geolocation: item.address.geolocation
+        };
+      }.bind(this));
+    },
+    /**
+      * Parse atm/branch detail
+      */
+    _parsePoiDetail: function(poi) {
+      var poiType = this.type === 'atm' ? 'cells-collapsible-list-check-atm-at' : 'cells-collapsible-list-check-branch-at';
+
+      return {
+        geolocation: poi.address.geolocation,
+        description: poi.description || this.t(this.type === 'atm' ? 'cells-atm-branch-detail-atm-default-description' : 'cells-atm-branch-detail-branch-default-description'),
+        distance: this.itemSelected ?  this.t(poiType, '', {
+          number: '',
+          distance: this.itemSelected.distance
+        }) : '',
+        waitTime: this.type === 'branch' && poi.estimatedWaitingTime ?
+          this.t('cells-atm-branch-detail-branch-estimated-waiting-time', '', {
+            waitingTime: poi.estimatedWaitingTime
+          }) : '',
+        type: this.type,
+        info: this._getPoiInfo(poi, this.type),
+        closestPois: {
+          title: this.type === 'atm' ? 'cells-atm-branch-detail-atm-closest-pois-title' : 'cells-atm-branch-detail-branch-closest-pois-title',
+          pois: this.closestPois
+        }
+      };
+    },
+    /**
+      * Return atm/branch info
+      */
+    _getPoiInfo: function(poi, type) {
+      var info = [];
+
+      if (poi) {
+        info.push({
+          key: 'cells-atm-branch-detail-address',
+          value: poi.address && poi.address.addressName
+        });
+
+        if (type === 'branch') {
+          info.push(
+            {
+              key: 'cells-atm-branch-detail-timetable',
+              value: poi.openingHours && this._getTimetable(poi.openingHours)
+            },
+            {
+              key: 'cells-atm-branch-detail-info',
+              value: poi.atmsInBranch && this._getAtmsInside(poi.atmsInBranch)
+            }
+          );
+        }
+      }
+      return info;
+    },
+    /**
+      * Return timetable grouping by opening hours
+      */
+    _getTimetable: function(schedule) {
+      var groups = [];
+
+      schedule.forEach(function(item, index) {
+        // Create first group with first day of week
+        if (index === 0) {
+          groups[index] = {
+            firstDay: item.dayOfWeek.toLowerCase(),
+            from: item.from,
+            to: item.to,
+            itemsIndex: [ 0 ]
+          };
+        } else {
+          // Look for a group with same timetable
+          var sameGroup = groups.find(function(group) {
+            return item.from === group.from && item.to === group.to;
+          });
+
+            // If there is a concidence, add element to same group
+          if (sameGroup) {
+            sameGroup.itemsIndex.push(index);
+            sameGroup.lastDay = item.dayOfWeek.toLowerCase();
+          } else {
+            // If there is not a concidence, create a new time group
+            groups.push({
+              firstDay: item.dayOfWeek.toLowerCase(),
+              from: item.from,
+              to: item.to,
+              itemsIndex: [ index ]
+            });
+          }
+        }
+      });
+      return this._translateTimeTable(groups);
+    },
+    /**
+      * Translate days of timetable
+      */
+    _translateTimeTable: function(groups) {
+      var timetable = '';
+
+      groups.forEach(function(group) {
+        var translateKey = '';
+
+        // If a group has more than one element, translate as a period of time
+        if (group.itemsIndex.length > 1) {
+          translateKey =  'cells-atm-branch-detail-timetable-period';
+          timetable += this.t(translateKey, '', {
+            firstDay: this.t('cells-atm-branch-detail-timetable-' + group.firstDay),
+            lastDay: this.t('cells-atm-branch-detail-timetable-' + group.lastDay),
+            from: group.from,
+            to: group.to
+          }) + ' ';
+
+        } else {
+          // If a group has only a day, translate it
+          translateKey = 'cells-atm-branch-detail-timetable-day';
+          timetable += this.t(translateKey, '', {
+            firstDay: this.t('cells-atm-branch-detail-timetable-' + group.firstDay),
+            from: group.from,
+            to: group.to
+          });
+        }
+      }.bind(this));
+      return timetable;
+    },
+
+    /**
+      * Returns atms in a branch and its type
+      */
+    _getAtmsInside: function(atms) {
+      var message = '';
+      var countSpecialAtms = 0;
+      var countAtms = 0;
+      var atmsMessage = '';
+      var pcAtmsMessage = '';
+      var key = '';
+
+      // Group atms in two types atms and practicajas
+      atms.forEach(function(atm, index) {
+        if (atm.id === 'PC' || atm.id === 'AB') {
+          countSpecialAtms += atm.number;
+        } else {
+          countAtms += atm.number;
+        }
+      }.bind(this));
+
+      // Build message depends on number of each type atm
+      if (countAtms > 0) {
+        key = countAtms !== 1 ? 'cells-atm-branch-detail-atm' : 'cells-atm-branch-detail-atm-singular';
+        atmsMessage = this.t(key, '', {
+          atmNumber: countAtms
+        });
+        message = atmsMessage;
+      }
+
+      if (countSpecialAtms > 0) {
+        key = countSpecialAtms !== 1 ? 'cells-atm-branch-detail-atm-pc' : 'cells-atm-branch-detail-atm-pc-singular';
+        pcAtmsMessage = this.t(key, '', {
+          atmNumber: countSpecialAtms
+        });
+        message = pcAtmsMessage;
+      }
+
+      // If both types has atms join in only one message
+      if (countAtms > 0 && countSpecialAtms > 0) {
+        message = atmsMessage + ' y ' + pcAtmsMessage;
+      }
+
+      return message;
+    },
+
+    _openSpinner: function(open) {
+      var event = open ? 'open-control-veil' : 'close-control-veil';
+
+      this.dispatchEvent(new CustomEvent(event, {
+        bubbles: true,
+        composed: true
+      }));
+    },
+
+
+    /**
+     * Location property observer
+     * */
+    _onLocationChanged: function(location) {
+      this.set('filteredBranches', []);
+      this.set('filteredAtms', []);
+    },
+
+    /**
+    * Service Pois
+    * /pois/v0/bank-pois
+    */
+    _servicePois: function(config) {
+      return new BGADPPois.bankPois.get(config);
+    },
+    /**
+    * Service Atms
+    * /pois/v0/atms
+    */
+    _serviceAtms: function(config) {
+      return new BGADPPois.atms.get(config);
+    },
+    /**
+    * Service Pois Atm Detail
+    * /pois/v0/atms/{atmId}
+    */
+    _serviceAtmDetail: function(config) {
+      return new BGADPPois.atms.atm.get(config);
+    },
+    /**
+    * Service Branches
+    * /pois/v0/atms
+    */
+    _serviceBranches: function(config) {
+      return new BGADPPois.branches.get(config);
+    },
+    /**
+    * Service Pois Branch Detail
+    * /pois/v0/branches/{branchId}
+    */
+    _serviceBranchDetail: function(config) {
+      return new BGADPPois.branches.branch.get(config);
+    },
+  });
+}());
+</script>
+</dom-module>

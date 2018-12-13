@@ -1,0 +1,90 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  position: relative;
+  display: inline-block;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply(--cells-molecule-card-cover);
+}
+
+:host([hidden]), [hidden] {
+  display:none !important;
+}
+
+iron-image {
+  display: block;
+  margin: 0;
+  --iron-image-width: var(--cells-molecule-card-cover-iron-image-width, 100%);
+  --iron-image-placeholder: unquote("{
+    @apply(--cells-molecule-card-cover-iron-image-placeholder);
+  }");
+  @apply(--cells-molecule-card-cover-img);
+}
+
+cells-atom-icon {
+  margin: 0 auto 10px;
+  padding: 5px;
+  border-radius: 50%;
+  color: var(--cells-molecule-card-cover-icon-color, #fff);
+  background-color: var(--cells-molecule-card-cover-icon-background-color, #DA3851);
+  @apply(--cells-molecule-card-cover-icon);
+}
+
+.icon-text-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 1;
+  color: var(--cells-molecule-card-cover-color, #DA3851);
+  background-color: var(--cells-molecule-card-cover-background-color, rgba(255,255,255,.8));
+
+  &.locked {
+    color: var(--cells-molecule-card-cover-color-locked, #fff);
+    background-color: var(--cells-molecule-card-cover-background-color-locked, #f35e61);
+    cells-atom-icon {
+      background-color: var(--cells-molecule-card-cover-icon-background-color-locked, #DA3851);
+      color: var(--cells-molecule-card-cover-icon-color-locked, inherit);
+      @apply(--cells-molecule-card-cover-icon-locked);
+    }
+    @apply(--cells-molecule-card-cover-locked);
+  }
+
+  &.activate {
+    color: var(--cells-molecule-card-cover-color-activate, #fff);
+    background-color: var(--cells-molecule-card-cover-background-color-activate, #1464A5);
+    @apply(--cells-molecule-card-cover-activate);
+    cells-atom-icon {
+      background-color: var(--cells-molecule-card-cover-icon-background-color-activate, #004481);
+      color: var(--cells-molecule-card-cover-icon-color-activate, inherit);
+      @apply(--cells-molecule-card-cover-icon-activate);
+    }
+  }
+
+  &.off {
+    color: var(--cells-molecule-card-cover-color-off, #121212);
+    background-color: var(--cells-molecule-card-cover-background-color-off, rgba(255,255,255,.8));
+    @apply(--cells-molecule-card-cover-off);
+    cells-atom-icon {
+      background-color: var(--cells-molecule-card-cover-background-color-off, transparent);
+      color: var(--cells-molecule-card-cover-icon-color-off, #121212);
+      @apply(--cells-molecule-card-cover-icon-off);
+    }
+  }
+
+  @apply(--cells-molecule-card-cover-icon-text-container);
+
+  span {
+    display: block;
+    margin: 0 auto;
+    @apply(--cells-molecule-card-cover-text);
+  }
+
+}

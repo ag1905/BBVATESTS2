@@ -1,0 +1,111 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-molecule-group-transactions-list/cells-molecule-group-transactions-list.html">
+<link rel="import" href="../cells-molecule-transaction-list-item/cells-molecule-transaction-list-item.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../cells-skeleton-item/cells-skeleton-item.html">
+<link rel="import" href="../cells-spinner-stripes/cells-spinner-stripes.html">
+<link rel="import" href="../cells-avatar-item/cells-avatar-item.html">
+<link rel="import" href="cells-transactions-list-styles.html">
+
+
+
+<!--
+`<cells-transactions-list>` description.
+
+Example:
+
+```html
+<cells-transactions-list></cells-transactions-list>
+```
+
+## Data model
+transactions
+transaction
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-transactions-list-scope      | scope description | default value  |
+| --cells-transactions-list  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-transactions-list">
+  <template>
+    <style include="cells-transactions-list-styles cells-transactions-list-shared-styles"></style>
+    <slot name="skeleton">
+      <div>
+        <template is="dom-if" if="[[!loaded]]">
+          <div class="skeleton">
+              <template is="dom-repeat" items="[[_generateSkeleton(skeletonItems)]]">
+                <cells-skeleton-item show-header show-item></cells-skeleton-item>
+              </template>
+          </div>
+        </template>
+      </div>
+    </slot>
+
+    <template is="dom-if" if="[[loaded]]">
+
+      <template is="dom-if" if="[[_checkedMessageEmpty(_hasTransactions, disableMessageEmpty)]]">
+          <div class="list__empty">
+            <img alt="[[t('cells-transactions-list-no-transactions')]]" src="[[imageEmptyList]]">
+            <span>[[t(_messageEmptyList)]]</span>
+            <div class="list__empty actions">
+              <cells-st-button class="size-m secondary" on-click="_startNewOperation" hidden="[[!showNewOperationButton]]">
+                <button>[[t('cells-transactions-list-new-operation')]]</button>
+              </cells-st-button>
+            </div>
+          </div>
+      </template>
+
+      <template is="dom-if" if="[[_hasTransactions]]">
+        <div class="list">
+          <template is="dom-if" if="[[title]]">
+            <div class="list__header">
+              <h3>[[t(title)]]</h3>
+              <cells-st-button class="transparent" on-click="_notifyViewAll" hidden="[[!_checkedViewAll(pagination)]]">
+                <button>[[t('cells-transactions-list-view-all')]]</button>
+              </cells-st-button>
+            </div>
+          </template>
+
+          <cells-molecule-group-transactions-list
+            id="[[productType]]-transactions"
+            transaction-date-prop-name="operationDate"
+            transactions="[[_transactions]]"
+            limit="[[limit]]"
+            transaction-date-format="[[transactionGroupDateFormat]]">
+              <template>
+                <template is="dom-if" if="[[!avatarItem]]">
+                  <cells-molecule-transaction-list-item class="transactions-swipe__item"
+                    transaction="[[transaction]]"
+                    on-tap="_onTransactionTap"
+                    local-currency="[[localCurrency]]">
+                  </cells-molecule-transaction-list-item>
+                </template>
+
+                <template is="dom-if" if="[[avatarItem]]">
+                  <cells-avatar-item
+                    on-tap="_onTransactionTap"
+                    main="[[transaction.main]]"
+                    secondary="[[transaction.secondary]]"
+                    tertiary="[[transaction.tertiary]]"
+                    avatar="[[transaction.avatar]]"
+                    amount="[[transaction.localAmount]]"
+                    decimals-hidden="[[decimalsHidden]]"
+                    local-currency="[[localCurrency]]"></cells-avatar-item>
+                </template>
+              </template>
+          </cells-molecule-group-transactions-list>
+          <cells-spinner-stripes hidden$="[[!spinner]]"></cells-spinner-stripes>
+        </div>
+      </template>
+    </template>
+  </template>
+  <script src="cells-transactions-list.js"></script>
+</dom-module>

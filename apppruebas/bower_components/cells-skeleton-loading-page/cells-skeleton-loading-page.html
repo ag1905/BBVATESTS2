@@ -1,0 +1,43 @@
+<link rel="import" href="../cells-skeleton-group/cells-skeleton-group.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-skeleton-loading-page-styles.html">
+
+<!--
+`<cells-skeleton-loading-page>` shows a full screen loading page with a skeleton style.
+
+Example:
+
+```html
+<cells-skeleton-loading-page visible></cells-skeleton-loading-page>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-skeleton-loading-page | Mixin applied to the :host | {} |
+| --cells-skeleton-loading-page-visible | mixin applied to the :host when it is visible | {} |
+| --cells-skeleton-loading-page-bg-color | background-color applied to :host | #F4F4F4 |
+| --cells-skeleton-loading-page-group | mixin applied to the group items | {} |
+| --cells-skeleton-loading-page-delay | transition-delay applied to each group item | 70ms |
+
+@demo demo/index.html
+@hero cells-skeleton-loading-page.png
+@composer
+@description shows a full screen loading page with a skeleton style.
+@type UI
+@platforms android, ios, desktop
+@family cells-catalog-widgets-family
+-->
+<dom-module id="cells-skeleton-loading-page">
+  <template>
+    <style include="cells-skeleton-loading-page-styles cells-skeleton-loading-page-shared-styles full-height-layout"></style>
+    <template is="dom-repeat" items="[[_count(repeat)]]" id="items">
+      <cells-skeleton-group pause-animation="[[_animationPaused]]"></cells-skeleton-group>
+    </template>
+    <slot></slot>
+  </template>
+  <script src="cells-skeleton-loading-page.js"></script>
+</dom-module>

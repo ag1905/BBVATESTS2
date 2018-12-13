@@ -1,0 +1,121 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-new-recipient-review-styles.html">
+
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="../cells-molecule-input/cells-molecule-input.html">
+<link rel="import" href="../cells-checkbox-button/cells-checkbox-button.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+
+<!--
+Show review and modified form on new recipient transfer.
+
+Example:
+
+```html
+<cells-new-recipient-review id="el"
+  recipient="[[recipient]]"
+  recipientResponse="{{recipientResponse}}"
+  notification="[[notification]]"
+  entities="[[entities]]"
+  product-types="[[productTypes]]"
+  is-new></cells-new-recipient-review>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-new-recipient-review-scope      | scope description | default value  |
+| --cells-new-recipient-review  | empty mixin     | {}             |
+| --cells-new-recipient-review-form-group | empty mixin | {}  |
+| --cells-new-recipient-review-form | empty mixin | {}  |
+| --cells-new-recipient-review-separate | empty mixin | {}  |
+| --cells-new-recipient-review-icon-message | empty mixin | {}  |
+| --cells-new-recipient-review-checkbox-button-molecule-input | empty mixin | {}  |
+| --cells-new-recipient-review-icon-visible | empty mixin | {}  |
+| --cells-new-recipient-review-cells-molecule-input | empty mixin | {}  |
+| --cells-new-recipient-review-selectable-disabled  | empty mixin | {}  |
+| --cells-new-recipient-review-selectable-selectable-field  | empty mixin | {}  |
+| --cells-new-recipient-review-selectable-label | empty mixin | {}  |
+| --cells-new-recipient-review-selectable-value | empty mixin | {}  |
+| --cells-new-recipient-review-selectable-icon  | empty mixin | {}  |
+| --cells-new-recipient-review-selectable | empty mixin | {}  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-new-recipient-review">
+  <template>
+    <style include="cells-new-recipient-review-styles cells-new-recipient-review-shared-styles"></style>
+    <cells-icon-message id="message"
+      type="[[notification.type]]"
+      icon="[[notification.icon]]"
+      message="{{t(notification.message)}}"></cells-icon-message>
+    <form class="form">
+      <div class="form__group">
+        <cells-molecule-input id="number"
+          disabled
+          class="icon-visible"
+          label="[[_getLabelTypeRecipient(recipientResponse.productType.id)]]"
+          value="{{recipientResponse.number}}"
+          icon="coronita:contract"
+          icon-action="none"
+          icon-toggled></cells-molecule-input>
+      </div>
+      <div class="separate"></div>
+      <div class="form__group">
+        <cells-molecule-input id="name"
+          disabled$="[[_checkedDisabled(recipient.name)]]"
+          label="{{t('cells-new-recipient-review-name')}}"
+          value="{{recipientResponse.name}}"
+          icon="coronita:close"></cells-molecule-input>
+
+        <button id="bankSelector" disabled$="[[_checkedDisabled(recipient.bank)]]" class="fake-selector" on-tap="_notifyBank" type="button">
+          <div class="header-texts">
+            <span class="label" hidden$="{{!recipientResponse.bank}}">[[t('cells-new-recipient-review-bank')]]</span>
+            <template is="dom-if" if="{{recipientResponse.bank}}">
+              <span class="placeholder selected">[[recipientResponse.bank.name]]</span>
+            </template>
+            <template is="dom-if" if="{{!recipientResponse.bank}}">
+              <span class="placeholder">[[t('cells-new-recipient-review-bank')]]</span>
+            </template>
+          </div>
+          <cells-atom-icon icon="coronita:unfold" class="icon-size-24 modal-icon"></cells-atom-icon>
+        </button>
+
+        <button id="productType" disabled$="[[_checkedDisabled(recipient.productType)]]" class="fake-selector" on-tap="_notifyProductType" type="button">
+          <div class="header-texts">
+            <span class="label" hidden$="{{!recipientResponse.productType}}">[[t('cells-new-recipient-review-product-type')]]</span>
+            <template is="dom-if" if="{{recipientResponse.productType}">
+              <span class="placeholder selected">[[recipientResponse.productType.name]]</span>
+            </template>
+            <template is="dom-if" if="{{!recipientResponse.productType}}">
+              <span class="placeholder">[[t('cells-new-recipient-review-product-type')]]</span>
+            </template>
+          </div>
+          <cells-atom-icon icon="coronita:unfold" class="icon-size-24 modal-icon"></cells-atom-icon>
+        </button>
+      </div>
+      <div class="form__group">
+        <cells-checkbox-button id="saved"
+          icon-check="coronita:checkmark"
+          checked="{{recipientResponse.save}}">{{t('cells-new-recipient-review-save-to frequent')}}</cells-checkbox-button>
+      </div>
+      <div class="form__group" hidden$="[[!recipientResponse.save]]">
+        <cells-molecule-input id="contact"
+          disabled$="[[_checkedDisabled(recipient.alias)]]"
+          label="{{t('cells-new-recipient-review-contact')}}"
+          value="{{recipientResponse.alias}}"
+          icon="coronita:close"></cells-molecule-input>
+        <cells-molecule-input id="product"
+          disabled$="[[_checkedDisabled(recipient.product)]]"
+          label="{{t('cells-new-recipient-review-product')}}"
+          value="{{recipientResponse.product}}"
+          icon="coronita:close"></cells-molecule-input>
+      </div>
+    </form>
+  </template>
+  <script src="cells-new-recipient-review.js"></script>
+</dom-module>

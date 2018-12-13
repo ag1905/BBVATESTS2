@@ -1,0 +1,25 @@
+<dom-module id="cells-key-values-list-styles"><template><style>
+.cells-key-values-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  @apply --cells-key-values-list;
+  --cells-key-values-value: { display: flex; justify-content: space-between; @apply --cells-key-values-list-value; }; }
+  .cells-key-values-list li:not(:first-of-type) {
+    margin-top: 1.25rem;
+    @apply --cells-key-values-list-item-not-first-child; }
+  .cells-key-values-list.inline {
+    --cells-key-values-value-font-size: 0.875rem;
+    @apply --cells-key-values-list-inline; }
+    .cells-key-values-list.inline li:not(:first-of-type) {
+      margin-top: 0.4375rem;
+      @apply --cells-key-values-list-inline-item-not-first-child; }
+  .cells-key-values-list.reversed {
+    @apply --cells-key-values-list-reversed; }
+    .cells-key-values-list.reversed li:not(:first-of-type) {
+      margin-top: 1.125rem;
+      @apply --cells-key-values-list-inline-reversed-not-first-child; }
+  .cells-key-values-list li li {
+    margin-top: initial; }
+
+</style></template></dom-module>

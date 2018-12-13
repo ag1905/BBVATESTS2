@@ -1,0 +1,43 @@
+{
+  "name": "cells-transaction-detail",
+  "description": "Shows the detail of a banking transaction",
+  "version": "8.1.10",
+  "keywords": [
+    "i18n",
+    "ui",
+    "transaction",
+    "detail"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "cells-atom-amount": "~9.1.0",
+    "cells-atom-icon": "~10.0.0",
+    "cells-i18n-behavior": "~9.0.1",
+    "cells-key-values": "~10.0.2",
+    "cells-skeleton-item": "^9.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.3.1",
+    "iron-image": "PolymerElements/iron-image#^1.2.3",
+    "polymer": "Polymer/polymer#1.10.0",
+    "cells-icon-message": "^10.0.2",
+    "cells-operations-list-indicators": "^1.5.2"
+  },
+  "main": [
+    "cells-transaction-detail.html"
+  ],
+  "devDependencies": {
+    "cells-demo-helper": "~9.0.0",
+    "cells-glomo-theme": "~5.4.0",
+    "cells-sass": "^2.0.0",
+    "coronita-icons": "~9.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "test-fixture": "PolymerElements/test-fixture#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#4.2.2"
+  },
+  "resolutions": {
+    "iron-icon": "^2.0.0",
+    "moment": "~2.17.1",
+    "cells-atom-date": "~10.0.0"
+  }
+}

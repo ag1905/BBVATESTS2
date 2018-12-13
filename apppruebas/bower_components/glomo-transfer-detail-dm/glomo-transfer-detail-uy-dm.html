@@ -1,0 +1,355 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-dm-global-apis-transfer/cells-dm-global-apis-transfer.html">
+<link rel="import" href="../cells-product-format-behavior/cells-product-format-behavior.html" />
+<link rel="import" href="../cells-global-apis-behaviors/cells-global-apis-behaviors.html"/>
+<link rel="import" href="../cells-moment-import/cells-moment-import.html">
+
+
+<!--
+`<glomo-transfer-detail-uy-dm>` description.
+
+Example:
+
+```html
+<glomo-transfer-detail-uy-dm></glomo-transfer-detail-uy-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-transfer-detail-uy-dm">
+  <template>
+    <cells-dm-global-apis-transfer id="dm"
+      host="[[host]]"
+      transfer-api-version="[[transferApiVersion]]"
+      mobile-transfer="{{_mobileTransfer}}"
+      mobile-transfer-id="[[mobileTransferId]]"
+      required-token="[[requiredToken]]"
+      native="[[native]]">
+    </cells-dm-global-apis-transfer>
+  </template>
+  <script>
+    (function() {
+      /*global moment*/
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-transfer-detail-uy-dm',
+
+        behaviors: [
+          CellsBehaviors.CellsGlobalApisHandleRequest,
+          CellsBehaviors.i18nBehavior,
+          CellsBehaviors.CellsProductFormatBehavior
+        ],
+
+        properties: {
+          /**
+           * Host
+           * @type {String}
+           */
+          host: String,
+          /**
+           * API Version
+           */
+          transferApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * Show spinner in ui
+           */
+          loading: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * Mobile tranfer id
+           */
+          mobileTransferId: String,
+          /**
+           * Mobile tranfer
+           */
+          _mobileTransfer: Object,
+          /**
+           * Mobile transfer object
+           */
+          mobileTransferParsed: {
+            type: Object,
+            computed: '_parseMobileTransfer(_mobileTransfer)',
+            notify: true
+          },
+          /**
+           * Code to share in detail transaction
+           */
+          code: {
+            type: String,
+            value: ''
+          },
+          /**
+          * requiredToken, 'jwt' or 'tsec'
+          */
+          requiredToken: {
+            type: String,
+            value: 'tsec'
+          },
+          /**
+           * Native request
+           */
+          native: {
+            type: Boolean,
+            value: false
+          }
+        },
+
+        listeners: {
+          'dm.mobile-transfer-deleted': '_onDeleteMobileTransfer',
+          'dm.error-on-delete-mobile-transfer': '_onDeleteMobileTransfer'
+        },
+
+        /**
+         * Reset
+         */
+        reset: function() {
+          this.loading = false;
+        },
+        /**
+         * Get mobile transfer detail
+         */
+        getMobileTransfer: function() {
+          if (this.mobileTransferId) {
+            this.dispatchEvent(new CustomEvent('open-control-veil', {
+              bubbles: true,
+              composed: true
+            }));
+            this.$.dm.getMobileTransfer();
+          } else {
+            return false;
+          }
+        },
+
+        deleteMobileTransfer: function() {
+          if (this.mobileTransferId) {
+            this.$.dm.deleteMobileTransfer();
+          }
+        },
+
+        _onDeleteMobileTransfer: function(e) {
+          if (e.type) {
+            this.dispatchEvent(new CustomEvent(e.type), {
+              bubbles: true,
+              composed: true
+            });
+          }
+        },
+        /**
+         * Parse mobile transfer response
+         */
+        _parseMobileTransfer: function(payload) {
+          if (payload) {
+            var statusId = payload.status && (payload.status.id === 'PENDING' || payload.status.id === 'SETTLED') ? payload.status.id.toLowerCase() : 'canceled';
+            var destiny =  !payload.receiver ? 'forMe' : 'notForMe';
+            var codes = [];
+            var buttonsConfig;
+
+            this.dispatchEvent(new CustomEvent('close-control-veil', {
+              bubbles: true,
+              composed: true
+            }));
+
+            if (statusId === 'pending') {
+              codes = this._getTransferCodes(payload.withdrawalCodes);
+            }
+
+            var transfer = {
+              status: statusId,
+              type: destiny,
+              id: payload.mobileTransferId,
+              date: payload.date,
+              title: 'cells-successful-response-withdrawal-' + statusId + '-status',
+              subtitle: 'cells-successful-response-withdrawal-operation',
+              origin: {
+                product: {
+                  name: payload.receiver ? payload.receiver.holder.holderName : this.t('glomo-forme-header-title')
+                },
+              },
+              amount: this._isMajorCurrency(payload),
+              info: this._getTransferInfo(payload, statusId),
+              codes: codes,
+              additionalInfo: this._getTransferAdditionalInfo(payload),
+              operations: (statusId === 'pending' && destiny === 'forMe') ? [
+                {
+                  label: 'Cajeros cercanos',
+                  id: 'share',
+                  icon: 'coronita:bbvaofice',
+                  disabled: true
+                }
+              ] : [],
+              buttons: this._getButtonsConfig(statusId, destiny)
+            };
+          }
+
+          return transfer || {};
+        },
+        /*
+         * Parse transfer info
+         */
+        _getTransferInfo: function(transfer, status) {
+          var info = [];
+          if (transfer.receiver) {
+            info.push(
+              {
+                value: transfer.receiver.holder.holderName,
+                class: 'bold lg'
+              },
+              {
+                value: this._formatProduct((transfer.receiver.mobile).replace('+', ''), 'phone'),
+                class: 'inline spacing cursive secondary'
+              }
+            );
+
+          } else {
+            info.push({
+              value: this.t('glomo-forme-header-title'),
+              class: 'bold lg'
+            });
+          }
+
+          if (transfer.dueDate && status !== 'canceled') {
+            info.push({
+              key: 'cells-successful-response-withdrawal-' + status + '-due-date',
+              value: moment(transfer.dueDate).format('DD MMMM YYYY'),
+              class: 'inline cursive secondary'
+            });
+          }
+          return info;
+        },
+        /*
+         * Parse transfer codes
+         */
+        _getTransferCodes: function(withdrawalCodes) {
+          if (withdrawalCodes) {
+            return withdrawalCodes.reduce(function(acc, code) {
+              var codeSplit = code.value.match(/.{1,4}/g) || [];
+              if (code.id === 'RECEIVER_CODE') {
+                acc.unshift({
+                  id: code.id,
+                  key: 'cells-successful-response-withdrawal-code',
+                  split: codeSplit
+                });
+              } else {
+                this.code = codeSplit[0];
+                acc.push({
+                  id: code.id,
+                  key: 'cells-successful-response-security-code',
+                  split: codeSplit
+                });
+              }
+              return acc;
+            }.bind(this), []);
+          }
+        },
+        /*
+         * Return major money
+         */
+        _isMajorCurrency: function(transfer) {
+          if (transfer.sentMoney) {
+            return transfer.sentMoney.find(function(item) {
+              return item.isMajor;
+            });
+          }
+        },
+        /*
+         * Notify copy code
+         */
+        copyCode: function() {
+          this.dispatchEvent(new CustomEvent('clipboard-code', {
+            bubbles: true,
+            composed: true,
+            detail: this.code
+          }));
+        },
+        /*
+         * Parse transfer additional info
+         */
+        _getTransferAdditionalInfo: function(transfer) {
+          var additionalInfo = [];
+
+          if (transfer.sender) {
+            additionalInfo.push({
+              key: 'cells-successful-response-withdrawal-account',
+              value: transfer.sender.contract.product.name,
+              musk: {
+                value: transfer.sender.contract.contractId,
+                chars: 4,
+                simbol: '•'
+              },
+              class: 'bold spacing md'
+            });
+          }
+
+          if (transfer.concept) {
+            additionalInfo.push({
+              key: 'cells-successful-response-concept',
+              value: transfer.concept,
+              class: 'bold spacing md'
+            });
+          }
+
+          if (transfer.mobileTransferId) {
+            additionalInfo.push({
+              key: 'cells-successful-response-folio',
+              value: transfer.mobileTransferId,
+              class: 'inline secondary'
+            });
+          }
+
+          return additionalInfo;
+        },
+        /*
+         * Set buttons text
+         */
+        _getButtonsConfig: function(status, destiny) {
+          var buttons = {
+            primary: {
+              text: 'cells-successful-response-return',
+              action: 'return',
+              class: 'btn--primary btn--l'
+            },
+            secondary: {
+              text: 'cells-successful-response-return',
+              class: 'btn--tertiary btn--l',
+              action: 'return',
+              hidden: false
+            }
+          };
+
+          if (status === 'pending') {
+            if (destiny === 'forMe') {
+              buttons.primary = {
+                text: 'cells-successful-response-cancel-withdrawal',
+                action: 'cancel-withdrawal',
+                class: 'btn--primary btn--l'
+              };
+            } else {
+              buttons.primary = {
+                text: 'cells-successful-response-share-code',
+                action: 'share-code',
+                class: 'btn--primary btn--l'
+              };
+              buttons.secondary = {
+                text: 'cells-successful-response-cancel-withdrawal',
+                action: 'cancel-withdrawal',
+                class: 'btn--tertiary btn--l',
+              };
+            }
+          } else {
+            buttons.secondary.hidden = true;
+          }
+
+          return buttons;
+        }
+      });
+    }());
+  </script>
+</dom-module>

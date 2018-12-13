@@ -1,0 +1,165 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../cells-dm-global-apis-deposits/cells-dm-global-apis-deposits.html"/>
+
+<!--
+# glomo-accounts-dm
+
+Data manager description.
+
+Example:
+```html
+<glomo-deposits-dm></glomo-deposits-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-deposits-dm">
+  <template>
+    <cells-dm-global-apis-deposits id="dm"
+    host="[[host]]"
+    deposits="{{_deposits}}"
+    balances="{{_balances}}"
+    deposits-api-version="[[depositsApiVersion]]"></cells-dm-global-apis-deposits>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-deposits-dm',
+
+        properties: {
+          /**
+           * Chosen host to make requests to. Check providers.
+           * @type {String}
+           */
+          host: {
+            type: String
+          },
+          /**
+           * deposits list
+           * @type {Object}
+           */
+          deposits: {
+            type: Array,
+            computed: '_setDeposits(_deposits)'
+          },
+          /**
+           * deposits list
+           * @type {Array}
+           */
+          _deposits: Array,
+          /**
+           * Balances
+           * @type {Array}
+           */
+          _balances: Array,
+          /**
+           * Total balances
+           * @type {Object}
+           */
+          _totalBalance: {
+            type: Object,
+            value: {
+              amount: 0
+            }
+          },
+          /**
+          * Deposits API version
+          * @type {String}
+          */
+          depositsApiVersion: {
+            type: String,
+            value: '0'
+          }
+        },
+        /**
+        * Reset
+        */
+        reset: function() {
+          this.set('_deposits', undefined);
+          this.set('_balances', undefined);
+          this.set('_totalBalance', {
+            amount: 0
+          });
+        },
+        /**
+        * Fetch deposits
+        */
+        fetch: function() {
+          this.$.dm.getDeposits();
+        },
+        /**
+        * Set deposit on response successfull
+        */
+        _setDeposits: function(_deposits) {
+          var response = [];
+          var deposits = this._parseDeposits(_deposits);
+
+          if (deposits && deposits.length) {
+            response.push({
+              products: deposits,
+              order: 4,
+              headerTitle: 'cells-global-dashboard-deposits-header',
+              headerAmount: (deposits && deposits.length > 1) ? this._totalBalance : undefined
+            });
+          }
+
+          this.fire('deposits-fetched', response);
+          return response;
+        },
+        /**
+        * Parse depostis
+        */
+        _parseDeposits: function(deposits) {
+          return deposits && deposits.reduce(function(acc, deposit) {
+            var currency = deposit.currencies && deposit.currencies.find(function(depositCurrency) {
+              return depositCurrency.isMajor;
+            });
+            var amount = deposit.currentBalances && deposit.currentBalances.find(function(depositAmount) {
+              return depositAmount.currency === currency.currency;
+            });
+
+            this._calcTotalBalance(amount, currency);
+
+            acc.push({
+              alias: deposit.alias || deposit.title && deposit.title.name,
+              currencies: deposit.currencies,
+              description: {
+                value: deposit.number,
+                masked: true
+              },
+              id: deposit.depositId,
+              name: deposit.alias || deposit.depositType.name,
+              number: deposit.number,
+              primaryAmount: {
+                amount: amount.amount,
+                currency: currency.currency,
+                label: 'cells-global-dashboard-deposits-available'
+              },
+              status: deposit.status && deposit.status.id
+            });
+
+            return acc;
+          }.bind(this), []);
+        },
+
+        _calcTotalBalance: function(amount, currency) {
+          amount = amount && amount.amount;
+          currency = currency && currency.currency;
+
+          if (this._totalBalance && !this._totalBalance.currency) {
+            this.set('_totalBalance.currency', currency);
+          }
+
+          if (this._totalBalance && this._totalBalance.currency === currency) {
+            this.set('_totalBalance.amount',  this._totalBalance.amount + amount);
+          } else {
+            this.set('_totalBalance', undefined);
+          }
+        }
+      });
+    }());
+  </script>
+</dom-module>

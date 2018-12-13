@@ -1,0 +1,82 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-avatar-item-searcher-selector-styles.html">
+
+<link rel="import" href="../cells-left-swipe-action/cells-left-swipe-action.html">
+<link rel="import" href="../cells-atom-subheader/cells-atom-subheader.html">
+<link rel="import" href="../cells-atom-message/cells-atom-message.html">
+<link rel="import" href="../cells-molecule-input/cells-molecule-input.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../coronita-icons/coronita-icons.html">
+<link rel="import" href="../cells-avatar-item/cells-avatar-item.html">
+<link rel="import" href="../cells-stripes-spinner-veil/cells-stripes-spinner-veil.html">
+
+<!--
+`<cells-avatar-item-searcher-selector>` displays a list of items, from which one can be chosen and an optional searcher.
+
+Example:
+
+```html
+<cells-avatar-item-searcher-selector class="demo"
+  list-items="[[listItems]]">
+</cells-avatar-item-searcher-selector>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-avatar-item-searcher-selector-scope      | scope description | default value  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-avatar-item-searcher-selector">
+  <template>
+    <style include="cells-avatar-item-searcher-selector-styles cells-avatar-item-searcher-selector-shared-styles"></style>
+    <template is="dom-if" if="[[searching]]">
+      <div class="searcher" id="searcher">
+        <cells-molecule-input id="inputViewAll" class="secondary--input" label="[[t(searcherLabel)]]" type="text" icon="coronita:search"
+          icon-visibility="always" extra-icon="coronita:close" icon-size="icon-size-18" value="{{filterItems}}">
+        </cells-molecule-input>
+      </div>
+    </template>
+
+    <!-- No products -->
+    <template is="dom-if" if="[[searching]]">
+      <template is="dom-if" if="{{!renderedCount}}">
+        <cells-atom-message type="info" icon="coronita:info" icon-size="24" message="[[t(message)]]">
+          <content></content>
+        </cells-atom-message>
+      </template>
+    </template>
+    <template is="dom-repeat" items="{{_listItems}}" as="item" filter="{{_computeSearch(filterItems)}}" rendered-item-count="{{renderedCount}}">
+      <template is="dom-if" if={{optionsDisabled}}>
+        <cells-avatar-item main="[[item.main]]" secondary="[[item.secondary]]" tertiary="[[item.bank.info]]" avatar="[[item.avatar]]"
+          id="[[item.id]]" data-id$="[[item.id]]" data-index$="[[index]]" on-tap="_onItemTap">
+        </cells-avatar-item>
+        <cells-stripes-spinner-veil open="[[_checkedOpened(item.id, selectedIndex)]]"></cells-stripes-spinner-veil>
+      </template>
+      <template is="dom-if" if={{!optionsDisabled}}>
+        <cells-left-swipe-action id="swipe" class="transactions-swipe" data-index="[[index]]" open="[[_checkedOpened(item.id, selectedIndex)]]">
+          <cells-avatar-item main="[[item.main]]" secondary="[[item.secondary]]" tertiary="[[item.bank.info]]" avatar="[[item.avatar]]"
+            id="[[item.id]]" data-id$="[[item.id]]" data-index$="[[index]]" on-tap="_onItemTap">
+          </cells-avatar-item>
+          <cells-stripes-spinner-veil open="[[_checkedOpened(item.id, selectedIndex)]]"></cells-stripes-spinner-veil>
+          <template is="dom-repeat" items="[[item.options]]" as="item" data-service$="[[index]]">
+            <cells-left-swipe-action-button on-click="_onClickOption" data-type$="[[item.type]]">
+              <cells-atom-icon class="swipe-actions__icon icon-size-16" icon="[[item.icon]]"></cells-atom-icon>
+              <span>{{t(item.key)}}</span>
+            </cells-left-swipe-action-button>
+          </template>
+        </cells-left-swipe-action>
+      </template>
+    </template>
+    <template is="dom-if" if="[[!spinnerDisabled]]">
+      <div class="spinner-container" hidden$="[[!spinnerStatus]]">
+        <cells-stripes-spinner-veil open="[[spinnerStatus]]"></cells-stripes-spinner-veil>
+      </div>
+    </template>
+  </template>
+  <script src="cells-avatar-item-searcher-selector.js"></script>
+</dom-module>

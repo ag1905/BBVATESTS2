@@ -1,0 +1,48 @@
+@import "bower_components/cells-sass/mixins";
+
+:host {
+  display: inline-flex;
+
+  @apply(--cells-pagination-bullets);
+}
+
+button {
+  font: inherit;
+  min-height: initial;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  outline: none;
+}
+
+.bullet {
+  display: block;
+  width: var(--cells-pagination-bullets-size, rem(8px));
+  height: var(--cells-pagination-bullets-size, rem(8px));
+  margin: 0 var(--cells-pagination-bullets-separation, rem(5px));
+  border-radius: 50%;
+  background: var(--cells-pagination-bullets-color, rgba(64, 64, 64,.5));
+
+  @apply(--cells-pagination-bullets-inactive);
+
+  &__active {
+    background: var(--cells-pagination-bullets-color-active, rgba(51, 153, 255,.5));
+
+    @apply(--cells-pagination-bullets-active);
+  }
+}
+
+.icon {
+  display: block;
+  margin: 0 var(--cells-pagination-bullets-separation, rem(5px));
+  color: var(--cells-pagination-bullets-icon-color, rgba(64, 64, 64,.5));
+
+  @apply(--cells-pagination-bullets-icon-inactive);
+
+  &__active {
+      color: var(--cells-pagination-bullets-icon-color-active, rgba(51, 153, 255,.5));
+
+      @apply(--cells-pagination-bullets-icon-active);
+  }
+}

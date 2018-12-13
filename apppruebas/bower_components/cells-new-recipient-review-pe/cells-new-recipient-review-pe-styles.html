@@ -1,0 +1,54 @@
+<dom-module id="cells-new-recipient-review-pe-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-new-recipient-review-pe; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+button:active {
+  @apply --cells-global-active; }
+
+dl {
+  font-size: var(--cells-text-size-14);
+  margin: 1.875rem 0rem 2.5rem 1.25rem;
+  @apply --cells-product-more-info-dl; }
+
+dt {
+  @apply --cells-fontDefaultLight;
+  color: var(--cells-product-more-info-dt-color, var(--bbva-500));
+  text-align: left;
+  @apply --cells-product-more-info-dt; }
+
+dd {
+  @apply --cells-fontDefaultNormal;
+  margin: 0.3125rem 0 1.875rem;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: var(--cells-product-more-info-dd-color, var(--bbva-600));
+  font-size: var(--cells-text-size-16);
+  @apply --cells-product-more-info-dd; }
+  dd.with-info {
+    margin-bottom: 0.3125rem; }
+
+</style></template></dom-module>

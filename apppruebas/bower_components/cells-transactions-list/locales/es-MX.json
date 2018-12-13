@@ -1,0 +1,17 @@
+{
+  "cells-transactions-list-title": "Movimientos",
+  "cells-transactions-list-empty": "No hay movimientos.",
+  "cells-transactions-list-empty-product-account": "No hay movimientos para esta cuenta.",
+  "cells-transactions-list-empty-product-card": "No hay movimientos para esta tarjeta.",
+  "cells-transactions-list-search": "Buscar Movimiento...",
+  "cells-transactions-list-error-initial-load": "No ha sido posible cargar sus movimientos. Vuelva a intentarlo.",
+  "cells-transactions-list-error-load-more": "No ha sido posible cargar más movimientos. Vuelva a intentarlo.",
+  "cells-transactions-list-last-transactions": "Últimos movimientos",
+  "cells-transactions-list-view-all": "Ver todos",
+  "cells-transactions-list-no-transactions": "No existen movimientos",
+  "cells-transactions-list-pending-transactions": "Movimientos en tránsito",
+  "cells-transactions-list-settled-transactions": "Movimientos autorizados",
+  "cells-transactions-list-empty-product-pendings": "No tienes retiros pendientes de cobro",
+  "cells-transactions-list-empty-product-settleds": "No tienes retiros vencidos",
+  "cells-transactions-list-empty-product-rejects": "No tienes retiros cancelados"
+}

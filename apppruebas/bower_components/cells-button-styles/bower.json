@@ -1,0 +1,55 @@
+{
+  "name": "cells-button-styles",
+  "version": "1.0.6",
+  "description": "Shared styles for standard button elements",
+  "keywords": [
+    "web-component",
+    "shared-styles",
+    "styles",
+    "button",
+    "hybrid"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "cells-demo-helper": "^10.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "webcomponentsjs": "^1.0.0",
+    "cells-coronita-theme": "^11.0.0",
+    "iron-icon": "PolymerElements/iron-icon#1 - 2",
+    "coronita-icons": "^10.0.0",
+    "paper-toggle-button": "PolymerElements/paper-toggle-button#1 - 2",
+    "cells-banking-theme": "^10.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9"
+      },
+      "devDependencies": {
+        "cells-sass": "^2.0.0",
+        "cells-demo-helper": "^10.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "webcomponentsjs": "^0.7",
+        "cells-coronita-theme": "^11.0.0",
+        "iron-icon": "PolymerElements/iron-icon#1 - 2",
+        "coronita-icons": "^10.0.0",
+        "paper-toggle-button": "PolymerElements/paper-toggle-button#^1.0.0",
+        "cells-banking-theme": "^10.0.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "main": [
+    "cells-button-styles.html",
+    "docs.html"
+  ]
+}

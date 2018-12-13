@@ -1,0 +1,19 @@
+{
+  "name": "cells-step-behavior",
+  "version": "3.4.0",
+  "description": "Provides several props and method to build step-by-step process.",
+  "keywords": [
+    "behavior",
+    "step",
+    "steps",
+    "properties",
+    "methods",
+    "manager"
+  ],
+  "ignore": [
+    "**/*."
+  ],
+  "main": [
+    "cells-step-behavior.html"
+  ]
+}

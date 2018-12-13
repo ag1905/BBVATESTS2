@@ -1,0 +1,54 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-contact-avatar-styles.html">
+
+<!--
+`<cells-contact-avatar>` Displays a ball with a letter or an image as avatar.
+
+Example:
+```html
+ <cells-contact-avatar
+    src="assets/avatar.png"
+    alt="My alternative text">
+ </cells-contact-avatar>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-contact-avatar | empty mixin  | {} |
+| --cells-contact-avatar-image | empty mixin  | {} |
+| --cells-contact-avatar-initial | empty mixin  | {} |
+| --cells-contact-avatar-initial-bg | Background of initial avatar  | var(--bbva-orange, #F7893B) |
+| --cells-contact-avatar-initial-content | empty mixin  | {} |
+| --cells-contact-avatar-content-color | Color of content  | var(--bbva-white, #fff) |
+| --cells-contact-avatar-initial-color-bg | Background color of initial avatar  | #eb722c |
+| --cells-contact-avatar-initial-before | empty mixin  | {} |
+
+@demo demo/index.html
+@hero cells-contact-avatar.png
+-->
+<dom-module id="cells-contact-avatar">
+  <template>
+    <style include="cells-contact-avatar-styles cells-contact-avatar-shared-styles"></style>
+
+      <template is="dom-if" if="[[src]]">
+        <img class="cells-contact-avatar__image"
+          id="avatarImg"
+          src$="[[src]]"
+          alt$="[[alt]]"
+          on-error="_treatSrcError"/>
+      </template>
+      <template is="dom-if" if="[[!src]]">
+        <div class="cells-contact-avatar__initial">
+          <span class="cells-contact-avatar__initial-content">
+            [[letter]]
+          </span>
+        </div>
+      </template>
+
+  </template>
+  <script src="cells-contact-avatar.js"></script>
+</dom-module>

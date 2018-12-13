@@ -1,0 +1,87 @@
+@import "bower_components/cells-sass/main";
+:host {
+  width: 100%;
+  line-height: 1;
+  padding: 0 0.75em;
+  outline: 0;
+  @apply(--cells-input--base);
+  @apply(--cells-input--font);
+  @apply(--cells-input--decorator);
+  @apply(--cells-input--animations);
+  @apply(--cells-input--s);
+  @apply(--cells-input--base--extend);
+  @apply(--cells-atom-input);
+}
+
+:host(:active) {
+  @apply(--cells-input--active);
+  @apply(--cells-input--active--extend);
+  @apply(--cells-atom-input-active);
+}
+
+:host(:focus) {
+  @apply(--cells-input--focus);
+  @apply(--cells-input--focus--extend);
+  @apply(--cells-atom-input-focus);
+}
+:host(:disabled) {
+  @apply(--cells-input--disabled);
+  @apply(--cells-input--disabled--extend);
+  @apply(--cells-atom-input-disabled);
+}
+:host(.input--error) {
+  @apply(--cells-input--error);
+  @apply(--cells-input--error--extend);
+  @apply(--cells-atom-input-error);
+}
+
+:host(.input--icon) {
+  @apply(--cells-input--icon);
+  @apply(--cells-input--icon--extend);
+  @apply(--cells-atom-input-icon);
+}
+:host(.input--date) {
+  @apply(--cells-input--date);
+  @apply(--cells-input--date--extended);
+  @apply(--cells-atom-input-date);
+}
+
+:host([type="number"]) {
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  -moz-appearance: textfield;
+  @apply(--cells-atom-input-number);
+}
+
+:host(.input--xxl) {
+  @apply(--cells-input--xxl);
+  @apply(--cells-atom-input-xxl);
+}
+:host(.input--xl) {
+  @apply(--cells-input--xl);
+  @apply(--cells-atom-input-xl);
+}
+:host(.input--l) {
+  @apply(--cells-input--l);
+  @apply(--cells-atom-input-l);
+}
+:host(.input--m) {
+  @apply(--cells-input--m);
+  @apply(--cells-atom-input-m);
+}
+:host(.input--s) {
+  @apply(--cells-input--s);
+  @apply(--cells-atom-input-s);
+}
+:host(.input--xs) {
+  @apply(--cells-input--xs);
+  @apply(--cells-atom-input-xs);
+}
+:host(.input--xxs) {
+  @apply(--cells-input--xxs);
+  @apply(--cells-atom-input-xxs);
+}
+
+

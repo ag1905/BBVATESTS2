@@ -1,0 +1,71 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  --cells-alert-box-content-container: unquote("{
+    padding: 0 10px;
+    font-size: var(--cells-text-size-14, .875rem);
+    line-height: 1.43;
+    @apply(--glomo-alert-manager-content-container);
+  }");
+
+  --cells-alert-box-button-container: unquote("{
+    margin-top: 0;
+    @apply(--glomo-alert-manager-button-container);
+  }");
+
+  --cells-bottom-modal-body: unquote("{
+    padding: 0 30px;
+    @apply(--glomo-alert-manager-modal-body);
+  }");
+
+  --cells-btn--secondary: unquote("{
+    background: var(--bbva-medium-blue, #237ABA);
+    @apply(--glomo-alert-manager-button-secondary);
+  }");
+
+  cells-alert-box {
+    &.full-height-error {
+      --cells-alert-box-content-container-text: unquote("{
+        margin-bottom: 0;
+      }");
+
+      --cells-bottom-modal-full-height-header-wrapper: unquote("{
+        background-color: var(--bbva-navy, #072146);
+        color: var(--bbva-white, #fff);
+      }");
+
+      --cells-bottom-modal-btn-close-color: var(--bbva-white, #fff);
+    };
+
+    &.info {
+      cells-atom-icon {
+        --cells-atom-icon-size: 24px;
+        color: var(--bbva-light-blue, #5BBEFF);
+        @apply (--glomo-alert-manager-alert-box-icon)
+      }
+    }
+    @apply (--glomo-alert-manager-alert-box)
+  };
+
+  h2 {
+    font-size: 1rem;
+    font-weight: normal;
+    margin: 0;
+    @apply(--glomo-alert-manager-title);
+  }
+
+  .spacing {
+    margin-bottom: 20px;
+  }
+
+  .strong {
+    font-weight: bold;
+    @apply(--glomo-alert-manager-strong);
+  }
+
+  @apply(--glomo-alert-manager);
+}
+
+:host([hidden]) {
+  display: none;
+}

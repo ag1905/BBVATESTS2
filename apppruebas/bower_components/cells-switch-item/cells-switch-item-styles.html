@@ -1,0 +1,38 @@
+<dom-module id="cells-switch-item-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-switch-item; }
+
+.item {
+  width: 100%;
+  background-color: var(--cells-switch-item-background, var(--bbva-core-blue, #004481));
+  padding: 1.875rem;
+  @apply --cells-switch-item-item; }
+  .item__title {
+    font-size: 1rem;
+    letter-spacing: 2px;
+    color: var(--cells-switch-item-title-color, #ffffff);
+    @apply --cells-switch-item-item__title; }
+  .item__icon {
+    margin-left: 10px;
+    color: var(--cells-switch-item-icon-color, #5bbeff);
+    @apply --cells-switch-item-item__icon; }
+  .item__switch {
+    float: right;
+    @apply --cells-switch-item-item__switch; }
+  .item__label {
+    color: var(--cells-switch-item-icon-color, #5bbeff);
+    font-size: 0.875rem;
+    font-weight: bold;
+    margin: 1.25rem 0 0;
+    @apply --cells-switch-item-item__label; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+</style></template></dom-module>

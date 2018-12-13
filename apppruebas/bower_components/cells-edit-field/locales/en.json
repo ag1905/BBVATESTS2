@@ -1,0 +1,14 @@
+{
+  "cells-edit-field-save": {
+    "message": "Save"
+  },
+  "cells-edit-field-cancel": {
+    "message": "Cancel"
+  },
+  "cells-edit-field-error-message": {
+    "message": "The alias does not support special characters as an example ñ,@,-,/`"
+  },
+  "cells-edit-field-info-message": {
+    "message": "The alias does not support special characters as an example ñ,@,-,/`"
+  }
+}

@@ -1,0 +1,31 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0;
+  position: relative;
+  width: 100%;
+  @apply(--cells-fontDefaultNormal);
+
+  @apply(--cells-sections-slider);
+}
+
+neon-animated-pages {
+  height: 100%;
+
+  @apply(--cells-sections-slider-pages);
+}
+
+neon-animated-pages ::content > * {
+	align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+
+  @apply(--cells-sections-slider-pages-content);
+
+}
+

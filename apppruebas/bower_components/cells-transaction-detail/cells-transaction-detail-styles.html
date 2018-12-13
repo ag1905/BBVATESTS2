@@ -1,0 +1,197 @@
+<dom-module id="cells-transaction-detail-styles"><template><style>
+:host {
+  font-family: var(--cells-fontDefault);
+  @apply (--cells-transaction-detail); }
+  :host cells-key-values {
+    --cells-key-values-value: { display: block; }; }
+
+.lighting-text {
+  color: var(--bbva-white);
+  @apply (--cells-transaction-detail-lighting-text); }
+
+.dark-text {
+  color: var(--bbva-navy);
+  @apply (--cells-transaction-detail-dark-text); }
+
+.content {
+  padding: 3.125rem 1.875rem;
+  @apply (--cells-product-more-info-content); }
+
+header {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 180px;
+  position: relative;
+  background-color: var(--bbva-teal, #2dcccd);
+  @apply (--cells-transaction-detail-header); }
+  header.purchase, header.purchase_comercial_purchase {
+    background-color: var(--bbva-light-red, #e77d8e); }
+  header.cash_withdrawal, header.cash_withdrawal_atm_operation, header.uncategorized_fixed_term_deposit {
+    background-color: var(--bbva-medium-blue, #237ABA); }
+  header.credit_card_installment, header.uncategorized_credit_card_payment {
+    background-color: var(--bbva-light-blue, #5BBEFF); }
+  header[class^="transfer_"], header.uncategorized_service_payment, header.uncategorized_mobile {
+    background: var(--bbva-core-blue, #004481); }
+  header.refund {
+    background-color: #e6d5a5; }
+  header iron-image {
+    position: relative;
+    padding: 25px 0;
+    display: block;
+    height: auto;
+    max-width: 100%; }
+  header .wrapper {
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    @apply (--layout-horizontal);
+    @apply (--layout-end);
+    @apply (--layout-justified);
+    @apply (--cells-transaction-detail-header-wrapper); }
+    header .wrapper p {
+      margin: 0 0 0.625rem 1.25rem;
+      color: white;
+      font-size: 0.875rem;
+      @apply (--cells-fontDefaultBold);
+      @apply (--cells-transaction-detail-header-wrapper-p); }
+
+main {
+  text-align: center;
+  padding: 50px 0;
+  background-color: var(--bbva-100, #F4F4F4);
+  width: 100%;
+  height: auto;
+  @apply (--layout-vertical);
+  @apply (--layout-center-justified);
+  @apply (--cells-transaction-detail-main); }
+  main .transaction-description {
+    margin-bottom: 1.25rem;
+    @apply (--cells-transaction-detail-transaction-description); }
+  main .transaction-title {
+    color: var(--bbva-600);
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: normal;
+    line-height: 1.5rem;
+    @apply (--cells-transaction-detail-transaction-title); }
+  main .transaction-status {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    @apply (--cells-transaction-detail-transaction-status); }
+    main .transaction-status .status {
+      color: var(--bbva-500, #666);
+      font-size: 0.875rem;
+      font-style: italic;
+      @apply (--cells-transaction-detail-transaction-status-text); }
+    main .transaction-status button {
+      margin: 0 0 0 .35rem;
+      background: transparent;
+      padding: 0;
+      outline: none;
+      border: 0;
+      color: var(--bbva-medium-blue, #237ABA);
+      cursor: pointer;
+      @apply (--cells-transaction-detail-transaction-status-icon); }
+  main .main-amount {
+    margin: 0 auto;
+    @apply (--cells-transaction-detail-main-amount); }
+  main .transaction-points-info {
+    font-size: 14px;
+    @apply (--cells-fontDefaultLight); }
+  main time {
+    font-size: 0.875rem;
+    margin-top: 1.875rem;
+    @apply (--cells-fontDefaultLight);
+    @apply (--cells-transaction-detail-time); }
+    main time .date + .time {
+      margin-left: 8px; }
+
+section {
+  color: var(--bbva-500);
+  text-align: left;
+  padding-top: 1.875rem;
+  @apply (--cells-transaction-detail-section); }
+  section.main-operations {
+    padding-top: 0;
+    @apply (--cells-transaction-detail-section-main-operations); }
+  section.transaction-info {
+    background-color: var(--bbva-white, #FFF);
+    padding: 1.25rem 1.875rem;
+    @apply (--cells-transaction-detail-section-transaction-info); }
+    section.transaction-info .transaction-info__group + .transaction-info__group {
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--bbva-200, #E9E9E9);
+      @apply (--cells-transaction-detail-section-transaction-info-group); }
+    section.transaction-info .transaction-info__item {
+      @apply (--cells-fontDefaultLight);
+      color: var(--bbva-600);
+      font-size: 0.8125rem;
+      padding: 0.875rem 0.625rem;
+      @apply (--cells-transaction-detail-section-transaction-info-item); }
+    section.transaction-info .transaction-info__subheader {
+      @apply (--cells-transaction-detail-section-transaction-info-subheader); }
+
+cells-molecule-group-transactions-list ::shadow .transaction-group__date {
+  padding: 1.875rem;
+  padding-bottom: 0;
+  @apply (--date);
+  color: var(--bbva-500, #666);
+  @apply (--cells-transaction-detail-transaction-group-date); }
+
+cells-atom-subheader {
+  padding: 0 1.875rem; }
+  cells-atom-subheader ::content h2 {
+    @apply (--cells-fontDefaultMedium);
+    color: var(--bbva-medium-blue);
+    @apply (--cells-transaction-detail-subheader-h2); }
+
+cells-molecule-transaction-list-item {
+  @apply (--layout-center);
+  padding: 1.25rem 1.875rem; }
+  cells-molecule-transaction-list-item ::shadow .transaction-name {
+    font-size: 18px;
+    color: var(--bbva-600);
+    @apply (--cells-transaction-detail-transaction-name); }
+  cells-molecule-transaction-list-item ::shadow .associated-prod {
+    @apply (--iban);
+    color: var(--bbva-600);
+    @apply (--cells-transaction-detail-associated-prod); }
+
+cells-skeleton-item {
+  @apply (--cells-product-more-info-skeleton); }
+  cells-skeleton-item + cells-skeleton-item {
+    margin: 2rem 0 0 0;
+    @apply (--cells-product-more-info-skeleton-skeleton); }
+
+.notification {
+  margin: 0.625rem 0 2.5rem 0;
+  @apply (--cells-product-more-info-notification); }
+
+:host([modal]) {
+  margin: 0 -20px;
+  @apply (--cells-transaction-detail-modal); }
+
+</style></template></dom-module>

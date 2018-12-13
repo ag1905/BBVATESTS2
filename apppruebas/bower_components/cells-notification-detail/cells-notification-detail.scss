@@ -1,0 +1,67 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  color: var(--bbva-600, #121212);
+  text-align: center;
+  @apply --cells-notification-detail;
+}
+
+h2, p {
+  margin: 0;
+}
+
+.header-image {
+  height: 180px;
+  width: 100%;
+}
+
+main {
+  padding: rem(30px) rem(30px) rem(20px);
+  margin-bottom: rem(90px);
+  time, .amount-text {
+    display: block;
+    color: var(--bbva-500, #666);
+    font-weight: 300;
+    margin-bottom: rem(10px);
+  }
+  h2 {
+    font-size: rem(18px);
+    margin-bottom: rem(30px);
+  }
+  p {
+    margin-bottom: 30px;
+    font-weight: 300;
+  }
+  .separator {
+    display: block;
+    margin: 0 auto;
+    height: 1px;
+    width: 15%;
+    margin-bottom: 30px;
+    background: var(--bbva-200, #E9E9E9);
+  }
+
+  cells-atom-amount {
+    height: auto;
+  }
+}
+
+footer {
+  position: fixed;
+  min-height: rem(90px);
+  width: 100%;
+  bottom: 0;
+  padding: rem(20px);
+  background: var(--bbva-white, #fff);
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}

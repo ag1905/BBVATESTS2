@@ -1,0 +1,55 @@
+<dom-module id="cells-toggle-button-styles"><template><style>
+:host {
+  display: inline-block;
+  position: relative;
+  width: var(--cells-toggle-button-width, 4.6875rem);
+  height: var(--cells-toggle-button-height, 1.5rem);
+  border-radius: var(--cells-toggle-button-border-radius, 1.25rem);
+  background-color: var(--cells-toggle-button-background-color, var(--bbva-300));
+  @apply --cells-toggle-button; }
+
+.toggle-button__switch {
+  position: absolute;
+  transition: all .15s ease;
+  top: var(--cells-toggle-button-switch-top, 0.0625rem);
+  left: var(--cells-toggle-button-switch-left, 0.0625rem);
+  height: var(--cells-toggle-button-switch-height, 1.375rem);
+  width: var(--cells-toggle-button-switch-width, 2.25rem);
+  border-radius: var(--cells-toggle-button-switch-border-radius, 1.25rem);
+  background-color: var(--cells-toggle-button-button-switch-color, var(--bbva-medium-blue));
+  @apply --cells-toggle-button-button; }
+  .toggle-button__switch.active:not(.dragging) {
+    -webkit-transform: translateX(2.3125rem);
+            transform: translateX(2.3125rem);
+    @apply --cells-toggle-button-switch-active; }
+  .toggle-button__switch.dragging {
+    @apply --cells-toggle-button-switch-dragging; }
+
+.text-container {
+  width: var(--cells-toggle-button-switch-width, 2.25rem);
+  text-align: center;
+  font-size: var(--cells-toggle-button-font-size, 0.8125rem);
+  line-height: var(--cells-toggle-button-text-height, 1.375rem);
+  color: var(--cells-toggle-button-text-color, var(--bbva-white));
+  position: absolute;
+  top: var(--cells-toggle-button-text-container-top, 0.125rem);
+  left: 0;
+  @apply --cells-fontDefaultMedium;
+  @apply --cells-toggle-button-text-container; }
+  .text-container:last-of-type {
+    left: auto;
+    right: 0;
+    @apply --cells-toggle-button-text-container-last; }
+  .text-container__icon {
+    position: absolute;
+    top: 0.125rem;
+    left: 0;
+    margin: 0 0.75rem;
+    color: var(--cells-toggle-button-text-color, var(--bbva-white));
+    @apply --cells-toggle-button-text-container-icon; }
+    .text-container__icon:last-of-type {
+      left: auto;
+      right: 0;
+      @apply --cells-toggle-button-text-container-icon-last; }
+
+</style></template></dom-module>

@@ -1,0 +1,270 @@
+<dom-module id="cells-successful-response-styles"><template><style>
+:host {
+  background-color: var(--cells-successful-response-bg-color, var(--bbva-white, #fff));
+  display: block;
+  height: 100%;
+  padding: 0;
+  font-family: var(--cells-fontDefault);
+  @apply --cells-successful-response; }
+  :host .info {
+    text-align: center;
+    padding: 3.125rem 3.125rem 3.75rem 3.125rem;
+    background-color: var(--cells-successful-response-info-bg-color, var(--bbva-green, #48AE64));
+    color: var(--cells-successful-response-info-color, var(--bbva-white, #fff));
+    @apply --cells-fontDefaultBold;
+    font-size: var(--cells-text-size-20);
+    @apply --cells-successful-response-info; }
+    :host .info .image-div {
+      display: block;
+      margin: auto;
+      @apply --cells-successful-response-image-div; }
+      :host .info .image-div img {
+        max-width: 100%;
+        @apply --cells-successful-response-img; }
+    :host .info .title {
+      margin-bottom: 0.625rem;
+      @apply --cells-successful-response-title; }
+    :host .info .subtitle {
+      font-size: var(--cells-text-size-14);
+      @apply --cells-fontDefaultNormal;
+      @apply --cells-successful-response-subtitle; }
+      :host .info .subtitle cells-atom-date {
+        display: inline-block; }
+    :host .info.success {
+      background-color: var(--cells-successful-response-info-success-bg-color, var(--bbva-green, #48AE64));
+      @apply --cells-successful-response-info-success; }
+    :host .info.warning {
+      background-color: var(--cells-successful-response-info-warning-bg-color, var(--bbva-yellow, #F8CD51));
+      @apply --cells-successful-response-info-warning; }
+    :host .info.error {
+      background-color: var(--cells-successful-response-info-error-bg-color, var(--bbva-red, #DA3851));
+      @apply --cells-successful-response-info-error; }
+    :host .info.white {
+      background-color: var(--cells-successful-response-info-white-bg-color, var(--bbva-white, #fff));
+      color: var(--cells-successful-response-info-white-color, var(--bbva-600, #121212));
+      @apply --cells-successful-response-info-white; }
+      :host .info.white cells-atom-date {
+        color: var(--bbva-600, #121212);
+        @apply --cells-successful-response-info-white-date; }
+      :host .info.white cells-atom-amount {
+        --cells-atom-amount-color: var(--bbva-600, #121212);
+        @apply --cells-successful-response-info-white-date; }
+  :host .fees-container {
+    margin-top: 10px;
+    @apply --cells-successful-response-info-fees-container; }
+    :host .fees-container .fees {
+      margin: 5px 0 0;
+      font-size: var(--cells-text-size-14);
+      @apply --cells-fontDefaultNormalItalic;
+      @apply --cells-successful-response-info-fees; }
+    :host .fees-container .feesAmount {
+      margin: 0;
+      padding: 0px;
+      font-size: var(--cells-text-size-14);
+      --cells-atom-amount-currency_-_font-size: 14px;
+      @apply --cells-successful-response-info-fees-amount; }
+  :host .actions {
+    width: 12.4rem;
+    margin: 0 auto;
+    padding: 1rem 0 0 0;
+    min-height: 70px;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    z-index: 3;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+    @apply --cells-successful-response-actions; }
+    :host .actions .buttons {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      @apply --cells-successful-response-actions-buttons; }
+  :host button {
+    padding: 1rem 2.56rem;
+    @apply --cells-successful-response-button;
+    --cells-btn--tertiary: { color: var(--cells-successful-response-button-color, #2a86ca); font-weight: 700; }; }
+  :host button[hidden] {
+    display: none; }
+
+.moreInfo {
+  position: relative;
+  padding-bottom: 7.375rem;
+  background-color: var(--cells-successful-response-more-info-bg-color, var(--bbva-white, #fff));
+  @apply --cells-successful-response-more-info; }
+  .moreInfo .message {
+    width: 300px;
+    margin: 0 auto;
+    padding: 0.625rem 0 1.875rem;
+    --cells-icon-message-icon: { margin: 0 0 10px; };
+    @apply --cells-successful-response-more-info-message; }
+
+.otherInfo, .additional-info {
+  position: relative;
+  margin: 0;
+  padding: 7rem 2rem 1rem;
+  list-style: none;
+  text-align: center;
+  @apply --cells-successful-response-otherInfo; }
+  .otherInfo li, .additional-info li {
+    line-height: 1.375rem;
+    font-size: var(--cells-text-size-14);
+    @apply --cells-successful-response-otherInfo-item; }
+    .otherInfo li .info-key-icon, .additional-info li .info-key-icon {
+      color: var(--cells-successful-response-otherInfo-item-key-icon-color, var(--bbva-green, #48ae64));
+      margin-right: 5px; }
+    .otherInfo li .key, .additional-info li .key {
+      display: block;
+      color: var(--cells-successful-response-otherInfo-item-inline-key-color, var(--bbva-500, #666));
+      @apply --cells-successful-response-otherInfo-item-key; }
+    .otherInfo li.inline, .additional-info li.inline {
+      @apply --cells-successful-response-otherInfo-item-inline; }
+      .otherInfo li.inline .key, .additional-info li.inline .key {
+        display: inline;
+        @apply --cells-successful-response-otherInfo-item-inline-key; }
+      .otherInfo li.inline .feesAmount, .additional-info li.inline .feesAmount {
+        color: var(--cells-successful-response-otherInfo-item-inline-fees-amount-color, var(--bbva-500, #666));
+        @apply --cells-successful-response-otherInfo-item-inline-fees-amount; }
+    .otherInfo li.separator, .additional-info li.separator {
+      @apply --cells-successful-response-otherInfo-separator; }
+      .otherInfo li.separator .key:after, .additional-info li.separator .key:after {
+        content: ':';
+        @apply --cells-successful-response-otherInfo-separator-key-after; }
+    .otherInfo li.spacing, .additional-info li.spacing {
+      margin-bottom: 2rem;
+      @apply --cells-successful-response-otherInfo-spacing; }
+    .otherInfo li.ellipsis, .additional-info li.ellipsis {
+      overflow: hidden;
+      text-overflow: ellipsis; }
+    .otherInfo li.secondary, .additional-info li.secondary {
+      color: var(--bbva-500, #666);
+      @apply --cells-successful-response-otherInfo-secondary; }
+    .otherInfo li.cursive, .additional-info li.cursive {
+      @apply --cells-fontDefaultNormalItalic; }
+    .otherInfo li.bold .value, .additional-info li.bold .value {
+      @apply --cells-fontDefaultBold; }
+    .otherInfo li.md .value, .additional-info li.md .value {
+      font-size: var(--cells-text-size-16); }
+    .otherInfo li.lg .value, .additional-info li.lg .value {
+      font-size: var(--cells-text-size-18); }
+    .otherInfo li cells-atom-amount, .additional-info li cells-atom-amount {
+      font-size: var(--cells-text-size-14, 0.875rem);
+      padding: 0px; }
+
+.amount-description {
+  margin: 10px 0 0;
+  font-size: var(--cells-text-size-14);
+  font-style: italic;
+  font-weight: 300;
+  @apply --cells-successful-response-amount-description; }
+
+.additional-info {
+  padding: 1.875rem 0;
+  @apply --cells-successful-response-additional-info; }
+
+.codes {
+  position: relative;
+  margin-top: 0.625rem;
+  padding: 2.5rem 2.1875rem;
+  font-weight: 500;
+  color: var(--cells-successful-response-codes-color, var(--bbva-white, #fff));
+  background-color: var(--cells-successful-response-codes-bg-color, var(--bbva-navy, #072146));
+  text-align: center;
+  @apply --cells-successful-response-codes; }
+  .codes .code-title {
+    padding: 10px 0;
+    @apply --cells-successful-response-code-title; }
+  .codes ul {
+    list-style: none;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+            justify-content: space-around;
+    padding: 0;
+    width: 100%;
+    @apply --cells-successful-response-codes-list; }
+    .codes ul li.code-box {
+      border-radius: 1px;
+      letter-spacing: 10px;
+      padding: 1rem 0 1rem 0.625rem;
+      display: inline-block;
+      background-color: var(--cells-successful-response-codes-item-bg-color, var(--bbva-white, #fff));
+      color: var(--cells-successful-response-codes-item-color, var(--bbva-white-core-blue, #1464A5));
+      @apply --cells-successful-response-codes-item; }
+
+.header-additional-info {
+  list-style: none;
+  padding: 0;
+  margin: 2.5rem auto;
+  --cells-molecule-mask: { color: var(--bbva-white, #fff) };
+  @apply --cells-header-additional-info; }
+  .header-additional-info__row {
+    margin: 0.625rem auto;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    font-size: var(--cells-text-size-14, 14px);
+    font-weight: 300;
+    @apply --cells-header-additional-info-row; }
+    .header-additional-info__row cells-atom-amount {
+      padding: 0; }
+    .header-additional-info__row.cursive {
+      @apply --cells-fontDefaultNormalItalic; }
+
+cells-atom-amount {
+  padding: 30px 0;
+  --cells-atom-amount-color: var(--bbva-white, #fff); }
+  cells-atom-amount.amount-huge {
+    padding-top: 1rem; }
+
+cells-contact-avatar {
+  position: absolute;
+  left: calc(50% - 30px);
+  top: -2rem;
+  background-color: var(--bbva-100, #f4f4f4);
+  padding: 0.625rem;
+  border-radius: 50%;
+  @apply --cells-successful-response-contact-avatar; }
+  cells-contact-avatar ~ .otherInfo {
+    padding-top: 3rem;
+    @apply --cells-successful-response-contact-avatar-other-info; }
+  cells-contact-avatar[type="card"] {
+    width: 100px;
+    border-radius: 50px;
+    left: calc(50% - 50px);
+    padding: .625rem 1.25rem;
+    --cells-contact-avatar-image: { width: 60px; border-radius: 0; }; }
+
+cells-from-to {
+  margin: 0;
+  text-align: left;
+  position: absolute;
+  top: -2rem;
+  width: 100%;
+  padding: 0 2rem;
+  @apply --cells-successful-response-from-to; }
+
+cells-operations-list {
+  margin: 0 auto;
+  @apply --cells-successful-response-operations-list; }
+
+cells-molecule-mask {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  @apply --cells-successful-response-molecule-mask; }
+
+</style></template></dom-module>

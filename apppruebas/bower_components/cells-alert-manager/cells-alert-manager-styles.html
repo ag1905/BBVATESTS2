@@ -1,0 +1,43 @@
+<dom-module id="cells-alert-manager-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-alert-manager; }
+  :host paper-toast {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 0;
+    box-shadow: none;
+    --paper-toast-background-color: transparent; }
+  :host .inner-toast {
+    color: var(--cells-alert-manager-color, #FFFFFF);
+    border-radius: 2px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    font-size: 14px;
+    padding: 15px;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: baseline;
+    @apply --cells-alert-manager-inner-toast; }
+    :host .inner-toast iron-icon,
+    :host .inner-toast span {
+      margin: 0 .5em; }
+    :host .inner-toast.info {
+      background-color: var(--cells-alert-manager-info-toast, var(--bbva-white-medium-blue, #49A5E6)); }
+    :host .inner-toast.error {
+      background-color: var(--cells-alert-manager-error-toast, var(--bbva-dark-red, #B92A45)); }
+    :host .inner-toast.success {
+      background-color: var(--cells-alert-manager-success-toast, var(--bbva-dark-green, #388D4F)); }
+    :host .inner-toast.warning {
+      background-color: var(--cells-alert-manager-warning-toast, var(--bbva-orange, #F7893B)); }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+</style></template></dom-module>

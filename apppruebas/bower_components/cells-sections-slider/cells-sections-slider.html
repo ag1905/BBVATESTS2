@@ -1,0 +1,44 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../neon-animation/neon-animated-pages.html">
+<link rel="import" href="../neon-animation/neon-animatable.html">
+<link rel="import" href="../neon-animation/neon-animations.html">
+<link rel="import" href="cells-sections-slider-styles.html">
+
+<!--
+cells-sections-slider allows to do slide animation: vertical and horizontal
+
+Example:
+
+```html
+<cells-sections-slider vertical selected="0">
+  <section>1</section>
+  <section>2</section>
+  <section>3</section>
+  <section>4</section>
+</cells-sections-slider>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-sections-slider  | empty mixin     | {}             |
+| --cells-sections-slider-pages  | empty mixin     | {}             |
+| --cells-sections-slider-pages-content  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-sections-slider">
+  <template>
+    <style include="cells-sections-slider-styles cells-sections-slider-shared-styles"></style>
+    <neon-animated-pages id="pages" 
+      selected="{{selected}}" 
+      entry-animation="[[entryAnimation]]" 
+      exit-animation="[[exitAnimation]]" >
+      <content id="sections"></content>
+    </neon-animated-pages>
+  </template>
+  <script src="cells-sections-slider.js"></script>
+</dom-module>

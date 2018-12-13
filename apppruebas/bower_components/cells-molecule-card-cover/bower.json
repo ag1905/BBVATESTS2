@@ -1,0 +1,56 @@
+{
+  "name": "cells-molecule-card-cover",
+  "version": "10.0.4",
+  "description": "A card cover with custom size, overlay layer and status",
+  "keywords": [
+    "molecule",
+    "card",
+    "cover",
+    "image"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "cells-atom-icon": "9 - 10",
+    "iron-image": "PolymerElements/iron-image#1 - 2"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "coronita-icons": "9 - 10",
+    "cells-sass": "^2.0.0",
+    "cells-demo-helper": "9 - 10",
+    "cells-st-button": "9 - 10",
+    "cells-banking-theme": "9 - 10",
+    "cells-coronita-theme": "9 - 10",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "main": [
+    "cells-molecule-card-cover.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9.0",
+        "cells-atom-icon": "^9.0.0",
+        "iron-image": "PolymerElements/iron-image#^1.0.0"
+      },
+      "devDependencies": {
+        "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "coronita-icons": "^9.0.0",
+        "cells-sass": "^2.0.0",
+        "cells-demo-helper": "^9.0.0",
+        "cells-st-button": "^9.0.0",
+        "cells-banking-theme": "^9.0.0",
+        "cells-coronita-theme": "^9.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

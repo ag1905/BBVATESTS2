@@ -1,0 +1,14 @@
+{
+  "cells-product-summary-loan-loan": "Préstamo",
+  "cells-product-summary-loan-mortgage": "Hipoteca",
+  "cells-product-summary-loan-initial-amount": "Crédito otorgado",
+  "cells-product-summary-loan-pending-amount": "Saldo pendiente",
+  "cells-product-summary-loan-next-installment-date": "Fecha de pago",
+  "cells-product-summary-more-info-loan": "Detalle de crédito",
+  "cells-product-summary-loan-fee": "Cuota",
+  "cells-product-summary-loan-of": "de",
+  "cells-product-summary-loan-maturity-date": "Fecha de vencimiento",
+  "cells-product-summary-loan-current-fee": "Cuota actual",
+  "cells-product-summary-loan-annual-fixed-rate": "Tasa anual fija C/IVA",
+  "cells-product-summary-loan-current-installment": "Total a pagar"
+}

@@ -1,0 +1,16 @@
+{
+  "cells-molecule-card-cover-cvv-blocked-title": "Bloqueada",
+  "cells-molecule-card-cover-cvv-blocked": "Tu tarjeta fue bloqueada el ",
+  "cells-molecule-card-cover-cvv-blocked-continue": ". Lamentablemente, no podrás operar hasta que recibas y actives la nueva.",
+  "cells-molecule-card-cover-cvv-inoperative": "Para operar con tu tarjeta, deberás activarla llamando a Línea Bancomer, a través de BBVA Wallet y en cualquier sucursal o cajero.",
+  "cells-molecule-card-cover-cvv-inoperative-title": "Pendiente de activar",
+  "cells-molecule-card-cover-cvv-blocked-alt": "Tu tarjeta ha sido bloqueada. Lamentablemente, no podrás operar hasta que recibas y actives la nueva.",
+  "cells-molecule-card-cover-cvv-expired-title": "Caducada",
+  "cells-molecule-card-cover-cvv-expired": "Tu tarjeta ha caducado. BBVA te enviará una nueva para sustituirla.",
+  "cells-molecule-card-cover-cvv-view": "Ver CVV",  
+  "cells-molecule-card-cover-cvv-show-number": "Mostrar datos",
+  "cells-molecule-card-cover-cvv-copy-number": "Copiar Nº de tarjeta",
+  "cells-molecule-card-cover-cvv-more-info": "Detalle de tarjeta",
+  "cells-molecule-card-cover-cvv-overdraft-title": "Cupo total superado",
+  "cells-molecule-card-cover-cvv-overdraft": "No podrás operar hasta que no realices el pago mínimo indicado"
+}

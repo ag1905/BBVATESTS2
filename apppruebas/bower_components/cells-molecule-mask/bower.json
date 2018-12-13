@@ -1,0 +1,32 @@
+{
+  "name": "cells-molecule-mask",
+  "version": "9.0.2",
+  "description": "Displays a number by masking it with one or more chars and an optional icon to switch between masked or NOT masked number",
+  "keywords": [
+    "molecule",
+    "mask",
+    "number"
+  ],
+  "dependencies": {
+    "cells-atom-icon": "^9.0.0",
+    "polymer": "Polymer/polymer#^1.9.0",
+    "cells-i18n-behavior": "^9.0.0"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "chai-spies": "^0.7.1",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#4.0.0",
+    "coronita-icons": "^9.0.0",
+    "cells-coronita-theme": "^9.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.2.5",
+    "cells-demo-lang-switcher": "^9.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "main": [
+    "cells-molecule-mask.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  }
+}

@@ -1,0 +1,17 @@
+#!groovy
+
+node {
+
+    stage('Checkout project') {
+        checkout scm
+    }
+
+    stage('Install') {
+        sh 'npm install'
+    }
+
+    stage('Build') {
+        sh 'npm run build'
+    }
+
+}

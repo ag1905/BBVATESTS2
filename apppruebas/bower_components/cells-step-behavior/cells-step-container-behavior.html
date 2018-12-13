@@ -1,0 +1,21 @@
+<script>
+  window.CellsBehaviors = window.CellsBehaviors || {};
+  window.CellsBehaviors.StepContainerBehavior = {
+    properties: {
+      /**
+       * <cells-step/> container class name.
+       * @type  {String}
+       * @value 'cells-step-container'
+       */
+      containerClassName: {
+        type: String,
+        value: 'cells-step-container'
+      }
+    },
+    ready: function() {
+      if (!this.classList.contains(this.containerClassName)) {
+        this.classList.add(this.containerClassName);
+      }
+    }
+  };
+</script>

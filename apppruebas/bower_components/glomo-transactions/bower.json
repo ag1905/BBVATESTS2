@@ -1,0 +1,28 @@
+{
+  "name": "glomo-transactions",
+  "version": "1.2.0",
+  "description": "Transaction list with peding and settled transactions",
+  "keywords": [
+    "web-component"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "cells-transactions-list": "~7.2.0",
+    "polymer": "Polymer/polymer#1.10.0"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "cells-demo-helper": "^9.0.0",
+    "cells-shadow-query-selector": "^1.0.0",
+    "cells-glomo-theme": "~5.4.20",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  },
+  "main": [
+    "glomo-transactions.html"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "name": "cells-icon-message",
+  "version": "10.0.5",
+  "description": "Displays an inline contextual message with an icon with different styles depending on the type.",
+  "keywords": [
+    "message",
+    "icon",
+    "image",
+    "alert",
+    "contextual message",
+    "inline message",
+    "a11y"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "iron-icon": "1 - 2",
+    "cells-i18n-behavior": "^13.0.0",
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "cells-st-button": "^10.0.0",
+    "cells-banking-theme": "^10.0.0",
+    "cells-coronita-base-theme": "^1.0.0",
+    "cells-demo-helper": "^10.0.0",
+    "cells-sass": "^2.0.0",
+    "coronita-icons": "^10.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#1 - 2",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "cells-demo-mocker-selector": "^10.0.0",
+    "webcomponentsjs": "^1.0.0"
+  },
+  "main": [
+    "cells-icon-message.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "iron-icon": "^1.0.0",
+        "cells-i18n-behavior": "^13.0.0",
+        "polymer": "Polymer/polymer#^1.9.0"
+      },
+      "devDependencies": {
+        "cells-st-button": "^10.0.0",
+        "cells-banking-theme": "^10.0.0",
+        "cells-coronita-base-theme": "^1.0.0",
+        "cells-demo-helper": "^10.0.0",
+        "cells-sass": "^2.0.0",
+        "coronita-icons": "^10.0.0",
+        "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "cells-demo-mocker-selector": "^10.0.0",
+        "webcomponentsjs": "^0.7"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

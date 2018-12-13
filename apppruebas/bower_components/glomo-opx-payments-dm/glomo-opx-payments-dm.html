@@ -1,0 +1,739 @@
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../cells-step-behavior/cells-step-manager-behavior.html" />
+<link rel="import" href="../cells-dm-global-apis-payments/cells-dm-global-apis-payments.html" />
+
+<!--
+# glomo-opx-payments-dm
+
+**NOTICE**: This component status is ***Work in progress***.
+
+DataManager to handle operative *bill payments* in **GloMo** project.
+
+Example:
+
+```html
+<glomo-payment-services-dm
+  host="http://localhost:8100">
+</glomo-payment-services-dm>
+```
+
+## Payments GLOBAL APIs
+
+This DM consumes data from */payments* as defined at:
+
+* [API](http://apisbbva.bitbucket.org/#/global/apis/paymentMethods/payments)
+* [GIT](https://bitbucket.org/apisbbva/global-apis-paymentmethods-payments-v0#)
+
+## Dependencies
+
+* [Polymer](https://www.polymer-project.org/1.0/)
+* [cells-dp-global-apis-payments](https://globaldevtools.bbva.com/bitbucket/projects/BBVACELLSAPI/repos/cells-dp-global-apis-payments/browse)
+* [CellsStepManagerBehavior](https://globaldevtools.bbva.com/bitbucket/projects/CBH/repos/cells-step-behavior/browse/cells-step-manager-behavior.html)
+
+## Canonical Data Model (CDM)
+
+* [Services Payments](https://globaldevtools.bbva.com/bitbucket/projects/CM/repos/cells-models-catalog/browse/lib/models/service-payments.js)
+* [Services](https://globaldevtools.bbva.com/bitbucket/projects/CM/repos/cells-models-catalog/browse/lib/models/services.js)
+* [Stored Services](https://globaldevtools.bbva.com/bitbucket/projects/CM/repos/cells-models-catalog/browse/lib/models/stored-services.js)
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-opx-payments-dm">
+  <template>
+    <cells-dm-global-apis-payments
+      id="dmPayments"
+      host="[[host]]"
+      currency="[[currency]]"
+      categories="{{categories}}"
+      services-list="{{services}}"
+      stored-services-list="{{_unprocessedStoredServices}}"
+      bills="{{_bills}}"
+      simulation-response="{{_simulatedResult}}"
+      payment-response="{{_paymentResult}}"
+      product-id="[[storedServiceId]]"
+      payments-api-version="[[paymentsApiVersion]]">
+    </cells-dm-global-apis-payments>
+  </template>
+  <script>
+    /* global CellsBehaviors */
+    (function(CellsBehaviors) {
+      'use strict';
+
+      Polymer({
+        is: 'glomo-opx-payments-dm',
+
+        behaviors: [
+          CellsBehaviors.StepManagerBehavior
+        ],
+
+        properties: {
+          /**
+           * Started component
+           */
+          started: Boolean,
+          /**
+           * Endpoint use for requesting model.
+           */
+          host: String,
+          /**
+           * Currency for this OPX.
+           */
+          currency: String,
+          /**
+           * Available products.
+           */
+          products: {
+            type: Array,
+            observer: '_fetchProducts'
+          },
+          /**
+           * List of source products.
+           */
+          sourceList: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Avail.roducts for current user.
+           * Bill reference type id (BILL_NUMBER, QR, BARCODE)
+           */
+          billReferenceType: {
+            type: String,
+            value: 'BILL_NUMBER'
+          },
+          /**
+           * Select service Id
+           */
+          selectedServiceId: String,
+          /**
+           * Stored service Id to edit alias
+           */
+          storedServiceId: String,
+          /**
+           * Reference of the bill to pay from service.
+           */
+          billNumber: String,
+          /**
+           * Selected account for being charged with service payment.
+           */
+          selectedProduct: {
+            type: Object,
+            observer: '_selectedProductObserver'
+          },
+          /**
+           * Selected service to pay.
+           */
+          selectedService: Object,
+          /**
+           * Retrieve categories
+           */
+          retrieveCategories: {
+            type: Boolean,
+            value: false
+          },
+          /**
+           * Add edit option in stored service
+           */
+          editEnabled: {
+            type: Boolean,
+            value: false
+          },
+          /**
+           * This OPX concept (optional)
+           */
+          concept: String,
+          /**
+           * Concept option enabled
+           */
+          conceptEnabled: {
+            type: Boolean,
+            value: false
+          },
+          /**
+           * Fees produced from completing this OPX.
+           */
+          fees: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Services obtained from API.
+           */
+          services: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Stored services obtained from API.
+           */
+          _unprocessedStoredServices: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Stored services with aditional information
+           */
+          storedServices: {
+            type: Object,
+            notify: true,
+            computed: '_parseServiceStoredResponse(services, _unprocessedStoredServices)'
+          },
+          /**
+           * Stores category services obtained from API.
+           */
+          categories: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Bills
+           */
+          _bills: {
+            type: Object,
+            observer: '_parseBills'
+          },
+          /**
+           * Simulated payment response
+           */
+          _simulatedResult: {
+            type: Object,
+            observer: '_setSimulationResult'
+          },
+          /**
+           * Simulated payment
+           */
+          simulatedResult: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Payment result to parse
+           */
+          _paymentResult: {
+            type: Object,
+            observer: '_setPaymentResult'
+          },
+          /**
+           * Payment result
+           */
+          result: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Product Id
+           */
+          productId: String,
+          /**
+           * Product Id by default
+           */
+          defaultProductId: {
+            type: String,
+            notify: true
+          },
+          /**
+           * Payment finished
+           */
+          finished: {
+            type: Boolean,
+            value: false
+          },
+          /**
+          * Selected swipe action by user
+          */
+          _swipeAction: String,
+          /**
+          * Close veil on end loading data
+          */
+          _closeVeil: {
+            type: Boolean,
+            computed: '_manageError(services, _unprocessedStoredServices)'
+          },
+          /**
+           * API version
+           * @type {String}
+           */
+          paymentsApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * State account on fetch detail and dashboard
+           */
+          stateAccounts: {
+            type: Boolean,
+            notify: true
+          }
+        },
+
+        listeners: {
+          'register-step': 'registerStep',
+          'payment-error': '_manageError',
+          'service-payments-dm-error': '_manageError',
+          'service-bills-dm-error': '_manageError',
+          'service-stored': '_getStoredService',
+          'dmPayments.stored-service-deleted': 'onServiceDeleted',
+          'dmPayments.patch-stored-service': 'onServiceEdited'
+        },
+
+        observers: [
+          'notifySwipeAction(storedServices.splices)',
+          '_makeSimulation(canExecute)'
+        ],
+
+        /**
+         * Init component
+         */
+        init: function() {
+          if (!this.started) {
+            this._init();
+            this.started = true;
+          }
+
+          if (this.finished) {
+            this._init();
+            this.finished = false;
+          }
+
+          this.restart();
+          this.defaultProductId = this.productId;
+          this._fetchProducts();
+        },
+
+        _setEnoughFunds: function(source, amount) {
+          return source && source.length && source.map(function(product) {
+            var overcome = !this._hasEnoughFunds(product.primaryAmount.amount, amount);
+
+            return Object.assign({}, product, {
+              hasTextMessage: overcome,
+              disabled: overcome
+            });
+          }.bind(this)) || [];
+        },
+
+        _fetchProducts: function() {
+          this.set('sourceList', this._setEnoughFunds(this.products));
+          this.dispatchEvent(new CustomEvent('fetch-source', {
+            bubbles: true,
+            composed: true,
+            detail: this.sourceList || []
+          }));
+        },
+
+        /**
+         * start component
+         */
+        _init: function() {
+          this.getServices();
+          this.dispatchEvent(new CustomEvent('init-services'));
+        },
+        /**
+         * Restart state steps
+         */
+        restart: function() {
+          this.set('currentStep', 1);
+          this.resetManagerSteps();
+
+          // Method of manager step behavior
+          this.initSteps();
+        },
+        /**
+         * Reset all, steps and content steps
+         */
+        resetAll: function() {
+          this.restart();
+          this.resetContent();
+          this.resetManagerSteps();
+          this.set('finished', true);
+        },
+        /**
+         * Set default values.
+         */
+        resetContent: function() {
+          // INPUT
+          this.amount = 0;
+          this.billNumber = '';
+          this.concept = '';
+          this.productId = null;
+          this.defaultProductId = null;
+          this.selectedProduct = null;
+          this.selectedService = null;
+          this.storedServiceId = null;
+          this.currency = null;
+          this._swipeAction = null;
+
+          // OUTPUT
+          this.fees = null;
+          this._bills = null;
+        },
+
+        /**
+         * Set default values in steps.
+         */
+        resetManagerSteps: function() {
+          this.lastActiveStep = null;
+          this.canExecute = false;
+          this.hasFinished = false;
+          this._lastResponse = null;
+        },
+        /**
+         * Retrieves min. required information for this OPX.
+         */
+        getServices: function() {
+          this.$.dmPayments.getServices();
+          this._getStoredService();
+
+          if (this.retrieveCategories) {
+            this.$.dmPayments.getCategories();
+          }
+
+          this.dispatchEvent(new CustomEvent('open-control-veil'));
+        },
+        /**
+         * Get stored services
+         */
+        _getStoredService: function() {
+          this.$.dmPayments.getStoredServices();
+        },
+        /**
+         * Parse stored service response
+         */
+        _parseServiceStoredResponse: function(services, storedServices) {
+          var processed = [];
+
+          storedServices.forEach(function(storedService) {
+            var searchFunction = function(service) {
+              return service.id === storedService.service.id;
+            };
+            var service = services.find(searchFunction);
+            if (service) {
+              processed.push(this._mergeServices(service, storedService));
+            }
+          }, this);
+
+          return processed;
+        },
+        /**
+         * Merge services response
+         */
+        _mergeServices: function(service, storedService) {
+          var storedProps = {
+            billNumber: storedService.billNumber,
+            alias: storedService.alias,
+            storedId: storedService.id,
+            options: []
+          };
+
+          if (this.editEnabled) {
+            storedProps.options.push({
+              key: 'cells-service-selector-edit-alias',
+              icon: 'coronita:edit',
+              type: 'edit'
+            });
+          }
+
+          storedProps.options.push({
+            key: 'cells-service-selector-delete',
+            icon: 'coronita:trash',
+            type: 'delete'
+          });
+
+          return Object.assign(storedProps, service);
+        },
+        /**
+         * Selected services transform
+         */
+        setSelectedService: function(selectedService) {
+          if (selectedService) {
+            this.set('selectedService', selectedService);
+            this.billNumber = selectedService.billNumber;
+            this.selectedServiceId = selectedService.id;
+            this.amount = null;
+
+            if (selectedService.billNumber) {
+              this._requestBills();
+            }
+          }
+        },
+        /**
+         * Checked if concept it's enabled and generate payment
+         */
+        _selectedProductObserver: function(selectedProduct) {
+          if (selectedProduct && !selectedProduct.disabled && this.selectedService && this.amount) {
+            this._nextStep();
+          }
+        },
+        /**
+         * Set amount
+         */
+        setAmount: function(amount) {
+          this.currency = amount.currency;
+          this.amount = amount.amount * 1;
+
+          if (!this.selectedProduct || this.selectedProduct && !this.selectedProduct.disabled) {
+            this._nextStep();
+          }
+        },
+        /**
+         * Set concept
+         */
+        setConcept: function(payload) {
+          this.set('concept', payload.concept);
+          this._nextStep();
+        },
+        /**
+         * Check if the amount is over the max limit.
+         * @param amount {Number} Transfer amount
+         * @param maxLimit {Number} Account maximum limit
+         */
+        _hasEnoughFunds: function(maxLimit, amount) {
+          return !(maxLimit <= 0 || amount && maxLimit && amount > maxLimit);
+        },
+        /**
+         * Store a service
+         */
+        saveService: function(data) {
+          this.$.dmPayments.storeService(this.selectedService.id, {
+            alias: data.alias,
+            billNumber: data.referenceValue
+          });
+        },
+        /**
+         * Make payment
+         */
+        makePayment: function() {
+          this.$.dmPayments.makePayment(this.selectedService, this.billNumber, this.amount, this.selectedProduct.productType, this.selectedProduct.id, this.concept);
+        },
+        /**
+         * Notify payment successful
+         */
+        _setPaymentResult: function(result) {
+          this.set('result', this._generateResult(result));
+          this.stateAccounts = true;
+          this.dispatchEvent(new CustomEvent('close-control-veil'));
+          this.dispatchEvent(new CustomEvent('payment-successful', {
+            bubbles: true,
+            composed: true,
+            detail: { page: 'bill-payment-review' }
+          }));
+
+          this.async(function() {
+            this.resetAll();
+          }, 500);
+        },
+        /**
+         * Generate result
+         */
+        _generateResult: function(result) {
+          var response = {
+            id: result.id,
+            date: result.creationDate,
+            title: 'cells-successful-response-success',
+            origin: {
+              product: {
+                id: 'ACCOUNTS',
+                name: this.selectedProduct.name
+              },
+              number: this.selectedProduct.description.value
+            },
+            fees: result.fees && result.fees.totalFees ? [
+              {
+                text: 'cells-successful-response-fees',
+                amount: result.fees.totalFees.amount,
+                currency: result.fees.totalFees.currency
+              }
+            ] : [],
+            amount: result.bill && result.bill.billAmount,
+            topInfo: [],
+            buttons: {
+              primary: {
+                text: 'cells-successful-response-next',
+                action: 'go-to-next',
+                class: 'btn--primary btn--l'
+              },
+              secondary: {
+                text: 'cells-successful-response-new-operation',
+                action: 'new-operation',
+                class: 'btn--tertiary btn--l'
+              }
+            }
+          };
+
+          if (result.service && result.service.name) {
+            response.topInfo.push({
+              value: result.service.name,
+              class: 'bold lg'
+            });
+          }
+
+          if (result.service && result.service.id) {
+            response.topInfo.push({
+              key: 'cells-successful-response-agreement',
+              value: result.service.id,
+              class: 'inline cursive'
+            });
+          }
+
+          if (result.bill && result.bill.id) {
+            response.topInfo.push({
+              key: 'cells-successful-response-reference',
+              value: result.bill.id,
+              class: 'inline cursive spacing'
+            });
+          }
+
+          if (response.origin.number) {
+            response.topInfo.push({
+              key: 'cells-successful-response-charge-account',
+              value: response.origin.product.name,
+              musk: {
+                value: response.origin.number,
+                chars: 4,
+                simbol: '•'
+              },
+              class: 'bold spacing'
+            });
+          }
+
+          response.topInfo.push({
+            key: 'cells-successful-response-concept',
+            value: result.description ? result.description : 'cells-step-product-default-concept',
+            class: 'bold spacing md'
+          });
+
+          if (result.trackingReference) {
+            response.topInfo.push({
+              key: 'cells-successful-cie-guide',
+              value: result.trackingReference,
+              class: 'inline secondary'
+            });
+          }
+
+          if (result.id) {
+            response.topInfo.push({
+              key: 'cells-successful-page-number',
+              value: result.id,
+              class: 'inline secondary'
+            });
+          }
+
+          return response;
+        },
+        /**
+         * Get bills
+         */
+        getBills: function(billNumber) {
+          this.set('billNumber', billNumber);
+          this._requestBills();
+        },
+        /**
+         * Request Bills
+         */
+        _requestBills: function() {
+          this.dispatchEvent(new CustomEvent('open-control-veil'));
+          this.$.dmPayments.getBills(this.selectedServiceId, this.billReferenceType, this.billNumber);
+        },
+        /**
+         * Make a simulation
+         */
+        _makeSimulation: function(canExecute) {
+          if (canExecute) {
+            this.$.dmPayments.makeSimulation(this.selectedService, this.billNumber, this.amount, this.selectedProduct.productType, this.selectedProduct.id, this.concept);
+          }
+        },
+        /**
+         * Set and parse simulated payment
+         */
+        _setSimulationResult: function(simulation) {
+          var response = {
+            id: simulation.id,
+            description: simulation.description,
+            totalFees: simulation.fees.totalFees,
+            fees: simulation.fees.itemizeFees,
+            status: simulation.status,
+            amount: {
+              amount: simulation.bill.billAmount.amount + simulation.fees.totalFees.amount,
+              currency: simulation.bill.billAmount.currency
+            }
+          };
+          this.set('simulatedResult', response);
+        },
+        /**
+         * Notify and parse response of bills
+         */
+        _parseBills: function(bills) {
+          var response = {};
+
+          if (bills && bills.length) {
+            if (bills[0].billAmounts) {
+              response = bills[0].billAmounts.reduce(function(acc, bill) {
+                var key = bill.amountType.id.toLowerCase().replace(/_([a-zA-Z])/g, function(g) {
+                  return g[1].toUpperCase();
+                });
+
+                acc[key] = acc[key] || {};
+                acc[key] = bill.amountValue;
+                return acc;
+              }, {});
+            }
+
+            if (bills[0].maturityDate) {
+              response.maturityDate = bills[0].maturityDate;
+            }
+
+            this.dispatchEvent(new CustomEvent('set-bills', {
+              bubbles: true,
+              composed: true,
+              detail: response
+            }));
+            this.dispatchEvent(new CustomEvent('close-control-veil'));
+          }
+        },
+        /**
+         * Delete service
+         */
+        deleteStoredService: function(storedService) {
+          this.$.dmPayments.deleteStoredService(storedService.storedId);
+        },
+        /**
+         * Update alias service
+         */
+        updateStoredService: function(alias) {
+          this.$.dmPayments.patchStoredServiceAlias(alias);
+        },
+        /**
+         * On service deleted
+         */
+        onServiceDeleted: function() {
+          this.$.dmPayments.getStoredServices();
+          this._swipeAction = 'cells-bottom-modal-message-delete-stored-success';
+        },
+        /**
+         * On service edit
+         */
+        onServiceEdited: function() {
+          this.$.dmPayments.getStoredServices();
+          this._swipeAction = 'cells-bottom-modal-message-edit-alias-success';
+        },
+        /**
+         * Manage error
+         */
+        _manageError: function(error) {
+          this.dispatchEvent(new CustomEvent('close-control-veil'));
+        },
+        /**
+         * Notify Swipe action
+         */
+        notifySwipeAction: function() {
+          if (this._swipeAction) {
+            this.dispatchEvent(new CustomEvent('stored-services-modification-success', {
+              bubbles: true,
+              composed: true,
+              detail: this._swipeAction
+            }));
+          }
+        }
+      });
+    }(CellsBehaviors));
+  </script>
+</dom-module>

@@ -1,0 +1,132 @@
+<link rel="import" href="../cells-checkbox-button/cells-checkbox-button.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-molecule-input/cells-molecule-input.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-new-cellular-form-styles.html">
+
+
+<!--
+`<cells-new-cellular-form>` description.
+
+Example:
+
+```html
+<cells-new-cellular-form></cells-new-cellular-form>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-new-cellular-form  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-new-cellular-form">
+  <template>
+    <style include="cells-new-cellular-form-styles cells-new-cellular-form-shared-styles"></style>
+    <form action="" on-submit="_newCellular" class="cellular-form">
+      <div class="cellular-form__wrapper">
+        <cells-molecule-input
+          id="cellular"
+          type="tel"
+          value="{{_formNumber}}"
+          class="secondary--input"
+          label="[[t('cells-new-cellular-number', '_Cellular number')]]"
+          icon="coronita:close"
+          max-length="20">
+        </cells-molecule-input>
+
+        <cells-molecule-input
+          id="recipient"
+          type="text"
+          value="{{_formRecipient}}"
+          class="secondary--input"
+          label="[[t('cells-new-cellular-name', '_Recipient name')]]"
+          icon="coronita:close"
+          max-length="255">
+        </cells-molecule-input>
+
+
+        <div class="cellular-form-autocomplete__wrapper">
+          <template is="dom-repeat" items={{contacts}} as="contact" index-as=index filter="{{_autoComplete(_formRecipient)}}">
+            <div class="cellular-form-autocomplete" hidden$="[[_checkSuggestedContact]]">
+              <cells-st-button class="link">
+                <button on-click="selectSuggestedContact">[[contact.main]]</button>
+              </cells-st-button>
+              <cells-checkbox-button
+                class="cellular-form-autocomplete__check"
+                icon-check="coronita:checkmark"
+                checked$="[[_checkedRow(index, rowSelected)]]">
+              </cells-checkbox-button>
+            </div>
+          </template>
+        </div>
+
+        <template is="dom-if" if="[[showMobileProvider]]">
+          <div class="selector__wrapper">
+            <button id="providerSelector" class="fake-selector" on-tap="_openMobileSelector" type="button">
+              <div class="header-texts">
+                <span id="label" class="label" hidden$="{{providerSelected}}">[[t('cells-new-cellular-form-mobile-provider')]]</span>
+                <template is="dom-if" if="{{providerSelected.name}}">
+                  <span id="label" class="label selected">[[t('cells-new-cellular-form-mobile-provider')]]</span>
+                  <span class="placeholder selected">[[providerSelected.name]]</span>
+                </template>
+                <template is="dom-if" if="{{!providerSelected.name}}">
+                  <span id="label" class="label">[[t('cells-new-cellular-form-mobile-provider')]]</span>
+                  <span class="placeholder">[[providerSelected.name]]</span>
+                </template>
+              </div>
+              <cells-atom-icon icon="coronita:unfold" class="icon-size-24 modal-icon"></cells-atom-icon>
+            </button>
+          </div>
+        </template>
+
+        <cells-molecule-input
+          id="alias"
+          hidden$=[[_checkSuggestedContact]]
+          type="text"
+          value="{{_formAlias}}"
+          class="secondary--input"
+          label="[[t('cells-new-cellular-alias', '_Contact alias')]]"
+          icon="coronita:close"
+          max-length="255"
+          disabled="[[_formSaved]]">
+        </cells-molecule-input>
+        <cells-icon-message
+          type="error"
+          class="inline"
+          hidden$="{{!invalidAlias}}"
+          icon="coronita:alert"
+          icon-size="14">
+          <span class="error">[[t('cells-new-cellular-invalid-alias')]]</span>
+        </cells-icon-message>
+        <div class="cellular_form__save-option">
+          <cells-checkbox-button
+            id="saveCheck"
+            checked="{{!_formSaved}}"
+            disabled="{{invalidAlias}}"
+            icon-check="coronita:checkmark">
+            <p class="check-text">[[t(savedMsg.label)]]</p>
+            <p class="check-text check-text__subtitle">[[savedMsg.subLabel]]</p>
+          </cells-checkbox-button>
+        </div>
+
+        <cells-st-button class="primary">
+          <button type="submit" disabled$="{{!validForm}}"> [[t('cells-new-cellular-continue-button', 'Continue')]]</button>
+        </cells-st-button>
+        <p class$="cellular-form__info {{_toggleInfo(_continue)}}">[[t('cells-new-cellular-continue-info', '_When the operation is continued')]]</p>
+      </div>
+    </form>
+  </template>
+  <script src="cells-new-cellular-form.js"></script>
+</dom-module>

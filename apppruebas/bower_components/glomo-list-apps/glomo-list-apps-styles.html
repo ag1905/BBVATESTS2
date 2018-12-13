@@ -1,0 +1,78 @@
+<dom-module id="glomo-list-apps-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  background-color: var(--bbva-core-blue, #004481);
+  height: 100vh;
+  @apply --glomo-list-apps; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+:host {
+  --cells-st-link-host: { display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; text-align: center; };
+  --cells-st-link: { font-weight: 500; font-size: 0.75rem; color: var(--bbva-100, #f4f4f4); margin-top: 10px; text-decoration: underline; -webkit-text-decoration-color: var(--bbva-core-blue, #004481); -moz-text-decoration-color: var(--bbva-core-blue, #004481); text-decoration-color: var(--bbva-core-blue, #004481); };
+  --cells-st-link-hover: { color: var(--bbva-100, #f4f4f4); text-decoration: underline; -webkit-text-decoration-color: var(--bbva-core-blue, #004481); -moz-text-decoration-color: var(--bbva-core-blue, #004481); text-decoration-color: var(--bbva-core-blue, #004481); };
+  --cells-st-link-focus: { color: var(--bbva-100, #f4f4f4); text-decoration: underline; -webkit-text-decoration-color: var(--bbva-core-blue, #004481); -moz-text-decoration-color: var(--bbva-core-blue, #004481); text-decoration-color: var(--bbva-core-blue, #004481); };
+  --cells-st-link-active: { color: var(--bbva-100, #f4f4f4); text-decoration: underline; -webkit-text-decoration-color: var(--bbva-core-blue, #004481); -moz-text-decoration-color: var(--bbva-core-blue, #004481); text-decoration-color: var(--bbva-core-blue, #004481); }; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+.app-list__header {
+  background-color: var(--bbva-navy, #072146);
+  height: 6.3125rem;
+  margin: 0;
+  padding: 0; }
+  .app-list__header p {
+    padding: 1.875rem;
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.43;
+    text-align: center;
+    color: var(--bbva-100, #f4f4f4); }
+
+cells-molecule-grid-list {
+  --cells-molecule-grid-list-height: 8.75rem;
+  --cells-molecule-grid-container: { margin: 0; };
+  --cells-molecule-grid-link-item: { padding: 1rem; height: rem(140px); }; }
+
+cells-skeleton-item {
+  width: 100%; }
+  cells-skeleton-item.header {
+    --cells-skeleton-item-avatar-head-background-color: var(--bbva-navy, #072146);
+    --cells-skeleton-item-avatar-background-color: var(--bbva-navy, #072146); }
+  cells-skeleton-item.row {
+    width: 50%;
+    --cells-skeleton-item-avatar-head-background-color: var(--bbva-navy, #072146);
+    --cells-skeleton-item-avatar-background-color: var(--bbva-core-blue, #004481); }
+
+cells-skeleton-custom {
+  width: 100%; }
+  cells-skeleton-custom .column {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%; }
+  cells-skeleton-custom cells-skeleton-item {
+    padding: 0.625rem;
+    background-color: var(--bbva-core-blue, #004481);
+    min-height: 130px;
+    border: 1px solid var(--bbva-navy, #072146); }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+button:active {
+  @apply --cells-global-active; }
+
+</style></template></dom-module>

@@ -1,0 +1,69 @@
+<dom-module id="cells-step-product-selector-styles"><template><style>
+:host {
+  @apply (--cells-step-product-selector); }
+  :host cells-step {
+    --cells-step-iron-collapse-transition-duration: 1ms;
+    --cells-step-iron-collapse--webkit-transition-duration: 1ms; }
+  :host cells-product-item {
+    background: transparent;
+    padding: 0;
+    min-height: 2.3125rem;
+    --cells-product-item-description-value: { color: #ffffff; };
+    @apply (--cells-step-product-selector-item); }
+    :host cells-product-item .text-info {
+      display: -webkit-flex;
+      display: flex;
+      -webkit-align-items: flex-start;
+              align-items: flex-start;
+      margin-top: 0.75rem;
+      @apply (--cells-fontDefaultNormalItalic);
+      font-size: var(--cells-text-size-14);
+      @apply (--cells-product-selector-item-text-info); }
+      :host cells-product-item .text-info--error {
+        color: var(--bbva-light-red, #e77d8e);
+        @apply (--cells-product-selector-item-text-info-error); }
+      :host cells-product-item .text-info cells-atom-icon {
+        margin: 0 0.625rem 0 0;
+        @apply (--cells-product-selector-item-text-info-icon); }
+    :host cells-product-item.disabled {
+      --cells-product-item-item-info: { opacity: .3; };
+      --cells-product-item-item-quantities: { opacity: .3; }; }
+    :host cells-product-item ::content .item__name {
+      color: var(--bbva-white);
+      @apply (--cells-step-product-selector-item-name); }
+    :host cells-product-item ::content cells-molecule-mask {
+      color: var(--bbva-white);
+      @apply (--cells-step-product-selector-item-mask); }
+    :host cells-product-item ::content cells-atom-amount {
+      color: var(--bbva-white);
+      @apply (--cells-step-product-selector-item-amount); }
+  :host ::content .full {
+    margin-bottom: 0.875rem; }
+  :host ::content .full cells-product-item {
+    background: transparent; }
+  :host ::content .full cells-product-item:active {
+    background: var(--cells-product-item-active-background-color, #F4F4F4); }
+  :host ::content .full cells-product-item:last-of-type {
+    border-bottom: none; }
+
+:host(:not([active])) {
+  pointer-events: none;
+  --cells-atom-subheader-heading: {color:var(--bbva-300, #D3D3D3);};
+  --cells-product-item-title-color: var(--bbva-300, #D3D3D3);
+  --cells-atom-amount-large: {color:var(--bbva-300, #D3D3D3);};
+  --iban: {color: var(--bbva-300, #D3D3D3);};
+  --bbva-medium-blue: var(--bbva-300, #D3D3D3); }
+
+:host(.fixed) cells-product-item ::content .item__name {
+  font-size: 0.875rem; }
+
+:host(.fixed) cells-product-item ::content cells-atom-amount {
+  font-size: 1rem; }
+
+:host(.fixed) cells-product-item ::content cells-atom-amount ::content .fractional,
+:host(.fixed) cells-product-item ::content cells-atom-amount ::content .currency--left,
+:host(.fixed) cells-product-item ::content cells-atom-amount ::content .currency--right {
+  font-size: 0.75rem;
+  padding-top: 0.0625rem; }
+
+</style></template></dom-module>

@@ -1,0 +1,373 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-dm-global-apis-customers/cells-dm-global-apis-customers.html">
+<link rel="import" href="../cells-product-format-behavior/cells-product-format-behavior.html" />
+<!--
+`<glomo-customers-dm>` description.
+
+Example:
+
+```html
+<glomo-customers-dm></glomo-customers-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-customers-dm">
+  <template>
+    <cells-dm-global-apis-customers id="dm"
+      customer-id="[[customerId]]"
+      avatar-id="[[avatarId]]"
+      contact-detail-id="[[contactDetailId]]"
+      host="[[host]]"
+      customers="{{_customers}}"
+      customer-detail="{{_customer}}"
+      customer-contacts="{{_customerContactsDetails}}"
+      customer-addresses="{{_customerAddressesInfo}}"
+      required-token="[[requiredToken]]"
+      ></cells-dm-global-apis-customers>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'glomo-customers-dm',
+
+        behaviors: [
+          CellsBehaviors.CellsProductFormatBehavior
+        ],
+
+        properties: {
+          /**
+           * Chosen host to make requests to. Check providers.
+           */
+          host: String,
+
+          /**
+          * User info
+          */
+          user: {
+            type: Object,
+            observer: '_getCurrentInfo',
+            notify: true
+          },
+          /**
+          * Customer Id
+          */
+          customerId: {
+            type: String,
+            observer: 'fetchUser'
+          },
+          /**
+           * Avatar Id
+           */
+          avatarId: String,
+          /**
+          * Contact detail Id
+          */
+          contactDetailId: String,
+          /**
+           * Customers array
+           */
+          _customers: Array,
+          /**
+           * Parsed customers array
+           */
+          customers: {
+            type: Array,
+            computed: '_parseCustomers(_customers)',
+            notify: true
+          },
+          /**
+           * Customer object
+           */
+          _customer: Object,
+          /**
+           * Customer parsed object
+           */
+          customer: {
+            type: Object,
+            computed: '_parseCustomerDetail(_customer)',
+            notify: true
+          },
+          /**
+           * Customer contacts
+           */
+          _customerContactsDetails: Array,
+          /**
+           * Customer contacts parsed array
+           */
+          customerContactsDetails: {
+            type: Array,
+            computed: '_parseCustomerContactDetail(_customerContactsDetails)',
+            notify: true
+          },
+          /**
+           * Customer contacts
+           */
+          _customerAddressesInfo: Array,
+          /**
+           * Customer contacts parsed array
+           */
+          customerAddressesInfo: {
+            type: Array,
+            computed: '_parseCustomerAddresses(_customerAddressesInfo)',
+            notify: true
+          },
+          /**
+           * Unmask data
+           */
+          unmasked: {
+            type: Boolean,
+            value: false
+          },
+          /**
+           * Get current info
+           */
+          currentInfoEnabled: Boolean,
+          /**
+           * Disabled updated user on get customer
+           */
+          disabledUpdatedUser: Boolean,
+          /**
+          * requiredToken, 'jwt' or 'tsec' or empty
+          */
+          requiredToken: {
+            type: String,
+            value: 'tsec'
+          }
+        },
+
+        listeners: {
+          'patch-contact-detail': '_onFetchContact',
+          'put-avatar': '_onFetchAvatar'
+        },
+
+        /**
+         * Get customers
+         */
+        getCustomers: function() {
+          this.$.dm.getCustomers();
+        },
+        /**
+         * Get customer detail
+         */
+        getCustomerDetail: function(params) {
+          this.unmasked = false;
+          params = Object.assign({
+            expand: 'avatars,addresses,contact-details',
+            unmasked: this.unmasked
+          }, params);
+          this.dispatchEvent(new CustomEvent('open-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+          this.$.dm.getCustomerDetail(params);
+        },
+        /**
+         * Get customer detail
+         */
+        getCustomerAdressesUnmasked: function(params) {
+          this.unmasked = true;
+          params = Object.assign({
+            unmasked: this.unmasked
+          }, params);
+          this.$.dm.getCustomerAdresses(params);
+        },
+        /**
+         * Get customer detail
+         */
+        getCustomerContactsUnmasked: function(params) {
+          this.unmasked = true;
+          params = Object.assign({
+            unmasked: this.unmasked
+          }, params);
+          this.$.dm.getCustomerContacts(params);
+        },
+         /**
+         * Get email
+         */
+        _getCurrentInfo: function() {
+          if (this.currentInfoEnabled && this.user && this.user.contactDetails) {
+            var email = this._getEmail(this.user);
+            this.dispatchEvent(new CustomEvent('set-current-email', {
+              bubbles: true,
+              composed: true,
+              detail: email && email.contact || ''
+            }));
+          }
+        },
+
+        _getEmail: function(user) {
+          return user.contactDetails.find(function(contact) {
+            return contact.contactType.id === 'EMAIL';
+          });
+        },
+        /**
+         * Fetch user
+         */
+        fetchUser: function(id) {
+          this.set('customerId', id);
+          this.getCustomerDetail();
+        },
+        /**
+         * Fetch avatar of user
+         */
+        fetchEmail: function(email) {
+          if (email && this.user && this.user.contactDetails) {
+            var contactDetailEmail = this._getEmail(this.user);
+
+            if (contactDetailEmail) {
+              this.contactDetailId = contactDetailEmail.contactDetailId;
+              this.customerId = this.user.customerId;
+              this.dispatchEvent(new CustomEvent('open-control-veil', {
+                bubbles: true,
+                composed: true
+              }));
+
+              this.$.dm.patchContactDetail({
+                contact: email,
+                contactType: {
+                  id: 'EMAIL'
+                }
+              });
+            }
+          }
+        },
+        /**
+         * Fetch avatar of user
+         */
+        fetchAvatar: function(image) {
+          if (image && this.user && this.user.avatars) {
+            this.customerId = this.user.customerId;
+            this.avatarId = this.user.avatars.id;
+            this.dispatchEvent(new CustomEvent('open-control-veil', {
+              bubbles: true,
+              composed: true
+            }));
+            this.$.dm.putAvatar(image);
+          }
+        },
+
+        _onFetchAvatar: function(ev) {
+          this._onFetchData();
+          this.dispatchEvent(new CustomEvent('on-fetch-avatar-successful', {
+            bubbles: true,
+            composed: true,
+            detail: ev && ev.detail && ev.detail.url
+          }));
+        },
+
+        _onFetchContact: function(ev) {
+          this._onFetchData();
+          this.dispatchEvent(new CustomEvent('on-fetch-contact-successful', {
+            bubbles: true,
+            composed: true,
+            detail: true
+          }));
+        },
+        /**
+         * On fetch data successful
+         */
+        _onFetchData: function() {
+          this.dispatchEvent(new CustomEvent('close-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+        },
+        /**
+         * Parse customers
+         */
+        _parseCustomers: function(customers) {
+          return customers;
+        },
+        /**
+         * Parse customer detail
+         */
+        _parseCustomerDetail: function(customer) {
+          if (customer && customer.customerId) {
+            if (!this.disabledUpdatedUser) {
+              this.user = customer;
+            }
+
+            this.dispatchEvent(new CustomEvent('close-control-veil', {
+              bubbles: true,
+              composed: true
+            }));
+
+            return {
+              firstName: customer.firstName,
+              lastName: customer.lastName,
+              completeName: customer.firstName + ' ' + customer.lastName,
+              avatar: customer.avatars ? customer.avatars : '',
+              info: customer.contactDetails ? this._getContactDetailsCustomer(customer.contactDetails) : '',
+              birthData: {
+                birthDate: customer.birthData && customer.birthData.birthDate,
+              },
+              address: customer.addresses && customer.addresses.length ? this._getCustomerAddress(customer.addresses) : {}
+            };
+          }
+        },
+        /**
+         * Extract contact detail of a customer
+         */
+        _getContactDetailsCustomer: function(contacts) {
+          var contactDetails = contacts.reduce(function(acc, contact) {
+            if (contact.contactType.id === 'MOBILE_NUMBER' && contact.isPreferential) {
+              acc.unshift({
+                key: 'cells-customer-profile-mobile',
+                value: this.unmasked ? this._formatProduct(contact.contact, 'phone') : contact.contact,
+                visibleChars: 5,
+                isMobile: true,
+                unmasked: this.unmasked
+              });
+            } else if (contact.contactType.id === 'EMAIL' && contact.isPreferential) {
+              acc.push({
+                key: 'cells-customer-profile-email',
+                value: contact.contact,
+                visibleChars: 9,
+                isChangeable: true,
+                unmasked: this.unmasked
+              });
+            }
+            return acc;
+          }.bind(this), []);
+
+          return contactDetails;
+        },
+        /**
+         * Extract customer address of a customer
+         */
+        _getCustomerAddress: function(addresses) {
+          return addresses.reduce(function(acc, address) {
+            if (address.addressType.id === 'HOME') {
+              acc = {
+                addressName: address.location.addressName,
+                unmasked: this.unmasked
+              };
+              return acc;
+            }
+          }.bind(this), {});
+        },
+        /**
+         * Parse customer contacts detail
+         */
+        _parseCustomerContactDetail: function(contacts) {
+          return this._getContactDetailsCustomer(contacts);
+        },
+        /**
+         * Parse customer addresses
+         */
+        _parseCustomerAddresses: function(addresses) {
+          return this._getCustomerAddress(addresses);
+        },
+
+        /**
+        * Send otp sign operation otp/key
+        */
+        signRequest: function(otp) {
+          this.$.dm.signRequest(otp);
+        },
+      });
+    }());
+  </script>
+</dom-module>

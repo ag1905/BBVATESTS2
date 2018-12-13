@@ -1,0 +1,94 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="glomo-help-styles.html">
+<!--
+`<glomo-help>` description.
+
+Example:
+
+```html
+<glomo-help></glomo-help>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --glomo-help  | Mixin applied to :host     | {}  |
+| --glomo-help-content-without-footer-strong | Mixin applied to strong element inside content.without-footer | color: var(--bbva-medium-blue, #237ABA); |
+| --glomo-help-content-without-footer-strong-a | Mixin applied to a element inside content.without-footer | color: var(--bbva-medium-blue, #237ABA); text-decoration: none; |
+| --glomo-help-content-message | Mixin aplied to ccontainer message | margin:  rem(30px) rem(30px) rem(20px) rem(30px; min-height: rem(60px); |
+| --glomo-help-content-list | Mixin applied to ul element | {} |
+| --glomo-help-content-list-li | Mixin applied to li elements | {} |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-help">
+  <template>
+    <style include="glomo-help-styles glomo-help-shared-styles"></style>
+    <div class="help__header">
+      <a href$="[[helpInfo.platform.link]]" target="_blank">
+        <img src$="[[img]]" alt="bbva logo">
+      </a>
+    </div>
+    <div class$="help__content [[_withoutFooterClass(showFooter)]]">
+      <div class="help__content--message">
+        <p inner-h-t-m-l="[[t(helpInfo.header)]]"></p>
+      </div>
+      <ul class="help__content--list">
+        <template is="dom-repeat" items="[[helpOptions]]" as="option">
+          <li>
+            <span class="bullet"></span>
+            <span>[[t(option)]]</span>
+          </li>
+        </template>
+      </ul>
+      <template is="dom-if" if="[[helpAdditionalContent.paragraph]]">
+        <div class="help__content--message">
+          <p inner-h-t-m-l="[[t(helpAdditionalContent.paragraph)]]"></p>
+        </div>
+        <ul class="help__content--list">
+          <template is="dom-repeat" items="[[helpAdditionalContent.options]]" as="option">
+            <li>
+              <span class="bullet"></span>
+              <span>[[t(option)]]</span>
+            </li>
+          </template>
+        </ul>
+      </template>
+      <template is="dom-if" if="[[showPlatformLink]]">
+        <cells-st-button class="secondary">
+          <button>
+            <a href$="[[helpInfo.platform.link]]" target="_blank">[[t(helpInfo.platform.shop)]]</a>
+          </button>
+        </cells-st-button>
+      </template>
+    </div>
+    <div class="help__content--footer">
+      <template is="dom-if" if="[[showCallButton]]">
+        <cells-st-button class="secondary">
+          <button>
+            <a href="tel:[[helpInfo.tel]]" target="_blank">[[t(helpAdditionalContent.callButton)]]</a>
+          </button>
+        </cells-st-button>
+        <p inner-h-t-m-l="[[t(helpInfo.footer)]]"></p>
+      </template>
+      <template is="dom-if" if="[[showFooter]]">
+        <a href="tel:[[helpInfo.tel]]">
+          <cells-icon-message cellstype="default" icon="coronita:telephone" message="[[t(helpInfo.footer)]]">
+          </cells-icon-message>
+        </a>
+      </template>
+    </div>
+  </template>
+  <script src="glomo-help.js"></script>
+</dom-module>

@@ -1,0 +1,53 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="cells-new-recipient-review-pe-styles.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<!--
+`<cells-new-recipient-review-pe>` description.
+
+Example:
+
+```html
+<cells-new-recipient-review-pe></cells-new-recipient-review-pe>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-new-recipient-review-pe  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-new-recipient-review-pe">
+  <template>
+    <style include="cells-new-recipient-review-pe-styles cells-new-recipient-review-pe-shared-styles"></style>
+    <slot></slot>
+    <cells-icon-message id="message"
+      type="success"
+      icon="coronita:correct"
+      message="{{t('cells-new-recipient-review-pe-success-message')}}">
+    </cells-icon-message>
+    <dl>
+      <dt>[[t('cells-new-recipient-review-pe-account-number')]]</dt>
+      <dd>[[accountNumber]]</dd>
+      <dt>[[t('cells-new-recipient-review-pe-beneficiary-name')]]</dt>
+      <dd>[[beneficiaryName]]</dd>
+      <dt>[[t('cells-new-recipient-review-pe-bank')]]</dt>
+      <dd>[[entityName]]</dd>
+    </dl>
+    <cells-icon-message id="message"
+    type="info"
+    icon="coronita:info"
+    message="{{t('cells-new-recipient-review-pe-info-message')}}">
+  </cells-icon-message>
+  </template>
+  <script src="cells-new-recipient-review-pe.js"></script>
+</dom-module>

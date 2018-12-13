@@ -1,0 +1,60 @@
+:host {
+  --cells-folding-cube-spinner-size: 40px;
+  --cells-folding-cube-spinner-color: #333;
+
+  display: block;
+  margin: calc(var(--cells-folding-cube-spinner-size) / 2) auto;
+  width: var(--cells-folding-cube-spinner-size);
+  height: var(--cells-folding-cube-spinner-size);
+  position: relative;
+  transform: rotateZ(45deg);
+  @apply(--cells-folding-cube-spinner);
+}
+
+.sk-cube {
+  float: left;
+  width: 50%;
+  height: 50%;
+  position: relative;
+  transform: scale(1.1);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--cells-folding-cube-spinner-color);
+    animation: sk-foldCubeAngle 2.4s infinite linear both;
+    transform-origin: 100% 100%;
+  }
+
+  &-2 {
+    transform: scale(1.1) rotateZ(90deg);
+    &::before { animation-delay: 0.3s; }
+  }
+
+  &-3 {
+    transform: scale(1.1) rotateZ(180deg);
+    &::before { animation-delay: 0.6s; }
+  }
+
+  &-4 {
+    transform: scale(1.1) rotateZ(270deg);
+    &::before { animation-delay: 0.9s; }
+  }
+}
+
+@keyframes sk-foldCubeAngle {
+  0%, 10% {
+    transform: perspective(140px) rotateX(-180deg);
+    opacity: 0;
+  } 25%, 75% {
+    transform: perspective(140px) rotateX(0deg);
+    opacity: 1;
+  } 90%, 100% {
+    transform: perspective(140px) rotateY(180deg);
+    opacity: 0;
+  }
+}

@@ -1,0 +1,130 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../bgadp-receivers/bgadp-receivers.html"/>
+
+<!--
+# cells-dm-global-apis-receivers
+
+## Example:
+
+```html
+<cells-dm-global-apis-receivers></cells-dm-global-apis-receivers>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="cells-dm-global-apis-receivers">
+  <template></template>
+  <script>
+    /*global BGADPReceivers*/
+    /*eslint new-cap: 0*/
+    (function(Polymer) {
+      'use strict';
+
+      Polymer({
+
+        is: 'cells-dm-global-apis-receivers',
+
+        properties: {
+          /**
+           * Chosen domain to make requests.
+           */
+          host: String,
+          /**
+           * Receiver
+           */
+          receiver: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Receivers API version
+           */
+          receiversApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * requiredToken, 'jwt' or 'tsec'
+           */
+          requiredToken: {
+            type: String,
+            value: 'tsec'
+          }
+        },
+
+        /**
+         * Search receiver by magic query
+         */
+        getReceiver: function(params) {
+          params = params ? {'product.number': params.number} : {};
+          var service = this._receiverService({
+            host: this.host,
+            params: params,
+            version: this.receiversApiVersion,
+            requiredToken: this.requiredToken
+          });
+
+          service.generateRequest().then(function() {
+            var response = this._parseReceiver(this._parseResponse(service.getLastResponse()), params['product.number']);
+            this.set('receiver', response);
+            this.fire('set-receiver', response);
+          }.bind(this),
+          function(err) {
+            this.fire('error-on-get-receiver');
+          }.bind(this));
+        },
+        /**
+         * Parse receviers
+         */
+        _parseReceiver: function(response, number) {
+          var found = !!response;
+          var receiver = found ? this._generateReceiver(response) : {number: number};
+          var complete = Boolean(receiver.number && receiver.name && receiver.bank);
+
+          return {
+            complete: complete,
+            found: found,
+            notification: this._generateNotification(complete, found),
+            recipient: receiver
+          };
+        },
+        /**
+         * Parse receviers
+         */
+        _generateReceiver: function(receiver) {
+          if (receiver && receiver.length) {
+            receiver = receiver[0];
+          }
+
+          return Object.assign(receiver.product, {
+            id: receiver.id,
+            name: receiver.person ? receiver.person.firstName + ' ' + receiver.person.lastName + ' ' + receiver.person.middleName : undefined
+          });
+        },
+        /**
+         * Generate Notification by complete/incomplete
+         */
+        _generateNotification: function(complete, found) {
+          return {
+            type: (complete && found) ? 'success' : 'info',
+            icon: 'coronita:' + (complete ? 'correct' : 'info'),
+            message: 'cells-new-recipient-review-notification-message-' + (!found ? 'not-found' : (complete ? 'success' : 'info'))
+          };
+        },
+        /**
+         * Parse Account
+         */
+        _parseResponse: function(response) {
+          return response && response.data || null;
+        },
+        /**
+         * Update account detail params
+         * /accounts/v0/accounts/{account-id}
+         */
+        _receiverService: function(params) {
+          return new BGADPReceivers.receivers.get(params);
+        }
+      });
+    }(Polymer));
+  </script>
+</dom-module>

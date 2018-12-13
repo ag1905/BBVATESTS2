@@ -1,0 +1,45 @@
+<dom-module id="cells-skeleton-item-last-movement-styles"><template><style>
+:host {
+  @apply (--cells-skeleton-item-last-movement); }
+
+.item__wrapper {
+  width: 100%;
+  padding: 1.25rem 1.875rem 0;
+  box-sizing: border-box;
+  @apply (--cells-skeleton-item-last-movement-item-wrapper); }
+  .item__wrapper .item__header,
+  .item__wrapper .item__content--top,
+  .item__wrapper .item__content--bottom {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    overflow: hidden; }
+  .item__wrapper .item__header,
+  .item__wrapper .item__content--bottom {
+    padding-bottom: 1.25rem; }
+  .item__wrapper .item__content--top {
+    margin-bottom: 0.3125rem; }
+  .item__wrapper .item-mask {
+    width: 40%;
+    height: 1.125rem;
+    background-color: var(--bbva-200); }
+    .item__wrapper .item-mask.item-mask:first-child {
+      width: 55%; }
+    .item__wrapper .item-mask.item-mask--xs {
+      width: 20%;
+      height: 0.9375rem; }
+      .item__wrapper .item-mask.item-mask--xs:first-child {
+        width: 20%; }
+  .item__wrapper .item__content--border-top {
+    border-top: 1px solid #E9E9E9;
+    margin-top: 1.25rem;
+    margin-left: -1.25rem;
+    margin-right: -1.25rem;
+    padding-top: 1.25rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem; }
+
+</style></template></dom-module>

@@ -1,0 +1,131 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: inline-flex;
+  white-space: nowrap;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply(--cells-atom-amount);
+}
+
+:host(.negative) {
+  @apply(--cells-atom-amount-negative);
+}
+
+:host([hidden]), [hidden] {
+  display:none;
+}
+
+.sr-amount {
+  @include visuallyhidden;
+  @apply(--cells-atom-amount-sr);
+}
+.visible-amount {
+  display: inline-flex !important;
+  white-space: nowrap;
+  @apply(--cells-atom-amount-visible);
+}
+
+/**
+ * Default styles for all <cells-atom-amount> with "amount-*" classes.
+ */
+:host([class*="amount-"]) {
+  font-size: rem(16px);
+  line-height: 1;
+  color: var(--cells-atom-amount-color, #121212);
+  @apply(--cells-fontDefaultNormal);
+
+  .currency,
+  .fractional {
+    font-size: rem(14px);
+    line-height: 1;
+    padding-top: rem(1px);
+  }
+
+  .integer {
+    margin-left: rem(2px);
+    margin-right: rem(2px);
+  }
+
+  .separator {
+    @include visuallyhidden;
+  }
+}
+
+:host([decimals-hidden]) {
+  // hide separator if decimals are hidden
+  .separator {
+    display: none;
+  }
+  .integer {
+    margin-right: 0;
+  }
+}
+
+/**
+ * large size
+ */
+:host(.amount-large) {
+  font-size: rem(20px);
+}
+
+/**
+ * huge size
+ */
+:host(.amount-huge) {
+  font-size: rem(36px);
+
+  .currency {
+    font-size: rem(22px);
+
+    &--left {
+      padding-top: rem(2px);
+    }
+  }
+
+  .fractional {
+    font-size: rem(22px);
+  }
+}
+
+:host,
+:host([class*="amount-"]) // fix specificity issues
+{
+  .minus {
+    @apply(--cells-atom-amount-minus);
+
+    &--left {
+      @apply(--cells-atom-amount-minus-left);
+    }
+    &--right {
+      @apply(--cells-atom-amount-minus-right);
+    }
+  }
+
+  .integer {
+    @apply(--cells-atom-amount-integer);
+  }
+
+  .fractional {
+    @apply(--cells-atom-amount-fractional);
+  }
+
+  .separator {
+    @apply(--cells-atom-amount-separator);
+  }
+
+  .currency {
+    @apply(--cells-atom-amount-currency);
+
+    &--left {
+      @apply(--cells-atom-amount-currency-left);
+    }
+    &--right {
+      @apply(--cells-atom-amount-currency-right);
+    }
+  }
+
+  .abbreviation {
+    margin-left: rem(5px);
+    @apply(--cells-atom-amount-abbreviation);
+  }
+}

@@ -1,0 +1,152 @@
+<dom-module id="cells-molecule-link-icon-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  @apply (--cells-text-size-m);
+  text-decoration: none;
+  color: var(--cells-molecule-link-icon-color, #006EC1);
+  @apply (--cells-molecule-link-icon); }
+
+span {
+  display: inline-block;
+  margin-left: 0.5rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  @apply (--cells-molecule-link-icon-label); }
+
+:host(.cells-molecule-link-icon--reverse) {
+  @apply (--cells-molecule-link-icon-reverse); }
+  :host(.cells-molecule-link-icon--reverse) span {
+    margin-left: 0;
+    margin-right: 0.5rem;
+    @apply (--cells-molecule-link-icon-reverse-span); }
+  :host(.cells-molecule-link-icon--reverse) cells-atom-icon {
+    -webkit-order: 1;
+        -ms-flex-order: 1;
+            order: 1; }
+
+:host(.cells-molecule-link-icon--block) {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-align-self: stretch;
+      -ms-flex-item-align: stretch;
+          align-self: stretch;
+  @apply (--cells-molecule-link-icon-block); }
+  :host(.cells-molecule-link-icon--block) span {
+    margin-left: 0;
+    margin-top: 0.5rem;
+    @apply (--cells-molecule-link-icon-block-span); }
+
+:host(.icon-size-8) cells-atom-icon {
+  --cells-atom-icon-size: 0.5rem; }
+
+:host(.icon-size-10) cells-atom-icon {
+  --cells-atom-icon-size: 0.625rem; }
+
+:host(.icon-size-12) cells-atom-icon {
+  --cells-atom-icon-size: 0.75rem; }
+
+:host(.icon-size-14) cells-atom-icon {
+  --cells-atom-icon-size: 0.875rem; }
+
+:host(.icon-size-16) cells-atom-icon {
+  --cells-atom-icon-size: 1rem; }
+
+:host(.icon-size-18) cells-atom-icon {
+  --cells-atom-icon-size: 1.125rem; }
+
+:host(.icon-size-20) cells-atom-icon {
+  --cells-atom-icon-size: 1.25rem; }
+
+:host(.icon-size-22) cells-atom-icon {
+  --cells-atom-icon-size: 1.375rem; }
+
+:host(.icon-size-24) cells-atom-icon {
+  --cells-atom-icon-size: 1.5rem; }
+
+:host(.icon-size-26) cells-atom-icon {
+  --cells-atom-icon-size: 1.625rem; }
+
+:host(.icon-size-28) cells-atom-icon {
+  --cells-atom-icon-size: 1.75rem; }
+
+:host(.icon-size-30) cells-atom-icon {
+  --cells-atom-icon-size: 1.875rem; }
+
+:host(.icon-size-32) cells-atom-icon {
+  --cells-atom-icon-size: 2rem; }
+
+:host(.icon-size-34) cells-atom-icon {
+  --cells-atom-icon-size: 2.125rem; }
+
+:host(.icon-size-36) cells-atom-icon {
+  --cells-atom-icon-size: 2.25rem; }
+
+:host(.icon-size-38) cells-atom-icon {
+  --cells-atom-icon-size: 2.375rem; }
+
+:host(.icon-size-40) cells-atom-icon {
+  --cells-atom-icon-size: 2.5rem; }
+
+:host(.icon-size-42) cells-atom-icon {
+  --cells-atom-icon-size: 2.625rem; }
+
+:host(.icon-size-44) cells-atom-icon {
+  --cells-atom-icon-size: 2.75rem; }
+
+:host(.icon-size-46) cells-atom-icon {
+  --cells-atom-icon-size: 2.875rem; }
+
+:host(.icon-size-48) cells-atom-icon {
+  --cells-atom-icon-size: 3rem; }
+
+:host(.icon-size-50) cells-atom-icon {
+  --cells-atom-icon-size: 3.125rem; }
+
+:host(.icon-size-52) cells-atom-icon {
+  --cells-atom-icon-size: 3.25rem; }
+
+:host(.icon-size-54) cells-atom-icon {
+  --cells-atom-icon-size: 3.375rem; }
+
+:host(.icon-size-56) cells-atom-icon {
+  --cells-atom-icon-size: 3.5rem; }
+
+:host(.icon-size-58) cells-atom-icon {
+  --cells-atom-icon-size: 3.625rem; }
+
+:host(.icon-size-60) cells-atom-icon {
+  --cells-atom-icon-size: 3.75rem; }
+
+:host(.icon-size-62) cells-atom-icon {
+  --cells-atom-icon-size: 3.875rem; }
+
+:host(.icon-size-64) cells-atom-icon {
+  --cells-atom-icon-size: 4rem; }
+
+cells-atom-icon {
+  color: var(--cells-molecule-link-icon-icon-color, currentColor);
+  @apply (--cells-molecule-link-icon-atom-icon); }
+
+</style></template></dom-module>

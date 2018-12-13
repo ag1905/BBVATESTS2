@@ -1,0 +1,132 @@
+@import "bower_components/cells-sass/mixins";
+
+:host {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100vh;
+  padding-top: 12.4vh;
+  text-align: center;
+  color: var(--cells-full-screen-slider-slides-color, #fff);
+  font-family: var(--cells-fontDefault, --fontDefault);
+
+  --cells-pagination-bullets-color: var(--cells-full-screen-slider-bullet-inactive-color, rgba(255,255,255, .4));
+  --cells-pagination-bullets-color-active: var(--cells-full-screen-slider-bullet-active-color, #fff);
+  --cells-apng-canvas__canvas_width: var(--cells-full-screen-slider_canvas-width, auto);
+  --cells-apng-canvas__canvas_height: var(--cells-full-screen-slider_canvas-height, 36vh);
+
+  @apply(--cells-full-screen-slider);
+}
+
+// utility classes
+.invisible {
+  @include visuallyhidden();
+}
+
+.arrow-button { 
+  position: absolute;
+  z-index: 999;
+  top: 50%;
+  .btn-icon {
+    --cells-atom-icon-size: 60px;
+    color: white;
+    @apply(--cells-full-screen-slider-arrow-button-icon);
+  }
+  @apply(--cells-full-screen-slider-arrow-button);
+}
+
+#rigthArrowButton {
+  right: 0;
+  @apply(--cells-full-screen-slider-rigth-arrow-button);
+}
+
+#leftArrowButton {
+  left: 0;
+  @apply(--cells-full-screen-slider-left-arrow-button);
+}
+
+.slides {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  .slide {
+    will-change: left;
+  }
+}
+
+.bottom:not(:empty) {
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  width: 100%;
+  height: 30vh;
+  @apply(--cells-full-screen-slider-content);
+}
+
+.on-top {
+  position: relative;
+  z-index: 1;
+}
+
+.pager {
+  margin: 61.2vh auto 7.5vh;
+  @apply(--cells-full-screen-slider-pager);
+}
+
+.images {
+  pointer-events: none;
+  touch-action: none;
+  opacity: 1;
+  transition: opacity .5s;
+  will-change: opacity;
+
+  &--hidden { opacity: 0; }
+}
+
+.slide {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: bottom left;
+  @apply(--cells-full-screen-slider-slide);
+
+  &__img {
+    width: auto;
+    height: 40vh;
+    position: absolute;
+    margin: auto;
+    left: 0; right: 0;
+    @apply(--cells-full-screen-slider-slide-image);
+  }
+
+  &__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 74.8vh;
+    padding: 0 percentage(35/360);
+    @apply(--cells-full-screen-slider-slide-wrapper);
+  }
+
+  &__title {
+    font-size: rem(16px);
+    padding-top: rem(2px);
+    margin: 0 0 rem(30px);
+    line-height: 1.3;
+    @apply(--cells-fontDefaultBold);
+    @apply(--cells-full-screen-slider-slide-title);
+  }
+
+  &__text {
+    min-height: rem(65px);
+    margin: 0 0 .5em;
+    font-size: rem(13px);
+    line-height: 1.3;
+    @apply(--cells-fontDefaultNormal);
+    @apply(--cells-full-screen-slider-slide-text);
+  }
+}
+
+.fade { transition: opacity .2s; opacity: 0; }
+.fade--in { opacity: 1; }

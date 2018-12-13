@@ -1,0 +1,15 @@
+{
+  "cells-credentials-form-user-id": "Celular",
+  "cells-credentials-form-user-password": "Contraseña",
+  "cells-credentials-form-forgotten-pwd": "¿Olvidaste tu contraseña?",
+  "cells-credentials-form-button-login": "Ingresar",
+  "cells-credentials-form-greeting": "Hola",
+  "cells-credentials-form-change-user": "Cambiar de usuario",
+  "cells-credentials-form-new-user": "No eres usuario.",
+  "cells-credentials-form-register": "Regístrate",
+  "cells-credentials-form-user-id-clear-icon": "Borrar campo",
+  "cells-credentials-form-user-password-toggle-icon": "Ver/ocultar clave de acceso",
+  "cells-credentials-form-user-password-clear-icon": "Borrar campo",
+  "cells-credentials-form-user-document-type": "Tipo de documento",
+  "cells-credentials-form-min-characters-error-message": "Cantidad de caracteres incorrecta"
+}

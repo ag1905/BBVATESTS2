@@ -1,0 +1,12 @@
+{
+  "cells-molecule-header-open-menu-label": "Open menu",
+  "cells-molecule-header-search-label": "Search",
+  "cells-molecule-header-greeting": "Hello",
+  "cells-molecule-header-back-label": "Back",
+  "cells-molecule-header-close-label": "Close",
+  "cells-product-summary-account-header-title": "Account",
+  "cells-product-summary-card-header-title": "Card",
+  "cells-product-summary-deposit-header-title": "Investment",
+  "cells-product-summary-fund-header-title": "Fund",
+  "cells-product-summary-loan-header-title": "Loan"
+}

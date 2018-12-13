@@ -1,0 +1,40 @@
+{
+  "name": "cells-moment-import",
+  "version": "10.0.3",
+  "main": [
+    "cells-moment-import.html",
+    "docs.html"
+  ],
+  "description": "html-import wrapper for parse and validate dates and times",
+  "keywords": [
+    "moment",
+    "date",
+    "time"
+  ],
+  "dependencies": {
+    "moment": "moment#^2.18.1",
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "webcomponentsjs": "^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "moment": "moment#^2.18.1",
+        "polymer": "Polymer/polymer#^1.9.0"
+      },
+      "devDependencies": {
+        "webcomponentsjs": "^0.7",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

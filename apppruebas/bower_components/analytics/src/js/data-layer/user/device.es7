@@ -1,0 +1,29 @@
+import MobileDetect from 'mobile-detect';
+/**
+ * Recoge la información del dispositivo del usuario.
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer.user
+ * @class     bgdmjs.analytics.dataLayer.user.Device
+ */
+export default class BgdmjsAnalyticsDataLayerUserDevice
+{
+    /**
+     * Valor calculado a partir del userAgent en el que `si` será el
+     * resultado si el usuario se conecta desde un dispositivo móvil.
+     *
+     * @property mobile
+     * @type     {string}
+     */
+    mobile    = !!(new MobileDetect(navigator.userAgent)).mobile()
+        ? 'si'
+        : 'no';
+    /**
+     * Valor `userAgent` del navegador desde el que se conecta el usuario.
+     * Este valor identificará el tipo de dispositivo y versión del mismo.
+     *
+     * @property userAgent
+     * @type     {string}
+     */
+    userAgent = navigator.userAgent;
+}

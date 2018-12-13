@@ -1,0 +1,51 @@
+{
+  "name": "cells-from-to",
+  "version": "10.0.4",
+  "description": "Component to show the two first initials from user name or user name and surname or avatar image if it is available",
+  "keywords": [
+    "avatar",
+    "user",
+    "name",
+    "surname"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "cells-molecule-mask": "9 - 10",
+    "cells-contact-avatar": "9 - 10"
+  },
+  "devDependencies": {
+    "cells-coronita-theme": "9 - 10",
+    "cells-demo-helper": "9 - 10",
+    "cells-sass": "^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "^1.0.0"
+  },
+  "main": [
+    "cells-from-to.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9.0",
+        "cells-molecule-mask": "^9.0.0",
+        "cells-contact-avatar": "^9.0.0"
+      },
+      "devDependencies": {
+        "cells-coronita-theme": "^9.0.0",
+        "cells-demo-helper": "^9.0.0",
+        "cells-sass": "^2.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "webcomponentsjs": "^0.7"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

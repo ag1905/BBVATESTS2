@@ -1,0 +1,70 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-image/iron-image.html">
+<link rel="import" href="../cells-molecule-input/cells-molecule-input.html">
+<link rel="import" href="../cells-atom-button/cells-atom-button.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="cells-sign-styles.html">
+
+<!--
+`<cells-sign>` is the component for sign screen, which includes the title header, information text, a imagen and the sign form with a button that fires an event.
+
+Example with image:
+
+```html
+<cells-sign img-src="images/access-mobile.png"></cells-sign>
+```
+
+You can import along with `<cells-sign>`, the `CellsBehaviors.SignBehavior`
+to have methods that fire events corresponding to whether the sign went OK or not OK.
+
+- `signOk`, which triggers`sign-ok`
+- `signKo`, which triggers`sign-ko`
+
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-sign  | empty mixin  host    | {}             |
+| --cells-sign-input  | empty mixin  for .input   | {}             |
+| --cells-sign-heading  | empty mixin  for .heading   | {}             |
+| --cells-sign-subheader  | empty mixin  for .subheader   | {}             |
+| --cells-sign-subheader-img  | empty mixin  for .subheader-img   | {}             |
+| --cells-sign-main  | empty mixin for .main  | {}             |
+| --cells-sign-title  | empty mixin  for .text  | {}             |
+| --cells-sign-section-validation  | empty mixin for section validation    | {}             |
+| --cells-sign-button-bg-color | background for submit button     | #2A86CA            |
+| --cells-sign-button-bg-color-disabled | background for submit button[disabled]     | #e9e9e9            |
+| --cells-sign-button | empty mixin for submit button    | {}             |
+| --cells-sign-button-disabled | empty mixin for submit button[disabled]    | {}             |
+| --cells-sign-text-color | color for title and subtitle | #121212 |
+
+@demo demo/index.html
+@hero cells-sign.jpg
+-->
+<dom-module id="cells-sign">
+  <template>
+    <style include="cells-sign-styles cells-sign-shared-styles">
+    </style>
+
+    <header id="heading" class="heading">
+      <div class="subheader">
+        <iron-image class="subheader-img" preload src$="[[imgSrc]]"></iron-image>
+      </div>
+    </header>
+
+    <section id="main" class="main">
+      <content select=".info"></content>
+
+      <p class="text" inner-h-t-m-l="{{t(signText)}}"></p>
+
+      <section class="sign-form">
+        <content select="[signform]"></content>
+      </section>
+    </section>
+
+  </template>
+  <script src="cells-sign.js"></script>
+</dom-module>

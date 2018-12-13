@@ -1,0 +1,17 @@
+{
+  "cells-new-recipient-review-card": "BBVA Card",
+  "cells-new-recipient-review-account": "Account Number",
+  "cells-new-recipient-review-libreton_account": "Account Number",
+  "cells-new-recipient-review-saving_account": "Account Number",
+  "cells-new-recipient-review-check_account": "Account Number",
+  "cells-new-recipient-review-clabe": "CLABE",
+  "cells-new-recipient-review-name": "Recipient name",
+  "cells-new-recipient-review-bank": "Entity",
+  "cells-new-recipient-review-save-to frequent": "Save to frequent",
+  "cells-new-recipient-review-contact": "Contact alias",
+  "cells-new-recipient-review-product": "Product alias (Optional)",
+  "cells-new-recipient-review-notification-message-info": "We have identified the account, but some of the data is missing",
+  "cells-new-recipient-review-notification-message-success": "We have the datas!",
+  "cells-new-recipient-review-notification-message-not-found": "We have not identified the account, you have to enter the data manually.",
+  "cells-new-recipient-review-product-type": "Product type"
+}

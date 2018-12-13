@@ -1,0 +1,727 @@
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../cells-dm-global-apis-accounts/cells-dm-global-apis-accounts.html" />
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html" />
+<link rel="import" href="../cells-amount-behavior/cells-amount-behavior.html" />
+
+
+<!--
+# glomo-accounts-dm
+
+Data manager description.
+
+Example:
+```html
+<glomo-accounts-dm></glomo-accounts-dm>
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="glomo-accounts-dm">
+  <template>
+    <cells-dm-global-apis-accounts
+      id="globalApi"
+      host="[[host]]"
+      accounts="{{accounts}}"
+      account-types="{{_accountTypes}}"
+      accounts-api-version="[[accountsApiVersion]]"
+      api-aggregator-api-version="[[apiAggregatorApiVersion]]"
+      required-token="[[requiredToken]]"
+      native="[[native]]">
+    </cells-dm-global-apis-accounts>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'glomo-accounts-dm',
+
+        behaviors: [
+          CellsBehaviors.i18nBehavior,
+          CellsBehaviors.AmountBehavior
+        ],
+
+        properties: {
+          /**
+           * Host
+           */
+          host: String,
+          /**
+           * Account
+           */
+          accounts: {
+            type: Object,
+            observer: 'onAccountsChanged'
+          },
+          /**
+           * Account types
+           */
+          accountTypes: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Account types
+           */
+          _accountTypes: {
+            type: Array,
+            observer: '_setAccountTypes'
+          },
+          /**
+           * Preparing the data
+           */
+          _productsListRender: {
+            type: Array,
+            value: function() {
+              return [];
+            }
+          },
+          /**
+           * Data to dom-repeat
+           */
+          productsList: {
+            type: Array,
+            notify: true
+          },
+
+          /**
+           * Local currency
+           */
+          localCurrency: {
+            type: String,
+            value: 'EUR'
+          },
+          /**
+           * Aggre Balance
+           */
+          _aggregatedBalance: {
+            type: Object,
+            value: function() {
+              return {};
+            }
+          },
+          /**
+           * When true the alias will be used as description instead of product number
+           */
+          useAliasAsDetail: {
+            type: Boolean,
+            value: false
+          },
+          visibleChars: {
+            type: Number,
+            value: 4
+          },
+          /**
+           * Array of debit cards
+           */
+          debitCards: Array,
+          /**
+           * Products type helper
+           */
+          productsType: {
+            type: Object,
+            value: function() {
+              return {
+                'COMMON': {
+                  order: 0,
+                  header: {
+                    title: 'cells-global-dashboard-accounts-header'
+                  },
+                  availableBalance: {
+                    currentBalances: {
+                      title: 'cells-global-dashboard-available'
+                    },
+                    pendingBalances: {},
+                    postedBalances: {}
+                  },
+                  grantedCredits: {
+                    title: 'cells-global-dashboard-accounts-header-credit-line'
+                  }
+                },
+                'CURRENCY_COMMON': {
+                  order: 1,
+                  header: {
+                    title: 'cells-global-dashboard-accounts-with-currency-header',
+                    short: 'cells-global-dashboard-accounts-short-currency-header'
+                  },
+                  availableBalance: {
+                    currentBalances: {
+                      title: 'cells-global-dashboard-available'
+                    },
+                    pendingBalances: {},
+                    postedBalances: {}
+                  }
+                },
+                'CREDIT': {
+                  order: 2,
+                  header: {
+                    title: 'cells-global-dashboard-accounts-credit-header'
+                  },
+                  availableBalance: {
+                    currentBalances: {
+                      title: 'cells-global-dashboard-available'
+                    },
+                    pendingBalances: {},
+                    postedBalances: {}
+                  },
+                  grantedCredits: {
+                    title: 'cells-global-dashboard-accounts-header-balance-limit'
+                  },
+                  grantedCreditsException: {
+                    title: 'cells-global-dashboard-accounts-header-balance-quota'
+                  }
+                },
+                'SAVINGS_EXTENSION': {
+                  order: 3,
+                  header: {
+                    title: 'cells-global-dashboard-accounts-cts-header'
+                  },
+                  availableBalance: {
+                    currentBalances: {
+                      title: 'cells-global-dashboard-accounts-cts-available'
+                    },
+                    pendingBalances: {},
+                    postedBalances: {}
+                  }
+                },
+                'CURRENCY_SAVINGS_EXTENSION': {
+                  order: 4,
+                  header: {
+                    title: 'cells-global-dashboard-accounts-cts-currency-header',
+                    short: 'cells-global-dashboard-accounts-cts-header',
+                  },
+                  availableBalance: {
+                    currentBalances: {
+                      title: 'cells-global-dashboard-accounts-cts-available'
+                    },
+                    pendingBalances: {},
+                    postedBalances: {}
+                  }
+                }
+              };
+            }
+          },
+          /**
+           * Account SPEI
+           */
+          accountSpei: {
+            type: String,
+            value: {},
+            notify: true
+          },
+          /**
+           * Accounts API version
+           */
+          accountsApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * Api agreggator API version
+           */
+          apiAggregatorApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * requiredToken, 'jwt' or 'tsec' or empty
+           */
+          requiredToken: {
+            type: String,
+            value: 'tsec'
+          },
+
+          /**
+          * Native request config
+          */
+          native: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+           * Send or not accounts status description on not ACTIVATED accounts.
+           */
+          accountsStatusDescription: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+          * all key calls that will be performed when full accounts are fetched
+          **/
+          aggregatedCall: {
+            type: Array
+          }
+        },
+        /**
+         * Clear accounts
+         */
+        reset: function() {
+          this.set('accounts', null);
+        },
+        /**
+         * Fetch accounts
+         */
+        fetch: function() {
+          this.$.globalApi.getFullAccounts(this.aggregatedCall);
+        },
+
+        /**
+         * Get account types
+         */
+        getAccountTypes: function() {
+          if (!this.accountTypes || !this.accountTypes.length) {
+            this._getAccountTypes();
+          } else {
+            this._setAccountTypes(this.accountTypes);
+          }
+        },
+        /**
+         * Get account types
+         */
+        _getAccountTypes: function() {
+          this.$.globalApi.getAccountTypes();
+        },
+        /**
+         * Set account types
+         */
+        _setAccountTypes: function(accountTypes) {
+          this.set('accountTypes', accountTypes);
+          this.fire('set-accounts-types', accountTypes);
+        },
+
+        onAccountsChanged: function() {
+          var parsedAccounts = this._parseAccounts((this.accounts || {}).items || []);
+          this._generateProductList(parsedAccounts);
+        },
+
+        _parseAccounts: function(list) {
+          var accounts = {};
+          accounts.CURRENCY_COMMON = [];
+          accounts.CURRENCY_SAVINGS_EXTENSION = [];
+
+          //Group accounts by type
+          list.map(function(item) {
+            var type = ((item || {}).accountFamily || {}).id || '';
+            if (!accounts[type]) {
+              accounts[type] = [];
+            }
+
+            if (type !== 'CREDIT') {
+              var majorCurrency = (item.currencies || []).find(function(value) {
+                return value.isMajor;
+              }) || {};
+
+              item.currency = (majorCurrency || {}).currency;
+
+              if (item.currency === this.localCurrency) {
+                accounts[type].push(item);
+              } else {
+                if (type === 'SAVINGS_EXTENSION') {
+                  accounts.CURRENCY_SAVINGS_EXTENSION.push(item);
+                } else {
+                  accounts.CURRENCY_COMMON.push(item);
+                }
+              }
+
+            } else {
+              accounts[type].push(item);
+            }
+
+          }, this);
+
+          return accounts;
+        },
+
+        /*
+         * Generate product list to render
+         */
+        _generateProductList: function(groups) {
+          this.set('_productsListRender', []);
+
+          if (groups && Object.keys(groups).length) {
+            if (groups.COMMON || groups.SAVINGS) {
+              groups.COMMON = (groups.COMMON || []).concat(groups.SAVINGS || []);
+              delete groups.SAVINGS;
+            }
+
+            if (groups.balances) {
+              this.set('_aggregatedBalance', groups.balances);
+            }
+
+            for (var type in groups) {
+              if (type !== 'balances') {
+                this._createListProducts(type, groups[type], groups);
+              }
+            }
+          }
+
+          this.set('productsList', this._productsListRender);
+
+          this.fire('accounts-fetched', this.productsList);
+        },
+
+        /*
+         * Create list product
+         */
+        _createListProducts: function(type, products, groups) {
+          var product = this.productsType[ type ] || {};
+          var title = (product.header || {}).title || '';
+
+          var group = {
+            headerTitle: this.t(title),
+            order: product.order,
+            products: []
+          };
+
+          if (type && type.startsWith('CURRENCY_')) {
+            this._generateCurrencyProducts(products, groups, type);
+          } else {
+            this._generateProducts(group, products, type, groups);
+          }
+        },
+        /*
+         * Generate list product without 'Currency'
+         */
+        _generateProducts: function(product, products, type, groups) {
+          products.forEach(function(item) {
+            product.products.push(this._getProducts(type, item, groups));
+
+            // Add debit cards related to account
+            if (item.relatedContracts && this.debitCards && this.debitCards.length !== 0) {
+              var debitCardList = this._getRelatedDebitCards(item.relatedContracts);
+
+              debitCardList.forEach(function(card) {
+                product.products.push(card);
+              });
+            }
+          }, this);
+          if (product && product.products && product.products.length > 0) {
+            this._getHeaderAmount(product, this.localCurrency);
+            this.push('_productsListRender', product);
+          }
+        },
+        /*
+         * Generate list product 'Currency'
+         */
+        _generateCurrencyProducts: function(products, groups, type) {
+          var currenciesProducts = products.reduce(function(acc, product) {
+            var key = (product.currency !== this.localCurrency) ? product.currency : this.localCurrency;
+            acc[key] = acc[key] || [];
+            acc[key].push(this._getProducts(type, product, groups));
+            return acc;
+          }.bind(this), []);
+
+          Object.keys(currenciesProducts).forEach(function(currency, index) {
+            var item = {
+              headerTitle: this._getGroupTitle(currency, currenciesProducts[currency].length > 1, type),
+              order: this.productsType[type].order || 0,
+              products: currenciesProducts[currency]
+            };
+
+            this._getHeaderAmount(item, currency);
+            this._productsListRender.push(item);
+          }, this);
+        },
+        /*
+         * Get header amount
+         */
+        _getHeaderAmount: function(item, currency) {
+          var totalAmount;
+          if (item.products.length > 1) {
+            totalAmount = 0;
+            item.products.forEach(function(product) {
+              totalAmount += product.primaryAmount && product.primaryAmount.amount;
+            });
+
+            item.headerAmount = {
+              amount: totalAmount,
+              currency: currency
+            };
+          }
+        },
+        /*
+         * Get Related contracts
+         */
+        _getRelatedContracts: function(type, contractId, accounts) {
+          var result = [];
+
+          accounts.forEach(function(account) {
+            if (account.accountId === contractId) {
+              result.push({
+                css: 'text-secondary italic',
+                icon: 'coronita:link',
+                label: type === 'CURRENCY_COMMON' ? account.title.name : account.accountType.name,
+                value: ' • ' + account.number.slice(account.number.length - this.visibleChars)
+              });
+            }
+          }, this);
+          return result;
+        },
+        /*
+         * Parse products
+         */
+        _getProducts: function(type, product, groups) {
+          var _getCurrencyMajor = function(account) {
+            var majorCurrency =  (account.currencies || []).find(function(currency) {
+              return currency.isMajor;
+            });
+
+            return (majorCurrency || {}).currency || this.localCurrency;
+          };
+
+          /*
+           * Set customized formats in response
+           */
+          var _setCustomizedFormats = function(account) {
+            let customizedFormat = account.customizedFormats[0];
+            if (customizedFormat.customizedFormatId === 'SPEI') {
+              this.icon = 'coronita:mobile';
+              this.description.value = customizedFormat.value;
+              this.description.masked = true;
+            } else if (customizedFormat.customizedFormatId === 'SIMPLE_ACCOUNT') {
+              this.description.value = 'Simple ' + customizedFormat.value;
+              this.description.masked = false;
+            }
+
+          };
+
+          var currencyMajor = _getCurrencyMajor.call(this, product);
+
+          var response = {
+            originalProduct: product,
+            currencies: product.currencies || undefined,
+            icon: '',
+            id: product.accountId,
+            name: this._getProductsName(product),
+            primaryAmount: {},
+            status: product.status && product.status.id
+          };
+          response.description = this._getProductsDescription(product.alias, product.number);
+
+          if (this.accountsStatusDescription && product.status && product.status.id !== 'ACTIVATED') {
+            response.statusdescription = product.status.name;
+          }
+          if ((product.customizedFormats || []).length) {
+            _setCustomizedFormats.apply(response, [ product ]);
+
+            if (response.icon) {
+              this.set('accountSpei', {
+                id: response.id,
+                name: response.name
+              });
+            }
+          }
+
+          if ((type === 'CURRENCY_COMMON' || type === 'CREDIT') && product.relatedContracts) {
+            var relatedContractsAccounts = this._groupBy(product.relatedContracts, 'product.id').ACCOUNTS;
+            var groupsAccounts = type === 'CREDIT' ? groups.CURRENCY_COMMON : groups.CREDIT;
+
+            response.additionalList = this._getAdditionalList(type, relatedContractsAccounts, groupsAccounts);
+
+          }
+
+          if (product.availableBalance) {
+            response.primaryAmount = this._getAvailableBalance(type, product.availableBalance.currentBalances, currencyMajor);
+          }
+
+          if (product.grantedCredits) {
+            response.secondaryAmount = this._getGrantedCredits(type, product, currencyMajor);
+          }
+
+          return response;
+        },
+
+        _getProductsName: function(product) {
+          return product.alias && !this.useAliasAsDetail ? product.alias : (product.accountType || {}).name;
+        },
+
+        _getProductsDescription: function(productAlias, productNumber) {
+          let description = {
+            masked: false,
+            value: ''
+          };
+          if ((this.useAliasAsDetail && productAlias) || (!this.useAliasAsDetail && productNumber)) {
+            description.masked = !this.useAliasAsDetail;
+            description.value = this.useAliasAsDetail ? productAlias : productNumber;
+          }
+          return description;
+        },
+
+        _getAdditionalList: function(type, relatedContractsAccounts, groupsAccounts) {
+          var result = [];
+          if (relatedContractsAccounts && groupsAccounts) {
+            relatedContractsAccounts.forEach(function(item) {
+              if (item.relationType.id === 'LINKED_WITH') {
+                result = this._getRelatedContracts(type, item.contractId, groupsAccounts);
+              }
+            }, this);
+          } else {
+            result = undefined;
+          }
+          return result;
+        },
+
+        /*
+         * Get first available balance
+         */
+        _getAvailableBalance: function(type, balances, currency) {
+          var balance = balances.find(function(amount) {
+            return amount.currency === currency;
+          });
+
+          return {
+            amount: balance && balance.amount,
+            currency: currency,
+            label: this.productsType[type].availableBalance.currentBalances.title
+          };
+        },
+        /*
+         * Get granted credits
+         */
+        _getGrantedCredits: function(type, product, currency) {
+          var grantedCredit = product.grantedCredits.find(function(credit) {
+            return credit.currency === currency;
+          });
+
+          return {
+            amount: grantedCredit.amount,
+            currency: currency,
+            label: this._getGrantedTitle(product.title.id, type)
+          };
+        },
+
+        /*
+         * Get title of granted credit
+         */
+        _getGrantedTitle: function(id, type) {
+          return (id === 'BONO_FACIL') ? this.productsType[type].grantedCreditsException.title : this.productsType[type].grantedCredits.title;
+        },
+
+        _getGroupTitle: function(currency, hasSeveralProducts, type) {
+          var result;
+          type = type || 'COMMON';
+          if (currency === this.localCurrency) {
+            result = this.t(this.productsType[type].header.title);
+          } else {
+            if (hasSeveralProducts) {
+              result = this.t(this.productsType[type].header.short || this.productsType[type].header.title);
+            } else {
+              result = this.t(this.productsType[type].header.title) + ' ' + this.t('cells-amount-behavior-currency-' + currency);
+            }
+            result += ' (' + currency + ')';
+          }
+
+          return result;
+        },
+
+        /**
+         * Group elements array by type
+         */
+        _groupBy: function(elements, field) {
+          return elements.reduce(function(group, item) {
+            var resolve = function(path, obj) {
+              return path.split('.').reduce(function(prev, curr) {
+                return prev ? prev[curr] : undefined;
+              }, item);
+            };
+
+            var value = resolve(field, item);
+            group[value] = group[value] || [];
+            group[value].push(item);
+            return group;
+          }, {});
+        },
+        /**
+         * Extract related debit cards to an account
+         */
+        _getRelatedDebitCards: function(relatedContracts) {
+          var relatedCards = [];
+
+          relatedContracts.forEach(function(contract) {
+            this.debitCards.forEach(function(card) {
+              if (contract.product.id === 'CARDS' && contract.contractId === card.cardId) {
+
+                if (card.participants && card.participants.length) {
+                  card.isChildClass = 'card-child';
+                  card.isChild = card.isChild;
+
+                  if (this._findHolderCard(card.participants)) {
+                    card.isFirstChildClass = 'card-first-child';
+                    card.isFirstChild = true;
+                    relatedCards.unshift(card);
+
+                  } else {
+                    if (card.physicalSupport) {
+                      var isSticker = this._isSticker(card.physicalSupport);
+                      card.simpleNumber = isSticker ? this.t('cells-global-dashboard-cards-child-sticker') :
+                        this.t('cells-global-dashboard-cards-child-aditional');
+                    }
+                    relatedCards.push(card);
+                  }
+                }
+              }
+            }.bind(this));
+          }.bind(this));
+
+          return this._parseDebitCardsRelated(relatedCards);
+        },
+
+        /**
+         * Parse debit cards related to an account
+         */
+        _parseDebitCardsRelated: function(cards) {
+          var relatedCards = [];
+          var shortedCards = [];
+
+          return cards && cards.reduce(function(acc, card) {
+            var response = {
+              description: {
+                value: card.number,
+                masked: true
+              },
+              id: card.cardId,
+              group: 'card',
+              name: card.alias || card.title && card.title.name,
+              number: card.number,
+              status: card.status && card.status.id,
+              participants: card.participants,
+              isChildClass: card.isChildClass,
+              isChild: card.isChild,
+              isFirstChildClass: card.isFirstChildClass,
+              isFirstChild: card.isFirstChild,
+              simpleNumber: card.simpleNumber,
+            };
+
+            if (response.status && response.status !== 'operative') {
+              response.statusdescription = 'cells-global-dashboard-card-status-' + response.status;
+            }
+
+            if (card.images && card.images.length && card.images[0].url) {
+              response.imgSrc = card.images[0].url;
+            }
+
+            acc.push(response);
+            return acc;
+          }.bind(this), []);
+        },
+        /**
+         * Find holder card
+         */
+        _findHolderCard: function(participants) {
+          return participants.some(function(participant) {
+            return participant.participantType.id === 'HOLDER';
+          });
+        },
+        /**
+         * Return if physical suport is sticker
+         */
+        _isSticker: function(physicalSupport) {
+          return physicalSupport.id === 'STICKER';
+        }
+      });
+    }());
+  </script>
+</dom-module>

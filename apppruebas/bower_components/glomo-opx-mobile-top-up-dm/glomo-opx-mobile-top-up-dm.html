@@ -1,0 +1,579 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-step-behavior/cells-step-manager-behavior.html" />
+<link rel="import" href="../cells-product-format-behavior/cells-product-format-behavior.html" />
+<link rel="import" href="../cells-dm-global-apis-mobiles/cells-dm-global-apis-mobiles.html" />
+<link rel="import" href="../cells-params/cells-params.html">
+
+<!--
+`<glomo-opx-mobile-top-up-dm>`
+  > CELLS Data Manager for GLOBAL APIS Cardless Withdrawal
+
+Example:
+
+```html
+<glomo-opx-mobile-top-up-dm></glomo-opx-mobile-top-up-dm>
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="glomo-opx-mobile-top-up-dm">
+  <template>
+    <cells-dm-global-apis-mobiles id="dm"
+      host="[[host]]"
+      local-currency="[[localCurrency]]"
+      providers="{{_mobilesResponse}}"
+      provider-amounts="{{_providerAmounts}}"
+      mobiles-api-version="[[mobilesApiVersion]]">
+    </cells-dm-global-apis-mobiles>
+    <cells-params id="params"></cells-params>
+  </template>
+  <script>
+    (function(Polymer, CellsBehaviors) {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-opx-mobile-top-up-dm',
+
+        behaviors: [
+          CellsBehaviors.StepManagerBehavior,
+          CellsBehaviors.CellsProductFormatBehavior
+        ],
+
+        properties: {
+          /**
+           * Host
+           */
+          host: String,
+          /**
+           * API Version
+           */
+          mobilesApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * Currency (local currency of the country)
+           */
+          localCurrency: String,
+          /**
+          * User logged
+          */
+          user: {
+            type: Object,
+            observer: '_parseUser'
+          },
+          /**
+           * Started component
+           */
+          started: Boolean,
+          /**
+           * ID of selected destination.
+           */
+          selectedDestination: {
+            type: String,
+            observer: '_onDestinationSelected'
+          },
+          /**
+          * Provider selected.
+          */
+          selectedProvider: {
+            type: Object,
+            observer: '_parseSelectedProvider'
+          },
+          /**
+           * Withdrawal amount.
+           */
+          amount: {
+            type: Number,
+            observer: '_amountChanged'
+          },
+          /**
+           * Source.
+           */
+          selectedSource: {
+            type: Object,
+            observer: '_selectedSrcObserver'
+          },
+          /**
+           * Product Id (used when the process is started from product detail)
+           */
+          productId: String,
+          /**
+          * Product Id by default
+          */
+          defaultProductId: {
+            type: String,
+            notify: true
+          },
+          /**
+           * Available products (from DM)
+           */
+          products: {
+            type: Array,
+            observer: '_fetchProducts'
+          },
+          /**
+           * List of source products.
+           */
+          sourceList: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Service response
+           */
+          _mobilesResponse: {
+            type: Object,
+            observer: '_onResponse'
+          },
+          /**
+          * Amounts from service
+          */
+          _providerAmounts: {
+            type: Array
+          },
+          /**
+          * Mobile top up result
+          */
+          result: {
+            type: Object,
+            notify: true
+          },
+          /**
+          * mobile top up finished
+          */
+          finished: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+          * newDestinationState
+          */
+          _isNewDestination: {
+            type: Boolean,
+            value: true
+          },
+          /**
+          * State account on fetch detail and dashboard
+          */
+          stateAccounts: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+          * Parse user
+          */
+          parseUser: {
+            type: Object,
+            notify: true
+          },
+          /**
+           *
+          */
+          _savedContact: {
+            type: Boolean,
+            value: false
+          }
+        },
+
+        listeners: {
+          'dm.transfer-error': '_closeControlVeil',
+          'mobile-top-up-created': '_goToReview',
+          'error-on-create-mobile-top-up': '_notifyMobileTopUpError'
+        },
+
+        /* Init and manage cache products
+        */
+        init: function() {
+          if (!this.started) {
+            this._init();
+            this.started = true;
+          }
+
+          if (this.finished) {
+            this._init();
+            this.finished = false;
+          }
+
+          if (!this.user) {
+            this._getUserInfo();
+          }
+
+          this.defaultProductId = this.productId;
+          this._fetchProducts();
+        },
+
+        _init: function() {
+          this.dispatchEvent(new CustomEvent('init-services', {
+            bubbles: true,
+            composed: true
+          }));
+          this.restart();
+        },
+        /**
+        * Include mobile and avatar image to user object
+        */
+        _parseUser: function() {
+          var mobile = this.user.userId;
+          Object.assign(this.user, {
+            number: mobile,
+            secondary: mobile ? this._formatProduct(mobile, 'phone') : '',
+            avatars: {
+              url: 'images/ico_movil.svg'
+            },
+          });
+          this.set('parseUser', this.user);
+        },
+
+        _getUserInfo: function() {
+          this.$.params.getData('userInfo').then(function(user) {
+            this.set('user', user);
+          }.bind(this));
+        },
+
+        _fetchProducts: function() {
+          this.set('sourceList', this._setEnoughFunds(this.products));
+          this.dispatchEvent(new CustomEvent('fetch-source', {
+            bubbles: true,
+            composed: true,
+            detail: this.sourceList || []
+          }));
+        },
+
+        _setEnoughFunds: function(source, amount) {
+          return source && source.length && source.map(function(product) {
+            var overcome = !this._hasEnoughFunds(product.primaryAmount.amount, amount);
+
+            return Object.assign({}, product, {
+              hasTextMessage: overcome,
+              disabled: overcome
+            });
+          }.bind(this)) || [];
+        },
+
+        /**
+        * Destination is selected (step 2)
+        */
+        _onDestinationSelected: function(destination) {
+          this._isNewDestination = false;
+
+          if (destination && destination.bank && destination.bank.name) {
+            this.fireCloseExtra();
+            this.fireSearchProviderAmounts(destination.bank.id);
+            this._nextStep();
+          } else if (destination && destination.name && !destination.bank) {
+            this.fireResetProvidersModal();
+            this.dispatchEvent(new CustomEvent('open-providers-selector', {
+              bubbles: true,
+              composed: true
+            }));
+          }
+        },
+
+        /**
+        * When new destination is selected (step 2)
+        */
+        _onNewDestinationSelected: function() {
+          this._isNewDestination = true;
+          if (!this.selectedDestination) {
+            this.fireResetProvidersModal();
+          }
+        },
+
+        /**
+        * When provider is selected (step 2)
+        */
+        _parseSelectedProvider: function(provider) {
+          var destination;
+          if (!this._isNewDestination && provider && provider.id) {
+            destination = {
+              'id': this.selectedDestination.id,
+              'avatar': this.selectedDestination.avatar,
+              'main': this.selectedDestination.name,
+              'secondary': this._formatProduct(this.user.userId, 'phone'),
+              'bank': {
+                'id': provider.id,
+                'info': provider.name
+              }
+            };
+            this.fireCloseExtra(destination);
+            this.fireSearchProviderAmounts(destination.bank.id);
+          }
+        },
+
+        /**
+        * Fires close-step-recipient-extra-action event
+        */
+        fireCloseExtra: function(destination) {
+          this.dispatchEvent(new CustomEvent('close-step-recipient-extra-action', {
+            detail: destination || '',
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+        * Fires search-provider-amounts event
+        */
+        fireSearchProviderAmounts: function(providerId) {
+          this.dispatchEvent(new CustomEvent('search-provider-amounts', {
+            detail: providerId,
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+        * Fires reset-providers-selector-modal event
+        */
+        fireResetProvidersModal: function(providerId) {
+          this.dispatchEvent(new CustomEvent('reset-providers-selector-modal', {
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+         * Observer for property selectedSrc (step 2)
+         */
+        _selectedSrcObserver: function(product) {
+          if (product && !product.disabled) {
+            this._nextStep();
+          }
+        },
+
+        /**
+         * Amount is setted. (step 3)
+         */
+        _amountChanged: function(amount) {
+          if (amount) {
+            this.set('sourceList', this._setEnoughFunds(this.sourceList, amount));
+            this.dispatchEvent(new CustomEvent('fetch-source', {
+              bubbles: true,
+              composed: true,
+              detail: this.sourceList
+            }));
+
+            this._nextStep();
+          }
+        },
+
+        disableExecute: function() {
+          this.canExecute = false;
+        },
+
+        /**
+        * Restart state steps
+        */
+        restart: function() {
+          this.resetManagerSteps();
+          this.set('currentStep', 1);
+
+          // Method of manager step behavior
+          this.initSteps();
+        },
+
+        /**
+        * Reset all, steps and content steps
+        */
+        resetAll: function() {
+          this.restart();
+          this.resetContent();
+          this.finished = true;
+          this._closeControlVeil();
+        },
+
+        /**
+        * Reset content of steps
+        */
+        resetContent: function() {
+          //PUBLIC
+          this.selectedSource = null;
+          this.selectedDestination = null;
+          this.amount = '';
+          this.productId = null;
+          this.defaultProductId = null;
+          this.references = null;
+          this.sourceId = '';
+          this._isNewDestination = true;
+          this._savedContact = false;
+
+          this.restart();
+          this.dispatchEvent(new CustomEvent('reset-scroll'));
+        },
+
+        /**
+        * Set default values in steps.
+        */
+        resetManagerSteps: function() {
+          this.lastActiveStep = null;
+          this.canExecute = false;
+          this.hasFinished = false;
+          this._lastResponse = null;
+        },
+
+        /**
+         * Manage result
+         */
+        _onResponse: function(response) {
+          this._closeControlVeil();
+        },
+
+        /**
+         * Make dMobileTopUp operation
+         */
+        doMobileTopUp: function() {
+          this._closeControlVeil();
+          this.$.dm.createMobileTopUp(this.selectedSource, this.selectedDestination, this.amount);
+        },
+
+        /**
+        * Check if the amount is over the max limit.
+        * @param amount {Number} Transfer amount
+        * @param maxLimit {Number} Account maximum limit
+        */
+        _hasEnoughFunds: function(maxLimit, amount) {
+          return !(maxLimit <= 0 || amount && maxLimit && amount > maxLimit);
+        },
+
+        setSavedContact: function(ev) {
+          this._savedContact = true;
+        },
+
+        /**
+        * Notify service create mobile top up
+        */
+        _goToReview: function(ev) {
+          ev.stopPropagation();
+          this.stateAccounts = true;
+          this.set('result', this._parseResult(ev.detail));
+          this.dispatchEvent(new CustomEvent('navigate-to-review', {
+            bubbles: true,
+            composed: true,
+            detail: {
+              page: 'mobile-top-up-review'
+            }
+          }));
+          this.async(function() {
+            this.resetAll();
+          }, 400);
+        },
+
+        /**
+        * Parse result to cells successful response
+        */
+        _parseResult: function(result) {
+          var formattedResult = {
+            title: 'cells-successful-response-success-recharge',
+            subtitle: ' ',
+            date: result.date,
+            amount: {
+              amount: result.sentMoney.amount,
+              currency: result.sentMoney.currency
+            },
+            origin: {
+              product: {
+                id: result.receiver.serviceProvider.id,
+                name: result.receiver.alias
+              },
+              avatar: {
+                src: result.receiver.avatar || this.selectedDestination.avatar,
+              },
+              number: result.receiver.mobile,
+              provider: result.receiver.serviceProvider.name
+            },
+            topInfo: [
+              {
+                value: this.selectedDestination.name || result.receiver.alias,
+                class: 'bold lg'
+              },
+              {
+                value: this._formatProduct(this.selectedDestination.number, 'phone'),
+                class: 'cursive'
+              },
+              {
+                value: result.receiver.serviceProvider.name,
+                class: 'inline secondary'
+              },
+              {
+                key: this._savedContact ? 'cells-successful-response-updated-contact' : '',
+                value: '',
+                icon: this._savedContact ? 'coronita:correct' : '',
+                class: 'inline secondary cursive spacing'
+              },
+              {
+                key: 'cells-successful-response-withdrawal-account',
+                value: '',
+                class: 'secondary'
+              },
+              {
+                value: result.sender.product.name,
+                musk: {
+                  value: result.sender.number,
+                  chars: 5,
+                  simbol: '•'
+                },
+                class: 'bold spacing md'
+              },
+              {
+                key: 'cells-successful-response-folio',
+                value: result.id,
+                class: 'inline secondary spacing'
+              },
+            ],
+            operations: [
+              {
+                label: 'Enviar por email',
+                id: 'sendEmail',
+                icon: 'coronita:email',
+                disabled: true
+              }
+            ],
+            buttons: {
+              primary: {
+                text: 'cells-successful-response-exit',
+                action: 'go-to-next',
+                class: 'btn--primary btn--l'
+              },
+              secondary: {
+                text: 'cells-successful-response-new-charge',
+                action: 'new-operation',
+                class: 'btn--tertiary btn--l'
+              }
+            }
+          };
+
+          return formattedResult;
+        },
+        /**
+        * Notify service error mobile top up
+        */
+        _notifyMobileTopUpError: function() {
+          this.set('loading', true);
+          this.dispatchEvent(new CustomEvent('error-on-mobile-top-up', {
+            bubbles: true,
+            composed: true
+          }));
+          this._closeControlVeil();
+        },
+
+        _closeControlVeil: function() {
+          this.dispatchEvent(new CustomEvent('close-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+         * Send otp sign operation otp/key
+         */
+        signRequest: function(sign) {
+          this.$.dm.signRequest(sign);
+        }
+      });
+    }(Polymer, CellsBehaviors));
+  </script>
+</dom-module>

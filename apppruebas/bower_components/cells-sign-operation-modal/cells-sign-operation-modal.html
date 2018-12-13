@@ -1,0 +1,121 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-bottom-modal/cells-bottom-modal.html">
+<link rel="import" href="../cells-circular-timer/cells-circular-timer.html">
+<link rel="import" href="../cells-sign/cells-sign.html">
+<link rel="import" href="../cells-input-digits/cells-input-digits.html">
+<link rel="import" href="../cells-molecule-input/cells-molecule-input.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+
+<link rel="import" href="cells-sign-operation-modal-styles.html">
+<!--
+`<cells-sign-operation-modal>` is a bottom modal with a form to sign an operation by opt, sms or some other code.
+
+Example:
+
+```html
+<cells-sign-operation-modal img-src="images/otp.png"></cells-sign-operation-modal>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                        | Description            | Default     |
+|:---------------------------------------|:-----------------------|:------------|
+| --cells-sign-operation-modal           | Mixin applied to :host | {}          |
+| --cells-fontDefault                    | Font family of :host   | Benton Sans |
+| --cells-sign-operation-modal-sign      | empty mixin            | {}          |
+| --cells-sign-operation-modal-sign-form | empty mixin            | {}          |
+| --cells-sign-operation-modal-info      | empty mixin            | {}          |
+
+
+@demo demo/index.html
+-->
+<dom-module id="cells-sign-operation-modal">
+  <template>
+    <style include="cells-sign-operation-modal-styles cells-sign-operation-modal-shared-styles"></style>
+    <cells-bottom-modal id="modal" class="modal" close-icon-id="{{closeIconId}}" full-height no-cancel-on-outside-click>
+      <h1 heading>[[t(_modalHeading)]]</h1>
+      <cells-sign id="sign" img-src="[[imgSrc]]" sign-text="[[_modalText]]">
+        <template is="dom-if" if="[[showOtp]]">
+          <div signform class="signForm">
+            <cells-input-digits
+              id="inputDigits"
+              naming="otp"
+              input-fields="6"
+              submit-text="cells-sign-operation-modal-confirm"
+              type="password"
+              clear-digits="{{_clearDigits}}">
+            </cells-input-digits>
+            <cells-st-button id="exit" class="link">
+              <button class="btn" on-click="close">[[t('cells-sign-operation-modal-exit', 'Salir')]]</button>
+            </cells-st-button>
+          </div>
+        </template>
+        <template is="dom-if" if="[[showAppPss]]">
+          <div signform class="signForm">
+            <template is="dom-if" if={{hideTimer}}>
+                <cells-molecule-input
+                id="user-input-pwd"
+                value={{_inputValue}}
+                label="[[t(labelPassword)]]"
+                icon="[[togglePwdIcon]]"
+                icon-size="26"
+                icon-toggled="[[togglePwdIconToggled]]"
+                icon-label="[[t('cells-sign-operation-pass-label-toggle-icon', passwordInputToggleIconLabel)]]"
+                extra-icon="[[clearPwdIcon]]"
+                extra-icon-label="[[t('cells-sign-operation-pass-label-clear-icon', passwordInputClearIconLabel)]]"
+                type="password">
+              </cells-molecule-input>
+
+            </template>
+            <template is="dom-if" if={{!hideTimer}}>
+                <cells-molecule-input
+                id="user-input-pwd"
+                type="text"
+                value={{_inputValue}}
+                label="[[t(labelPassword)]]"
+                icon="[[clearPwdIcon]]"
+                icon-size="26"
+                icon-label="[[t('cells-sign-operation-pass-label-clear-icon', passwordInputClearIconLabel)]]"
+                allowed-chars="[[allowedChars]]"
+                max-length="[[max]]">
+              </cells-molecule-input>
+              <div class="timer timer__header">
+                <cells-atom-icon icon="coronita:info" class="icon-size-16"></cells-atom-icon>
+                <p>[[t('cells-sign-operation-modal-info', 'Si no recibes el SMS prodrás solicitar uno nuevo en:')]]</p>
+              </div>
+              <div class="timer timer__content">
+                <cells-atom-icon icon="coronita:info" class="icon-size-17"></cells-atom-icon>
+                <cells-circular-timer
+                  id="timer"
+                  timeout="[[timeout]]"
+                  reset-timer="{{resetTimer}}"
+                  disabled-animation>
+                </cells-circular-timer>
+                <p>[[t('cells-sign-operation-modal-unit-time', 'min')]]</p>
+              </div>
+            </template>
+            <div class="signButtons">
+              <cells-st-button id="accept" class="secondary">
+                <button class="btn" on-click="_dispatchCode" disabled="{{_checkContent(_inputValue)}}">[[t('cells-sign-operation-modal-accept', 'Confirmar')]]</button>
+              </cells-st-button>
+              <cells-st-button id="cancel" class="link" hidden$="[[hideTimer]]">
+                <button class="btn" on-click="_reSendSMS" disabled$="{{!_timeoutEnd}}">[[t('cells-sign-operation-modal-resend', 'Solicitar nuevo SMS')]]</button>
+              </cells-st-button>
+              <cells-st-button id="exit" class="link" hidden$="[[!hideTimer]]">
+                <button class="btn" on-click="close">[[t('cells-sign-operation-modal-exit', 'Salir')]]</button>
+              </cells-st-button>
+            </div>
+          </div>
+        </template>
+      </cells-sign>
+    </cells-bottom-modal>
+  </template>
+  <script src="cells-sign-operation-modal.js"></script>
+</dom-module>

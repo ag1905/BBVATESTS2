@@ -1,0 +1,91 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-modal-new-recipient-selector-mx-styles.html">
+
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-alert-box/cells-alert-box.html">
+<link rel="import" href="../cells-new-recipient-review/cells-new-recipient-review.html">
+<link rel="import" href="../cells-avatar-item/cells-avatar-item.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="../cells-molecule-input/cells-molecule-input.html">
+
+<!--
+Recipient modal selector of transfer flow
+
+Example:
+
+```html
+<cells-modal-new-recipient-selector-mx id="el"
+  selected="[[selected]]"
+  opened="[[opened]]"
+  notification="[[notification]]"
+  recipient="[[recipient]]"
+  banks="[[banks]]"
+  product-types="[[productTypes]]"
+  recipient-saved="[[recipientSaved]]"></cells-modal-new-recipient-selector-mx>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-modal-new-recipient-selector-mx  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+| --cells-modal-new-recipient-selector-mx | empty mixin | {}  |
+| --cells-modal-new-recipient-selector-mx-section | empty mixin | {}  |
+| --cells-modal-new-recipient-selector-mx-alert-box | empty mixin | {}  |
+| --cells-modal-new-recipient-selector-mx-avatar  | empty mixin | {}  |
+| --cells-modal-new-recipient-selector-mx-message | empty mixin | {}  |
+| --cells-modal-new-recipient-selector-mx-input | empty mixin | {}  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-modal-new-recipient-selector-mx">
+  <template>
+    <style include="cells-modal-new-recipient-selector-mx-styles cells-modal-new-recipient-selector-mx-shared-styles iron-flex iron-flex-alignment"></style>
+    <cells-alert-box
+      id="modal"
+      full-height="true"
+      opened="{{opened}}"
+      title="[[t('title')]]"
+      accept-button="[[t('continue')]]"
+      cancel-button="[[t('choose-another-recipient')]]"
+      primary-button-class="primary"
+      disable-primary-button="[[!continue]]"
+      on-accept="_validateSection"
+      on-cancel="_onCancel">
+        <section id="query" hidden$="[[!_checkedSection(selected, 0)]]">
+          <p>{{t('cells-modal-new-recipient-selector-mx-key-intro')}}</p>
+          <cells-molecule-input
+            label="{{t('cells-modal-new-recipient-selector-mx-key-input')}}"
+            value="{{number}}"
+            type="tel"
+            icon="coronita:close"></cells-molecule-input>
+        </section>
+        <section id="review" hidden$="[[!_checkedSection(selected, 1)]]">
+          <cells-new-recipient-review
+            found="[[found]]"
+            complete="[[complete]]"
+            recipient="[[recipient]]"
+            recipient-response="{{recipientResponse}}"
+            notification="[[notification]]"
+            banks="[[banks]]"
+            product-types="[[productTypes]]"></cells-new-recipient-review>
+        </section>
+        <section id="result" hidden$="[[!_checkedSection(selected, 2)]]">
+          <cells-icon-message
+            class="message-result"
+            type="success"
+            icon="coronita:correct"
+            message="{{t('cells-modal-new-recipient-selector-mx-saved')}}"></cells-icon-message>
+          <cells-avatar-item id="recipient"
+            avatar="[[recipientSaved.avatar]]"
+            main="[[recipientSaved.name]]"
+            secondary="[[_generateAccountNumber(recipientSaved.number)]]"
+            info="[[recipientSaved.bank]]"></cells-avatar-item>
+        </section>
+    </cells-alert-box>   
+  </template>
+  <script src="cells-modal-new-recipient-selector-mx.js"></script>
+</dom-module>

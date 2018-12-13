@@ -1,0 +1,23 @@
+{
+  "name": "cells-stripes-spinner-veil",
+  "version": "1.1.1",
+  "description": "Veil is used when we are loading a foreground content.",
+  "keywords": [
+    "stripes",
+    "spinner",
+    "loading"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.1",
+    "cells-spinner-stripes": "~0.2.0"
+  },
+  "devDependencies": {
+    "cells-sass": "^1.0.16",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.1.5",
+    "cells-theme-base": "^4.0.12",
+    "web-component-tester": "^4.0.0"
+  },
+  "main": [
+    "cells-stripes-spinner-veil.html"
+  ]
+}

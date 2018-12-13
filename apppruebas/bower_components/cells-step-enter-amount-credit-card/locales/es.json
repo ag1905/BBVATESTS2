@@ -1,0 +1,12 @@
+{
+  "cells-step-enter-amount-credit-card": "Importe",
+  "cells-card-summary-total-debt-amount": "Saldo a corte",
+  "cells-step-enter-amount-credit-card-date-limit": "Fecha límite de pago",
+  "cells-step-enter-amount-credit-card-message-max-limit": "Todos los importes indicados son superiores al disponible de tus cuentas. Sólo podrás pagar a través de la opción \"Otro importe\".",
+  "cells-card-summary-minimum-amount": "Pago mínimo",
+  "cells-card-summary-minimum-amount-to-avoid-interest": "Pago para no generar intereses",
+  "cells-card-summary-last-period-amount": "Saldo actual",
+  "cells-step-enter-amount-credit-card-amount-max-limit": "Importe superior al saldo disponible",
+  "cells-step-enter-amount-credit-card-generate-fee": "Siempre genera intereses",
+  "cells-step-enter-amount-credit-card-other-amount": "Otro importe"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "bbva-auth",
+  "version": "7.2.0",
+  "description": "BBVA GLOBAL Authorization - Handles user login",
+  "keywords": [
+    "dm",
+    "data",
+    "manager",
+    "login",
+    "global api",
+    "grantingTickets",
+    "customers"
+  ],
+  "main": [
+    "bbva-auth.html"
+  ],
+  "dependencies": {
+    "bgadp-customers": "~1.10.0",
+    "cells-armadillo-login-dm": "~1.0.0",
+    "cells-bgadp-user-dm": "~10.0.0",
+    "cells-dm-global-apis-customers": "~1.5.0",
+    "cells-params": "~2.0.0",
+    "polymer": "Polymer/polymer#^1.9.1"
+  },
+  "devDependencies": {
+    "cells-demo-dm-helper": "^0.2.1",
+    "cells-demo-helper": "^1.3.5",
+    "cells-molecule-input": "^10.5.0",
+    "cells-st-button": "^10.0.8",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "test-fixture": "polymerelements/test-fixture#^1.0.0",
+    "web-component-tester": "^6.5.0",
+    "cells-select": "^10.0.2"
+  },
+  "resolutions": {
+    "cells-bgadp-user-dm": "~10.0.0",
+    "cells-st-button": "^10.0.8",
+    "bgadp-customers": "~1.10.0",
+    "webcomponentsjs": "^0.7.24"
+  }
+}

@@ -1,0 +1,47 @@
+/**
+ * Recoge la información relativa a las campañas que se exponen al usuario,
+ * así como las interacciones que el usuario hace con las mismas.
+ *
+ * Este apartado sólo se informará cuando haya información de campañas expuestas al
+ * usuario (o éste interactúe con ellas), en caso contrario, los campos irán sin informar.
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer
+ * @class     bgdmjs.analytics.dataLayer.Product
+ */
+export default class BgdmjsAnalyticsDataLayerProduct
+{
+    /**
+     * Recoge el valor más general de la categoría de un producto.
+     * Valores posibles:
+     * - cuentas
+     * - depositos
+     * - inversiones
+     * - prestamos
+     * - seguros
+     * - tarjetas
+     *
+     * @property primaryCategory
+     * @type     {string}
+     */
+    primaryCategory = '';
+    /**
+     * Nombre detallado del producto.
+     *
+     * @property productName
+     * @type     {string}
+     */
+    productName     = '';
+    /**
+     * Subcategoría del producto.
+     *
+     * Recoge un valor más detallado sobre la categoría a la que pertenece el
+     * producto (por ejemplo “tarjeta de credito”, “tarjeta de debito”, etc).
+     * Este campo sólo se informará si existe un subtipo de producto; en caso
+     * contrario, se dejará sin informar.
+     *
+     * @property productSubtype
+     * @type     {string}
+     */
+    productSubtype  = '';
+};

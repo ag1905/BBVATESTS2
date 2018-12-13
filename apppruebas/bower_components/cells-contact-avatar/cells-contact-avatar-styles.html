@@ -1,0 +1,54 @@
+<dom-module id="cells-contact-avatar-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, sans-serif);
+  box-sizing: border-box;
+  @apply (--cells-contact-avatar); }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+.cells-contact-avatar__image {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  @apply (--cells-contact-avatar-image); }
+
+.cells-contact-avatar__initial {
+  display: inline-block;
+  height: 2.5rem;
+  width: 2.5rem;
+  line-height: 2.5rem;
+  text-align: center;
+  background: var(--cells-contact-avatar-initial-bg, var(--bbva-orange, #F7893B));
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  @apply (--cells-contact-avatar-initial); }
+  .cells-contact-avatar__initial .cells-contact-avatar__initial-content {
+    color: var(--cells-contact-avatar-content-color, var(--bbva-white, #fff));
+    font-size: 1.25rem;
+    position: relative;
+    @apply (--cells-contact-avatar-initial-content); }
+  .cells-contact-avatar__initial:before {
+    background: var(--cells-contact-avatar-initial-color-bg, #eb722c);
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1.25rem;
+    height: 2.5rem;
+    display: block;
+    content: " ";
+    -webkit-transform: rotate(16deg);
+            transform: rotate(16deg);
+    -webkit-transform-origin: 0 50%;
+            transform-origin: 0 50%;
+    @apply (--cells-contact-avatar-initial-before); }
+
+</style></template></dom-module>

@@ -1,0 +1,131 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --glomo-one-click-resume;
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+.container {
+  padding: 1.875rem;
+  color: var(--bbva-white, #FFF);
+  background: var(--bbva-core-blue, #004481);
+  @apply --glomo-one-click-resume-container;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.375rem;
+
+  &__title {
+    text-transform: uppercase;
+    @apply --glomo-one-click-resume-header-title;
+  }
+
+  @apply --glomo-one-click-resume-header;
+}
+
+.box {
+  padding: 0 0 1.25rem 0;
+
+  &--inherit {
+    padding: 0;
+    @apply --glomo-one-click-resume-box-inherit;
+  }
+
+  &__label {
+    display: block;
+    font-size: .875rem;
+
+    &--title {
+      margin: 0 0 .625rem 0;
+      @apply --glomo-one-click-resume-box-label-title;
+    }
+
+    @apply --glomo-one-click-resume-box-label;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 .625rem 0;
+    @apply --glomo-one-click-resume-box-row;
+  }
+
+  &__amount {
+    margin: 0 0 1.25rem 0;
+    @apply --glomo-one-click-resume-box-amount;
+  }
+
+  @apply --glomo-one-click-resume-box;
+}
+
+.change-button {
+  font-size: .875rem;
+	font-weight: bold;
+  color: var(--bbva-light-blue, #5bbeff);
+  @apply --glomo-one-click-resume-change-button;
+}
+
+.separator {
+  display: block;
+  margin: 0 0 1.25rem 0;
+  width: 40px;
+	height: 1px;
+	opacity: 0.2;
+  background: var(--bbva-white, #FFF);
+  @apply --glomo-one-click-resume-separator;
+}
+
+cells-product-item {
+  padding: 0;
+  background: transparent;
+  color: var(--bbva-white, #FFF);
+
+  --cells-product-item-item-name: unquote('{
+    margin-bottom: .625rem;
+    color: var(--bbva-white, #FFF);
+  }');
+
+  --cells-product-item-description-value: unquote('{
+    color: var(--bbva-white, #FFF);
+  }');
+
+  @apply --glomo-one-click-resume-product-item;
+}
+
+cells-atom-amount {
+  color: var(--bbva-white, #FFF) !important;
+  @apply --glomo-one-click-resume-amount;
+}
+
+cells-icon-message {
+  display: flex;
+  margin: 1.25rem 0 0 0;
+  color: var(--bbva-white, #FFF);
+  font-style: italic;
+  @apply --glomo-one-click-resume-icon-message;
+}

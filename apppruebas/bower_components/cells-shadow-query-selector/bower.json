@@ -1,0 +1,6 @@
+{
+  "name": "cells-shadow-query-selector",
+  "version": "1.0.8",
+  "description": "querySelector & querySelectorAll replacements for Shadow DOM",
+  "main": "cells-shadow-query-selector.html"
+}

@@ -1,0 +1,484 @@
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../cells-dm-global-apis-cards/cells-dm-global-apis-cards.html" />
+<link rel="import" href="../cells-product-format-behavior/cells-product-format-behavior.html" />
+<!--
+# glomo-card-summary-dm
+Data provider description.
+Example:
+```html
+<glomo-card-summary-dm></glomo-card-summary-dm>
+```
+It exposes `last-response`, `last-error` and `last-request` as properties that will be updated (as the case may be) once `generateRequest` is called.
+Also, It fires `response`, `error` and `request-in-progress`.
+@demo demo/index.html
+-->
+<dom-module id="glomo-card-summary-dm">
+  <template>
+    <cells-dm-global-apis-cards id="dm"
+      host="[[host]]"
+      card="{{_card}}"
+      cards-api-version="[[cardsApiVersion]]"></cells-dm-global-apis-cards>
+  </template>
+  <script>
+  /* global CellsBehaviors, bgdmjs */
+  (function() {
+
+    'use strict';
+
+    Polymer({
+
+      is: 'glomo-card-summary-dm',
+
+      behaviors: [
+        CellsBehaviors.CellsProductFormatBehavior
+      ],
+
+      properties: {
+        /**
+         * Host of request
+         */
+        host: String,
+        /**
+         * Card id
+         */
+        productId: {
+          type: String,
+          notify: true
+        },
+        /**
+         * Card detail
+         */
+        card: {
+          type: Object,
+          notify: true,
+          computed: '_parseCard(_card)'
+        },
+        /**
+         * Card detail
+         */
+        _card: Object,
+        /**
+         * More info of card
+         */
+        moreInfo: {
+          type: Object,
+          notify: true
+        },
+        /**
+         * CVV
+         */
+        cvv: {
+          type: Object,
+          notify: true
+        },
+        /**
+         * Short/Full method
+         */
+        short: {
+          type: Boolean,
+          value: true
+        },
+        /**
+         * Unmasked
+         */
+        isUnmasked: {
+          type: Boolean,
+          value: false
+        },
+        /**
+         * Card cached
+         */
+        cardCached: Boolean,
+        /**
+         * Card cached
+         */
+        generatePaymentMethods: Boolean,
+        /**
+         * Locale to format product
+         * @type {String}
+         */
+        locale: String,
+        /**
+         * Payment method
+         */
+        paymentMethods: {
+          type: Object,
+          notify: true
+        },
+        /**
+        * Cards API version
+        * @type {String}
+        */
+        cardsApiVersion: {
+          type: String,
+          value: '0'
+        },
+        /**
+         * Cards state
+         */
+        stateCards: {
+          type: Boolean,
+          value: false,
+          notify: true
+        }
+      },
+
+      listeners: {
+        'error-on-get-card': '_errorHandler',
+        'error-on-patch-card-activations': '_errorActivationsHandler',
+        'patch-activations-successful': '_patchActivationsHandler'
+      },
+
+      /**
+       * Get card
+       */
+      getProduct: function() {
+        this.isUnmasked = false;
+        this.set('cardCached', !!(this.card && Object.keys(this.card).length));
+        this[(this.short) ? '_getCardDetail' : 'getCardDetailFull']();
+      },
+
+      /**
+       * Get card unmasked
+       */
+      getProductUnmasked: function() {
+        this.isUnmasked = true;
+        this[(this.short) ? '_getCardDetail' : 'getCardDetailFull']();
+      },
+
+      patchCardActivations: function(payload) {
+        if (payload) {
+          var body = ['ON_OFF', 'ECOMMERCE_ACTIVATION', 'CASHWITHDRAWAL_ACTIVATION', 'FOREIGN_PURCHASES_ACTIVATION']
+            .map(function(type) {
+              return {
+                activationId: type,
+                isActive: payload.isActive
+              };
+            });
+          this.$.dm.patchCardActivations(this.productId, body);
+        }
+
+      },
+
+      /**
+       * Parse card
+       */
+      _parseCard: function(card) {
+        if (card.number.indexOf('*') === -1) {
+          card.number = this._formatProduct(card.number.replace(/ /g, ''), 'card');
+        }
+        if (!this.short) {
+          this.set('moreInfo', this._generateMoreInfo(card));
+        } else if (this.generatePaymentMethods) {
+          this.set('paymentMethods', this._generatePaymentMethods(card.paymentMethods));
+        } else {
+          card.overdraft = this._getOverdraftBalance(card);
+          this.fire('card-response-success', card);
+        }
+
+        if (this.isUnmasked) {
+          this.dispatchEvent(new CustomEvent('card-response-success-unmasked', {
+            bubbles: true,
+            composed: true
+          }));
+        }
+
+        return card;
+      },
+
+      /**
+       * Get card
+       */
+      getCardDetailFull: function() {
+        this.$.dm.getCard(this.productId, { expand: 'related-contracts,payment-methods,participants,conditions,security-data', unmasked: this.isUnmasked });
+      },
+
+      /**
+       * Get card detail
+       */
+      _getCardDetail: function() {
+        this.$.dm.getCard(this.productId, { expand: 'related-contracts,payment-methods,activations,blocks,security-data,rewards', unmasked: this.isUnmasked });
+      },
+
+      /**
+       * Checked otp request
+       */
+      signRequest: function(otp) {
+        this.$.dm.signRequest(otp);
+      },
+
+      /**
+       * Cancel otp request
+       */
+      cancelRequest: function() {
+        this.$.dm.cancelRequest();
+      },
+
+      /**
+       * Get card conditions
+       */
+      _getCardConditions: function() {
+        this.$.dm.getCard(this.productId, {
+          expand: 'conditions'
+        });
+      },
+
+      /**
+       * Get card participants
+       */
+      _getCardParticipants: function() {
+        this.$.dm.getCard(this.productId, {
+          expand: 'participants'
+        });
+      },
+
+      /**
+       * Get card payment-methods
+       */
+      getCardPaymentMethods: function(card) {
+        if (card) {
+          this.productId = card.id;
+          this._getCardPaymentMethods();
+        }
+      },
+
+      /**
+       * Get card payment-methods
+       */
+      _getCardPaymentMethods: function() {
+        this.$.dm.getCard(this.productId, {
+          expand: 'payment-methods'
+        });
+      },
+
+      /**
+       * Get card cvv
+       */
+      _getCvvCard: function() {
+        return this.$.dm.getCard(this.productId, {
+          expand: 'security-data'
+        });
+      },
+
+      /**
+       * Generate more info
+       */
+      _generateMoreInfo: function(card) {
+        var moreInfo = [
+          {
+            title: 'cells-product-more-info-general',
+            items: [
+              {
+                key: 'cells-product-more-info-card-name',
+                value: card.cardType.name
+              },
+              {
+                key: 'cells-product-more-info-description',
+                value: card.title.name
+              },
+              {
+                key: 'cells-product-more-info-card-number',
+                value: this._applyNumberMask(card.number, 'card'),
+                label: true,
+                payload: card.number
+              },
+              {
+                key: 'cells-product-more-info-expirated-date',
+                value: this._applyDateMask(card.expirationDate),
+                label: true,
+                isDate: true
+              }
+            ]
+          }
+        ];
+
+        if (card && card.relatedContracts && card.relatedContracts.length) {
+          moreInfo.push(this._generateRelatedContracts(card.relatedContracts));
+        }
+
+        if (card && card.participants && card.participants.length) {
+          moreInfo.push(this._generateParticipants(card.participants));
+        }
+        if (card && card.conditions && card.conditions.length) {
+          moreInfo.push(this._generateConditions(card.conditions));
+        }
+
+        return moreInfo;
+      },
+
+      /**
+       * Generate participants
+       */
+      _generateParticipants: function(participants) {
+        return {
+          title: 'cells-product-more-info-participants',
+          items: participants.map(function(participant) {
+            return {
+              key: 'cells-product-more-info-participant-' + participant.participantType.id.toLowerCase(),
+              value: participant.firstName + ' ' + participant.lastName
+            };
+          })
+        };
+      },
+
+      /**
+       * Generate related contracts
+       */
+      _generateRelatedContracts: function(relateds) {
+        return {
+          title: 'cells-product-more-info-related-contracts',
+          items: relateds.map(function(contract) {
+            return {
+              key: 'cells-product-more-info-related-contract-' + contract.product.id.toLowerCase(),
+              value: this._applyNumberMask(contract.number, 'account'),
+              label: true,
+              payload: contract.number
+            };
+          }, this)
+        };
+      },
+
+      /**
+       * Generate conditions
+       */
+      _generateConditions: function(conditions) {
+        return {
+          title: 'cells-product-more-info-conditions',
+          items: conditions.map(function(condition) {
+            return {
+              key: condition.name,
+              value: (condition.outcomes && condition.outcomes.length) ? condition.outcomes[0].feeAmount : undefined,
+              isAmount: true
+            };
+          })
+        };
+      },
+
+      _generatePaymentMethods: function(methods) {
+        var response = {};
+        var selected = methods.find(function(item) {
+          return item.id === 'FREE_AMOUNT_PAYMENT';
+        });
+
+        if (selected) {
+          response.date = selected.endDate;
+          response.totalDebtAmount = this._getTotalDebtAmount(selected.paymentAmounts);
+          response.amounts = selected.paymentAmounts.reduce(function(acc, amount) {
+            if (amount.id !== 'TOTAL_DEBT_AMOUNT') {
+              acc.push(this._generateAmount(amount));
+            }
+
+            return acc;
+          }.bind(this), []);
+        }
+
+        return response;
+      },
+
+      _getTotalDebtAmount: function(amounts) {
+        var response = {};
+        var total = amounts.find(function(amount) {
+          return amount.id === 'TOTAL_DEBT_AMOUNT';
+        });
+
+        if (total) {
+          response = this._generateAmount(total);
+        }
+
+        return response;
+      },
+
+      /**
+       * Generate generic payment method
+       */
+      _generateAmount: function(method) {
+        return {
+          id: method.id,
+          key: 'cells-card-summary-' + this._parseId(method.id),
+          name: method.name,
+          amount: method.values && method.values[0]
+        };
+      },
+
+      /**
+       * Parse id - TOTAL_DEBT_AMOUNT to total-debt-amount
+       */
+      _parseId: function(id) {
+        return id && id.toLowerCase().replace(/_/g, '-');
+      },
+
+      /**
+       * Change * in mask for · in card number
+       */
+      _applyNumberMask: function(number, type) {
+        number = number.replace(/ /g, '');
+
+        if (number.indexOf('*') !== -1) {
+          return number.replace('*', '• ');
+        } else {
+          return this._formatProduct(number, type);
+        }
+      },
+
+      /**
+       * Change * in mask for · in date
+       */
+      _applyDateMask: function(date) {
+        if (date.indexOf('*') !== -1) {
+          return date.replace(/\*/g, '•');
+        } else {
+          return date;
+        }
+      },
+      /**
+       * Handler patch activations
+       */
+      _patchActivationsHandler: function(response) {
+        var status = response && response.detail.find(function(activation) {
+          return activation.activationId === 'ON_OFF';
+        });
+        this.stateCards = true;
+        this.dispatchEvent(new CustomEvent(status.isActive ? 'card_switch_on' : 'card_switch_off', {
+          bubbles: true,
+          composed: true
+        }));
+      },
+
+      /**
+       * Error handle
+       */
+      _errorHandler: function(error) {
+        this.dispatchEvent(new CustomEvent(this.isUnmasked ? 'error-on-get-card-unmasked' : 'error-on-get-card-masked', {
+          bubbles: true,
+          composed: true
+        }));
+      },
+
+
+       /**
+       * Error activations handle
+       */
+      _errorActivationsHandler: function(error) {
+        this.dispatchEvent(new CustomEvent('error_on_patch_card_activations', {
+          bubbles: true,
+          composed: true
+        }));
+      },
+
+      /**
+       * Get if there is an overdraft
+       */
+      _getOverdraftBalance: function(card) {
+        var currentBalance;
+        var grantedBalance;
+        if (card.disposedBalance && card.grantedCredits) {
+          currentBalance = card.disposedBalance.currentBalances[0].amount;
+          grantedBalance = card.grantedCredits[0].amount;
+        }
+        return currentBalance > grantedBalance;
+      }
+
+    });
+  }());
+  </script>
+</dom-module>

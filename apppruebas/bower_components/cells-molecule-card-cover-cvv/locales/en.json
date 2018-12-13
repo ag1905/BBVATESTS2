@@ -1,0 +1,8 @@
+{
+  "cells-molecule-card-cover-cvv-view": "View CVV",  
+  "cells-molecule-card-cover-cvv-show-number": "Show data",
+  "cells-molecule-card-cover-cvv-copy-number": "Copy card number",
+  "cells-molecule-card-cover-cvv-more-info": "Card detail",
+  "cells-molecule-card-cover-cvv-copy-number-success": "The card number has been copied in the clipboard",
+  "cells-molecule-card-cover-cvv-copy-number-error": "Error"
+}

@@ -1,0 +1,152 @@
+import BgdmjsAnalyticsDataLayerApplication from './application';
+import BgdmjsAnalyticsDataLayerInternalCampaign from './internal-campaign';
+import BgdmjsAnalyticsDataLayerPage from './page';
+import BgdmjsAnalyticsDataLayerPrivacy from './privacy';
+import BgdmjsAnalyticsDataLayerProduct from './product';
+import BgdmjsAnalyticsDataLayerUser from './user';
+import dotProp from 'dot-prop';
+/**
+ * Representa la estructura de datos principal a usarse en la capa de datos
+ * creada para registrar información relacionada con marketing y analítica.
+ *
+ * Esta capa de datos no se corresponde a la idea de datos como almacén para una BBDD.
+ * Es decir, no hace referencia al almacenamiento de la información para el correcto
+ * funcionamiento de la página web sino que se corresponde más con el concepto de estructura
+ * de la información que la página web va a tratar, enfocado, en este caso, a ser usado por
+ * un TMS (Tag Manager System).
+ *
+ * Este Data Layer guardará variables, objetos, eventos, etc. Estos elementos estarán
+ * disponibles para la web, pero no son necesarios para el funcionamiento de la misma.
+ *
+ * Los datos que podemos almacenar en un Data Layer, pueden tener naturaleza dinámica y estática.
+ * - Estática : Forma en la que podemos almacenar los datos independientemente de la estructura
+ *              o diseño de la web. Los datos pueden cambiar dependiendo de la página donde se
+ *              encuentre, pero no son alterados por la interacción del usuario.
+ *              Si se produce un cambio en el diseño o la estructura de los datos (si se han
+ *              delimitado correctamente con identificadores en el DOM), no afecta a su funcionamiento.
+ *              Por ejemplo: dominio, nombre de la página, idioma...
+ * - Dinámica : Esta parte de los datos es la que es modificada por la interacción de usuario en tiempo
+ *              de ejecución, por las acciones y eventos que desencadena el usuario al navegar por la web.
+ *              Por ejemplo: el dato que introduce el usuario en el campo 'búsqueda' y se envía al pulsar
+ *              un botón.
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer
+ * @class     bgdmjs.analytics.dataLayer.DataLayer
+ * @see       {@link https://docs.google.com/document/d/1WIZJUShuSmR6k8nDsNqK_IkFX_RS4cz_ielnjYHO92U|Prueba de concepto}
+ * @see       {@link https://drive.google.com/file/d/0B1LHjxcYuyz1ckJQMThpYTBqM1U|Guía Completa Data Layer}
+ */
+export default class BgdmjsAnalyticsDataLayerDataLayer
+{
+    /**
+     * Información de la aplicación.
+     *
+     * @property application
+     * @type     {bgdmjs.analytics.dataLayer.Application|null}
+     */
+    application      = null;
+    /**
+     * Información de la campaña.
+     *
+     * @property internalCampaign
+     * @type     {bgdmjs.analytics.dataLayer.InternalCampaign|null}
+     */
+    internalCampaign = null;
+    /**
+     * Información de la página siendo vista por el usuario o a la cual se dirige.
+     *
+     * @property page
+     * @type     {bgdmjs.analytics.dataLayer.Page|null}
+     */
+    page             = null;
+    /**
+     * Tiene como objetivo distinguir el Data Layer entre los
+     * distintos entornos (desarrollo, calidad, producción...)
+     *
+     * Valores posibles:
+     * - aus : aceptación de usuario
+     * - de  : desarrollo
+     * - ei  : integrado
+     * - pro : producción
+     * - pre : preproducción
+     * - qa  : calidad
+     *
+     * @property pageInstanceID
+     * @type     {string}
+     */
+    pageInstanceID   = 'de';
+    /**
+     * Información privada del usuario.
+     *
+     * @property privacy
+     * @type     {bgdmjs.analytics.dataLayer.Privacy|null}
+     */
+    privacy          = null;
+    /**
+     * Información del producto seleccionado por el usuario.
+     *
+     * @property product
+     * @type     {bgdmjs.analytics.dataLayer.Product|null}
+     */
+    product          = null;
+    /**
+     * Información del usuario y su dispositivo.
+     *
+     * @property user
+     * @type     {bgdmjs.analytics.dataLayer.User|null}
+     */
+    user             = null;
+    /**
+     * Versión del Data Layer.
+     * Esta versión coincidirá con la con las versiones del Data Layer que se vayan actualizando e implementando
+     *
+     * @property versionDL
+     * @type     {string}
+     */
+    versionDL        = '__VERSION__';
+
+    /**
+     * Constructor de la clase.
+     *
+     * @method constructor
+     *
+     * @constructor
+     */
+    constructor()
+    {
+        this.application      = new BgdmjsAnalyticsDataLayerApplication();
+        this.internalCampaign = new BgdmjsAnalyticsDataLayerInternalCampaign();
+        this.page             = new BgdmjsAnalyticsDataLayerPage();
+        this.privacy          = new BgdmjsAnalyticsDataLayerPrivacy();
+        this.product          = new BgdmjsAnalyticsDataLayerProduct();
+        this.user             = new BgdmjsAnalyticsDataLayerUser();
+    }
+
+    /**
+     * Devuelve el valor correspondiente a la ruta especificada.
+     *
+     * @method get
+     *
+     * @param {String} path     Ruta del valor a obtener usando `.` como separador.
+     * @param {*}      defValue Valor a retornar si el valor de la ruta es `undefined`.
+     *
+     * @return {*} Value of path.
+     */
+    get(path, defValue)
+    {
+        return dotProp.get(this, path, defValue);
+    }
+
+    /**
+     * Asigna el valor a la ruta especificada.
+     *
+     * @method set
+     *
+     * @param {String} path  Ruta del valor a asignar usando `.` como separador.
+     * @param {*}      value Valor a asignar.
+     */
+    set(path, value)
+    {
+        dotProp.set(this, path, value);
+    }
+};

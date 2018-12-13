@@ -1,0 +1,26 @@
+{
+  "name": "cells-sections-slider",
+  "version": "2.0.0",
+  "description": "allows to do slide animation: vertical and horizontal",
+  "keywords": [
+    "slide",
+    "animation",
+    "vertical",
+    "horizontal",
+    "invest"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.0",
+    "neon-animation": "PolymerElements/neon-animation#^1.2.4"
+  },
+  "devDependencies": {
+    "cells-sass": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-sass.git#^1.0.15",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+    "invest-ui-theme": "ssh://git@globaldevtools.bbva.com:7999/ct/invest-ui-theme.git#^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0"
+  },
+  "main": [
+    "cells-sections-slider.html"
+  ]
+}

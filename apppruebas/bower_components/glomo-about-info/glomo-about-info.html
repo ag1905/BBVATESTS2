@@ -1,0 +1,51 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-key-values/cells-key-values.html">
+<link rel="import" href="../cells-skeleton-custom/cells-skeleton-custom.html">
+<link rel="import" href="../cells-skeleton-item/cells-skeleton-item.html">
+<link rel="import" href="glomo-about-info-styles.html">
+<!--
+`<glomo-about-info>` description.
+
+Example:
+
+```html
+<glomo-about-info></glomo-about-info>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --glomo-about-info  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-about-info">
+  <template>
+    <style include="glomo-about-info-styles glomo-about-info-shared-styles"></style>
+      <div class="about-info__header">
+        <img src$="[[img]]" alt="bbva logo">
+      </div>
+      <div class="about-info__content">
+        <ul class="about-info__content--list">
+          <template is="dom-repeat" items="[[deviceInfo]]">
+            <li>
+              <cells-key-values
+                key="[[t(item.key)]]"
+                value="[[item.value]]">
+              </cells-key-values>
+            </li>
+          </template>
+        </ul>
+      </div>
+  </template>
+  <script src="glomo-about-info.js"></script>
+</dom-module>

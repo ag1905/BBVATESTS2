@@ -1,0 +1,103 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-product-item/cells-product-item.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="glomo-one-click-resume-styles.html">
+<!--
+`<glomo-one-click-resume>` description.
+
+Example:
+
+```html
+<glomo-one-click-resume></glomo-one-click-resume>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --glomo-one-click-resume  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-one-click-resume">
+  <template>
+    <style include="glomo-one-click-resume-styles glomo-one-click-resume-shared-styles"></style>
+    <div class="container">
+      <div class="header">
+        <span class="header__title">[[t(title)]]</span>
+        <cells-st-button class="transparent" hidden$="[[hideChangeButton]]" on-tap="_onChange">
+          <button class="change-button">[[t('glomo-one-click-resume-change-button')]]</button>
+        </cells-st-button>
+      </div>
+      <template is="dom-if" if="[[!hideProduct]]">
+        <div class="box">
+          <cells-product-item
+            name="[[product.name]]"
+            description="[[product.description]]"
+            local-currency="[[localCurrency]]"
+            img-src="[[product.imgSrc]]"
+            img-width="40"
+            img-height="28"
+            visible-chars="[[visibleChars]]"
+            default-image="[[defaultImage]]"></cells-product-item>
+        </div>
+        <div class="separator"></div>
+      </template>
+      <div class="box">
+        <span class="box__label box__label--title">[[t('glomo-one-click-resume-label-amount')]]</span>
+        <cells-atom-amount class="amount-huge"
+          amount="[[response.requestedAmount.amount]]"
+          currency-code="[[response.requestedAmount.currency]]"
+          local-currency="[[localCurrency]]"
+          decimals-hidden="[[decimalsHidden]]"></cells-atom-amount>
+      </div>
+      <div class="separator"></div>
+      <div class="box box--inherit">
+        <span class="box__label box__label--title">[[t('glomo-one-click-resume-payment-month-amount')]]</span>
+        <cells-atom-amount class="box__amount amount-large"
+          amount="[[response.installmentAmount.amount]]"
+          currency-code="[[response.installmentAmount.currency]]"
+          local-currency="[[localCurrency]]"
+          decimals-hidden="[[decimalsHidden]]"></cells-atom-amount>
+          <template is="dom-if" if="[[_checkedKey(response.insuranceInfo)]]">
+            <div class="box__row">
+              <span class="box__label">[[t('glomo-one-click-resume-insurance-info')]]</span>
+              <cells-atom-amount
+                amount="[[response.insuranceInfo.amount.amount]]"
+                currency-code="[[response.insuranceInfo.amount.currency]]"
+                local-currency="[[localCurrency]]"></cells-atom-amount>
+            </div>
+          </template>
+          <template is="dom-if" if="[[_checkedKey(response.rates.monthly)]]">
+            <div class="box__row">
+              <span class="box__label">[[t('glomo-one-click-resume-month-tax')]]</span>
+              <span>[[response.rates.monthly.percentage]] %</span>
+            </div>
+          </template>
+          <div class="box__row">
+            <span class="box__label">[[t('glomo-one-click-resume-term')]]</span>
+            <span>[[response.terms.number]] [[t('glomo-one-click-resume-months')]]</span>
+          </div>
+          <div class="box__row" hidden$="[[hideMessageTerm]]">
+            <cells-icon-message class="notification inline"
+              icon="coronita:info"
+              icon-size="18"
+              message="[[_getNotification(response)]]"></cells-icon-message>
+          </div>
+      </div>
+
+    </div>
+  </template>
+  <script src="glomo-one-click-resume.js"></script>
+</dom-module>

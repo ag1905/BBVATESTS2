@@ -1,0 +1,91 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../cells-template-animation-behavior/cells-template-animation-behavior.html"/>
+<link rel="import" href="../paper-scroll-header-panel/paper-scroll-header-panel.html"/>
+<link rel="import" href="../iron-collapse/iron-collapse.html"/>
+<link rel="import" href="glomo-opx-template-styles.html"/>
+
+<!--
+# glomo-opx-template
+
+Page template for GloMo OPX, based on [cells-template-coronita](https://globaldevtools.bbva.com/bitbucket/projects/TP/repos/cells-template-coronita/browse)
+
+Example:
+```html
+<glomo-opx-template>
+  <div data-select="app__header">
+    <p>template main header</p>
+  </div>
+  <div data-select="app__secondary__header">
+    <p>template secondary header</p>
+  </div>
+  <div data-select="app__main">
+    <p>main zone</p>
+    <div data-select="app__confirm">
+      <p>confirmation zone</p>
+    </div>
+  </div>
+  <div data-select="app__transactional">
+    <p>transactional zone</p>
+  </div>
+</glomo-opx-template>
+```
+
+## Dependencies
+
+* [iron-collapse](https://github.com/PolymerElements/iron-collapse)
+* [paper-scroll-header-panel](https://github.com/PolymerElements/paper-scroll-header-panel)
+* [cells-template-animation-behavior](https://globaldevtools.bbva.com/bitbucket/projects/CBH/repos/cells-template-animation-behavior/browse)
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --glomo-opx-template-scope      | scope description | default value  |
+| --glomo-opx-template  | empty mixin     | {}             |
+| --glomo-opx-template-state-active  | empty mixin     | {}             |
+| --glomo-opx-template-section  | empty mixin     | {}             |
+| --glomo-opx-template-main-header  | empty mixin     | {}             |
+| --glomo-opx-template-secondary-header  | empty mixin     | {}             |
+| --glomo-opx-template-app-header  | empty mixin     | {}             |
+| --glomo-opx-template-main-header-off-main-header  | empty mixin     | {}             |
+| --glomo-opx-template-main-header-off-app-header  | empty mixin     | {}             |
+| --glomo-opx-template-main-header-off  | empty mixin     | {}             |
+| --glomo-opx-template-seconday-header-on-app-main-header  | empty mixin     | {}             |
+| --glomo-opx-template-seconday-header-on-app-secondary-header  | empty mixin     | {}             |
+| --glomo-opx-template-seconday-header-on-app-header  | empty mixin     | {}             |
+| --glomo-opx-template-seconday-header-on  | empty mixin     | {}             |
+| --glomo-opx-template-main  | empty mixin     | {}             |
+| --glomo-opx-template-transactional  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-opx-template">
+  <template>
+    <style include="glomo-opx-template-styles glomo-opx-template-shared-styles cells-template-animation-behavior-styles"></style>
+
+    <paper-scroll-header-panel header-height="[[headerHeight]]" fixed="true" class="app__section" id="app__section" main on-content-scroll="_onContentScroll">
+      <header class="app__header app__main__header paper-header" id="app__header">
+        <content select="[data-select='app__header']"></content>
+      </header>
+      <header class="app__header app__secondary__header paper-header" id="app__secondary__header" hidden="[[!doubleHeader]]">
+        <content select="[data-select='app__secondary__header']"></content>
+      </header>
+      <div class="app__main app__scroller-list" id="app__main">
+        <content select="[data-select=app__main]"></content>
+      </div>
+      <iron-collapse class="app__confirm" id="app__confirm" opened="{{collapseOpened}}">
+        <content select="[data-select=app__confirm]"></content>
+      </iron-collapse>
+    </paper-scroll-header-panel>
+
+    <div class="app__overlay" id="app__overlay">
+      <content select="[data-select=app__overlay]"></content>
+    </div>
+    <div class="app__transactional" id="app__transactional">
+      <content select="[data-select=app__transactional]"></content>
+    </div>
+  </template>
+  <script src="glomo-opx-template.js"></script>
+</dom-module>

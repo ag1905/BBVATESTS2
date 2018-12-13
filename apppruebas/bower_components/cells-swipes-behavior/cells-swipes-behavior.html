@@ -1,0 +1,52 @@
+<script>
+  /**
+   * A behavior that allows mutual between open state of swipes or
+   * close them all on vertical scrolling.
+   * @polymerBehavior Polymer.ProductsBehavior
+   */
+  Polymer.SwipesBehavior = {
+
+    /**
+    * On scroll reset all swipes
+    * @method handleSwipesOnScroll
+    * @param  {Object} Scroll event payload
+    */
+    handleSwipesOnScroll: function(payload) {
+      this.debounce('close-swipes', this._closeAllSwipes, 200);
+    },
+
+    /**
+    * Closes all swipes except the one that just has been opened
+    * @method _closeOtherSwipes
+    * @param  {Object} swipe
+    */
+    _closeOtherSwipes: function(ev) {
+      this._closeSwipes(ev.target);
+    },
+
+    /**
+    * Closes all swipes
+    * @method _closeAllSwipes
+    * @param  {Object} swipe
+    */
+    _closeAllSwipes: function() {
+      this._closeSwipes();
+    },
+
+    /**
+    * Closes all swipes or all other swipes depending on
+    * if openedSwipe is falsy or not
+    * @method _closeSwipes
+    * @param  {Object} openedSwipe
+    */
+    _closeSwipes: function(openedSwipe) {
+      var swipes = this.querySelectorAll('cells-left-swipe-action[open]');
+      var length = swipes.length;
+
+      for (var i = 0; i < length; i++) {
+        swipes[i].open = swipes[i] === openedSwipe;
+      }
+    }
+
+  };
+</script>

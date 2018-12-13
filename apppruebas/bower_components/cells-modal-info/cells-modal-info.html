@@ -1,0 +1,102 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-modal-info-styles.html">
+
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-alert-box/cells-alert-box.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+
+<!--
+# cells-modal-info
+
+Modal Info with image, paragrah and notification message.
+
+Example:
+
+```html
+<cells-modal-info id="myEl"
+  full-height
+  opened
+  config="[[config]]"></cells-modal-info>
+```
+
+## Docs
+
+Config options:
+
+```
+{
+  header: 'cells-modal-info-error-bill-payment',
+  image: 'data:image/png;base64',
+  title: 'cells-modal-info-error-error',
+  text: 'cells-modal-info-error-operation-failed',
+  btns: {
+    primary: {
+      text: 'cells-modal-info-error-retry',
+      info: ''
+    },
+    secondary: {
+      text: 'cells-modal-info-error-back-to-summary',
+      info: ''
+    }
+  },
+  notification: {
+    type: "info",
+    icon: "coronita:info",
+    iconLabel: null,
+    iconSize: 26,
+    message: "cells-modal-info-message"
+  }
+}
+````
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-modal-info-scope      | scope description | default value  |
+| --cells-modal-info | empty mixin    | {}  |
+| --cells-modal-info-header-dark | empty mixin    | {}  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-modal-info">
+  <template>
+    <style include="cells-modal-info-styles cells-modal-info-shared-styles"></style>
+    <cells-alert-box
+      id="modal"
+      full-height="[[fullHeight]]"
+      opened="{{opened}}"
+      hero-image="[[config.image]]"
+      title="[[config.header]]"
+      accept-button="[[config.btns.primary.text]]"
+      accept-button-info="[[config.btns.primary.info]]"
+      cancel-button="[[config.btns.secondary.text]]"
+      cancel-button-info="[[config.btns.secondary.info]]"
+      primary-button-class="[[config.btns.primary.class]]"
+      icon-only-full-height
+      close-on-primary-button
+      close-on-secondary-button
+      disable-primary-button="[[disablePrimaryButton]]">
+      <slot name="header"></slot>
+      <h2 hidden$="[[_checked(config.title)]]">[[t(config.title)]]</h2>
+      <p hidden$="[[_checked(config.text)]]" inner-h-t-m-l=[[t(config.text)]]>[[t(config.text)]]</p>
+      <p hidden$="[[_checked(config.innerText)]]" inner-h-t-m-l=[[t(config.innerText)]]>[[t(config.innerText)]]</p>
+      <cells-icon-message class$="[[config.notification.class]]" hidden$="[[_checked(config.notification)]]"
+        type='[[config.notification.type]]'
+        icon='[[config.notification.icon]]'
+        icon-label='[[config.notification.iconLabel]]'
+        icon-size="[[config.notification.iconSize]]"
+        message="[[t(config.notification.message)]]">
+          <h2 hidden$="[[_checked(config.notification.heading)]]" class="heading">
+            [[t(config.notification.heading)]]
+          </h2>
+          <p hidden$="[[_checked(config.notification.alternativeMessage)]]" 
+            inner-h-t-m-l=[[t(config.notification.alternativeMessage)]]></p>
+      </cells-icon-message>
+      <slot name="footer"></slot>
+    </cells-alert-box>
+  </template>
+  <script src="cells-modal-info.js"></script>
+</dom-module>

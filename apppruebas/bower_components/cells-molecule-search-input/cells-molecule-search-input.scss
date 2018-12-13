@@ -1,0 +1,97 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  background-color: var(--bbva-navy, #072146);
+  @apply --cells-molecule-search-input;
+}
+
+div.input {
+  position: relative;
+  flex: 1;
+  @apply --cells-molecule-search-input-wrapper;
+}
+
+input {
+  width: 100%;
+  height: 50px;
+  padding: 0 55px 0 20px;
+  margin: 0;
+  font-size: var(--cells-text-size-16);
+  border: none;
+  border-bottom: 1px solid #fff;
+  outline: none;
+  color: var(--bbva-white, #fff);
+  background: var(--bbva-core-blue, #004481);
+  box-sizing: border-box;  
+  border-radius: 0;
+  box-shadow: none;
+  @apply --cells-fontDefaultLight;
+  @apply --cells-molecule-search-input-input;
+  &::placeholder {
+    color: var(--bbva-white, #fff);
+    @apply --cells-molecule-search-input-input-placeholder;
+  }
+  &:focus {
+    outline: none;
+    @apply --cells-molecule-search-input-input-focus;
+  }
+  &[disabled] {
+    cursor: pointer;
+    opacity: 1;
+    @apply --cells-molecule-search-input-input-disabled;
+  }
+}
+
+button {
+  height: 50px;
+  width: 50px;
+  margin: 0;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  &.close {
+    position: absolute;
+    top: 1px;
+    right: 0;
+    height: 48px;
+    width: 48px;
+    background: var(--bbva-core-blue, #004481);
+    @apply --cells-molecule-search-input-button-primary;
+  }
+
+  &.secondary {
+    background: var(--bbva-dark-medium-blue, #1973B8);
+    @apply --cells-molecule-search-input-button-secondary;
+  }
+
+  cells-atom-icon {
+    color: var(--bbva-white, #fff);
+    @apply --cells-molecule-search-input-icon;
+  }
+  @apply --cells-molecule-search-input-button;
+}
+
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+button:active { @apply --cells-global-active; }

@@ -1,0 +1,81 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-map/cells-map.html">
+<link rel="import" href="../cells-collapsible-list/cells-collapsible-list.html">
+<link rel="import" href="../cells-operations-list/cells-operations-list.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="glomo-atm-locator-styles.html">
+<!--
+`<glomo-atm-locator>` description.
+
+Example:
+
+```html
+<glomo-atm-locator></glomo-atm-locator>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --glomo-atm-locator  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-atm-locator">
+  <template>
+    <style include="glomo-atm-locator-styles glomo-atm-locator-shared-styles"></style>
+    <template is="dom-if" if="{{showSearchButton}}">
+      <cells-st-button class="link search-area" on-click="hideSearchButton">
+        <button>{{t("glomo-atm-locator-search-button")}}</button>
+      </cells-st-button>
+    </template>
+    <cells-map id="atmMap"
+      location="{{location}}"
+      location-icon="[[_getMarkerIcon('me')]]"
+      markers="[[_computeParsedMarkers(markers)]]"
+      zoom="[[zoom]]"
+      disable-zoom="[[disableZoom]]"
+      map-type="[[mapType]]"
+      max-zoom="[[maxZoom]]"
+      min-zoom="[[minZoom]]"
+      lang="[[lang]]"
+      additional-map-options="[[additionalMapOptions]]"
+      styles="[[mapStyles]]"
+      api-key="[[apiKey]]"
+      selected="{{selected}}"
+      enable-display-pois="[[enableDisplayPois]]"></cells-map>
+    
+    <cells-collapsible-list id="list"
+      items="[[markers]]" 
+      is-hidden="[[_toggleCollapsible(selectedActive, hideList)]]"
+      collapsed="{{collapsedList}}"
+      half-collapsed="{{halfList}}"
+      close-list-btn="[[t('glomo-atm-locator-show-map')]]"></cells-collapsible-list>
+
+    <paper-card id="detail" class$="detail [[_checkedDetail(selectedActive)]]">
+      <button class="close">
+        <cells-atom-icon class="icon-size-24"
+          icon="coronita:close"
+          on-click="closeDetail"></cells-atom-icon>
+      </button>
+      <div class="detail__body" on-click="notifyOnClickDetail">
+        <span class="main">[[selected.main]]</span>
+        <span class="secondary">[[selected.secondary]]</span>
+      </div>
+      <cells-operations-list layout="review"
+        on-operation-click="_onClickOperation"
+        operations="[[_checkedOperations(selected.operations)]]"></cells-operations-list>
+    </paper-card>
+  </template>
+  <script src="glomo-atm-locator.js"></script>
+</dom-module>

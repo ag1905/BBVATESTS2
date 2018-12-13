@@ -1,0 +1,81 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href="../cells-atom-date/cells-atom-date.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../iron-collapse/iron-collapse.html"/>
+<link rel="import" href="cells-oc-banner-styles.html">
+<script src="../moment/min/moment-with-locales.min.js"></script>
+<!--
+`<cells-oc-banner>` shows a banner with a campaign info.
+
+Example:
+
+```html
+<cells-oc-banner></cells-oc-banner>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-oc-banner  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-oc-banner">
+  <template>
+    <style include="cells-oc-banner-styles cells-oc-banner-shared-styles"></style>
+    <slot></slot>
+
+    <iron-collapse id="collapse" no-animation="[[!animated]]">
+      <div class$="banner [[bigClass]]" id="banner">
+        <div  on-click="_navigateFromAction" class="banner-content">
+          <div class="banner__img" id="banner__img">
+            <template is="dom-if" if="{{_hasImage}}">
+              <img src="[[image.url]]" alt="[[image.alt]]">
+            </template>
+          </div>
+          <div class="banner__info" >
+            <template is="dom-if" if="[[!_daysLeft]]">
+              <p class="banner__info__date">[[daysLeftMessage]]&nbsp; <cells-atom-date date="[[campaign.endDate]]" format="[[formatDate]]"></cells-atom-date></p>
+            </template>
+            <template is="dom-if" if="[[_daysLeft]]">
+              <p class="banner__info__date">[[daysLeftMessage]]&nbsp;</p>
+            </template>
+            <p class="banner__info__description">[[campaign.description]]</p>
+            <span class="banner__info__amount__description">
+              [[campaign.amount.description]] 
+              <cells-atom-amount class="amount-medium"
+                amount="[[campaign.amount.amount]]"
+                currency-code="[[campaign.amount.currency]]"
+                local-currency="[[localCurrency]]"></cells-atom-amount>
+            </span>
+            <span class="banner__info__iwant">[[t('cells-oc-banner-iwant', '¡Me interesa!')]]</span>
+          </div>
+        </div>
+        <template is="dom-if" if="[[!noClose]]">
+          <div class="banner__close">
+            <cells-st-button class="link transparent">
+              <button aria-label$="[[t(labelClose,'Close')]]" on-click="closeBanner">
+                <cells-atom-icon
+                  icon="coronita:close"
+                  class="close-icon icon-size-24">
+                </cells-atom-icon>
+              </button>
+            </cells-st-button>
+          </div>
+        </template>
+      </div>
+    </iron-collapse>
+  </template>
+  <script src="cells-oc-banner.js"></script>
+</dom-module>

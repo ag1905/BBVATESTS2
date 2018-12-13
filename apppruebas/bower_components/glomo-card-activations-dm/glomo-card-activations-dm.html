@@ -1,0 +1,196 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-dm-global-apis-cards/cells-dm-global-apis-cards.html"/>
+
+<!--
+`<glomo-card-activations-dm>` description.
+
+Example:
+
+```html
+<glomo-card-activations-dm></glomo-card-activations-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-card-activations-dm">
+<template>
+  <cells-dm-global-apis-cards id="dm"
+    host="[[host]]"
+    card="{{card}}"
+    cards-api-version="[[cardsApiVersion]]">
+  </cells-dm-global-apis-cards>
+</template>
+<script>
+  /* global CellsBehaviors, bgdmjs */
+  (function() {
+
+    'use strict';
+
+    Polymer({
+
+      is: 'glomo-card-activations-dm',
+      properties: {
+        /**
+          * Host of request
+          */
+        host: String,
+        /**
+          * Card id
+          */
+        productId: {
+          type: String,
+          notify: true
+        },
+        /**
+          * Card detail
+          */
+        card: {
+          type: Object,
+          observer: '_parseCardActivations'
+        },
+        /**
+        * Cards API version
+        * @type {String}
+        */
+        cardsApiVersion: {
+          type: String,
+          value: '0'
+        },
+        /**
+        * Activations object
+        * @type {Object}
+        */
+        activations: {
+          type: Object,
+          value: {},
+          notify: true
+        },
+        /**
+        * State Cards
+        * @type {Boolean}
+        */
+        stateCards: {
+          type: Boolean,
+          notify: true,
+          value: false
+        }
+      },
+
+      listeners: {
+        'patch-activations-successful': '_patchActivationsHandler'
+      },
+      /**
+      * Get card activations
+      */
+      getCardActivations: function() {
+        if (this.productId) {
+          this.dispatchEvent(new CustomEvent('open-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+          this.$.dm.getCard(this.productId, {
+            expand: 'activations'
+          });
+        }
+      },
+      /**
+      * Parse card activations
+      */
+      _parseCardActivations: function(card) {
+        if (card && card.activations && card.activations.length > 0) {
+          var activations = card.activations.reduce(function(acc, activation) {
+            if (activation.activationId === 'ON_OFF') {
+              acc.main = {
+                id: activation.activationId,
+                isActive: activation.isActive,
+                name: 'glomo-product-activations-card-' + activation.activationId.toLowerCase()
+              };
+            } else {
+              acc.list.push({
+                id: activation.activationId,
+                isActive: activation.isActive,
+                name: 'glomo-product-activations-card-' + activation.activationId.toLowerCase()
+              });
+            }
+            return acc;
+          }, {main: {}, list: []});
+          this.dispatchEvent(new CustomEvent('close-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+        }
+        this.set('activations', activations);
+      },
+      /**
+      * Patch card activations
+      */
+      patchCardActivations: function(payload) {
+        if (payload && this.productId) {
+          var mainActivation = payload && payload.main;
+          payload.list.push(mainActivation);
+          var body = payload.list.map(function(activation) {
+            return {
+              activationId: activation.id,
+              isActive: activation.isActive
+            };
+          });
+          this.$.dm.patchCardActivations(this.productId, body);
+        }
+      },
+      /**
+      * Patch activations handler
+      */
+      _patchActivationsHandler: function(payload) {
+        var message = '';
+        if (payload && payload.detail) {
+          message = this._setSuccessfulMessage(payload);
+          this.stateCards = true;
+
+          this.dispatchEvent(new CustomEvent('close-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+
+          this.dispatchEvent(new CustomEvent('glomo-card-activations-set-message-successful', {
+            bubbles: true,
+            composed: true,
+            detail: message
+          }));
+
+          this.dispatchEvent(new CustomEvent('glomo-card-patch-activations-successful', {
+            bubbles: true,
+            composed: true,
+            detail: {productId: this.productId}
+          }));
+        }
+      },
+      /**
+      * Set succesful message
+      */
+      _setSuccessfulMessage: function(payload) {
+        var message = '';
+        var mainActivation = payload.detail.find(function(activation) {
+          return activation.activationId === 'ON_OFF';
+        });
+        if (!mainActivation.isActive) {
+          message = 'cells-card-detail-switch-off';
+        } else {
+          var partiallyOn = payload.detail.some(function(activation, _, array) {
+            return array[0].isActive !== activation.isActive;
+          });
+          message = partiallyOn ? 'cells-card-detail-partially-on' : 'cells-card-detail-switch-on';
+        }
+        return message;
+      },
+      /**
+        * Checked otp request
+        */
+      signRequest: function(otp) {
+        this.$.dm.signRequest(otp);
+      },
+
+    });
+  }());
+
+</script>
+</dom-module>

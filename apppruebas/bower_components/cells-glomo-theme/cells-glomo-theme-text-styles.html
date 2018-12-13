@@ -1,0 +1,244 @@
+<custom-style>
+  <style is="custom-style">
+    :root, html {
+    --cells-font-smoothing: {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    };
+
+    /* ==========================================================================
+     Benton: Font Weight and styles
+     ========================================================================== */
+
+      /**
+       * --cells-fontDefault and --cells-fontDefaultNormal -> Benton Sans Book (400)
+       */
+
+       /* Book or Regular */
+       --cells-fontDefaultNormal: {
+         font-weight: 400;
+       };
+
+       /* Book or Regular Italic */
+       --cells-fontDefaultNormalItalic: {
+         font-weight: 400;
+         font-style: italic;
+       };
+
+       /* Light */
+       --cells-fontDefaultLight: {
+         font-weight: 300;
+       };
+
+       /* Medium */
+       --cells-fontDefaultMedium: {
+         font-weight: 500;
+         @apply --cells-font-smoothing;
+       };
+
+       /* Medium Italic */
+       --cells-fontDefaultMediumItalic: {
+         font-weight: 500;
+         font-style: italic;
+         @apply --cells-font-smoothing;
+       };
+
+       /* Bold */
+       --cells-fontDefaultBold: {
+         font-weight: 700;
+         @apply --cells-font-smoothing;
+       };
+
+       /**
+        * ------------------------------------------------------
+        * @deprecated mixins
+        * Will be removed in the next major release.
+        * Light Italic is fake (missing font).
+        * Semibold (missing font) is not used any more and Medium is used instead.
+        * ------------------------------------------------------
+        */
+
+       /* Light */
+       --cells-fontDefaultLightItalic: {
+         @apply --cells-fontDefaultLight;
+         font-style: italic;
+       };
+
+       /* Semibold */
+       --cells-fontDefaultSemibold: {
+         @apply --cells-fontDefaultMedium;
+       };
+
+       /* Semibold Italic */
+       --cells-fontDefaultSemiboldItalic: {
+         @apply --cells-fontDefaultMediumItalic;
+       };
+
+
+  /* ==========================================================================
+     Text Styles
+     ========================================================================== */
+
+  /*
+     Headings
+     ========================================================================== */
+      --application-heading: {
+        @apply --cells-fontDefault;
+        font-size: var(--cells-text-size-18);
+      };
+
+      --secondary-heading: {
+        @apply --cells-fontDefault;
+        font-size: var(--cells-text-size-18);
+        font-weight: normal; /* this font-weight is needed for headings with default font-weight bold */
+        color: var(--bbva-medium-blue, #237ABA); /* REVIEW: this heading is blue because is a link */
+      };
+
+      --tertiary-heading: {
+        @apply --cells-fontDefault;
+        font-size: var(--cells-text-size-16);
+        color: var(--bbva-600, #121212);
+      };
+
+      --small-heading: {
+        @apply --cells-fontDefaultBold;
+        font-size: var(--cells-text-size-13);
+        text-transform: uppercase;
+        color: var(--bbva-500, #666);
+      };
+
+
+  /*
+     TO BE DEPRECATED: Body Copy (paragraphs, contextual alerts, etc.)
+     ========================================================================== */
+      --body-copy: {
+        @apply --cells-fontDefaultLight;
+        font-size: var(--cells-text-size-16);
+        line-height: 1.29;
+      };
+
+  /*
+     Sidebar links
+     ========================================================================== */
+      --sidebar-links: {
+        display: block;
+        padding: 0.9375rem; /* 15px */
+        transition: background .2s ease-in-out;
+        white-space: nowrap;
+        @apply --cells-fontDefaultMedium;
+        cursor: pointer;
+      };
+
+      --sidebar-icons: {
+        margin-right: 1.25rem; /* 20px */
+      };
+
+  /*
+     Account / IBAN
+     ========================================================================== */
+      --iban: {
+        @apply --cells-fontDefaultNormalItalic;
+        font-size: var(--cells-text-size-12);
+        color: var(--bbva-600, #121212);
+      };
+
+
+  /*
+     Dates
+     ========================================================================== */
+      --date: {
+        @apply --cells-fontDefaultMediumItalic;
+        font-size: var(--cells-text-size-12);
+        line-height: 1;
+        color: var(--bbva-gold, #d8be75);
+      };
+
+  /*
+     Product
+     ========================================================================== */
+      --product-title: {
+        @apply --tertiary-heading;
+        /*line-height: 1.11;*/
+      };
+
+      --product-description: {
+        @apply --cells-fontDefaultLight;
+        font-size: var(--cells-text-size-13);
+        color: var(--bbva-600, #121212);
+        /*line-height: 1.43;*/
+      };
+
+  /*
+
+     Molecule mask
+     ========================================================================== */
+      --cells-molecule-mask: {
+        @apply --cells-fontDefaultNormalItalic;
+        color: var(--bbva-600, #121212);
+      };
+
+  /*
+     Amount
+     ========================================================================== */
+      --amount-decimal-big: {
+        @apply --cells-fontDefaultNormal;
+        @apply --cells-fontDefaultSemibold;
+        font-size: var(--cells-text-size-40);
+      };
+
+      --amount-decimal: {
+        @apply --cells-fontDefaultNormal;
+        font-size: var(--cells-text-size-24);
+      };
+
+      --amount-decimal-small: {
+        @apply --cells-fontDefaultNormal;
+        font-size: var(--cells-text-size-18);
+      };
+
+      --amount-fractional: {
+        @apply --cells-fontDefaultNormal;
+        font-size: var(--cells-text-size-13);
+        vertical-align: top;
+        line-height: 1.5;
+        margin-left: 3px;
+        margin-right: 0;
+        word-spacing: -3px;
+      };
+
+      --amount-fractional-small: {
+        @apply --cells-fontDefaultNormal;
+        font-size: var(--cells-text-size-14);
+        vertical-align: top;
+        line-height: 1.4;
+        margin-left: 3px;
+        margin-right: 0;
+        word-spacing: -2px;
+      };
+
+      --amount-separator: {
+        @apply --sr-only;
+      };
+
+      --amount-label: {
+        @apply --cells-fontDefaultMedium;
+        font-size: var(--cells-text-size-11);
+        color: var(--bbva-400, #BDBDBD);
+      };
+
+      --amount-info: {
+        @apply --cells-fontDefault;
+        font-size: var(--cells-text-size-11);
+        text-transform: uppercase;
+        color: var(--bbva-dark-teal, #02A5A5);
+      };
+
+      /* TODO: rename to amount-total */
+      --group-total: {
+        @apply --cells-fontDefaultBold;
+        font-size: var(--cells-text-size-13);
+        color: var(--bbva-400, #BDBDBD);
+      };
+    }
+  </style>
+</custom-style>

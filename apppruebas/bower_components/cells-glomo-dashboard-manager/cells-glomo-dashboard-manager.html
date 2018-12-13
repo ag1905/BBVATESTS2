@@ -1,0 +1,288 @@
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../cells-moment-import/cells-moment-import.html">
+
+<!--
+# cells-glomo-dashboard-manager
+
+## Example:
+
+```html
+<cells-glomo-dashboard-manager></cells-glomo-dashboard-manager>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="cells-glomo-dashboard-manager">
+  <template></template>
+  <script>
+    (function(Polymer) {
+      'use strict';
+
+      Polymer({
+
+        is: 'cells-glomo-dashboard-manager',
+
+        properties: {
+          /**
+           * User Info
+           * @type {Object}
+           */
+          userInfo: Object,
+          /**
+           * Delay on nottfy event if dashboard loaded
+           * @type {Number|String}
+           */
+          delay: Number,
+          /**
+           * Products
+           * @type {Array}
+           */
+          products: Array,
+          /**
+           * Started component
+           * @type {Boolean}
+           */
+          started: Boolean,
+          /**
+           * State Accounts
+           * @type {Boolean}
+           */
+          stateAccounts: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * State Accounts
+           * @type {Boolean}
+           */
+          stateCards: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * State Accounts
+           * @type {Boolean}
+           */
+          stateDeposits: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * State Accounts
+           * @type {Boolean}
+           */
+          stateFunds: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * State Accounts
+           * @type {Boolean}
+           */
+          stateLoans: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * Hour to set greeting morning
+           */
+          hourGreetingMorning: {
+            type: Number,
+            value: 5
+          },
+          /**
+           * Hour to set greeteng noon
+           */
+          hourGreetingNoon: {
+            type: Number,
+            value: 13
+          },
+          /**
+           * Hour to ser greeting nigth
+           */
+          hourGreetingNight: {
+            type: Number,
+            value: 21
+          },
+          /**
+           * State Campaings
+           * @type {Boolean}
+           */
+          stateCampaings: {
+            type: Boolean,
+            notify: true
+          },
+
+          /**
+          * Enable pull to refresh
+          */
+          enabledPullToRefresh: {
+            type: Boolean,
+            value: false
+          }
+
+        },
+        /**
+         * Method to initialize dashboard when nav-request has been dispatched
+         * @param navigation indicates page to navigate to
+         */
+        initWithNativation: function(navigation) {
+          if (navigation && navigation.detail && navigation.detail.page === 'dashboard') {
+            this.init();
+          }
+        },
+        /**
+         * Method to initialize dashboard when dashboar page is active
+         * @param active indicates wether the page is active or not
+         */
+        initWithPage: function(active) {
+          if (active && active.value) {
+            this.init();
+          }
+        },
+        /*
+         * Checked if has user info and set grettings message
+         */
+        init: function() {
+          this.stateManager();
+
+          if (!this.started || this.enabledPullToRefresh) {
+            this.dispatchEvent(new CustomEvent('init-services', {
+              bubbles: true,
+              composed: true
+            }));
+            this.getDashboardGreeting();
+            this.started = true;
+          }
+        },
+
+        /**
+        * Init service when user do pull to refresh
+        */
+        refreshServices: function(refresh) {
+          if (refresh) {
+            this.enabledPullToRefresh = refresh;
+            this.init();
+          }
+        },
+
+        /*
+         * Notify event if dashboard it's loaded
+         */
+        notifyLoaded: function() {
+          this.async(function() {
+            this.dispatchEvent(new CustomEvent('dashboard-loaded', {
+              bubbles: true,
+              composed: true
+            }));
+          }, this.delay);
+        },
+        /*
+         * State manager products
+         */
+        stateManager: function() {
+          if (this.products && this.products.length) {
+            this.products.forEach(function(product) {
+              var prop = 'state' + this._capitalize(product);
+              if (this[prop]) {
+                this.dispatchEvent(new CustomEvent('dashboard-refresh-' + product, {
+                  bubbles: true,
+                  composed: true
+                }));
+                this[prop] = false;
+              }
+            }, this);
+          }
+        },
+        /*
+         * Dashboard Greeting Message
+         */
+        getDashboardGreeting: function() {
+          var currentTime = this._getTime();
+          var morning = this._getTime().hour(this.hourGreetingMorning).minutes(0).seconds(0);
+          var noon = this._getTime().hour(this.hourGreetingNoon).minutes(0).seconds(0);
+          var night = this._getTime().hour(this.hourGreetingNight).minutes(0).seconds(0);
+
+          if (currentTime.isBetween(morning, noon, null, '[)')) {
+            this.dispatchEvent(new CustomEvent('dashboard-color', {
+              detail: 'morning',
+              bubbles: true,
+              composed: true
+            }));
+            this.dispatchEvent(new CustomEvent('dashboard-header-color', {
+              detail: 'header--morning',
+              bubbles: true,
+              composed: true
+            }));
+            this.dispatchEvent(new CustomEvent('dashboard-greeting', {
+              detail: 'cells-greeting-morning',
+              bubbles: true,
+              composed: true
+            }));
+          } else if (currentTime.isBetween(noon, night, null, '[)')) {
+            this.dispatchEvent(new CustomEvent('dashboard-color', {
+              detail: 'evening',
+              bubbles: true,
+              composed: true
+            }));
+            this.dispatchEvent(new CustomEvent('dashboard-header-color', {
+              detail: 'header--evening',
+              bubbles: true,
+              composed: true
+            }));
+            this.dispatchEvent(new CustomEvent('dashboard-greeting', {
+              detail: 'cells-greeting-evening',
+              bubbles: true,
+              composed: true
+            }));
+          } else {
+            this.dispatchEvent(new CustomEvent('dashboard-color', {
+              detail: 'night',
+              bubbles: true,
+              composed: true
+            }));
+            this.dispatchEvent(new CustomEvent('dashboard-header-color', {
+              detail: 'header--night',
+              bubbles: true,
+              composed: true
+            }));
+            this.dispatchEvent(new CustomEvent('dashboard-greeting', {
+              detail: 'cells-greeting-night',
+              bubbles: true,
+              composed: true
+            }));
+          }
+        },
+        /*
+         * Get time now
+         */
+        _getTime: function() {
+          /* global moment */
+          return moment(new Date());
+        },
+        /*
+         * Util - Capitalize string
+         */
+        _capitalize: function(string) {
+          return string.substr(0, 1).toUpperCase() + string.substring(1).toLowerCase();
+        },
+
+        manageLogoutConfirm: function(params) {
+          var navObj = ((params || {}).value || {}).cancelledNavigation || {};
+          var currentPage = navObj.currentPage;
+
+          if (currentPage === 'dashboard') {
+            this.dispatchEvent(new CustomEvent('dashboard-native-logout-confirm', {
+              bubbles: true,
+              composed: true
+            }));
+          }
+        }
+
+
+        // @event dasboard-color
+        // @event dasboard-greeting
+      });
+    }(Polymer));
+  </script>
+</dom-module>

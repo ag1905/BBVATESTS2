@@ -1,0 +1,27 @@
+<dom-module id="cells-product-summary-account-styles"><template><style>
+:host {
+  --cells-product-summary-header-icon: { padding-bottom: 0px; };
+  --cells-product-summary-bottom-summary: { -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; };
+  --cells-product-summary: { padding: 0; min-height: 237px; };
+  --cells-product-summary-header: { margin-top: 50px; };
+  --cells-product-summary-more-info: { margin-top: 0; };
+  @apply (--cells-product-summary-account); }
+  :host .footer {
+    margin: 20px 10px 0 10px;
+    @apply (--cells-product-summary-account-footer); }
+    :host .footer .inline {
+      display: inline-block;
+      width: 100%;
+      font-size: var(--cells-text-size-14, 0.875rem);
+      @apply (--cells-product-summary-account-footer-inline); }
+      :host .footer .inline .key {
+        color: var(--bbva-500, #666666);
+        float: left;
+        @apply (--cells-product-summary-account-footer-inline-key); }
+      :host .footer .inline .value-container {
+        color: var(--bbva-600, #121212);
+        font-style: italic;
+        float: right;
+        @apply (--cells-product-summary-account-footer-inline-value-container); }
+
+</style></template></dom-module>

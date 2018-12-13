@@ -1,0 +1,56 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+
+  --cells-bottom-modal-full-height-header-wrapper: unquote("{
+    background-color: var(--bbva-100);
+  }");
+
+  @apply(--cells-modal-new-recipient-selector-mx);
+}
+
+:host([hidden]), [hidden] {
+  display:none;
+}
+
+section {
+  padding: 2.5rem 2rem;
+  @apply(--cells-modal-new-recipient-selector-mx-section);
+}
+#query {
+  padding: 2.5rem 0;
+  @apply(--cells-modal-new-recipient-selector-mx-section-query);
+}
+
+cells-alert-box {
+  --cells-alert-box-button-disabled: unquote('{
+    background: var(--bbva-200, #E9E9E9);
+  }');
+  @apply(--cells-modal-new-recipient-selector-mx-alert-box);
+}
+
+cells-avatar-item {
+  text-align: left;
+
+  --cells-avatar-item-list-info: unquote('{
+    font-size: .875rem;
+    font-weight: 400;
+  }');
+  @apply(--cells-modal-new-recipient-selector-mx-avatar);
+}
+
+.message-result {
+  margin: 0 0 1.875rem 0;
+  @apply(--cells-modal-new-recipient-selector-mx-message);
+}
+
+cells-molecule-input {
+  --cells-molecule-input-button-color: var(--bbva-300, #d3d3d3);
+  --cells-molecule-input-wrapper: unquote('{
+    padding: .35rem 0;
+  }');
+  @apply(--cells-modal-new-recipient-selector-mx-input);
+}

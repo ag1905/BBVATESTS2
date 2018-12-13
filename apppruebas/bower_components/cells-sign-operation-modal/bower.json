@@ -1,0 +1,44 @@
+{
+  "name": "cells-sign-operation-modal",
+  "version": "1.1.2",
+  "description": "A bottom modal with a form to sign an operation",
+  "keywords": [
+    "i18n",
+    "web-component",
+    "bottom",
+    "modal",
+    "sign"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.9.0",
+    "cells-i18n-behavior": "^9.0.0",
+    "cells-bottom-modal": "~9.0.0",
+    "cells-circular-timer": "^9.1.0",
+    "cells-input-digits": "~9.1.0",
+    "cells-molecule-input": "^9.0.0",
+    "cells-sign": "~3.0.2",
+    "cells-st-button": "^9.0.0",
+    "cells-atom-button": "^9.0.0"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "cells-demo-helper": "^9.0.0",
+    "cells-shadow-query-selector": "^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "cells-glomo-theme": "~5.4.0",
+    "coronita-icons": "^9.0.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^0.7",
+    "cells-i18n-behavior": "^9.0.0",
+    "cells-molecule-input": "^9.0.0",
+    "cells-atom-button": "^9.0.0",
+    "iron-input": "^2.0.0"
+  },
+  "main": [
+    "cells-sign-operation-modal.html"
+  ]
+}

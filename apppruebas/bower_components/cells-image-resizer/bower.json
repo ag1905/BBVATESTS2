@@ -1,0 +1,32 @@
+{
+  "name": "cells-image-resizer",
+  "version": "0.1.2",
+  "description": "Cells image resizer",
+  "keywords": [
+    "web-component"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "cells-coronita-theme": "9 - 10",
+    "cells-demo-helper": "9 - 10",
+    "cells-icon-message": "^10.0.0",
+    "cells-molecule-input": "^10.5.0",
+    "cells-sass": "^2.0.0",
+    "cells-shadow-query-selector": "^1.0.0",
+    "cells-st-button": "^10.0.8",
+    "coronita-icons": "9 - 10",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "cells-atom-icon": "^10.0.3"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "main": [
+    "cells-image-resizer.html"
+  ]
+}

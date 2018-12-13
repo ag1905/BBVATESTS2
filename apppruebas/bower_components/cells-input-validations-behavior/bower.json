@@ -1,0 +1,53 @@
+{
+  "name": "cells-input-validations-behavior",
+  "version": "10.9.3",
+  "description": "Behavior to mask and or validate input value from app configuration pages",
+  "keywords": [
+    "login",
+    "user",
+    "input",
+    "behavior"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "cells-credentials-form": "9 - 10",
+    "cells-demo-helper": "9 - 10",
+    "cells-coronita-theme": "9 - 10",
+    "cells-sass": "^2.0.0",
+    "coronita-icons": "9 - 10",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "main": [
+    "cells-input-validations-behavior.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0",
+    "iron-input": "^2.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9.0"
+      },
+      "devDependencies": {
+        "cells-credentials-form": "^9.0.0",
+        "cells-demo-helper": "^9.0.0",
+        "cells-coronita-theme": "^9.0.0",
+        "cells-sass": "^2.0.0",
+        "coronita-icons": "^9.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7",
+        "iron-input": "^1.0.0"
+      }
+    }
+  }
+}

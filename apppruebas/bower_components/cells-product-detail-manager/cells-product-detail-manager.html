@@ -1,0 +1,79 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+# cells-product-detail-manager
+
+Manage product in product detail page
+
+Example:
+```html
+<cells-product-detail-manager></cells-product-detail-manager>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="cells-product-detail-manager">
+  <template></template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+
+        is: 'cells-product-detail-manager',
+
+        properties: {
+          /**
+           * Started component
+           */
+          started: Boolean,
+          /**
+           * Product Id
+           */
+          productId: {
+            type: String,
+            notify: true
+          },
+          /**
+           * Has error
+           */
+          error: Boolean,
+        },
+
+        /**
+         * Init and manage cache products
+         */
+        init: function() {
+          if (!this.started) {
+            this._fireEvent('init-services');
+            this.set('started', true);
+          }
+
+          if (this.error) {
+            this._fireEvent('error-on-edit-alias');
+            this.error = false;
+          }
+
+          // Reset product detail scroll
+          this._fireEvent('template-cached');
+        },
+
+        _fireEvent: function(eventType) {
+          this.dispatchEvent(new CustomEvent(eventType, {
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+         * Reset properties
+         */
+        reset: function() {
+          this.started = false;
+          this.productId = '';
+          this.error = false;
+        }
+      });
+    }());
+  </script>
+</dom-module>

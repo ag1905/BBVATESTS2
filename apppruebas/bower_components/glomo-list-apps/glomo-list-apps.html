@@ -1,0 +1,59 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-molecule-grid-list/cells-molecule-grid-list.html">
+<link rel="import" href="../cells-molecule-link-icon/cells-molecule-link-icon.html">
+<link rel="import" href="../cells-st-link/cells-st-link.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-skeleton-custom/cells-skeleton-custom.html">
+<link rel="import" href="../cells-skeleton-item/cells-skeleton-item.html">
+<link rel="import" href="glomo-list-apps-styles.html">
+<!--
+`<glomo-list-apps>` description.
+
+Example:
+
+```html
+<glomo-list-apps></glomo-list-apps>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --glomo-list-apps  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-list-apps">
+  <template>
+    <style include="glomo-list-apps-styles glomo-list-apps-shared-styles"></style>
+      <div class="app-list__header">
+        <p>
+          [[t('cells-other-apps-header')]]
+        </p>
+      </div>
+      <cells-molecule-grid-list list="[[apps]]" columns="[[columns]]" border-inside>
+        <template>
+          <a href="[[item.action]]" target="_blank" data-action$="[[item.action]]">
+            <cells-st-link>
+              <template is="dom-if" if={{item.img}}>
+                <img src="images/apps/[[item.img]]" alt="app-img">
+              </template>
+              <template is="dom-if" if={{item.icon}}>
+                <cells-atom-icon icon="[[item.icon]]" class$="icon-size-[[iconSize]]"></cells-atom-icon>
+              </template>
+              <p>[[t(item.label)]]</p>
+            </cells-st-link>
+          </a>
+        </template>
+      </cells-molecule-grid-list>
+  </template>
+  <script src="glomo-list-apps.js"></script>
+</dom-module>

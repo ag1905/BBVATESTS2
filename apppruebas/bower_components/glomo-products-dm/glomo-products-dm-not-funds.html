@@ -1,0 +1,248 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../global-products-lists-behavior/global-products-lists-behavior.html" />
+<link rel="import" href="../cells-dm-global-apis-accounts/cells-dm-global-apis-accounts.html">
+<link rel="import" href="../cells-dm-global-apis-cards/cells-dm-global-apis-cards.html">
+<link rel="import" href="../cells-products-behavior/cells-products-transforms-behavior.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<!--
+# glomo-products-dm-not-funds
+
+Data manager description.
+
+Example:
+```html
+<glomo-products-dm-not-funds></glomo-products-dm-not-funds>
+```
+-->
+
+<dom-module id="glomo-products-dm-not-funds">
+  <template>
+    <cells-dm-global-apis-accounts id="globalAccounts"
+      host="[[host]]"
+      accounts="{{_accounts}}"
+      accounts-api-version="[[accountsApiVersion]]"
+      api-aggregator-api-version="[[apiAggregatorApiVersion]]"></cells-dm-global-apis-accounts>
+    <cells-dm-global-apis-cards id="globalCards"
+      host="[[host]]"
+      cards="{{_cards}}"
+      cards-api-version="[[cardsApiVersion]]"></cells-dm-global-apis-cards>
+  </template>
+  <script>
+    /*eslint wrap-iife: [2, "inside"]*/
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'glomo-products-dm-not-funds',
+
+        behaviors: [
+          CellsBehaviors.ProductsTransforms,
+          CellsBehaviors.i18nBehavior
+        ],
+
+        properties: {
+          /**
+          * List of formatted accounts
+          */
+          accounts: {
+            type: Array
+          },
+          _accounts: {
+            type: Array,
+            observer: '_setAccounts'
+          },
+          /**
+          * List of formatted cards
+          */
+          cards: {
+            type: Array
+          },
+          _cards: {
+            type: Array,
+            observer: '_setCards'
+          },
+          oneClickLoans: {
+            type: Array
+          },
+          titleKey: {
+            type: String
+          },
+          subtitleKey: {
+            type: String
+          },
+          headerTitleKey: {
+            type: String
+          },
+          /**
+          * Image, in base 64
+          * @type {String}
+          */
+          image: {
+            type: String,
+            value: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAArCAYAAAAOnxr+AAAABGdBTUEAALGPC/xhBQAAAU1JREFUWAnlmOEOgjAMhMH4x0fVB9JH9admJCOjbt2VXZk6EwMj7d3XG4pxmsiv5/3xCm+y7HRiC3rpzUxhmeTldqXpj5eoTDPuFCvVsRItpclMdZxEa2myUh0jUTRNRqr/n6g1zdZUqYmyvtzjUOlxF6iWZg1W603B5PkuUCki1zVYWY+szaBoIhosqpEOYAZNm488N4HuSaI0jFXLBFoyPeI6DGpNAIG3aMKgiLFnDQRqmdwKi2pDoFZzj/oqKDpxCxziUQVtAWD2qqDIpCyYmpcKyoJg6BRBaxMyzKWG5nmWxS1rzahFN/Rm/xvyNESAc7+8iluPCB5Z85Fo7zTj8DJV2j0qhaMha/DN1rNEI2TLUbJsQFuEvXtXUDmBtzGinzKtoEhjz5oFNCXvCZPzjmy0T30UzJkxrs3eBgzIoPEz9+jyZPr2VMPD5A0zC4B22GREKgAAAABJRU5ErkJggg=='
+          },
+          /**
+          * Name of the card type to filter
+          */
+          typeCardName: {
+            type: String,
+            value: 'CREDIT_CARD'
+          },
+          /**
+          * Accounts API version
+          * @type {String}
+          */
+          accountsApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+          * Api agreggator API version
+          * @type {String}
+          */
+          apiAggregatorApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+          * Cards API version
+          * @type {String}
+          */
+          cardsApiVersion: {
+            type: String,
+            value: '0'
+          }
+        },
+        observers: [
+          '_setProductsNotFunds(accounts, cards, oneClickLoans)'
+        ],
+
+        getProductsNotFunds: function() {
+          if (this.accounts && this.cards && this.oneClickLoans) {
+            this._setProductsNotFunds(this.accounts, this.cards, this.oneClickLoans);
+          } else {
+            this._requestProducts();
+            if (this.mock) {
+              this.setMocks();
+            }
+          }
+        },
+        _setProductsNotFunds: function(accounts, cards, oneClickLoans) {
+          var modalData = {
+            'headerTitle': this.headerTitleKey,
+            'title': this.titleKey,
+            'subtitle': this.subtitleKey,
+            'icon': this.image,
+            'groups': [],
+            'buttons': [
+              {
+                'key': 'glomo-products-dm-not-funds-button-continue',
+                'eventOut': 'close-modal',
+                'type': 'primary'
+              },
+              {
+                'key': 'glomo-products-dm-not-funds-button-exit',
+                'eventOut': 'end-process',
+                'type': 'secondary'
+              }
+            ]
+          };
+
+          modalData.groups.push(this._getAccounts());
+          modalData.groups.push({
+            'title': 'glomo-products-dm-not-funds-modify-amount',
+            'eventOut': 'modify-amount'
+          });
+          modalData.groups.push(this._getOneClickLoans());
+          modalData.groups.push(this._getCards());
+
+          this.fire('set-products-not-funds', modalData);
+        },
+        /**
+         * Get data to be shown in the accounts group
+         */
+        _getAccounts: function() {
+          var accountData;
+          if (this.accounts && this.accounts.length > 0) {
+            accountData = {
+              'title': 'glomo-products-dm-not-funds-accounts',
+              'eventOut': 'account-chosen',
+              'elements': this.accounts
+            };
+          }
+          return accountData;
+        },
+        _setAccounts: function(fetchedAccounts) {
+          this.set('accounts', this._parseAccounts(fetchedAccounts));
+        },
+        /**
+         * Get data to be shown in the cards group
+         */
+        _getCards: function() {
+          var cardsData;
+          if (this.cards && this.cards.length > 0) {
+            cardsData = {
+              'title': 'glomo-products-dm-not-funds-credit-advance',
+              'subtitle': 'glomo-products-dm-not-funds-ends-operation',
+              'disabled': true,
+              'elements': []
+            };
+
+            this.cards.forEach(function(card) {
+              card.eventData = {
+                'id': card.id
+              };
+              cardsData.elements.push(card);
+            }, this);
+          }
+          return cardsData;
+        },
+        _setCards: function(_cards) {
+          this.set('cards', this._parseCards(_cards));
+        },
+        /**
+         * Get data to be shown in the one click loans group
+         */
+        _getOneClickLoans: function() {
+          var loans;
+          if (this.oneClickLoans && this.oneClickLoans.length > 0) {
+            loans = {
+              'title': 'glomo-products-dm-not-funds-ask-advance',
+              'subtitle': 'glomo-products-dm-not-funds-ends-operation',
+              'disabled': true,
+              'elements': []
+            };
+            this.oneClickLoans.forEach(function(loan) {
+              loan.eventData = {
+                'id': loan.id
+              };
+              loans.elements.push(loan);
+            });
+          }
+          return loans;
+        },
+        _requestProducts: function() {
+          if (this.accounts === undefined) {
+            this.$.globalAccounts.getFullAccounts();
+          }
+          if (this.cards === undefined) {
+            this.$.globalCards.getCards();
+          }
+        },
+        _getIsOperative: function(card) {
+          return card !== undefined && card.status !== undefined && card.status.id === 'OPERATIVE';
+        },
+        setMocks: function() {
+          this.set('oneClickLoans', [
+            {
+              'id': '0001',
+              'primaryAmount': {
+                'amount': 1800000,
+                'currency': 'CLP'
+              }
+            }
+          ]);
+        }
+      });
+    })();
+  </script>
+</dom-module>

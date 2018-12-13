@@ -1,0 +1,11 @@
+import BgdmjsAnalyticsDataLayer from './js/data-layer/data-layer';
+//
+class AnalyticsModel {
+   constructor(){
+    this.DataLayer = BgdmjsAnalyticsDataLayer
+   }
+}
+
+const analytics = new AnalyticsModel();
+
+export default analytics;

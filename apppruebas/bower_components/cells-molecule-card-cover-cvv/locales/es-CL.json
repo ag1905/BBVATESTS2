@@ -1,0 +1,14 @@
+{
+  "cells-molecule-card-cover-cvv-off-title": "Apagada",
+  "cells-molecule-card-cover-cvv-off": "Para operar con tu tarjeta, tendrás que encenderla nuevamente.",
+  "cells-molecule-card-cover-cvv-blocked-title": "Bloqueada",
+  "cells-molecule-card-cover-cvv-blocked": "Tu tarjeta fue bloqueada el ",
+  "cells-molecule-card-cover-cvv-blocked-continue": ". Lamentablemente, no podrás operar hasta que recibas y actives la nueva.",
+  "cells-molecule-card-cover-cvv-blocked-alt": "Tu tarjeta ha sido bloqueada. Lamentablemente, no podrás operar hasta que recibas y actives la nueva.",
+  "cells-molecule-card-cover-cvv-inoperative": "Para operar con tu tarjeta, deberás activarla en cualquier cajero o a través de la web.",
+  "cells-molecule-card-cover-cvv-inoperative-title": "Pendiente de activar",
+  "cells-molecule-card-cover-cvv-view": "Ver CVV",  
+  "cells-molecule-card-cover-cvv-show-number": "Mostrar datos",
+  "cells-molecule-card-cover-cvv-copy-number": "Copiar Nº de tarjeta",
+  "cells-molecule-card-cover-cvv-more-info": "Detalle de tarjeta"
+}

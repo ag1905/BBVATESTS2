@@ -1,0 +1,42 @@
+import BgdmjsAnalyticsDataLayerPageSearch from './search';
+/**
+ * Recoge la información relativa a interacciones específicas del usuario con la web,
+ * como realización de búsquedas en el buscador interno o visualización de vídeos.
+ *
+ * En tanto el usuario no interactúe con esos elementos, estos valores irán vacíos
+ * como en el ejemplo.
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer.page
+ * @class     bgdmjs.analytics.dataLayer.page.Activity
+ */
+export default class BgdmjsAnalyticsDataLayerPageActivity
+{
+    /**
+     * Identificador (contenido en la URL) con el que se
+     * identifica el video visualizado.
+     *
+     * @property nameOfVideoDisplayed
+     * @type     {string}
+     */
+    nameOfVideoDisplayed = '';
+    /**
+     * Información de la búsqueda realizada.
+     *
+     * @property search
+     * @type     {bgdmjs.analytics.dataLayer.page.Search|null}
+     */
+    search               = null;
+
+    /**
+     * Constructor de la clase.
+     *
+     * @method constructor
+     *
+     * @constructor
+     */
+    constructor()
+    {
+        this.search = new BgdmjsAnalyticsDataLayerPageSearch();
+    }
+}

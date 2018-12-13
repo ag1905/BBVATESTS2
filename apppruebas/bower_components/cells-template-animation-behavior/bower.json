@@ -1,0 +1,28 @@
+{
+  "name": "cells-template-animation-behavior",
+  "version": "2.2.0",
+  "description": "behavior to manage animations",
+  "keywords": [
+    "animation",
+    "template",
+    "behavior"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.0"
+  },
+  "devDependencies": {
+    "cells-template-1-column-right-sidebar": "^2.1.21",
+    "cells-sass": "^1.0.16",
+    "cells-demo-mobile": "^1.2.10",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "cells-theme-base": "^4.0.12",
+    "web-component-tester": "^3.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "main": [
+    "cells-template-animation-behavior.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "name": "cells-summary-view",
+  "version": "10.2.1",
+  "description": "A confirmation showing the operation's total amount and a 'finish' button",
+  "keywords": [
+    "summary",
+    "view",
+    "i18n"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "cells-atom-amount": "^10.0.0",
+    "cells-st-button": "^10.0.0",
+    "cells-i18n-behavior": "^10.0.0"
+  },
+  "main": [
+    "cells-summary-view.html"
+  ],
+  "devDependencies": {
+    "cells-demo-helper": "^10.0.0",
+    "cells-sass": "#^2.0.0",
+    "cells-demo-mocker-selector": "^10.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "cells-glomo-theme": "^10.0.0",
+    "cells-coronita-theme": "^10.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9.0",
+        "cells-atom-amount": "^10.0.0",
+        "cells-st-button": "^10.0.0",
+        "cells-i18n-behavior": "^10.0.0"
+      },
+      "devDependencies": {
+        "cells-demo-helper": "^10.0.0",
+        "cells-sass": "~2.0.0",
+        "cells-demo-mocker-selector": "^10.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "cells-glomo-theme": "^10.0.0",
+        "cells-coronita-theme": "^10.0.0",
+        "web-component-tester": "Polymer/web-component-tester#^4.0.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

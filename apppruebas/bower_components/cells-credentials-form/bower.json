@@ -1,0 +1,60 @@
+{
+  "name": "cells-credentials-form",
+  "version": "10.3.0",
+  "description": "Provides a form for user:password credentials authentication",
+  "keywords": [
+    "i18n",
+    "a11y",
+    "login",
+    "user",
+    "password"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "cells-heading": "9 - 10",
+    "cells-i18n-behavior": "9 - 10",
+    "cells-input-validations-behavior": "9 - 10",
+    "cells-molecule-input": "glomo-multiple-validations",
+    "cells-st-button": "9 - 10",
+    "iron-icon": "1 - 2",
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "cells-coronita-theme": "^11.0.0",
+    "cells-demo-helper": "^10.0.0",
+    "cells-sass": "^2.0.0",
+    "coronita-icons": "^10.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "main": [
+    "cells-credentials-form.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0",
+    "iron-input": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "cells-heading": "^10.0.0",
+        "cells-i18n-behavior": "^10.0.0",
+        "cells-input-validations-behavior": "^10.9.1",
+        "cells-molecule-input": "glomo-multiple-validations",
+        "cells-st-button": "^10.0.0",
+        "iron-icon": "^1.0.0",
+        "polymer": "Polymer/polymer#^1.9.0"
+      },
+      "devDependencies": {
+        "cells-coronita-theme": "^11.0.0",
+        "cells-demo-helper": "^10.0.0",
+        "cells-sass": "^2.0.0",
+        "coronita-icons": "^10.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7"
+      }
+    }
+  }
+}

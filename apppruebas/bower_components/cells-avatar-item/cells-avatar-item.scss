@@ -1,0 +1,57 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: flex;
+  justify-content: space-between;
+  @apply(--cells-avatar-item);
+}
+
+.cells-avatar-item-content {
+  display: flex;
+  @apply(--cells-avatar-item-content);
+}
+
+.cells-avatar-item-picture {
+  display: inline-block;
+  margin-right: rem(20px);
+  @apply(--cells-avatar-picture);
+}
+
+.cells-avatar-item-list {
+  display: inline-block;
+  @apply(--cells-avatar-item-list);
+
+  &__main {
+    margin: 0 0 rem(8px);
+    font-size: rem(18px);
+    line-height: rem(18px);
+    @apply(--cells-avatar-item-list-title);
+    &.has-subtitle {
+      font-weight: 400;
+      @apply(--cells-avatar-item-list-title-has-subtitle);
+    }
+  }
+
+  &__secondary {
+    margin: 0 0 rem(3px);
+    font-size: rem(14px);
+    font-weight: 300;
+    @apply(--cells-avatar-item-list-secondary);
+  }
+
+  &__secondary-extra {
+    margin: 0 0 rem(3px);
+    font-size: rem(12px);
+    @apply (--cells-fontDefaultNormalItalic);
+    @apply(--cells-avatar-item-list-secondary-extra);
+  }
+
+  &__info  {
+    margin: rem(13px) 0 0;
+    font-size: rem(11px);
+    color: var(--cells-avatar-item-list-bank-color, --bbva-400);
+    @apply (--cells-fontDefaultBold);
+    @apply(--cells-avatar-item-list-info);
+  }
+
+}

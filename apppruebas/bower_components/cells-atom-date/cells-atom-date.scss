@@ -1,0 +1,12 @@
+@import "bower_components/cells-sass/main";
+:host {
+  color: var(--cells-atom-date-color, #003f8C);
+  box-sizing: border-box;
+  display: block;
+  @apply --cells-text-size-l-mini;
+  @apply --cells-atom-date;
+}
+
+:host([hidden]), [hidden] {
+  display: none;
+}

@@ -1,0 +1,72 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="cells-navigation-bar-styles.html">
+
+<!--
+`<cells-navigation-bar>` displays an horizontal navigation bar with optional icons
+for each navigation item. The placement of the icons can be customized using mixins.
+
+Example:
+
+```html
+<cells-navigation-bar items="[[items]]"></cells-navigation-bar>
+```
+
+## Styling
+The following classes are available for styling change effects:
+
+| Class name                                   | Description                                                       |
+|:---------------------------------------------|:------------------------------------------------------------------|
+| with-bump                                    | Include a small bump on top center                                |
+
+The following custom properties and mixins are available for styling:
+
+| Custom Property                              | Description                                                       | Default                |
+| :------------------------------------------- | :---------------------------------------------------------------- | :--------------------- |
+| --cells-navigation-bar                       | mixin applied to the :host                                        | {}                     |
+| --cells-navigation-bar-background-color      | background color                                                  | rgba(255,255,255, .95) |
+| --cells-navigation-bar-bg-notification-color | var applied to notification background color                      | #b92a45                |
+| --cells-navigation-bar-bump                  | mixin applied to the :host with bumped  property                  | {}                     |
+| --cells-navigation-bar-bump-after            | mixin applied to the :host with bumped  property :after           | {}                     |
+| --cells-navigation-bar-bump-before           | mixin applied to the :host with bumped  property :before          | {}                     |
+| --cells-navigation-bar-height                | bar height                                                        | 3.125rem (50px)        |
+| --cells-navigation-bar-icon                  | mixin applied to icons                                            | {}                     |
+| --cells-navigation-bar-link                  | mixin applied to links                                            | {}                     |
+| --cells-navigation-bar-link-active           | mixin applied to active and selected links                        | {}                     |
+| --cells-navigation-bar-link-active-color     | active link color (applied to .iron-selected, :active and :focus) | #004481                |
+| --cells-navigation-bar-link-color            | link color                                                        | #BDBDBD                |
+| --cells-navigation-bar-list                  | mixin applied to the list                                         | {}                     |
+| --cells-navigation-bar-list-item             | mixin applied to list items                                       | {}                     |
+| --cells-navigation-bar-notification          | mixin applied to notification                                     | {}                     |
+| --cells-navigation-bar-notification-color    | var applied to notification text color                            | white                  |
+| --cells-navigation-bar-with-bump-list        | var applied to the list bumped                                    | {}                     |
+| --cells-navigation-bar-with-bump-list-color  | var applied to tha background color list                          | white                  |
+
+
+@demo demo/index.html
+@hero cells-navigation-bar.png
+@composer
+@description Navigation bar with optional icons.
+@type UI
+@platforms android, ios, desktop
+@family cells-catalog-navigation-family
+-->
+<dom-module id="cells-navigation-bar">
+  <template>
+    <style include="cells-navigation-bar-styles cells-navigation-bar-shared-styles"></style>
+
+    <div class="list">
+      <template is="dom-repeat" items="[[items]]">
+        <div class$="list__item [[item.selected]] [[item.label]] [[_checkedSelected(index, selected)]]">
+          <a href$="[[_computeLink(item.link)]]" class="list__link" on-click="_onSelect">
+            <cells-atom-icon hidden$="[[!item.icon]]" icon="[[item.icon]]" aria-hidden="true" class$="icon-size-[[iconSize]] list__icon"></cells-atom-icon>
+            <span class="list__label">[[t(item.label)]]</span>
+          </a>
+        </div>
+      </template>
+    </div>
+    <cells-atom-icon  hidden$="[[demoItem]]" icon="coronita:frequency" aria-hidden="true" class="center-icon icon-size-24"></cells-atom-icon>
+  </template>
+  <script src="cells-navigation-bar.js"></script>
+</dom-module>

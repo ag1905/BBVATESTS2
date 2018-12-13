@@ -1,0 +1,66 @@
+<dom-module id="cells-molecule-icons-input-styles"><template><style>
+:host {
+  position: relative;
+  background: var(--bbva-100);
+  width: 100%;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  --cells-molecule-input-icon: { right: 40px; };
+  @apply (--cells-molecule-icons-input); }
+
+:host .secondary--input {
+  width: 100%;
+  padding-right: 4rem;
+  @apply (--cells-molecule-icons-input-secondary-input); }
+
+:host .cells-molecule-icons-input__auxiliar-container {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  color: var(--bbva-300);
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  @apply (--cells-molecule-icons-input-auxiliar-container); }
+
+:host .cells-molecule-icons-input__auxiliar-container .second-icon {
+  padding: 0.5rem;
+  @apply (--cells-molecule-icons-input-second-icon); }
+
+:host .cells-molecule-icons-input__auxiliar-container .third-icon {
+  padding: 0.5rem;
+  position: relative;
+  top: -0.25rem;
+  color: var(--bbva-medium-blue);
+  @apply (--cells-molecule-icons-input-auxiliar-third-icon); }
+
+:host .cells-molecule-icons-input__auxiliar-container .second-icon:active {
+  opacity: 0.5;
+  @apply (--cells-molecule-icons-input-second-icon-active); }
+
+:host .cells-molecule-icons-input__auxiliar-container .third-icon:active {
+  opacity: 0.5;
+  @apply (--cells-molecule-icons-input-third-icon-active); }
+
+.third-icon {
+  display: none; }
+
+:host([third-icon]) {
+  --cells-molecule-input-icon: { right: 90px; }; }
+  :host([third-icon]) .secondary--input {
+    padding-right: 6.875rem;
+    @apply (--cells-molecule-icons-input-third-icon-secondary-input); }
+  :host([third-icon]) .third-icon {
+    display: block;
+    @apply (--cells-molecule-icons-input-third-icon); }
+  :host([third-icon]) .cells-molecule-icons-input__auxiliar-container {
+    @apply (--cells-molecule-icons-input-auxiliar-container-third); }
+
+</style></template></dom-module>

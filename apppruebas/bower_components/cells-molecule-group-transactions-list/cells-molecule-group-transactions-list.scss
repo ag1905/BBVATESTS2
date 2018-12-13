@@ -1,0 +1,76 @@
+@import "bower_components/cells-sass/main";
+:host {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--cells-molecule-group-transactions-list-background, #fff);
+  text-align: left;
+  overflow-x: hidden;
+  --molecule-group-transactions-separation-size: rem(30px);
+  @apply(--cells-molecule-group-transactions-list);
+
+}
+
+.transaction-group {
+  display: flex;
+  flex-direction: column;
+
+  @apply(--cells-molecule-group-transactions-list-group);
+}
+
+.transaction-group__container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: rem(3px);
+  @apply(--cells-molecule-group-transactions-list-group-container);
+}
+
+.transaction-group__date {
+  padding: rem(24px) rem(28px) 0;
+  z-index: 1;
+  font-size: rem(12px);
+  color: var(--cells-molecule-group-transactions-list-date, #d8be75);
+  @apply(--cells-fontDefaultMediumItalic);
+  @apply(--cells-molecule-group-transactions-list-group-date);
+
+}
+
+.transaction-group__link {
+  padding: 1.5rem 0.5rem 0;
+  @apply(--cells-molecule-group-transactions-list-group-link);
+}
+
+.transaction-group__date--year {
+    text-align: center;
+    font-size: rem(20px);
+    background: #F5F5F5;
+    padding: 5px;
+    margin: 20px 0 -10px;
+    font-style: normal;
+    font-weight: normal;
+    box-shadow: 0 2px 0 0 #D3D3D3;
+    border-radius: 2px;
+    @apply(--cells-molecule-group-transactions-list-group-year);
+}
+
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+
+  ::content > * {
+    flex: 1;
+    padding: 0;
+
+    @apply(--cells-molecule-group-transactions-list-item);
+
+    &:nth-last-child(2) {
+      margin-bottom: 0;
+      @apply(--cells-molecule-group-transactions-list-item-last);
+    }
+
+    &:not(:first-child) {
+      @apply(--cells-molecule-group-transactions-list-item-not-first);
+    }
+  }
+}

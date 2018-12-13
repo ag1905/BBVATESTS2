@@ -1,0 +1,35 @@
+<link rel="import" href="../bgadp-granting-tickets/bgadp-granting-tickets.html">
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+# cells-bgadp-user-dm
+
+Data manager for bgadp-granting-tickets.
+
+This DM expects a `consumer-id`, `host`, and `country`, and an `user` object with `userId` and `password` properties. It fires events when either login or logout requests start and when they either finish successfully or badly.
+
+Calls to Cells Bridge ($core)'s logout method to perform logout.
+
+Example:
+```html
+<cells-bgadp-user-dm id="loginDm"
+  host="https://bbvalabs.com:8001"
+  consumer-id="000013"
+  user='{"userId": "777777779", "password": "GLOMO"}'>
+</cells-bgadp-user-dm>
+```
+
+@demo demo/index.html
+@hero DM_cells.svg
+@composer
+@description Data manager for bgadp-granting-tickets.
+@type CC
+@platforms android, ios, desktop
+@family cells-catalog-bbvaapis-family
+-->
+
+<dom-module id="cells-bgadp-user-dm">
+  <template>
+  </template>
+  <script src="cells-bgadp-user-dm.js"></script>
+</dom-module>

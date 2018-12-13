@@ -1,0 +1,100 @@
+<dom-module id="glomo-product-activations-styles"><template><style>
+@charset "UTF-8";
+:host {
+  display: block;
+  box-sizing: border-box;
+  height: 100vh;
+  padding-bottom: 170px;
+  overflow-y: auto;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --glomo-product-activations; }
+
+.header {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #f4f4f4;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 8.625rem;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  @apply --glomo-product-activations-header; }
+  .header__switch {
+    --switch-width: 60;
+    --cells-switch-knob-color: #666666;
+    --cells-switch-knob-bg-color: #ffffff;
+    --cells-switch-switcher-bg-color: #666666;
+    --cells-switch-switcher: { border-radius: 100px; };
+    @apply --glomo-product-activations-header__switch; }
+    .header__switch[checked] {
+      --cells-switch-knob-checked: { color: #237aba; };
+      --cells-switch-knob-checked-bg-color: white;
+      --cells-switch-switcher-bg-color: #237aba;
+      @apply --glomo-product-activations-header__switch-checked; }
+  .header__label {
+    font-size: 16px;
+    margin-top: 20px;
+    @apply --glomo-product-activations-header__label; }
+
+.list-switch {
+  margin-top: 3.125rem;
+  @apply --glomo-product-activations-list-switch; }
+  .list-switch__item  {
+    margin: 0 30px;
+    @apply --glomo-product-activations-list-switch__item; }
+  .list-switch__item:not(:last-of-type) {
+    border-bottom: 1px solid #e9e9e9; }
+
+.switch-white {
+  --cells-switch-item-item__title: { letter-spacing: normal; };
+  --cells-switch-item-item: { height: 84px; padding: 30px 0; };
+  --cells-switch-item-background: #ffffff;
+  --cells-switch-item-title-color: #121212;
+  --cells-switch-item-icon-color: #237aba;
+  --cells-switch-item-item__switch: { --cells-switch-switcher-bg-color: #666666; --cells-switch-knob-bg-color: #ffffff; --cells-switch-knob-checked-bg-color: #ffffff; };
+  @apply --glomo-product-activations-switch-white; }
+  .switch-white[checked] {
+    --cells-switch-item-item__switch: { --cells-switch-knob-checked-bg-color: white; --cells-switch-switcher-bg-color: #237aba; };
+    @apply --glomo-product-activations-switch-white-checked; }
+
+.message {
+  margin: 0 30px;
+  @apply --glomo-product-activations-message; }
+
+.buttons {
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+  height: 144px;
+  background-color: white;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-justify-content: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+  @apply --glomo-product-activations-buttons; }
+  .buttons .transparent {
+    font-size: 14px;
+    @apply --glomo-product-activations-button-transparent; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+</style></template></dom-module>

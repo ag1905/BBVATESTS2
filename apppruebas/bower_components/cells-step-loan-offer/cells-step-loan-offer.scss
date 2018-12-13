@@ -1,0 +1,45 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-step-loan-offer;
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+button:active { @apply --cells-global-active; }
+
+cells-step {
+  --cells-step-iron-collapse-expanded-resume: unquote('{
+    padding: 0;
+  }');
+  --cells-step-filled: unquote('{
+    padding-bottom: 0;
+  }');
+  @apply --cells-step-loan-offer-cells-step;
+}
+
+glomo-one-click-resume {
+  --glomo-one-click-resume-change-button: unquote('{
+    color: var(--bbva-light-blue, #5bbeff)
+  }');
+}

@@ -1,0 +1,93 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html"/>
+<link rel="import" href="../cells-step-behavior/cells-step-prop-behavior.html"/>
+<link rel="import" href="../cells-step/cells-step-basic-behavior.html"/>
+<link rel="import" href="../cells-atom-button/cells-atom-button.html"/>
+<link rel="import" href="../iron-collapse/iron-collapse.html"/>
+<link rel="import" href="cells-step-searcher-styles.html"/>
+
+<!--
+# cells-step-searcher
+
+> Extends `cells-step` with searcher functionality
+
+Example:
+
+```html
+<cells-step-searcher
+  id="default"
+  title="Default"
+  current-step="1"
+  max-steps="2"
+  scrolled
+  active>
+
+  <div class="full">
+    <paper-button raised class="navy-button" id="collapser">collapse</paper-button>
+    <paper-button raised class="navy-button" id="openSearch">open search</paper-button>
+  </div>
+
+  <div class="shared">
+    <cells-molecule-input label="This is shared w/ searching mode" disabled></cells-molecule-input>
+  </div>
+
+  <div class="filled">
+    <span>COLLAPSED</span>
+  </div>
+
+  <div class="searcher">
+    <paper-button raised class="navy-button" id="closeSearch">close search</paper-button>
+  </div>
+</cells-step-searcher>
+```
+
+## Dependencies
+
+* [cells-step](https://globaldevtools.bbva.com/bitbucket/projects/CO/repos/cells-step/browse)
+* [cells-step-behavior](https://globaldevtools.bbva.com/bitbucket/projects/CBH/repos/cells-step-behavior/browse)
+
+## API
+
+**Properties**:
+
+| NAME | Description | Type | Binding |
+| --- |: --- |: --- :|: --- :|
+| searching [1] | Flags if is searching mode | Boolean | IN/OUT |
+
+----
+
+[1]: *Reflected as attribute*
+
+@demo demo/index.html
+-->
+<dom-module id="cells-step-searcher">
+  <template>
+    <!--style include="cells-step-styles cells-step-shared-styles"></style-->
+    <style include="cells-step-searcher-styles cells-step-searcher-shared-styles"></style>
+
+    <div class="cells-step__header">
+      <span class="cells-step__header-title">[[t(title)]]</span>
+      <template is="dom-if" if="[[maxSteps]]">
+        <span class="cells-step__header-step-number">([[currentStep]]&nbsp;[[t('cells-step-order-index-separator', 'de')]]&nbsp;[[maxSteps]])</span>
+      </template>
+      <button is="cells-atom-button" id="changeBtn" hidden$="[[disableChange]]" class="cells-step__header-button btn--transparent" on-tap="_onChange"><span class="cells-step__header-button--text">[[t(changeLabel, changeLabel)]]</span></button>
+    </div>
+
+    <iron-collapse class="cells-step__resume-collapse" opened="[[collapsed]]" class="visible-collapse">
+      <content select=".filled"></content>
+    </iron-collapse>
+
+    <iron-collapse class="cells-step__shared-active-searcher" opened="[[_showShared]]">
+      <content select=".shared"></content>
+    </iron-collapse>
+
+    <iron-collapse class="cells-step__active-collapse" opened="[[!collapsed]]">
+      <content select=".full"></content>
+    </iron-collapse>
+
+    <iron-collapse class="cells-step__active-searcher" opened="[[searching]]">
+      <content select=".searcher"></content>
+    </iron-collapse>
+  </template>
+  <script src="cells-step-searcher.js"></script>
+</dom-module>

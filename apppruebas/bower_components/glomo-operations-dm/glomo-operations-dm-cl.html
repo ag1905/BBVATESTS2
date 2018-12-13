@@ -1,0 +1,477 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`<glomo-operations-dm-cl>` description.
+
+Example:
+
+```html
+<glomo-operations-dm-cl></glomo-operations-dm-cl>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-operations-dm-cl">
+  <template>
+  </template>
+  <script>
+    (function() {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-operations-dm-cl',
+
+        properties: {
+          /**
+          * Product Id
+          * @type {String}
+          */
+          productId: {
+            type: String
+          },
+          /**
+          * Product Type
+          * @type {String}
+          */
+          productType: {
+            type: String,
+            value: 'dashboard'
+          },
+          /**
+          * Product
+          */
+          product: {
+            type: Object
+          },
+          /**
+          * Local currency
+          * @type {Object}
+          */
+          localCurrency: {
+            type: String
+          },
+          /**
+          * Continue page
+          * @type {String}
+          */
+          continue: String,
+          /**
+          * Operations list
+          * @type {Object}
+          */
+          operations: {
+            type: Object,
+            value: {
+              featured: [],
+              full: []
+            }
+          }
+        },
+
+        /**
+        * Reset
+        **/
+        reset: function() {
+          this.set('operations', {
+            featured: [],
+            full: []
+          });
+        },
+
+        /**
+        * Dispatch operations for a page
+        **/
+        getOperations: function(product) {
+          if (this.operations.featured.length <= 0) {
+            this._parseOperations(product);
+          }
+          this.dispatchEvent(new CustomEvent('featured-operations-list', {'detail': this.operations.featured}));
+        },
+
+        getFullOperations: function(product) {
+          if (this.operations.full.length <= 0) {
+            this._parseOperations(product);
+          }
+          this.dispatchEvent(new CustomEvent('full-operations-list', {'detail': this.operations.full}));
+        },
+
+        _parseOperations: function(product) {
+          var page = this.productType || 'dashboard';
+          var operations = [];
+
+          this.set('product', product);
+
+          operations = this['_get' + (page[0].toUpperCase() + page.substring(1)) + 'Operations'](product);
+          this.set('operations', operations);
+        },
+
+        /*
+        * Get currency major of product
+        */
+        _getCurrency: function(product) {
+          if ((product.currencies || []).length > 0) {
+            return product.currencies.find(function(currency) {
+              return currency.isMajor;
+            });
+          }
+        },
+
+        /**
+         * Gets dashboard operations
+         **/
+        _getDashboardOperations: function(product) {
+          return {
+            featured: [{
+              label: 'cells-operations-list-transfer',
+              id: 'transfer',
+              eventDetail: {
+                continue: 'dashboard'
+              },
+              eventName: 'navigation-to-transfer',
+              icon: 'coronita:transfer'
+            },
+            {
+              label: 'cells-operations-list-bill-pay',
+              id: 'billPay',
+              eventDetail: {
+                continue: 'dashboard'
+              },
+              eventName: 'navigation-to-bill-payments',
+              icon: 'coronita:sales'
+            },
+            {
+              label: 'cells-operations-lpay-credit-card',
+              id: 'cardPay',
+              eventDetail: {},
+              eventName: '',
+              icon: 'coronita:creditcard',
+              type: 'operation',
+              disabled: true
+            },
+            {
+              label: 'cells-operations-switch-off-card',
+              id: 'switchOffCard',
+              eventName: '',
+              eventDetail: {},
+              icon: 'coronita:blockcard',
+              type: 'operation',
+              disabled: true
+            }]
+          };
+        },
+
+        /**
+        * Returns a group of operation lists
+        */
+        _getFullResponse: function(data) {
+          return [
+            {
+              title: 'glomo-operations-operate-title',
+              style: 'primary',
+              operations: data[0]
+            },
+            {
+              title: 'glomo-operations-configure-title',
+              style: 'secondary',
+              operations: data[1]
+            }
+          ];
+        },
+        /**
+        * Returns common operatives
+        */
+        _getCommonOperations: function(product) {
+          return {
+            editAlias: {
+              label: 'cells-operations-edit-alias',
+              eventName: 'urlToEditAlias',
+              eventDetail: {
+                productId: this.productId,
+                productType: this.productType,
+                continue: this.continue
+              },
+              id: 'editAlias',
+              icon: 'coronita:edit',
+              disabled: this._checkCardStatus(product, 'editAlias')
+            }
+          };
+        },
+
+        /**
+         * Gets account operations
+         **/
+        _getAccountOperations: function(product) {
+          var featuredOperations;
+          var fullOperations;
+          var currency = this._getCurrency(product) || {};
+          var operations = Object.assign(this._getCommonOperations(product), {
+            transfer: {
+              label: 'cells-operations-transfer',
+              id: 'transfer',
+              eventDetail: {
+                productId: this.productId,
+                continue: 'account'
+              },
+              eventName: 'urlToInternalTransfer',
+              icon: 'coronita:transfer',
+              type: 'operation'
+            },
+            rechargeCellPhone: {
+              label: 'cells-operations-recharge-cell-phone',
+              id: 'rechargeCellPhone',
+              icon: 'coronita:chargemovil',
+              disabled: true,
+              type: 'operation'
+            },
+            billpay: {
+              label: 'cells-operations-bill-pay',
+              id: 'billPay',
+              eventDetail: {
+                productId: this.productId,
+                continue: 'account'
+              },
+              eventName: 'urlToBillPayments',
+              icon: 'coronita:sales',
+              type: 'operation'
+            },
+
+            buyAire: {
+              label: 'cells-operations-buy-aire',
+              eventName: 'urlToBuyAire',
+              id: 'buyAire',
+              icon: 'coronita:chargemovil',
+              disabled: false,
+              type: 'operation'
+            }
+          });
+
+          var getFeaturedOperations = function() {
+            var data;
+            if (this.localCurrency !== currency.currency) {
+              data = [
+                operations.editAlias
+              ];
+            } else {
+              data = [
+                operations.transfer,
+                operations.billpay,
+                operations.rechargeCellPhone,
+                operations.buyAire,
+                operations.editAlias
+              ];
+            }
+            return data;
+          };
+
+          var getFullOperations = function() {
+            return this._getFullResponse([
+              [
+                operations.transfer,
+                operations.rechargeCellPhone,
+                operations.billpay,
+                operations.buyAire
+              ],
+              [
+                operations.editAlias
+              ]
+            ]);
+          };
+
+          return {
+            featured: getFeaturedOperations.bind(this)(),
+            full: getFullOperations.bind(this)()
+          };
+        },
+
+        _getCardOperations: function(product) {
+          var featuredOperations;
+          var fullOperations;
+
+          var currency = this._getCurrency(product) || {};
+
+          //configure here your operations
+          var operations = Object.assign(this._getCommonOperations(product), {
+            advance: {
+              label: 'cells-operations-advance',
+              id: 'advance',
+              eventDetail: {
+                productId: this.productId,
+                continue: 'card'
+              },
+              eventName: 'urlToInternalTransfer',
+              icon: 'coronita:loan',
+              disabled: this._checkCardStatus(product, 'advance'),
+              type: 'operation'
+            },
+            paycard: {
+              label: 'cells-operations-lpay-credit-card',
+              id: 'cardPay',
+              eventDetail: {
+                productId: this.productId,
+                continue: 'card'
+              },
+              eventName: 'urlToInternalTransfer',
+              icon: 'coronita:creditcard',
+              disabled: this._checkCardStatus(product, 'paycard'),
+              type: 'operation'
+            },
+            blockcard: {
+              label: 'cells-operations-block-card',
+              id: 'blockcard',
+              eventName: '',
+              icon: 'coronita:lock',
+              disabled: this._checkCardStatus(product, 'blockcard'),
+              type: 'operation'
+            }
+          });
+
+          var getFeaturedOperations = function() {
+            var data;
+            if (this.localCurrency !== currency.currency) {
+              data = [
+                operations.editAlias
+              ];
+            } else {
+              data = [
+                operations.paycard,
+                operations.advance,
+                operations.blockcard,
+                operations.editAlias
+              ];
+            }
+            return data;
+          };
+
+          var getFullOperations = function() {
+            return this._getFullResponse([
+              [
+                operations.transfer,
+                operations.paycard,
+                operations.billpay
+              ],
+              [
+                operations.editAlias
+              ]
+            ]);
+          };
+
+          return {
+            featured: getFeaturedOperations.bind(this)(),
+            full: getFullOperations.bind(this)()
+          };
+        },
+
+        _getDepositOperations: function() {
+          var featuredOperations;
+          var fullOperations;
+
+          //configure here your operations
+          var operations = Object.assign(this._getCommonOperations(), {});
+
+          var getFeaturedOperations = function() {
+            return [
+              operations.editAlias
+            ];
+          };
+
+          var getFullOperations = function() {
+            return this._getFullResponse([
+              [],
+              []
+            ]);
+          };
+
+          return {
+            featured: getFeaturedOperations.bind(this)(),
+            full: getFullOperations.bind(this)()
+          };
+        },
+
+        _getFundOperations: function() {
+          var featuredOperations;
+          var fullOperations;
+
+          //configure here your operations
+          var operations = Object.assign(this._getCommonOperations(), {});
+
+          var getFeaturedOperations = function() {
+            return [
+              operations.editAlias
+            ];
+          };
+
+          var getFullOperations = function() {
+            return this._getFullResponse([
+              [], []
+            ]);
+          };
+
+          return {
+            featured: getFeaturedOperations.bind(this)(),
+            full: getFullOperations.bind(this)()
+          };
+        },
+
+        _getLoanOperations: function() {
+          var featuredOperations;
+          var fullOperations;
+
+          //configure here your operations
+          var operations = Object.assign(this._getCommonOperations(), {
+            payCredit: {
+              label: 'cells-operations-pay-credit',
+              id: 'payCredit',
+              icon: 'coronita:loan',
+              disabled: true,
+              type: 'operation'
+            }
+          });
+
+          var getFeaturedOperations = function() {
+            return [
+              operations.editAlias,
+              operations.payCredit
+            ];
+          };
+
+          var getFullOperations = function() {
+            return this._getFullResponse([
+              [],
+              []
+            ]);
+          };
+          return {
+            featured: getFeaturedOperations.bind(this)(),
+            full: getFullOperations.bind(this)()
+          };
+        },
+
+        _checkCardStatus: function(card, operationType) {
+          if (card && this.productType === 'card') {
+            var status = card.status.id;
+            var activations = card.activations;
+
+            switch (status) {
+              case 'BLOCKED':
+                return true;
+              case 'OPERATIVE':
+                if (activations && activations[0].activationId === 'ON_OFF' && !activations[0].isActive) {
+                  return !!(operationType === 'advance');
+                } else {
+                  return false;
+                }
+              case 'INOPERATIVE':
+                return !!(operationType === 'advance' || operationType === 'blockcard');
+            }
+
+            return true;
+          }
+
+          return false;
+        }
+      });
+    }());
+  </script>
+</dom-module>

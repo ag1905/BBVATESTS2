@@ -1,0 +1,42 @@
+<script>
+  /*global CellsBehaviors*/
+  /*eslint new-cap: 0*/
+  window.CellsBehaviors = window.CellsBehaviors || {};
+  window.CellsBehaviors.CellsGlobalApisHandleRequestSign = {
+
+    properties: {
+
+      _signPendingService: {
+        type: Object
+      }
+
+    },
+
+    _addSignListener: function(service) {
+      service.on('signature-required', this._handleListener.bind(this, service));
+    },
+
+    _handleListener: function(service, evt) {
+      this._signPendingService = service;
+      this.dispatchEvent(new CustomEvent('signature-required', {
+        bubbles: true,
+        composed: true,
+        detail: evt.detail
+      }));
+    },
+
+    signRequest: function(sign) {
+      if (this._signPendingService) {
+        this._signPendingService.signatureValue = String(sign);
+      }
+    },
+
+    cancelRequest: function() {
+      _signPendingService = null;
+      this.dispatchEvent(new CustomEvent('signature-canceled', {
+        bubbles: true,
+        composed: true
+      }));
+    }
+  };
+</script>

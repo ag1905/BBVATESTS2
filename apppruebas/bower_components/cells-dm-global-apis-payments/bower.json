@@ -1,0 +1,25 @@
+{
+  "name": "cells-dm-global-apis-payments",
+  "version": "2.0.16",
+  "description": "Datamanager for global api payments",
+  "keywords": [
+    "dm",
+    "data",
+    "manager",
+    "payments"
+  ],
+  "dependencies": {
+    "bgadp-payments": "#0.2.0",
+    "polymer": "Polymer/polymer#^1.8.0"
+  },
+  "devDependencies": {
+    "cells-demo-dm-helper": "^0.2.1",
+    "cells-demo-helper": "^1.3.5",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "test-fixture": "polymerelements/test-fixture#^1.0.0",
+    "web-component-tester": "^3.0.0"
+  },
+  "main": [
+    "cells-dm-global-apis-payments.html"
+  ]
+}

@@ -1,0 +1,54 @@
+<custom-style>
+  <style is="custom-style">
+    :root, html {
+      /*Disble zoom double tap ios devices*/
+      touch-action: manipulation;
+      --full-height-page: {
+        position: fixed;
+        width: 100%;
+        height: calc(100% - var(--header-height));
+      }
+      ;
+      --background-fractal: url("https://bbva-files.s3.amazonaws.com/cells/assets/glomo/images/access/fractal-bbva-core-blue.svg");
+
+      --bbva-core-blue-fractal-background: {
+        background-color: var(--bbva-core-blue, #004481);
+        background-image: var(--background-fractal);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: bottom left;
+      }
+      ;
+
+      /* hide only visually (not for screen readers) */
+      --sr-only: {
+        border: 0;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+      }
+      ;
+
+      /**
+     * Mixins to be applied to <a> elements inside components
+     */
+      --cells-global-link {
+        text-transform: none;
+        text-decoration: none;
+        @apply --group-total;
+        @apply --cells-fontDefaultBold;
+        color: var(--bbva-medium-blue, #237ABA);
+      }
+      ;
+
+      --cells-global-link-active {
+        opacity: 0.5;
+      }
+      ;
+    }
+  </style>
+</custom-style>

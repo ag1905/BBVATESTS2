@@ -1,0 +1,67 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-moment-import/cells-moment-import.html">
+<link rel="import" href="cells-molecule-group-transactions-list-styles.html">
+
+<!--
+List a set of transactions grouping them by date.
+
+Example:
+
+```html
+<cells-molecule-group-transactions-list>
+  <span class="header">LAST MOVEMENTS</span>
+  <template>
+    <div>[[transaction.name]]</div>
+  </template>
+</cells-molecule-group-transactions-list>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:---------------:|:---------------:| :-------------:|
+| --molecule-group-transactions-separation-size  | set separation space size between items     | 1.875rem;             |
+| --cells-molecule-group-transactions-list-background  | var :host background-color    | #fff             |
+| --cells-molecule-group-transactions-list  | empty mixin     | {}             |
+| --cells-molecule-group-transactions-list-group  | mixin to style the container groups     | {}             |
+| --cells-molecule-group-transactions-list-date  | var to .transaction-group__date    | #d8be75            |
+| --cells-molecule-group-transactions-list-group-date  | mixin to style transaction date     | {}             |
+| --cells-molecule-group-transactions-list-group-year  | mixin to .transaction-group__date--year   | {}             |
+| --cells-molecule-group-transactions-list-item  | mixin to .transaction-list ::content    | {}             |
+| --cells-molecule-group-transactions-list-item-last  | mixin to last .transaction-list ::content | {}  |
+| --cells-molecule-group-transactions-list-item-not-first | mixin to not first .transaction-list ::content  | {}  |
+| --cells-molecule-group-transactions-list-group-container  |  mixin applied to group date container   | {}             |
+| --cells-molecule-group-transactions-list-group-link  |   mixin applied to group link  | {}             |
+
+@demo demo/index.html
+@hero cells-molecule-group-transactions-list.jpg
+-->
+<dom-module id="cells-molecule-group-transactions-list">
+  <template>
+    <style include="cells-molecule-group-transactions-list-styles transaction-list-shared-styles"></style>
+
+    <content select="cells-atom-subheader"></content>
+
+    <template is="dom-repeat" items="[[_transactionsGroups]]" as="transactionsSameYear" index-as="sameYearIndex">
+      <template is="dom-if" if="[[showYearSeparator]]">
+        <div class="transaction-group__date--year">[[transactionsSameYear.year]]</div>
+      </template>
+      <template is="dom-repeat" items="[[transactionsSameYear]]" as="transactionsSameDate" index-as="sameDateIndex">
+        <div class="transaction-group">
+          <div class="transaction-group__container">
+            <div class="transaction-group__date">[[transactionsSameDate.date]]</div>
+            <a class="transaction-group__link" hidden$="[[!showDayLink]]" on-click="_dayLinkAction">[[dayLinkText]]</a>
+          </div>
+          <div class="transaction-list">
+            <template is="dom-repeat" items="[[transactionsSameDate]]" on-dom-change="_onTransactionsDomChange">
+              <div id="item-list-[[sameYearIndex]]-[[sameDateIndex]]-[[index]]" class="transaction-list__item"></div>
+            </template>
+          </div>
+        </div>
+      </template>
+    </template>
+  </template>
+  <script src="cells-molecule-group-transactions-list.js"></script>
+</dom-module>

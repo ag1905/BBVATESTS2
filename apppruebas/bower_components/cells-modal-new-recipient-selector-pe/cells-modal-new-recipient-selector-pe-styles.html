@@ -1,0 +1,44 @@
+<dom-module id="cells-modal-new-recipient-selector-pe-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  --cells-bottom-modal-full-height-header-wrapper: { background-color: var(--bbva-100); };
+  @apply --cells-modal-new-recipient-selector-pe; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+button:active {
+  @apply --cells-global-active; }
+
+cells-new-recipient-review-pe {
+  margin-bottom: 1.25rem; }
+
+section {
+  font-size: 1rem;
+  margin-top: 2.125rem; }
+
+cells-molecule-input {
+  --cells-molecule-input-has-content-wrapper: { border-bottom: 1px solid var(--bbva-500, #666); };
+  --cells-molecule-input-invalid-wrapper: { background-color: var(--bbva-white-coral,  #fddfdf); border-bottom: 1px solid var(--bbva-dark-red, #b92a45); };
+  --cells-st-button-text-color-transparent: var(--bbva-500, #666);
+  --cells-st-button-text-color-transparent-hover: var(--bbva-500, #666);
+  --cells-st-button-text-color-transparent-active: var(--bbva-500, #666);
+  --cells-molecule-input-text-error: { color: var(--bbva-dark-red, #b92a45); text-align: left; font-weight: 400; font-size: var(--cells-text-size-14); display: block; cursor: default; margin-left: rem(10px); font-style: italic; }; }
+
+</style></template></dom-module>

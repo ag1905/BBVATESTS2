@@ -1,0 +1,7 @@
+{
+  "cells-new-recipient-review-pe-success-message": "_¡Muy bien, tenemos los datos! Continúa por favor_",
+  "cells-new-recipient-review-pe-account-number": "Account Number",
+  "cells-new-recipient-review-pe-beneficiary-name": "Beneficiary name",
+  "cells-new-recipient-review-pe-bank": "Bank",
+  "cells-new-recipient-review-pe-info-message": "_Para efectos de cálculo de intereses y sobregiros de las operaciones realizadas después de las 22:00 horas todos los días y a cualquier hora los días sábados, domingos y feriados, se tomará como fecha de abono o de cargo el día siguiente útil de realizada la operación._"
+}

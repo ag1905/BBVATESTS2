@@ -1,0 +1,42 @@
+<dom-module id="cells-sections-slider-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+  margin: 0;
+  position: relative;
+  width: 100%;
+  @apply (--cells-fontDefaultNormal);
+  @apply (--cells-sections-slider); }
+
+neon-animated-pages {
+  height: 100%;
+  @apply (--cells-sections-slider-pages); }
+
+neon-animated-pages ::content > * {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  @apply (--cells-sections-slider-pages-content); }
+
+</style></template></dom-module>

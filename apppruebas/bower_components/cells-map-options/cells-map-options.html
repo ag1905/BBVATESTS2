@@ -1,0 +1,110 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-device-behavior/cells-device-behavior.html">
+
+<!--
+`<cells-map-options>` description.
+
+Example:
+
+```html
+<cells-map-options></cells-map-options>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-map-options  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-map-options">
+  <template></template>
+  <script>
+    (function() {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'cells-map-options',
+
+        behaviors: [
+          CellsBehaviors.DeviceBehavior
+        ],
+
+        properties: {
+          /*
+          * Travel mode of route
+          * ['driving', 'walking', 'bicycling']
+          */
+          travelMode: {
+            type: String,
+            value: 'driving'
+          },
+          /*
+          * Travel modes of OS
+          * apple: https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/MapLinks/MapLinks.html
+          * google: https://developers.google.com/maps/documentation/urls/guide
+          */
+          travelModes: {
+            type: Object,
+            value: {
+              ios: {
+                driving: 'driving',
+                walking: 'walking',
+                bicycling: 'bicycling'
+              },
+              android: {
+                driving: 'd',
+                walking: 'w',
+                bicycling: 'r'
+              }
+            }
+          },
+          /*
+          * Url for OS
+          */
+          urlOS: {
+            type: Object,
+            value: {
+              ios: 'http://maps.apple.com/?saddr=##origin.latitude##,##origin.longitude##&daddr=##destination.latitude##,##destination.longitude##&dirflg=##travelMode##',
+              android: 'https://www.google.com/maps/dir/?api=1&origin=##origin.latitude##,##origin.longitude##&destination=##destination.latitude##,##destination.longitude##&travelmode=##travelMode##'
+            }
+          }
+        },
+
+        _parseUrl: function(url, location) {
+          return url.split('##').reduce(function(acc, key) {
+            var value = this.get(key, location);
+            if (value) {
+              key = value;
+            }
+            acc.push(key);
+            return acc;
+          }.bind(this), []).join('');
+        },
+
+        _getUrl: function(location) {
+          var os = this.isIOS ? 'ios' : 'android';
+          var url = this.urlOS[os] || '';
+          location.travelMode = this.travelMode;
+
+          if (!url) {
+            return console.warn('Dont has a url of this OS, ' + this.os);
+          }
+
+          return this._parseUrl(url, location);
+        },
+
+        goToRoute: function(payload) {
+          var url = this._getUrl(payload);
+          window.open(url, '_blank');
+        }
+      });
+    }());
+  </script>
+</dom-module>

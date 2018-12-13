@@ -1,0 +1,59 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  @apply(--cells-skeleton-item-account);
+}
+
+.item__wrapper {
+  width: 100%;
+  padding: 20px;
+
+  .item__header,
+  .item__content--top,
+  .item__content--bottom {
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .item__header {
+    padding-bottom: 20px;
+  }
+
+  .item__content--top {
+    margin-bottom: 5px;
+  }
+
+  .item-mask {
+    width: 40%;
+    height: rem(18px);
+
+    &.item-mask:first-child {
+      width: 55%;
+    }
+
+    &.item-mask--xs {
+      width: 20%;
+      height: rem(15px);
+
+      &:first-child {
+        width: 20%;
+      }
+    }
+  }
+
+  .item__content--bottom .item-mask--xs {
+    width: 15%;
+  }
+
+  .item__content--border-top {
+    border-top: 1px solid #E9E9E9;
+    margin-top: 20px;
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+}

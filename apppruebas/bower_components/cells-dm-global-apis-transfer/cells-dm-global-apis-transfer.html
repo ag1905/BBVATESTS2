@@ -1,0 +1,824 @@
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../bgadp-transfers/bgadp-transfers.html" />
+<link rel="import" href="../cells-global-apis-behaviors/cells-global-apis-behaviors.html" />
+
+<!--
+# cells-dm-global-apis-transfer
+
+Version: **3.1.0**
+
+> CELLS Data Manager for GLOBAL APIS Transfer
+
+Provides *step-by-step* transfer operation resolution and performs AJAX in order to complete transfer operation.
+
+## Services
+
+- [Transfer GLOBAL API v0](http://apisbbva.bitbucket.org/#/global/apis/paymentMethods/transfers)
+
+## Dependencies:
+
+- [cells-step-manager-behavior](https://globaldevtools.bbva.com/bitbucket/projects/CBH/repos/cells-step-behavior/browse/cells-step-manager-behavior.html)
+- [cells-generic-dp](https://globaldevtools.bbva.com/bitbucket/projects/BBVACELLSAPI/repos/cells-generic-dp/browse)
+
+## Example:
+
+```html
+<cells-dm-global-apis-transfer></cells-dm-global-apis-transfer>
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="cells-dm-global-apis-transfer">
+  <template></template>
+  <script>
+    /* global Polymer */
+    /* global BGADPTransfers */
+    /* eslint new-cap: 0 */
+    (function(Polymer) {
+      'use strict';
+
+      Polymer({
+
+        is: 'cells-dm-global-apis-transfer',
+
+        behaviors: [
+          CellsBehaviors.CellsGlobalApisHandleRequest,
+          CellsBehaviors.CellsGlobalApisHandleRequestSign
+        ],
+
+        properties: {
+          /**
+           * Host
+           * @type {String}
+           */
+          host: String,
+          /**
+           * Local currency
+           * @type {String}
+           */
+          localCurrency: String,
+          /**
+           * Response of simulation own transfer
+           * @type {Object}
+           */
+          simulationResult: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Response of own transfer
+           * @type {Object}
+           */
+          transferResult: {
+            type: Object,
+            notify: true
+          },
+
+          /**
+          * Operation list for the transfers summary
+          * @type {property: Array}]
+          **/
+          operations: {
+            type: Array,
+            value: []
+          },
+
+          /**
+          * Other info to show
+          * @type {property: Array}]
+          **/
+          summaryInfo: {
+            type: Array,
+            value: []
+          },
+
+          /**
+          * Mobile transfers
+          */
+          mobileTransfers: {
+            type: Array,
+            notify: true
+          },
+          /**
+          * Mobile transfer detail
+          */
+          mobileTransfer: {
+            type: Object,
+            notify: true
+          },
+          /**
+          * Mobile transfer id
+          */
+          mobileTransferId: String,
+          /**
+          * Transfers API version
+          */
+          transfersApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * Type of token is required, 'tsec' or 'jwt'
+           * @type {String}
+           */
+          requiredToken: {
+            type: String,
+            value: 'tsec'
+          }
+        },
+
+        /**
+         * Do request transfers
+         */
+        _doTransfer: function(source, destination, money, concept, simulating, type) {
+          var _type = this._capitalize(type);
+          var service = this['_service' + this._capitalize(type)].bind(this);
+
+          if (service) {
+            service = service({
+              host: this.host,
+              body: this['_generate' + _type + 'Body'](source, destination, money, concept),
+              params: { simulated: simulating },
+              version: this.transfersApiVersion,
+              requiredToken: this.requiredToken
+            });
+
+            service.generateRequest().then(
+              function() {
+                var response = this._parseResponse(service.getLastResponse());
+                if (simulating) {
+                  this.set('simulationResult', this._parseSimulation(response, type));
+                } else {
+                  this.set('transferResult', this['_parse' + _type](response, source, destination));
+                }
+              }.bind(this),
+              function(error) {
+                this.fire('transfer-error');
+              }.bind(this)
+            );
+          }
+        },
+        /**
+         * Generate body of request
+         */
+        _generateOwnTransferBody: function(source, destination, money, concept) {
+          var body = {
+            concept: (concept || {}).concept,
+            sender: {
+              contract: source.contract
+            },
+            receiver: {
+              contract: destination.contract
+            },
+            sentMoney: [ {
+              amount: money,
+              currency: this.localCurrency
+            } ]
+          };
+
+          return body;
+        },
+        /**
+         * Generate body of interbank request
+         */
+        _generateInterbankTransferBody: function(source, destination, money, concept) {
+          var body = {
+            concept: (concept && concept.concept) || undefined,
+            sender: {
+              contract: {
+                number: source.contract.number,
+                numberType: source.contract.numberType,
+                contractType: source.contract.contractType
+              }
+            },
+            receiver: {
+              alias: destination.name || '',
+              contract: {
+                bank: destination.bank,
+                contractType: {
+                  id: (destination.productType && destination.productType.id && ['ACCOUNT', 'CARD'].includes(destination.productType.id)) ? destination.productType.id : 'ACCOUNT',
+                  name: destination.name
+                },
+                number: destination.number,
+                numberType: destination.numberType
+              }
+            },
+            sentMoney: [ {
+              amount: money,
+              currency: this.localCurrency
+            } ],
+            customExternalReference: (concept && concept.reference) || undefined
+          };
+
+          return body;
+        },
+        /**
+         * Generate body of internal request
+         */
+        _generateInternalTransferBody: function(source, destination, money, concept) {
+          var body = {
+            concept: (concept && concept.concept) || undefined,
+            sender: {
+              contract: {
+                number: source.contract.number,
+                numberType: source.contract.numberType,
+                contractType: source.contract.contractType
+              }
+            },
+            receiver: {
+              alias: destination.name || '',
+              contract: {
+                bank: destination.bank,
+                contractType: {
+                  id: (destination.productType && destination.productType.id && ['ACCOUNT', 'CARD'].includes(destination.productType.id)) ? destination.productType.id : 'ACCOUNT',
+                  name: destination.productType && destination.productType.name
+                },
+                number: destination.number,
+                numberType: destination.numberType
+              }
+            },
+            sentMoney: [ {
+              amount: money,
+              currency: this.localCurrency
+            } ],
+            customExternalReference: (concept && concept.reference) || undefined
+          };
+
+          return body;
+        },
+        /**
+         * Generate body for mobile transfer request
+         */
+        _generateMobileTransferBody: function(source, destination, money, concept) {
+          var body = {
+            concept: concept || undefined,
+            sender: {
+              contract: {
+                number: source.contract.number,
+                numberType: source.contract.numberType,
+                product: {
+                  id: source.productType || 'ACCOUNTS'
+                }
+              }
+            },
+            sentMoney: [ {
+              amount: money,
+              currency: this.localCurrency
+            } ]
+          };
+
+          if (destination) {
+            body.receiver = {
+              mobile: destination.number
+            };
+          }
+
+          return body;
+        },
+        /**
+         * Parse response own transfer
+         */
+        _parseOwnTransfer: function(response, source, destination) {
+          var amount = this._findMajor(response.sentMoney || []);
+          var result = {
+            id: response.ownTransferId,
+            date: response.date,
+            title: 'cells-successful-response-success',
+            origin: {
+              product: {
+                id: source && source.productType || 'ACCOUNTS',
+                name: source && source.name
+              },
+              number: source && source.description && source.description.value
+            },
+            destination: {
+              product: {
+                id: destination && destination.productType || 'ACCOUNTS',
+                name: destination.alias || destination.name
+              },
+              number: destination.description && destination.description.value
+            },
+            fees: response.fees && response.fees.totalFees ? [
+              {
+                text: 'cells-successful-response-fees',
+                amount: response.fees.totalFees.amount,
+                currency: response.fees.totalFees.currency
+              }
+            ] : [],
+            topInfo: [],
+            operations: this._filterOperations(this.operations, response)
+          };
+
+          if (amount) {
+            result.amount = amount;
+          }
+
+          this._setSummaryInfo(result.topInfo, response);
+
+          return result;
+        },
+        /**
+         * Parse response interbank transfer
+         */
+        _parseInterbankTransfer: function(response, source, destination) {
+          var amount = this._findMajor(response.sentMoney || []);
+          var result = {
+            id: response.interbankTransferId,
+            date: response.date,
+            title: 'cells-successful-response-success',
+            origin: {
+              product: {
+                id: source && source.productType || 'ACCOUNTS',
+                name: source && source.name
+              },
+              number: source && source.description && source.description.value
+            },
+            destination: {
+              product: {
+                id: destination && destination.productType || 'ACCOUNTS',
+                name: destination.alias || destination.name
+              },
+              number: destination.description && destination.description.value
+            },
+            fees: response.fees && response.fees.totalFees ? [
+              {
+                text: 'cells-successful-response-fees',
+                amount: response.fees.totalFees.amount,
+                currency: response.fees.totalFees.currency
+              }
+            ] : [],
+            topInfo: [
+              {
+                key: 'cells-successful-response-id-or-reference',
+                value: response.interbankTransferId,
+                class: 'inline secondary spacing separator'
+              }
+            ],
+            operations: this.operations
+          };
+
+          if (amount) {
+            result.amount = amount;
+          }
+
+          return result;
+        },
+
+        _parseInternalTransfer: function(response, source, destination) {
+          var amount = this._findMajor(response && response.sentMoney || []);
+          var result = {
+            id: response.internalTransferId,
+            date: response.date,
+            title: 'cells-successful-response-success',
+            origin: {
+              product: {
+                id: source && source.productType || 'ACCOUNTS',
+                name: source && source.name
+              },
+              number: source && source.description && source.description.value
+            },
+            destination: {
+              product: {
+                id: destination && destination.productType || 'ACCOUNTS',
+                name: destination.alias || destination.name
+              },
+              number: destination.description && destination.description.value
+            },
+            fees: response.fees && response.fees.totalFees ? [
+              {
+                text: 'cells-successful-response-fees',
+                amount: response.fees.totalFees.amount,
+                currency: response.fees.totalFees.currency
+              }
+            ] : [],
+            topInfo: [],
+            operations: this._filterOperations(this.operations, response)
+          };
+
+          if (amount) {
+            result.amount = amount;
+          }
+
+
+          this._setSummaryInfo(result.topInfo, response);
+
+          return result;
+        },
+
+        /**
+        * Includes only the allowed operations for this operative.
+        **/
+        _filterOperations: function(list, response) {
+          var operations = [];
+
+          (list || []).forEach(function(item) {
+            if (!(response.ownTransferId && (item.hide || []).includes('ownTransfer'))) {
+              operations.push(item);
+            }
+          });
+
+          return operations;
+        },
+
+        /**
+        * Adds the summary info
+        **/
+        _setSummaryInfo: function(list, response) {
+          var row;
+          var getReference = function(data) {
+            return {
+              key: 'cells-successful-response-id-or-reference',
+              value: data.ownTransferId,
+              class: 'inline spacing secondary separator'
+            };
+          };
+
+          var getConcept = function(data) {
+            return (data.concept) ? {
+              key: 'cells-successful-response-concept',
+              value: data.concept,
+              class: 'bold spacing md ellipsis'
+            } : {
+              key: 'cells-successful-response-concept',
+              value: 'cells-step-product-default-concept',
+              class: 'bold spacing md'
+            };
+          };
+
+          var getOperationType = function(data) {
+            var operationType;
+
+            if (data.ownTransferId) {
+              operationType = 'own';
+            } else if (data.internalTransferId) {
+              operationType = 'internal';
+
+            } else if (data.interbankTransferId) {
+              operationType = 'interbank';
+            }
+
+            return operationType ? ({
+              key: 'cells-successful-response-operation-type',
+              value: 'cells-successful-response-operation-type-' + operationType,
+              class: 'inline secondary'
+            }) : undefined;
+          };
+
+          var getExchangeRate = function(data) {
+            var exchangeRate = ((((data || {}).exchangeRate || {}).values || {}).factor || {}).value;
+
+            return (exchangeRate > 1) ? ({
+              key: 'cells-successful-response-exchange-rate',
+              value: exchangeRate,
+              class: 'inline secondary'
+            }) : undefined;
+          };
+
+          var getChargedAmount = function(data) {
+            return (data.chargeAmount) ? {
+              key: 'cells-successful-response-charged-amount',
+              amount: data.chargeAmount,
+              class: 'inline secondary'
+            } : undefined;
+          };
+
+          var getPaidAmount = function(sentMoney) {
+            return {
+              key: 'cells-successful-response-paid-amount',
+              amount: sentMoney,
+              class: 'inline secondary'
+            };
+          };
+
+          var getOperationNumber = function(data) {
+            return {
+              key: 'cells-successful-response-operation-number',
+              value: data.ownTransferId || data.internalTransferId || data.interbankTransferId,
+              class: 'inline secondary'
+            };
+          };
+
+          (this.summaryInfo || []).forEach(function(item) {
+            switch (item) {
+              case 'id-reference':
+                row = getReference(response);
+                break;
+              case 'concept':
+                row = getConcept(response);
+                break;
+              case 'operation-type':
+                row = getOperationType(response);
+                break;
+              case 'exchange-rate':
+                row = getExchangeRate(response);
+                break;
+              case 'charged-amount':
+                row = getChargedAmount(response);
+                break;
+              case 'paid-amount':
+                row = getPaidAmount(this._findMajor(response.sentMoney));
+                break;
+              case 'operation-number':
+                row = getOperationNumber(response);
+                break;
+            }
+
+            if (row) {
+              list.push(row);
+            }
+          }, this);
+        },
+
+        /**
+         * Parse all transfers simulation
+         */
+        _parseSimulation: function(simulation, type) {
+          var response = {};
+          if (simulation) {
+            response.id = simulation[type + 'Id'];
+            response.status = simulation.status;
+            response.amount = this._getAmount(simulation.sentMoney, simulation.fees);
+
+            if (simulation.fees) {
+              response.fees = this._getFees(simulation.fees);
+            }
+          }
+
+          return response;
+        },
+        /**
+         * Parse response mobile transfer
+         */
+        _parseMobileTransfer: function(response, source, destination) {
+          return response;
+        },
+        /**
+         * Calc Amount
+         */
+        _getAmount: function(amounts, fees) {
+          if (amounts && amounts.length && amounts[0]) {
+            var amount = amounts[0].amount;
+
+            if (fees && fees.totalFees && this.addFees) {
+              amount = amounts[0].amount + fees.totalFees.amount;
+            }
+
+            return {
+              amount: amount,
+              currency: amounts[0].currency
+            };
+          }
+        },
+        /**
+         * Generate fees to data model
+         */
+        _getFees: function(fees) {
+          var response = [];
+
+          if (fees.totalFees) {
+            response.push({
+              feeType: {
+                id: 'TOTAL_FEE',
+                name: 'Total fee'
+              },
+              feeAmount: fees.totalFees
+            });
+          }
+
+          return response;
+        },
+        /**
+         * Generate fees to data model
+         */
+        _generateFees: function(fees) {
+          return fees.reduce(function(acc, fee) {
+            acc.push({
+              feeType: {
+                id: fee.feeType,
+                name: fee.name
+              },
+              feeAmount: fee.amount
+            });
+            return acc;
+          }, []);
+        },
+        /**
+         * Find major item
+         */
+        _findMajor: function(list) {
+          return list.find(function(item) {
+            return item.isMajor;
+          });
+        },
+        /**
+         * Make own transfer
+         */
+        makeOwnTransfer: function(source, destination, money, concept) {
+          this._doTransfer(source, destination, money, concept, false, 'ownTransfer');
+        },
+        /**
+         * Make simulation of own transfer
+         */
+        makeOwnTransferSimulation: function(source, destination, money, concept) {
+          this._doTransfer(source, destination, money, concept, true, 'ownTransfer');
+        },
+        /**
+         * Make interbank transfer
+         */
+        makeInterbankTransfer: function(source, destination, money, concept) {
+          this._doTransfer(source, destination, money, concept, false, 'interbankTransfer');
+        },
+        /**
+         * Make simulation of interbank transfer
+         */
+        makeInterbankTransferSimulation: function(source, destination, money, concept) {
+          this._doTransfer(source, destination, money, concept, true, 'interbankTransfer');
+        },
+        /**
+         * Make internal transfer
+         */
+        makeInternalTransfer: function(source, destination, money, concept) {
+          this._doTransfer(source, destination, money, concept, false, 'internalTransfer');
+        },
+        /**
+         * Make simulation of internal transfer
+         */
+        makeInternalTransferSimulation: function(source, destination, money, concept) {
+          this._doTransfer(source, destination, money, concept, true, 'internalTransfer');
+        },
+        /**
+        * Make mobile transfer
+        */
+        makeMobileTransfer: function(source, destination, money, concept) {
+          this._doTransfer(source, destination, money, concept, false, 'mobileTransfer');
+        },
+        /**
+         * Make simulation of mobile transfer
+         */
+        makeMobileTransferSimulation: function(source, destination, money, concept) {
+          this._doTransfer(source, destination, money, concept, true, 'mobileTransfer');
+        },
+        /**
+         * Get mobile transfers
+         */
+        getMobileTransfers: function(params, moreTransfers) {
+          var service = this._serviceGetMobileTransfers({
+            host: this.host,
+            params: params,
+            version: this.transfersApiVersion,
+            requiresTsec: true
+          });
+
+          service.generateRequest().then(function() {
+            var response = this._parseResponse(service.getLastResponse()) || [];
+            this.set('mobileTransfers', response);
+            this.fire(moreTransfers ? 'set-more-mobile-transfers' : 'set-mobile-transfers', response);
+          }.bind(this),
+            function() {
+              this.fire('error-on-set-mobile-transfers');
+            }.bind(this));
+        },
+        /**
+         * Get mobile transfer detail
+         */
+        getMobileTransfer: function(params) {
+          var service = this._serviceGetMobileTransfer({
+            host: this.host,
+            params: Object.assign({ 'mobile-transfer-id': this.mobileTransferId }, params),
+            version: this.transfersApiVersion,
+            requiresTsec: true
+          });
+
+          service.generateRequest().then(function() {
+            var response = this._parseResponse(service.getLastResponse()) || [];
+            this.set('mobileTransfer', response);
+            this.fire('set-mobile-transfer', response);
+          }.bind(this),
+            function() {
+              this.fire('error-on-set-mobile-transfer');
+            }.bind(this));
+        },
+
+        /**
+         * Delete mobile trasnfer
+         */
+        deleteMobileTransfer: function(params) {
+          var service = this._serviceDeleteMobileTransfer({
+            host: this.host,
+            params: Object.assign({ 'mobile-transfer-id': this.mobileTransferId }, params),
+            version: this.transfersApiVersion,
+            requiredToken: this.requiredToken
+          });
+
+          service.generateRequest().then(function() {
+            this.fire('mobile-transfer-deleted');
+          }.bind(this),
+            function() {
+              this.fire('error-on-delete-mobile-transfer');
+            }.bind(this));
+        },
+
+        /**
+         * Resend withdrawal code
+         */
+        resendWithdrawalCode: function(params) {
+          var service = this._serviceResendWithdrawalCode({
+            host: this.host,
+            params: Object.assign({ 'mobile-transfer-id': this.mobileTransferId }, params),
+            version: this.transfersApiVersion,
+            requiresTsec: true
+          });
+
+          service.generateRequest().then(function() {
+            var response = this._parseResponse(service.getLastResponse()) || {};
+            this.fire('resend-withdrawal-code', response);
+          }.bind(this),
+            function() {
+              this.fire('error-on-resend-withdrawal-code');
+            }.bind(this));
+        },
+        /**
+         * Capitalize string
+         */
+        _capitalize: function(string) {
+          return string.charAt(0).toUpperCase() + string.slice(1);
+        },
+        /**
+         * Service - Get Mobile transfers
+         * /transfers/v0/mobile-transfers
+         * @method {GET}
+         */
+        _serviceGetMobileTransfers: function(params) {
+          return new BGADPTransfers.transfers.mobileTransfers.get(params);
+        },
+        /**
+         * Service - Get Mobile transfer detail
+         * /transfers/v0/mobile-transfers/{mobile-transfer-id}
+         * @method {GET}
+         */
+        _serviceGetMobileTransfer: function(params) {
+          return new BGADPTransfers.transfers.mobileTransfers.mobileTransfer.get(params);
+        },
+        /**
+         * Service - Delete Mobile transfer detail
+         * /transfers/v0/mobile-transfers/{mobile-transfer-id}
+         * @method {DELETE}
+         */
+        _serviceDeleteMobileTransfer: function(params) {
+          return new BGADPTransfers.transfers.mobileTransfers.mobileTransfer.delete(params);
+        },
+        /**
+         * Service - Make own transfer
+         * /transfers/v0/own-transfers
+         * @method {POST}
+         */
+        _serviceOwnTransfer: function(params) {
+          var service = new BGADPTransfers.transfers.ownTransfers.post(params);
+          this._addSignListener(service);
+          return service;
+        },
+        /**
+         * Service - Make interbank transfer
+         * /transfers/v0/interbank-transfers
+         * @method {POST}
+         */
+        _serviceInterbankTransfer: function(params) {
+          var service = new BGADPTransfers.transfers.interbankTransfers.post(params);
+          this._addSignListener(service);
+          return service;
+        },
+        /**
+         * Service - Make internal transfer
+         * /transfers/v0/internal-transfers
+         * @method {POST}
+         */
+        _serviceInternalTransfer: function(params) {
+          var service = new BGADPTransfers.transfers.internalTransfers.post(params);
+          this._addSignListener(service);
+          return service;
+        },
+        /**
+         * Service - Make mobile transfer
+         * /transfers/v0/mobile-transfers
+         * @method {POST}
+         */
+        _serviceMobileTransfer: function(params) {
+          var service = new BGADPTransfers.transfers.mobileTransfers.post(params);
+          this._addSignListener(service);
+          return service;
+        },
+        /**
+         * Service - Make mobile transfer
+         * /transfers/v0/mobile-transfers/{mobile-transfer-id}/resend-withdrawal-code
+         * @method {POST}
+         */
+        _serviceResendWithdrawalCode: function(params) {
+          var service = new BGADPTransfers.transfers.mobileTransfers.mobileTransfer.resendWithdrawalCode.post(params);
+          this._addSignListener(service);
+          return service;
+        }
+      });
+    }(Polymer, window.CellsBehaviors));
+  </script>
+</dom-module>

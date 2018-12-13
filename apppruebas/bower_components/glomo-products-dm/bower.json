@@ -1,0 +1,24 @@
+{
+  "name": "glomo-products-dm",
+  "version": "2.16.0",
+  "description": "Datamanagers to get products for processes",
+  "keywords": [],
+  "ignore": [],
+  "dependencies": {
+    "cells-dm-global-apis-accounts": "~8.8.0",
+    "cells-dm-global-apis-cards": "~1.7.0",
+    "cells-i18n-behavior": "~9.0.0",
+    "cells-products-behavior": "~5.2.0",
+    "global-products-lists-behavior": "~0.1.5",
+    "polymer": "Polymer/polymer#^1.9.1"
+  },
+  "devDependencies": {
+    "cells-demo-mobile": "^1.2.10",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0"
+  },
+  "main": [
+    "glomo-products-dm.html"
+  ]
+}

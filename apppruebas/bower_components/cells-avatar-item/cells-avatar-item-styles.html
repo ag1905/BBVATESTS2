@@ -1,0 +1,50 @@
+<dom-module id="cells-avatar-item-styles"><template><style>
+:host {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  @apply (--cells-avatar-item); }
+
+.cells-avatar-item-content {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  @apply (--cells-avatar-item-content); }
+
+.cells-avatar-item-picture {
+  display: inline-block;
+  margin-right: 1.25rem;
+  @apply (--cells-avatar-picture); }
+
+.cells-avatar-item-list {
+  display: inline-block;
+  @apply (--cells-avatar-item-list); }
+  .cells-avatar-item-list__main {
+    margin: 0 0 0.5rem;
+    font-size: 1.125rem;
+    line-height: 1.125rem;
+    @apply (--cells-avatar-item-list-title); }
+    .cells-avatar-item-list__main.has-subtitle {
+      font-weight: 400;
+      @apply (--cells-avatar-item-list-title-has-subtitle); }
+  .cells-avatar-item-list__secondary {
+    margin: 0 0 0.1875rem;
+    font-size: 0.875rem;
+    font-weight: 300;
+    @apply (--cells-avatar-item-list-secondary); }
+  .cells-avatar-item-list__secondary-extra {
+    margin: 0 0 0.1875rem;
+    font-size: 0.75rem;
+    @apply (--cells-fontDefaultNormalItalic);
+    @apply (--cells-avatar-item-list-secondary-extra); }
+  .cells-avatar-item-list__info {
+    margin: 0.8125rem 0 0;
+    font-size: 0.6875rem;
+    color: var(--cells-avatar-item-list-bank-color, --bbva-400);
+    @apply (--cells-fontDefaultBold);
+    @apply (--cells-avatar-item-list-info); }
+
+</style></template></dom-module>

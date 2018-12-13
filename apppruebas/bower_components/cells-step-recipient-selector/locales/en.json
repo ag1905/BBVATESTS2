@@ -1,0 +1,15 @@
+{
+  "cells-avatar-item-searcher-selector-delete": "Delete",
+  "cells-avatar-item-searcher-selector-edit": "Edit",
+  "cells-avatar-item-searcher-selector-saved": "Saved",
+  "cells-avatar-item-searcher-selector-searcher-label": "Name, account number, RUT",
+  "cells-avatar-item-searcher-selector-view-all": "Show All",
+  "cells-step-recipient-selector-account-list-title": "My BBVA accounts",
+  "cells-step-recipient-selector-add-new-recipient": "_Añade uno nuevo_",
+  "cells-step-recipient-selector-for-me": "Para mí",
+  "cells-step-recipient-selector-new": "New",
+  "cells-step-recipient-selector-no-recipients": "_Aún no tienes destinatarios guardados_",
+  "cells-step-recipient-selector-registered-operation": "Registered operation",
+  "cells-step-recipient-selector-saved-recipients": "Saved recipients",
+  "cells-step-recipient-selector-title": "_No destinations_"
+}

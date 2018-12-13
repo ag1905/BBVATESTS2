@@ -1,0 +1,52 @@
+@import "bower_components/cells-sass/_mixins";
+
+:host {
+  box-sizing: border-box;
+  display: block;
+  --cells-bottom-modal-header-shadow-dragging: none;
+  --cells-bottom-modal-footer-shadow-dragging: none;
+
+  --cells-bottom-modal-full-height-body: unquote("{
+    display: flex;
+    flex-direction: column;
+    padding: 48px 24px 24px;
+  }");
+
+  --cells-bottom-modal-footer: unquote("{
+    box-shadow: none!important;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0 24px 48px;
+  }");
+
+  --cells-btn--extend: unquote("{
+    display: block;
+  }");
+
+  @apply(--cells-edit-field-modal);
+};
+
+cells-molecule-input {
+  @apply(--cells-edit-field-modal-input);
+}
+
+.btn--primary {
+  margin: auto auto rem(18px);
+  width: rem(144px);
+  @apply(--cells-edit-field-modal-btn-primary);
+}
+
+.btn--transparent {
+  margin: 0 auto;
+  font-size: rem(13px);
+  color: var(--bbva-medium-blue, #237ABA);
+  @apply(--cells-fontDefaultBold);
+
+  &:active {
+    opacity: 0.5;
+    @apply(--cells-edit-field-modal-btn-transparent-active);
+  }
+
+  @apply(--cells-edit-field-modal-btn-transparent);
+}

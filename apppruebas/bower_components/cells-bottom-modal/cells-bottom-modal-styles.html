@@ -1,0 +1,182 @@
+<dom-module id="cells-bottom-modal-styles"><template><style>
+:host {
+  width: 100%;
+  max-width: 100% !important;
+  max-height: 100%;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  transition: max-height 240ms;
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  contain: content;
+  @apply --cells-bottom-modal; }
+
+:host([hidden]),
+[hidden] {
+  display: none !important; }
+
+:host(.full-height) {
+  height: 100%;
+  max-height: 100% !important;
+  bottom: 0;
+  top: initial !important;
+  @apply --cells-bottom-modal-full-height; }
+  :host(.full-height) .header {
+    @apply --cells-bottom-modal-full-height-header-wrapper; }
+  :host(.full-height) .body {
+    height: 100%;
+    max-height: none;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    @apply --cells-bottom-modal-full-height-body; }
+  :host(.full-height) .footer {
+    @apply --cells-bottom-modal-full-height-footer; }
+
+:host(.modal--dark) {
+  color: var(--cells-bottom-modal-light-fg-color, #fff); }
+  :host(.modal--dark) .btn-close {
+    color: var(--cells-bottom-modal-light-fg-color, #fff); }
+  :host(.modal--dark) .content {
+    background: var(--cells-bottom-modal-dark-bg-color, rgba(0, 0, 0, 0.9)); }
+
+:host([expand]) {
+  @apply --cells-bottom-modal-expand; }
+  :host([expand]) .body {
+    max-height: 100%;
+    max-height: none;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    @apply --cells-bottom-modal-expand-body; }
+
+.btn--transparent {
+  background: none;
+  border: 0;
+  padding: 0;
+  overflow: visible;
+  min-height: 0;
+  line-height: 0;
+  @apply --cells-bottom-modal-btn-transparent; }
+  .btn--transparent::-moz-focus-inner {
+    padding: 0;
+    border: 0; }
+
+.btn-close {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  left: 0.375rem;
+  color: var(--cells-bottom-modal-btn-close-color, rgba(130, 130, 130, 0.7));
+  @apply --cells-bottom-modal-btn-close; }
+
+.heading {
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin: 0;
+  @apply --cells-bottom-modal-heading-wrapper; }
+
+.heading ::slotted(*) {
+  font-weight: normal;
+  font-size: 1.125rem; }
+
+.heading ::slotted(*:not(:empty)) {
+  overflow: hidden;
+  text-align: center;
+  max-width: 75%;
+  margin: auto;
+  line-height: 1;
+  padding: 1.4375rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  @apply --cells-bottom-modal-heading; }
+
+.content {
+  -webkit-transform: translateY(100%) translateZ(0);
+          transform: translateY(100%) translateZ(0);
+  transition-property: -webkit-transform;
+  transition-property: transform;
+  transition-property: transform, -webkit-transform;
+  transition-duration: var(--cells-bottom-modal-transition-duration, 300ms);
+  -webkit-transition-duration: var(--cells-bottom-modal-transition-duration, 300ms);
+  transition-timing-function: var(--cells-bottom-modal-transition-timing-function, cubic-bezier(0.38, 0.1, 0.23, 0.86));
+  background: var(--cells-bottom-modal-light-bg-color, #fff);
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  max-height: 100vh;
+  overflow: hidden;
+  height: 100%;
+  @apply --cells-bottom-modal-content; }
+
+[visible] {
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+  @apply --cells-bottom-modal-visible; }
+
+.header {
+  padding: var(--cells-bottom-modal-header-padding, var(--cells-bottom-modal-padding, 0 1.25rem)); }
+
+.body {
+  padding: var(--cells-bottom-modal-body-padding, var(--cells-bottom-modal-padding, 0 1.25rem)); }
+
+.footer {
+  padding: var(--cells-bottom-modal-footer-padding, var(--cells-bottom-modal-padding, 0 1.25rem)); }
+
+.footer ::slotted(*:not(:empty)) {
+  height: var(--cells-bottom-modal-footer-height, 4.375rem);
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.header,
+.footer {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 0 0 auto;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto; }
+
+.header {
+  min-height: 3.125rem;
+  max-height: 4.375rem;
+  position: relative;
+  @apply --cells-bottom-modal-header-wrapper; }
+  .has-shadow .header {
+    box-shadow: var(--cells-bottom-modal-header-shadow, 0 1px 5px 0 rgba(0, 0, 0, 0.1));
+    @apply --cells-bottom-modal-header-wrapper-has-shadow; }
+  .is-dragging .header {
+    box-shadow: var(--cells-bottom-modal-header-shadow-dragging, 0 3px 3px 0 rgba(0, 0, 0, 0.07));
+    @apply --cells-bottom-modal-header-wrapper-is-dragging; }
+
+.body {
+  overflow: hidden;
+  max-height: 35vh;
+  @apply --cells-bottom-modal-body; }
+
+.footer {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  box-shadow: var(--cells-bottom-modal-footer-shadow, 0 -1px 5px 0 rgba(0, 0, 0, 0.1));
+  @apply --cells-bottom-modal-footer; }
+  .is-dragging .footer {
+    box-shadow: var(--cells-bottom-modal-footer-shadow-dragging, 0 -3px 3px 0 rgba(0, 0, 0, 0.07), 0 0 1px rgba(0, 0, 0, 0.2));
+    @apply --cells-bottom-modal-footer-is-dragging; }
+
+</style></template></dom-module>

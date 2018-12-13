@@ -1,0 +1,32 @@
+{
+  "name": "cells-atom-subheader",
+  "version": "4.0.3",
+  "description": "It is an component that acts as list header",
+  "keywords": [
+    "a11y",
+    "header",
+    "atom"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.7.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.3.1",
+    "cells-heading": "^1.0.2"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+    "coronita-icons": "^2.0.0",
+    "cells-demo-helper": "^1.0.1",
+    "cells-coronita-theme": "^2.0.0",
+    "cells-banking-theme": "^0.X.0",
+    "cells-atom-amount": "^8.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "main": [
+    "cells-atom-subheader.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  }
+}

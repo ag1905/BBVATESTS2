@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-atom-button/cells-atom-button.html">
+<link rel="import" href="cells-button-navigate-transactions-styles.html">
+
+<!--
+Button to navigation transactions
+
+Example:
+
+```html
+<cells-button-navigate-transactions></cells-button-navigate-transactions>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-button-navigate-transactions-scope      | scope description | default value  |
+| --cells-button-navigate-transactions  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-button-navigate-transactions">
+  <template>
+    <style include="cells-button-navigate-transactions-styles cells-button-navigate-transactions-shared-styles"></style>
+    <template is="dom-if" if="[[_checkedValue(product)]]">
+      <button is="cells-atom-button"
+        on-click="_navigateToTransactions"
+        class="btn--link">[[t(text)]]</button>
+    </template>
+  </template>
+  <script src="cells-button-navigate-transactions.js"></script>
+</dom-module>

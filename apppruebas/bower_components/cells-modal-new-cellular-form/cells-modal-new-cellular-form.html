@@ -1,0 +1,72 @@
+<link rel="import" href="../cells-alert-box/cells-alert-box.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-new-cellular-form/cells-new-cellular-form.html">
+<link rel="import" href="../cells-molecule-input/cells-molecule-input.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-modal-new-cellular-form-styles.html">
+
+<!--
+`<cells-modal-new-cellular-form>` description.
+
+Example:
+
+```html
+<cells-modal-new-cellular-form></cells-modal-new-cellular-form>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-modal-new-cellular-form  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-modal-new-cellular-form">
+  <template>
+    <style include="cells-modal-new-cellular-form-styles cells-modal-new-cellular-form-shared-styles"></style>
+    <cells-alert-box
+      full-height
+      opened="{{opened}}"
+      title="[[t('cells-create-new-cellular-title')]]"
+      cancel-button="[[t('choose-another-recipient')]]"
+      on-cancel="_onCancel"
+      on-iron-overlay-cancelled="_onCancel">
+
+      <template is="dom-if" if="[[!phoneNumberOnly]]">
+        <cells-new-cellular-form 
+          id="cellularForm" 
+          contacts="[[cellularContactsList]]" 
+          show-mobile-provider="[[showMobileProvider]]"
+          provider-selected="[[providerSelected]]">
+        </cells-new-cellular-form>
+      </template>
+
+      <template is="dom-if" if="[[phoneNumberOnly]]">
+        <div class="cellular-form__wrapper">
+          <cells-molecule-input
+            id="cellular"
+            type="tel"
+            value="{{phoneNumber}}"
+            class="secondary--input"
+            label="[[t('cells-new-cellular-number', '_Cellular number')]]">
+          </cells-molecule-input>
+        </div>
+
+        <cells-st-button class="primary">
+          <button on-tap="_submitPhoneNumber">[[t('cells-new-cellular-continue-button', 'Continue')]]</button>
+        </cells-st-button>
+      </template>
+
+    </cells-alert-box>
+  </template>
+  <script src="cells-modal-new-cellular-form.js"></script>
+</dom-module>

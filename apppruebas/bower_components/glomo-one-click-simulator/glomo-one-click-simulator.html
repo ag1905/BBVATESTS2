@@ -1,0 +1,155 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-input-slider/cells-input-slider.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="../cells-molecule-amount-input/cells-molecule-amount-input.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href="../coronita-icons/coronita-icons.html">
+<link rel="import" href="glomo-one-click-simulator-styles.html">
+<!--
+`<glomo-one-click-simulator>` description.
+
+Example:
+
+```html
+<glomo-one-click-simulator></glomo-one-click-simulator>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --glomo-one-click-simulator  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-one-click-simulator">
+  <template>
+    <style include="glomo-one-click-simulator-styles glomo-one-click-simulator-shared-styles"></style>
+    <header>
+      <img src="[[headerImg]]" alt="One click image">
+      <p inner-h-t-m-l="[[headerTitle]]" class="title"></p>
+      <p hidden$="[[!headerSubTitle]]" inner-h-t-m-l="[[headerSubTitle]]" class="subTitle"></p>
+    </header>
+    <main>
+      <div class="simulator">
+        <template is="dom-if" if="[[isEditable]]">
+          <cells-molecule-amount-input
+            amount="{{amountValue}}"
+            set-amount="[[suggestedAmount]]"
+            label="[[amountLabel]]"
+            language="[[localCurrency]]"
+            currency-code="[[currencyCode]]"
+            local-currency="[[localCurrency]]"
+            max="[[maxAllowedAmount]]"
+            icon-size="[[iconSize]]"
+            icon-code="[[iconCode]]"
+            on-focusout="_checkAmountLimits"
+            numeral-positive-only="[[numeralPositiveOnly]]"
+            class$="[[errorInput]]"
+            icon-code="coronita:close">
+          </cells-molecule-amount-input>
+        </template>
+
+        <template is="dom-if" if="[[!isEditable]]">
+          <cells-atom-amount
+            class="amount-huge"
+            local-currency="[[localCurrency]]"
+            currency-code="[[currencyCode]]"
+            amount="[[suggestedAmount]]">
+          </cells-atom-amount>
+        </template>
+
+        <template is="dom-if" if="[[errorMessage]]">
+          <cells-icon-message
+            class="inline"
+            type="default"
+            icon="coronita:alert"
+            icon-size="18"
+            message="[[errorMessage]]">
+          </cells-icon-message>
+        </template>
+
+        <cells-icon-message
+          class="inline"
+          type="info"
+          icon="coronita:info"
+          icon-size="18"
+          hidden$="[[_hideAmountInfo]]"
+          message="[[amountInfoMinMax]]">
+        </cells-icon-message>
+
+        <template is="dom-if" if="[[errorMessage]]">
+          <cells-icon-message
+            class="inline"
+            type="info"
+            icon-size="18"
+            message="[[amountInfo]]">
+          </cells-icon-message>
+        </template>
+
+        <p inner-h-t-m-l="[[headerMessage]]" class="paragraph" hidden$="[[_checkedValue(headerMessage)]]"></p>
+
+        <template is="dom-if" if="[[!hideSlider]]">
+          <cells-input-slider
+            min="[[min]]"
+            max="[[max]]"
+            step="[[offerData.terms.stepTerm]]"
+            slider-value="{{sliderValue}}"
+            snaps="[[offerData.terms.allowedTerms]]"
+            hide-counter
+            hide-slider="[[_checkedAllowTerms(offerData, isEditable)]]"
+            title="[[t('cells-slider-timeline-title')]]"
+            unit="[[t(_sliderLabelUnit)]]"
+            single-unit="[[t(_sliderLabelSingleUnit)]]">
+          </cells-input-slider>
+        </template>
+
+        <template is="dom-if" if={{showInfo}}>
+          <cells-icon-message class="message-info" type="info" icon="coronita:info" icon-size="26" message="{{t(termConditionsInfo)}}"></cells-icon-message>
+        </template>
+
+        <template is="dom-if" if={{offerData.insuranceInfo}}>
+          <div class="insuranceInfo">
+            <p>[[t(offerData.insuranceInfo.label)]]</p>
+            <cells-atom-amount
+              amount="[[offerData.insuranceInfo.amount.amount]]"
+              currency-code="[[offerData.insuranceInfo.amount.currency]]"
+              local-currency="[[localCurrency]]"></cells-atom-amount>
+          </div>
+        </template>
+
+      </div>
+      <div id="summaryWrapper" class$="summary [[oneClickType]]">
+        <template is="dom-if" if="[[!hideMonthlyPayment]]">
+          <div class$="monthly-payment [[_checkedHasLabelFooter(monthlyPaymentLabelFooter)]] [[sticky]]" id="summary">
+            <p inner-h-t-m-l="[[monthlyPaymentLabel]]"></p>
+            <cells-atom-amount class$="[[amountMonthlySize]]"
+              local-currency="[[localCurrency]]"
+              currency-code="[[currencyCode]]"
+              amount="[[monthlyPayment]]"></cells-atom-amount>
+            <p inner-h-t-m-l="[[monthlyPaymentLabelFooter]]"></p>
+          </div>
+          <hr class="separator">
+        </template>
+        <p inner-h-t-m-l="[[termConditionsInfoIvaInfo]]"></p>
+        <p inner-h-t-m-l="[[termConditionsInfoLink]]"></p>
+        <cells-st-button class="submit-button" on-tap="sendOffer">
+          <button disabled$=[[disableButton]]>{{t("cells-one-click-simulator-i-want")}}</button>
+        </cells-st-button>
+        <cells-st-button class="link" on-click="assistanceCall" hidden$="[[!showAssistanceCall]]">
+          <button>{{t("cells-one-click-simulator-i-want-assistance")}}</button>
+        </cells-st-button>
+      </div>
+    </main>
+  </template>
+  <script src="glomo-one-click-simulator.js"></script>
+</dom-module>

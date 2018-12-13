@@ -1,0 +1,41 @@
+{
+  "name": "cells-edit-field-modal",
+  "version": "2.3.3",
+  "description": "Displays a modal with editable text input",
+  "keywords": [
+    "i18n",
+    "edit",
+    "input",
+    "field",
+    "modal"
+  ],
+  "ignore": [
+    "**/*."
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.7.0",
+    "cells-atom-button": "^4.0.1",
+    "cells-bottom-modal": "^5.0.0",
+    "cells-i18n-behavior": "^3.1.0",
+    "cells-molecule-input": "^4.0.0",
+    "glomo-edit-field-dm": "ssh://git@globaldevtools.bbva.com:7999/bbvacellsapi/glomo-edit-field-dm.git"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+    "cells-glomo-theme": "^5.0.0",
+    "coronita-icons": "^2.0.0",
+    "cells-st-button": "~1.0.1",
+    "paper-button": "^1.0.14",
+    "cells-demo-helper": "^1.3.2"
+  },
+  "main": [
+    "cells-edit-field-modal.html"
+  ],
+  "resolutions": {
+    "polymer": "^1.2.4",
+    "iron-ajax": "^1.4.3",
+    "iron-icon": "^2.0.0"
+  }
+}

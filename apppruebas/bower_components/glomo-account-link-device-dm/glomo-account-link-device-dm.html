@@ -1,0 +1,173 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-params/cells-params.html">
+<link rel="import" href="../cells-dm-global-apis-accounts/cells-dm-global-apis-accounts.html">
+
+<!--
+Glomo account link-unlink with phone.
+
+Example:
+
+```html
+<glomo-account-link-device-dm></glomo-account-link-device-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-account-link-device-dm">
+  <template>
+    <cells-dm-global-apis-accounts id="dm"
+      host="[[host]]"
+      account="{{_account}}"
+      account-id="[[productId]]"
+      accounts-api-version="[[accountsApiVersion]]"></cells-dm-global-apis-accounts>
+    <cells-params id="params"></cells-params>
+  </template>
+  <script>
+    (function() {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-account-link-device-dm',
+
+        properties: {
+          /**
+           * Host
+           * @type {String}
+           */
+          host: String,
+          /**
+           * Product
+           * @type {Object}
+           */
+          product: {
+            type: Object,
+            observer: '_setConfig'
+          },
+          /**
+           * Product Id
+           * @type {String}
+           */
+          productId: String,
+          /**
+           * Link/Unlink product
+           * @type {Boolean}
+           */
+          unLink: Boolean,
+          /**
+           * User info
+           * @type {Object}
+           */
+          user: Object,
+          /**
+           * Account spei of user
+           * @type {String}
+           */
+          accountSpei: {
+            type: String,
+            notify: true
+          },
+          /**
+          * State to success edit
+          * @type {Boolean}
+          */
+          state: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+          * Accounts API version
+          */
+          accountsApiVersion: {
+            type: String,
+            value: '0'
+          }
+        },
+
+        listeners: {
+          'cells-account-spei-link-success': '_manageSuccess',
+          'cells-account-spei-unlink-success': '_manageSuccess',
+          'cells-account-spei-link-error': '_manageResponse',
+          'cells-account-spei-unlink-error': '_manageResponse'
+        },
+
+        tryLink: function() {
+          if (this.product && this.accountSpei && (this.accountSpei !== this.product.accountId)) {
+            this.fire('notification-on-conflict-link', {
+              lastAccount: this.accountSpei.name,
+              nextAccount: this.product.alias,
+            });
+          } else {
+            this.link();
+          }
+        },
+
+        link: function() {
+          if (this.product) {
+            this.fire('open-control-veil');
+            this.$.dm.linkAccountSPEI(this.product.number);
+          }
+        },
+
+        unlink: function() {
+          if (this.product) {
+            this.$.dm.unlinkAccountSPEI(this.product.number);
+          }
+        },
+
+        _manageSuccess: function() {
+          this.accountSpei = null;
+          this.state = true;
+          this._manageResponse();
+        },
+
+        _manageResponse: function() {
+          this.fire('close-control-veil');
+          this.fire('cells-account-spei-navigation-response', this.product);
+        },
+
+        _setConfig: function(product) {
+          var settings = [
+            {key: 'unlink', image: 'images/configuration/unlinked_account.svg'},
+            {key: 'link', image: 'images/configuration/linked_account.svg'}
+          ];
+          var type = this.unLink ? settings[0] : settings[1];
+
+          this.$.params.getData('userInfo').then(function(user) {
+            this.set('user', user);
+            this.fire('set-config', {
+              image: type.image,
+              btns: {
+                primary: {
+                  text: 'cells-modal-link-device-' + type.key
+                }
+              },
+              notification: {
+                type: 'info',
+                icon: 'coronita:info',
+                iconLabel: null,
+                iconSize: 26,
+                message: 'cells-modal-link-device-info-message-' + type.key
+              },
+              origin: {
+                name: product.alias || product.name,
+                number: product.number
+              },
+              destination: {
+                name: user && user.username,
+                number: user && user.userId
+              }
+            });
+          }.bind(this));
+        },
+        /**
+        * Send otp sign operation otp/key
+        */
+        signRequest: function(otp) {
+          this.$.dm.signRequest(otp);
+        }
+      });
+    }());
+  </script>
+</dom-module>

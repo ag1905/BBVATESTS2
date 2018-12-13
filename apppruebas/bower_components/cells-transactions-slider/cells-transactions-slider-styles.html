@@ -1,0 +1,41 @@
+<dom-module id="cells-transactions-slider-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-transactions-slider; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+button:active {
+  @apply --cells-global-active; }
+
+cells-sections-slider {
+  --cells-sections-slider-pages-content: { -webkit-justify-content: flex-start; -ms-flex-pack: start; justify-content: flex-start; -webkit-align-items: flex-start; -ms-flex-align: start; align-items: flex-start }; }
+
+cells-transactions-list {
+  width: 100%;
+  padding: 0 0 2rem 0;
+  --cells-transactions-list-empty-list: { font-size: .875rem; };
+  --cells-transactions-list-skeleton: { margin: 2rem 0 0 0; };
+  --cells-molecule-group-transactions-list-group: { border-bottom: 1px solid var(--bbva-200, #E9E9E9); };
+  --cells-avatar-item-list-title: { margin: 0 0 .625rem 0; color: var(--bbva-600, #121212); font-size: 1rem; };
+  --cells-avatar-item-list-secondary: { margin: 0 0 .625rem 0; color: var(--bbva-600, #121212); font-style: italic; font-size: .875rem; };
+  --cells-avatar-item-list-secondary-extra: { color: var(--bbva-500, #666); font-size: .875rem; }; }
+
+</style></template></dom-module>

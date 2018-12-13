@@ -1,0 +1,385 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-dm-global-apis-transfer/cells-dm-global-apis-transfer.html">
+<link rel="import" href="../cells-global-apis-behaviors/cells-global-apis-behaviors.html" />
+<link rel="import" href="../cells-product-format-behavior/cells-product-format-behavior.html" />
+<link rel="import" href="../cells-moment-import/cells-moment-import.html">
+
+<!--
+`<glomo-transfer-detail-pe-dm>` description.
+
+Example:
+
+```html
+<glomo-transfer-detail-pe-dm></glomo-transfer-detail-pe-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-transfer-detail-pe-dm">
+  <template>
+    <cells-dm-global-apis-transfer id="dm"
+      host="[[host]]"
+      transfer-api-version="[[transferApiVersion]]"
+      mobile-transfer="{{_mobileTransfer}}"
+      mobile-transfer-id="[[mobileTransferId]]"
+      native="[[native]]">
+    </cells-dm-global-apis-transfer>
+  </template>
+  <script>
+    (function() {
+      /*global moment*/
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-transfer-detail-pe-dm',
+
+        behaviors: [
+          CellsBehaviors.CellsGlobalApisHandleRequest,
+          CellsBehaviors.CellsProductFormatBehavior,
+          CellsBehaviors.i18nBehavior
+        ],
+
+        properties: {
+          /**
+           * Host
+           * @type {String}
+           */
+          host: String,
+          /**
+           * API Version
+           */
+          transferApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * Show spinner in ui
+           */
+          loading: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * User customer
+           * @type {Object}
+           */
+          user: Object,
+          /**
+           * Mobile tranfer id
+           */
+          mobileTransferId: String,
+          /**
+           * Mobile tranfer
+           */
+          _mobileTransfer: Object,
+          /**
+           * Mobile transfer object
+           */
+          mobileTransferParsed: {
+            type: Object,
+            computed: '_parseMobileTransfer(_mobileTransfer)',
+            notify: true
+          },
+          /**
+           * Code to share in detail transaction
+           */
+          code: String,
+          /**
+           * Local currency
+           */
+          localCurrency: Object,
+          /**
+           * Native request
+           */
+          native: {
+            type: Boolean,
+            value: false
+          },
+        },
+
+        listeners: {
+          'dm.mobile-transfer-deleted': '_onDeleteMobileTransfer',
+          'dm.error-on-delete-mobile-transfer': '_onDeleteMobileTransfer',
+          'resend-withdrawal-code': '_onResendWithdrawalCode'
+        },
+
+        /**
+         * Reset
+         */
+        reset: function() {
+          this.loading = false;
+        },
+        /**
+         * Get mobile transfer detail
+         */
+        getMobileTransfer: function() {
+          if (this.mobileTransferId) {
+            this.dispatchEvent(new CustomEvent('open-control-veil', {
+              bubbles: true,
+              composed: true
+            }));
+            this.$.dm.getMobileTransfer({expand: 'customers'});
+          }
+        },
+
+        deleteMobileTransfer: function() {
+          if (this.mobileTransferId) {
+            this.$.dm.deleteMobileTransfer();
+          }
+        },
+
+        _onDeleteMobileTransfer: function(e) {
+          if (e.type) {
+            this.dispatchEvent(new CustomEvent(e.type), {
+              bubbles: true,
+              composed: true
+            });
+          }
+        },
+
+        /*
+         * Resend number of transaction
+         */
+        resendNumber: function() {
+          this.$.dm.resendWithdrawalCode();
+        },
+
+        /**
+        * Send otp sign operation otp/key
+        */
+        signRequest: function(otp) {
+          this.$.dm.signRequest(otp);
+        },
+
+        _onResendWithdrawalCode: function(response) {
+          var message;
+          this._mobileTransfer.resendNumber = this._mobileTransfer.resendNumber + 1;
+
+          if (this._mobileTransfer.resendNumber === this._mobileTransfer.resendMaximumNumber) {
+            this.dispatchEvent(new CustomEvent('toggle-operations', {
+              bubbles: true,
+              composed: true,
+              detail: false
+            }));
+            this.dispatchEvent(new CustomEvent('toggle-notification', {
+              bubbles: true,
+              composed: true,
+              detail: true
+            }));
+
+            message = this.t('cells-cardless-withdrawal-resend-number-any-resend-success');
+          } else {
+            message = this.t('cells-cardless-withdrawal-resend-number-success', '', {
+              resendNumber: (this._mobileTransfer.resendMaximumNumber - this._mobileTransfer.resendNumber)
+            });
+          }
+
+          this.dispatchEvent(new CustomEvent('resend-number-success', {
+            bubbles: true,
+            composed: true,
+            detail: message
+          }));
+        },
+
+        /**
+         * Parse mobile transfer response
+         */
+        _parseMobileTransfer: function(transaction) {
+          var status = transaction.status && transaction.status.id.toLowerCase();
+          var types = ['pending', 'sent', 'expired', 'block'];
+          var response = {
+            label: {
+              style: 'lighting-text',
+              value: 'cells-transaction-detail-cash-withdrawal-label',
+            },
+            title: this._capitalize(transaction.concept),
+            amount: this._getAmount(transaction.sentMoney),
+            date: moment(transaction.date).format('DD MMMM, YYYY  HH:mm') + 'h',
+            data: this._generateData(transaction),
+            type: 'cash_withdrawal'
+          };
+
+          if (status && types.includes(status)) {
+            var isPending = status === 'pending';
+
+            if (status === 'block' && transaction.status.reason) {
+              status = transaction.status.reason.id === 'F' ? 'block-fraud' : 'block-max-attempt';
+            }
+
+            response.status = {
+              icon: isPending ? 'coronita:help' : '',
+              value: 'cells-transaction-detail-cash-withdrawal-status-' + status
+            };
+            response.notification = {
+              type: 'info',
+              icon: 'coronita:info',
+              message: 'cells-transaction-detail-notification-tries'
+            };
+            response.operations = [
+              {
+                label: 'cells-operations-list-resend-number-transaction',
+                id: 'keyTransaction',
+                eventName: 'on-click-resend-number-transaction',
+                icon: 'coronita:return'
+              }
+            ];
+
+            if (isPending) {
+              if (transaction.resendNumber < transaction.resendMaximumNumber) {
+                response.showOperations = true;
+              } else {
+                response.showNotification = true;
+              }
+            }
+          }
+
+          this.dispatchEvent(new CustomEvent('close-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+
+          return Object.assign(transaction, {
+            data: response
+          });
+        },
+
+        _getAmount: function(amounts) {
+          return amounts && amounts.length && amounts.find(function(amount) {
+            return amount.isMajor;
+          });
+        },
+
+        _generateData: function(transaction) {
+          var response = [
+            {
+              key: 'cells-transaction-detail-due-date',
+              value: moment(transaction.dueDate).format('DD MMMM, YYYY  HH:mm') + 'h',
+            },
+            {
+              key: 'cells-transaction-detail-concept',
+              value: transaction.concept
+            },
+            {
+              key: 'cells-transaction-detail-receiver-mobile',
+              value: transaction.receiver && transaction.receiver.mobile
+            },
+            {
+              key: 'cells-transaction-detail-account-number',
+              value: this._getProductNumber(transaction.sender.contract)
+            },
+            {
+              key: 'cells-transaction-detail-sender-name',
+              value: this.user ? this.user.firstName + ' ' + (this.user.lastName || '') : ''
+            },
+            {
+              key: 'cells-transaction-detail-operation-number',
+              value: transaction.operationNumber
+            }
+          ];
+
+          if (transaction.fees && transaction.fees.itemizeFees) {
+            var cashDisposal = this._findFeeByType(transaction.fees.itemizeFees, 'CASH_DISPOSAL');
+            var interBranch = this._findFeeByType(transaction.fees.itemizeFees, 'INTERBRANCH');
+            var operationsExceeded = this._findFeeByType(transaction.fees.itemizeFees, 'OPERATIONS_EXCEEDED');
+
+            if (cashDisposal) {
+              response.push({
+                key: 'cells-transaction-detail-fee-chas-disposal',
+                value: {
+                  amount: cashDisposal.amount.amount,
+                  currencyCode: cashDisposal.amount.currency
+                },
+                localCurrency: this.localCurrency
+              });
+            }
+
+            if (interBranch) {
+              response.push({
+                key: 'cells-transaction-detail-fee-interbranch',
+                value: {
+                  amount: interBranch.amount.amount,
+                  currencyCode: interBranch.amount.currency
+                },
+                localCurrency: this.localCurrency
+              });
+            }
+
+            if (operationsExceeded) {
+              response.push({
+                key: 'cells-transaction-detail-fee-operations-exceeded',
+                value: {
+                  amount: operationsExceeded.amount.amount,
+                  currencyCode: operationsExceeded.amount.currency
+                },
+                localCurrency: this.localCurrency
+              });
+            }
+          }
+
+          if (transaction.taxes && transaction.taxes.itemizeFees) {
+            var financialTransactions = this._findTaxByType(transaction.taxes.itemizeTaxes, 'FINANCIAL_TRANSACTIONS');
+
+            if (financialTransactions) {
+              response.push({
+                key: 'cells-transaction-detail-fee-financial-transactions',
+                value: {
+                  amount: financialTransactions.amount.amount,
+                  currencyCode: financialTransactions.amount.currency
+                },
+                localCurrency: this.localCurrency
+              });
+            }
+          }
+
+          response = this._cleanEmptyData(response);
+          return [ response ];
+        },
+
+        _cleanEmptyData: function(response) {
+          return response.filter(function(item) {
+            return item.value;
+          });
+        },
+
+        _getProductNumber(product) {
+          var number = product && product.number;
+
+          if (product && product.numberType && product.numberType.id === 'SIMPLE_ACCOUNT') {
+            number = this._formatProduct(product.number, 'account');
+          }
+
+          return number;
+        },
+
+        _findFeeByType: function(fees, type) {
+          return fees && fees.find(function(fee) {
+            return fee.feeType === type;
+          });
+        },
+
+        _findTaxByType: function(taxes, type) {
+          return taxes && taxes.find(function(tax) {
+            return tax.taxType === type;
+          });
+        },
+
+        _capitalize: function(string) {
+          return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+        },
+
+        /*
+         * Notify copy code
+         */
+        copyCode: function() {
+          this.dispatchEvent(new CustomEvent('clipboard-code', {
+            bubbles: true,
+            composed: true,
+            detail: this.code
+          }));
+        }
+      });
+    }());
+  </script>
+</dom-module>

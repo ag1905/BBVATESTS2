@@ -1,0 +1,237 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-atom-button/cells-atom-button.html">
+<link rel="import" href='../cells-i18n-behavior/cells-i18n-behavior.html'>
+<link rel="import" href='../cells-atom-radio-button/cells-atom-radio-button.html'>
+<link rel="import" href="../cells-checkbox-button/cells-checkbox-button.html">
+<link rel="import" href="../cells-atom-input/cells-atom-input.html">
+<link rel="import" href="../cells-molecule-icons-input/cells-molecule-icons-input.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href='../cells-avatar-item/cells-avatar-item.html'>
+<link rel="import" href='../cells-atom-icon/cells-atom-icon.html'>
+<link rel="import" href='../cells-atom-date/cells-atom-date.html'>
+<link rel="import" href='../cells-molecule-amount-input/cells-molecule-amount-input.html'>
+<link rel="import" href="cells-glomo-bill-payment-service-detail-styles.html">
+
+<!--
+`<cells-glomo-bill-payment-service-detail>` displays the information of a selected service inside the Glomo's bill payment flow.
+
+Example:
+
+```html
+<cells-glomo-bill-payment-service-detail></cells-glomo-bill-payment-service-detail>
+```
+
+This component requires a service item to be provided by data-binding to the selectedService property.
+
+The following json represents a valid model for this property:
+
+```json
+{
+    "id": "1235",
+    "name": "Suministro de agua",
+    "serviceType": {
+        "id": "WATER_SUPPLY",
+        "name": "Water supply",
+        "link": {
+            "rel": "service-type",
+            "href": "http://bbvalabs.com:8000/payments/v0/service-types/WATER_SUPPLY"
+        }
+    },
+    "serviceProvider": "SISS",
+    "logo": {
+        "id": "6",
+        "name": "SISS",
+        "url": "http://.../siss.png"
+    },
+    "billInformation": {
+        "fixedBillNumber": true,
+        "requiresAmount": true,
+        "allowedDigitalCodes": [{
+            "id": "QR",
+            "name": "QR Code"
+        }, {
+            "id": "BARCODE",
+            "name": "Barcode"
+        }],
+        "help": {
+            "helpImage": {
+                "id": "123",
+                "name": "Ver numero factura",
+                "url": "http://.../suministro-agua-num-factura.png"
+            },
+            "helpText": "Bill number is an 11-digit number as indicated: 0000-1111111."
+        }
+    },
+    "highRanked": true
+}
+```
+
+```html
+<cells-glomo-bill-payment-service-detail selected-service="[[bindedItem]]"></cells-glomo-bill-payment-service-detail>
+```
+
+Styling:
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                                                              | Description                              | Default         |
+|:----------------------------------------------------------------------------:|:----------------------------------------:|:---------------:|
+| --cells-glomo-bill-payment-service-detail                                    | Mixin applied to host                    | {}              |
+| --cells-glomo-bill-payment-service-detail-reference-number-font-size         | Reference number font-size               | .75rem          |
+| --cells-glomo-bill-payment-service-detail-reference-number-color             | Reference number color                   | --bbva-500      |
+| --cells-glomo-bill-payment-service-detail-reference-number                   | Mixin applied to reference number        | {}              |
+| --cells-glomo-bill-payment-service-detail-amount-font-size                   | Amount font-size                         | 1rem            |
+| --cells-glomo-bill-payment-service-detail-amount-color                       | Amount color                             | --bbva-500      |
+| --cells-glomo-bill-payment-service-detail-amount                             | Mixin applied to amount                  | {}              |
+| --cells-glomo-bill-payment-service-detail-amount-number-font-size            | Amount number font-size                  | 3rem            |
+| --cells-glomo-bill-payment-service-detail-amount-number-color                | Amount number color                      | --bbva-core-blue|
+| --cells-glomo-bill-payment-service-detail-another-amount                     | Mixin applied to another amount          | {}              |
+| --cells-glomo-bill-payment-service-detail-select-amount-area-margin          | Margin applied to select-amount-area     | 2.5rem 3.375rem |
+| --cells-glomo-bill-payment-service-detail-select-amount-area                 | Mixin applied to select amount area      | {}              |
+| --cells-glomo-bill-payment-service-detail-service-heading-margin             | Margin applied to service margin         | 0               |
+| --cells-glomo-bill-payment-service-detail-service-heading                    | Mixin applied to service heading         | {}              |
+| --cells-glomo-bill-payment-service-detail-agreement-number-bottom            | Bottom position for agreement number     | rem(5px)        |
+| --cells-glomo-bill-payment-service-detail-agreement-number-left              | Left position for agreement number       | rem(60px)       |
+| --cells-glomo-bill-payment-service-detail-agreement-number                   | Mixin applied to agreement number        | {}              |
+| --cells-glomo-bill-payment-service-detail-button-area-width                  | Width for button number                  | rem(240px)      |
+| --cells-glomo-bill-payment-service-detail-button-area                        | Mixin applied to button area             | {}              |
+| --cells-glomo-bill-payment-service-detail-button-area-button-margin          | Margin for button inside button area     | 0 0 rem(12px) 0 |
+| --cells-glomo-bill-payment-service-detail-button                             | Mixin applied to button in button area   | {}              |
+
+
+@demo demo/index.html
+-->
+<dom-module id="cells-glomo-bill-payment-service-detail">
+  <template>
+    <style include="cells-glomo-bill-payment-service-detail-styles cells-glomo-bill-payment-service-detail-shared-styles"></style>
+    <div class="cells-glomo-bill-payment-service-detail__service-heading">
+      <cells-avatar-item
+        main="[[selectedService.name]]"
+        secondary="[[formatedAgreementNumber(selectedService.id)]]"
+        avatar="[[selectedService.logo.url]]"
+        data-id$="[[selectedService.id]]">
+      </cells-avatar-item>
+    </div>
+    <template is="dom-if" if="[[!_hasReference]]">
+      <cells-molecule-icons-input
+        id="referenceInput"
+        input-value="{{reference}}"
+        placeholder="{{t('cells-glomo-bill-payment-service-detail_reference')}}"
+        icon-size="icon-size-24"
+        icon-info="coronita:info">
+      </cells-molecule-icons-input>
+    </template>
+    <template is="dom-if" if="[[_hasReference]]">
+      <p class="reference-number">{{t('cells-glomo-bill-payment-service-detail_reference-number')}} {{reference}}</p>
+    </template>
+    <template is="dom-if" if="[[requiresAmount]]">
+      <div class="amount-wrapper">
+        <cells-molecule-amount-input
+          id="amountInput"
+          name="amount"
+          amount="{{amount.amount}}"
+          set-amount="{{amount.resetAmount}}"
+          label="{{t('cells-glomo-bill-payment-service-detail_amount')}}"
+          currency-code="[[amount.currency]]"
+          local-currency="[[localCurrency]]"
+          language="[[language]]"
+          icon-size="icon-size-8"
+          icon-code="coronita:close"
+          numeral-positive-only="[[numeralPositiveOnly]]"></cells-molecule-amount-input>
+        <cells-atom-icon class="icon-size-24"
+          icon="coronita:info"
+          on-click="_openModalBillInformation"></cells-atom-icon>
+      </div>
+    </template>
+    <template is="dom-if" if="[[_checkedVerification(reference, amount.amount, verification)]]">
+    <div class="separator"></div>
+      <p class="amount-label">[[t('cells-glomo-bill-payment-service-detail_amount')]]</p>
+      <div class="amount">
+        <cells-atom-amount class="amount-huge"
+          amount="{{amount.amount}}"
+          currency-code="{{amount.currency}}"
+          local-currency="[[localCurrency]]">
+        </cells-atom-amount>
+      </div>
+      <template is="dom-if" if="[[billInformation.maturityDate]]">
+        <div class="date">
+          <p>[[t('cells-glomo-bill-payment-service-detail_maturity-date')]] </p>
+          <cells-atom-date date="[[billInformation.maturityDate]]" format="[[format]]"></cells-atom-date>
+        </div>
+      </template>
+      <template is="dom-if" if="[[!saved]]">
+        <div class="cells-glomo-bill-payment-service-detail__save-service">
+          <cells-checkbox-button checked="{{checked}}" icon-check="coronita:checkmark" hidden$="[[_checkedValue(selectedService.storedId)]]">{{t('cells-glomo-bill-payment-service-detail_save-service')}}</cells-checkbox-button>
+          <div id="alias" class$="alias [[_displayAlias(checked)]]">
+            <cells-molecule-icons-input input-value="{{alias}}" placeholder="{{t('cells-glomo-bill-payment-service-detail_optional-alias')}}"></cells-molecule-icons-input>
+          </div>
+        </div>
+      </template>
+    </template>
+    <template is="dom-if" if="[[_checkedHasBillsReference(reference, billInformation.totalDebt, verification)]]">
+      <div class="cells-glomo-bill-payment-service-detail__select-amount-area">
+        <cells-atom-radio-button
+          hidden$=[[!_checkedValue(billInformation.minAmount.amount)]]
+          on-click="_selectRadio"
+          data-index="0"
+          id="minAmount"
+          checked="[[_checkedSelectedRadio(selectedRadio, 0)]]">
+          <div class="inline">
+            <span>{{t('cells-glomo-bill-payment-service-detail_select-reactive-amount')}}</span>
+            <cells-atom-amount
+              amount="[[billInformation.minAmount.amount]]"
+              currency-code="[[amount.currency]]"
+              local-currency="[[localCurrency]]"></cells-atom-amount>
+          </div>
+        </cells-atom-radio-button>
+        <cells-atom-radio-button
+          on-click="_selectRadio"
+          data-index="1"
+          id="totalDebt"
+          checked="[[_checkedSelectedRadio(selectedRadio, 1)]]">
+          <div class="inline">
+            <span>{{t('cells-glomo-bill-payment-service-detail_select-total-amount')}}</span>
+            <cells-atom-amount
+              amount="[[billInformation.totalDebt.amount]]"
+              currency-code="[[amount.currency]]"
+              local-currency="[[localCurrency]]"></cells-atom-amount>
+          </div>
+        </cells-atom-radio-button>
+        <cells-atom-radio-button
+          on-click="_selectRadio"
+          data-index="2"
+          checked="[[_checkedSelectedRadio(selectedRadio, 2)]]">
+          <span>{{t('cells-glomo-bill-payment-service-detail_select-other-amount')}}</span>
+        </cells-atom-radio-button>
+      </div>
+      <div class$="anotherAmount [[collapsed]]">
+        <cells-molecule-amount-input
+          amount="{{amount.amount}}"
+          set-amount="{{amount.resetAmount}}"
+          label="{{t('cells-glomo-bill-payment-service-detail_select-other-amount')}}"
+          currency-code="[[amount.currency]]"
+          local-currency="[[localCurrency]]"
+          language="[[language]]"
+          icon-size="icon-size-8"
+          icon-code="coronita:close"
+          numeral-positive-only="[[numeralPositiveOnly]]"></cells-molecule-amount-input>
+      </div>
+    </template>
+    <div class="cells-glomo-bill-payment-service-detail__button-area">
+      <template is="dom-if" if="[[requireCalc]]">
+        <button class="btn--primary btn--l"
+          is="cells-atom-button"
+          on-click="_calculateAmount"
+          disabled$=[[_disableCalcBtn]]>{{t('cells-glomo-bill-payment-service-detail_calculate-amount')}}</button>
+      </template>
+      <template is="dom-if" if="[[!requireCalc]]">
+        <button class="btn--primary btn--l"
+        is="cells-atom-button"
+        on-click="_continue"
+        disabled$=[[!_checkedValue(amount.amount)]]>{{t(_labelButton)}}</button>
+      </template>
+      <button class="btn--tertiary btn--l" is="cells-atom-button" on-click="_chooseAnotherService">{{t('cells-glomo-bill-payment-service-detail_choose-another-service')}}</button>
+    </div>
+  </template>
+  <script src="cells-glomo-bill-payment-service-detail.js"></script>
+</dom-module>

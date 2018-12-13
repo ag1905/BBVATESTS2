@@ -1,0 +1,70 @@
+{
+  "name": "cells-ajax",
+  "version": "10.1.1",
+  "description": "Ajax web component with cache and iron-localstorage reponses store",
+  "main": [
+    "cells-ajax.html"
+  ],
+  "keywords": [
+    "web-component",
+    "polymer",
+    "ajax"
+  ],
+  "dependencies": {
+    "iron-ajax": "iron-ajax-fix-delete#^2.1.5",
+    "iron-localstorage": "PolymerElements/iron-localstorage#1 - 2",
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "cells-http-native": "9 - 10"
+  },
+  "devDependencies": {
+    "cells-demo-helper": "^10.0.0",
+    "cells-demo-dm-helper": "^10.0.0",
+    "paper-radio-group": "PolymerElements/paper-radio-group#1 - 2",
+    "paper-styles": "PolymerElements/paper-styles#1 - 2",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#1 - 2",
+    "paper-card": "PolymerElements/paper-card#1 - 2",
+    "paper-header-panel": "PolymerElements/paper-header-panel#1 - 2",
+    "paper-icon-button": "PolymerElements/paper-icon-button#1 - 2",
+    "paper-item": "PolymerElements/paper-item#1 - 2",
+    "paper-radio-button": "PolymerElements/paper-radio-button#1 - 2",
+    "paper-toolbar": "PolymerElements/paper-toolbar#1 - 2",
+    "iron-image": "PolymerElements/iron-image#1 - 2",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "^1.0.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "iron-ajax": "iron-ajax-fix-delete#^2.1.5",
+        "iron-localstorage": "PolymerElements/iron-localstorage#^1.0.0",
+        "polymer": "Polymer/polymer#^1.9.0",
+        "cells-http-native": "^9.0.0"
+      },
+      "devDependencies": {
+        "cells-demo-helper": "^10.0.0",
+        "cells-demo-dm-helper": "^10.0.0",
+        "paper-radio-group": "PolymerElements/paper-radio-group#^1.0.0",
+        "paper-styles": "PolymerElements/paper-styles#^1.0.0",
+        "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.0.0",
+        "paper-card": "PolymerElements/paper-card#^1.0.0",
+        "paper-header-panel": "PolymerElements/paper-header-panel#^1.0.0",
+        "paper-icon-button": "PolymerElements/paper-icon-button#^1.0.0",
+        "paper-item": "PolymerElements/paper-item#^1.0.0",
+        "paper-radio-button": "PolymerElements/paper-radio-button#^1.0.0",
+        "paper-toolbar": "PolymerElements/paper-toolbar#^1.0.0",
+        "iron-image": "PolymerElements/iron-image#^1.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "webcomponentsjs": "^0.7"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7",
+        "iron-ajax": "^2.1.5"
+      }
+    }
+  }
+}

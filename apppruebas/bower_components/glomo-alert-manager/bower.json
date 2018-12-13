@@ -1,0 +1,38 @@
+{
+  "name": "glomo-alert-manager",
+  "version": "2.22.0",
+  "description": "A modal prompted to register the device",
+  "keywords": [
+    "i18n",
+    "modal",
+    "alert"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.9.0",
+    "cells-alert-box": "10.2.0",
+    "cells-atom-icon": "~9.0.0",
+    "cells-i18n-behavior": "~9.0.0"
+  },
+  "main": [
+    "glomo-alert-manager.html"
+  ],
+  "devDependencies": {
+    "paper-toast": "PolymerElements/paper-toast#^1.3.0",
+    "cells-demo-event-toaster": "^1.2.0",
+    "cells-sass": "^2.0.0",
+    "cells-atom-button": "~4.1.0",
+    "cells-glomo-theme": "~5.4.0",
+    "coronita-icons": "^3.0.0",
+    "cells-demo-helper": "^1.3.7",
+    "cells-coronita-theme": "^2.3.0",
+    "cells-demo-mocker": "^1.0.2",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^5.0.0"
+  },
+  "resolutions": {
+    "cells-atom-icon": "^9.0.0",
+    "cells-atom-button": "9 - 10"
+  }
+}

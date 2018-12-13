@@ -1,0 +1,245 @@
+<custom-style>
+  <style is="custom-style">
+    :root, html {
+  /* ==========================================================================
+     component vars
+     ========================================================================== */
+      --cells-left-swipe-action-underlay-background: var(--bbva-medium-blue, #237ABA);
+      --cells-molecule-navigation-drawer-fg-color: var(--bbva-white, #fff);
+      --cells-organism-menu-sidebar-color: var(--bbva-white, #fff);
+
+      /* https://github.com/PolymerElements/iron-overlay-behavior/issues/166 */
+      --iron-overlay-backdrop-background-color: var(--bbva-navy, #072146);
+      --iron-overlay-backdrop-opacity: .95;
+
+      --modal-operations-background-color: var(--bbva-medium-blue, #237ABA);
+
+      /* cells-molecule-amount-input */
+      --cells-molecule-amount-input-background-color: var(--bbva-100, #F4F4F4);
+      --cells-molecule-amount-input-border-color: var(--bbva-100, #F4F4F4);
+      --cells-molecule-amount-input-invalid-border-bottom: var(--bbva-red, #DA3851);
+      --cells-molecule-amount-input-invalid-input-color: var(--bbva-red, #DA3851);
+      --cells-molecule-amount-input-placeholder-color: var(--bbva-500, #666);
+      --cells-molecule-amount-input-input-color: var(--bbva-600, #121212);
+      --cells-molecule-amount-input-background: var(--bbva-100, #F4F4F4);
+      --cells-molecule-amount-input-disabled-color: var(--bbva-500, #666);
+
+      /* cells-template-paper-drawer-panel */
+      --app__transactional-zindex: 1;
+
+      /* cells-bottom-modal */
+      --cells-bottom-modal-btn-close-color: var(--bbva-navy, #072146);
+
+      /* cells-molecule-mask */
+      --cells-molecule-mask-margin-right: 3px;
+
+  /* ==========================================================================
+      component mixins
+  ========================================================================== */
+
+      --cells-organism-access-welcome-section: {
+        @apply --bbva-core-blue-fractal-background;
+      };
+
+      --cells-organism-access-default-section: {
+        @apply --bbva-core-blue-fractal-background;
+      };
+
+      --cells-organism-access-welcome-section: {
+        @apply --bbva-core-blue-fractal-background;
+      };
+
+      --cells-organism-menu-sidebar-section-list: {
+        overflow-y: auto;
+      };
+
+      --cells-molecule-header-dark: {
+        background: var(--bbva-navy, #072146);
+        color: var(--bbva-white, #fff);
+      };
+
+      --cells-molecule-header-on-dark: {
+        color: var(--bbva-white, #fff);
+      };
+
+      --cells-molecule-header-medium: {
+        background: var(--bbva-white-core-blue);
+        color: var(--bbva-white, #fff);
+      };
+
+      --cells-molecule-header-light-grey: {
+        background: var(--bbva-100, #F4F4F4);
+        color: var(--bbva-dark-core-blue, #043263);
+      };
+
+      --cells-avatar-actions-header-morning: {
+        background-color: var(--bbva-medium-blue, #237ABA);
+      };
+
+      --cells-avatar-actions-header-evening: {
+        background-color: var(--bbva-core-blue, #004481);
+      };
+
+      --cells-avatar-actions-header-night: {
+        background-color: var(--bbva-navy, #072146);
+      };
+
+      /*
+       * font-size header
+       */
+      --cells-molecule-header-title: {
+        font-size: var(--cells-text-size-18);
+      };
+
+      --molecule-grid-list-item-common: {
+        width: 3.75rem;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+                flex-direction: column;
+        -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+                justify-content: space-between;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+                align-items: center;
+      };
+
+      /*
+       * Atom subheader
+       */
+      --cells-atom-subheader-heading: {
+        color: var(--bbva-500, #666);
+        @apply --small-heading;
+        @apply --cells-fontDefaultBold;
+      };
+
+      --cells-atom-subheader: {
+        margin-bottom: 0.375rem;
+      };
+
+      --item-separator: {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        border-bottom: 1px solid var(--bbva-100, #F4F4F4);
+        z-index: 1;
+      };
+
+      /*
+       * cells-molecule-card-cover
+       */
+      --cells-molecule-card-cover-icon: {
+        padding: 5px;
+        border-radius: 50%;
+        background: var(--bbva-red, #DA3851);
+      };
+
+      --cells-molecule-card-cover-inactive: {
+        border-radius: 0;
+        opacity: 1;
+        background-color: rgba(255,255,255,.8);
+      };
+
+      /*
+       * cells-image-overlay
+       */
+      --cells-image-overlay-icon: {
+        padding: 5px;
+        border-radius: 50%;
+        background: var(--bbva-red, #DA3851);
+      };
+
+      --cells-image-overlay-layer: {
+        border-radius: 0;
+        opacity: 1;
+        background-color: rgba(255,255,255,.8);
+      };
+
+      /*
+       * cells-molecule-skeleton
+       */
+      --cells-molecule-skeleton-screen-step: {
+        height: 18px;
+        margin-bottom: 5px;
+      };
+
+      --cells-molecule-skeleton-step-1: {
+        max-width: calc(55vw - 10px);
+      };
+
+      --cells-molecule-skeleton-step-2: {
+        max-width: 60px;
+      };
+
+      --cells-molecule-skeleton-step-3: {
+        max-width: calc(45vw - 40px);
+      };
+
+      /*
+       * cells-molecule-amount-input
+       */
+      --cells-molecule-amount-input-icon: {
+        color: var(--bbva-300, #D3D3D3);
+      };
+
+      /*
+       * cells-template-paper-drawer-panel and paper-drawer-panel
+       */
+      --paper-drawer-panel-main-container: {
+        background-color: transparent;
+        box-shadow: none !important;
+      };
+
+      --paper-drawer-panel-scrim: {
+        background-color: transparent !important;
+        transition: none;
+      };
+
+      --paper-drawer-panel-drawer-container: {
+        background-color: transparent;
+        box-shadow: none !important;
+        transition: transform ease-in-out .3s, visibility .3s !important;
+      };
+
+      --paper-drawer-panel-left-drawer-container: {
+        transform: none !important;
+      };
+
+      --cells-template-paper-drawer-panel-header: {
+        position: relative;
+      };
+
+      --cells-template-paper-drawer-panel-header-maincontainer: {
+        overflow-y: initial;
+      };
+
+      /*
+       * cells-left-swipe-action
+       */
+      /* fix blue pixel bug */
+      --cells-left-swipe-action-swipe-underlay: {
+        height: calc(100% - 1px);
+        border-top: 1px solid white;
+      };
+
+      --cells-left-swipe-action-button-wrapper: {
+        font-size: inherit;
+      };
+
+       /**
+       *  cells-left-swipe-action-button
+       */
+       --cells-left-swipe-action-button-wrapper: {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding-top: 1rem;
+        };
+
+    }
+  </style>
+</custom-style>

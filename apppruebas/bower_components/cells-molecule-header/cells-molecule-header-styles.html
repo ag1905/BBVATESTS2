@@ -1,0 +1,128 @@
+<dom-module id="cells-molecule-header-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  --cells-toggle-button-font-size: 0.6875rem;
+  --cells-toggle-button-height: 1.5rem;
+  --cells-toggle-button-text-height: 1.625rem;
+  --cells-toggle-button-border-radius: 1.25rem;
+  --cells-toggle-button-button-switch-color: var(--bbva-medium-blue);
+  --cells-toggle-button-background-color: var(--bbva-dark-navy, #041836);
+  --cells-toggle-button-switch-top: 0.0625rem;
+  --cells-toggle-button-switch-height: 1.375rem;
+  --cells-toggle-button-switch-border-radius: 1.25rem;
+  --cells-toggle-button-text-container-top: 0;
+  --cells-molecule-mask-margin-right: 0.1875rem;
+  --cells-molecule-header-header__title-max-with: inherit;
+  height: 3.75rem;
+  padding: 1.25rem;
+  will-change: transform;
+  color: var(--cells-molecule-header-color, initial);
+  background-color: var(--cells-molecule-header-bg-color, transparent);
+  @apply (--layout-horizontal);
+  @apply (--layout-center);
+  @apply (--layout-justified);
+  @apply (--cells-molecule-header); }
+
+:host-context(.header--dark) {
+  --cells-molecule-mask: { color: var(--bbva-white, #FFF); margin-left: 10px; @apply(--cells-fontDefaultNormalItalic); };
+  @apply (--cells-molecule-header-dark); }
+
+:host-context(.header--medium) {
+  @apply (--cells-molecule-header-medium); }
+
+:host-context(.header--on-dark) {
+  @apply (--cells-molecule-header-on-dark); }
+
+:host-context(.header--on-dark) {
+  --cells-molecule-mask: { color: var(--bbva-white, #FFF); margin-left: 10px; };
+  @apply (--cells-molecule-header-on-dark); }
+
+:host-context(.header--light-grey) {
+  @apply (--cells-molecule-header-light-grey); }
+
+:host-context(.header--light-grey) {
+  @apply (--cells-molecule-header-light-grey); }
+
+.title {
+  font-size: 1.25rem;
+  height: 100%;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  transition: all 0.4s;
+  @apply (--cells-fontDefaultLight);
+  @apply (--cells-molecule-header-title); }
+  .title.translate {
+    -webkit-transform: translateY(-60px);
+            transform: translateY(-60px); }
+  .title .header__title {
+    display: block;
+    overflow: hidden;
+    max-width: var(--cells-molecule-header-header__title-max-with);
+    white-space: nowrap;
+    text-overflow: ellipsis; }
+
+.switch-container {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.menu-icon {
+  z-index: 10;
+  color: inherit;
+  @apply (--cells-molecule-header-menu-icon); }
+
+.back-icon {
+  display: none; }
+
+.close-icon {
+  display: none; }
+
+.search-icon {
+  visibility: hidden; }
+
+.header__button-settings {
+  display: inherit; }
+
+.btn--transparent {
+  margin: -0.625rem;
+  padding: 0.625rem;
+  border: 0;
+  outline: none;
+  background: transparent; }
+
+:host([back]) .menu-icon {
+  display: none; }
+
+:host([back]) .close-icon {
+  display: none; }
+
+:host([back]) .back-icon {
+  display: block;
+  color: inherit;
+  @apply (--cells-molecule-header-back-icon); }
+
+:host([close]) .menu-icon {
+  display: none; }
+
+:host([close]) .back-icon {
+  display: none; }
+
+:host([close]) .close-icon {
+  display: block;
+  color: inherit;
+  @apply (--cells-molecule-header-back-icon); }
+
+:host([search]) .search-icon {
+  visibility: visible;
+  color: inherit;
+  @apply (--cells-molecule-header-search-icon); }
+
+</style></template></dom-module>

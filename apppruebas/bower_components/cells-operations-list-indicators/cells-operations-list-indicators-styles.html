@@ -1,0 +1,35 @@
+<dom-module id="cells-operations-list-indicators-styles"><template><style>
+:host {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  min-height: 7.5rem;
+  @apply (--cells-operations-list-indicators); }
+
+cells-operations-list {
+  @apply (--cells-operations-list-indicators-operations-list); }
+
+.skeleton {
+  display: block;
+  background: var(--bbva-medium-blue, #237ABA);
+  width: 100%;
+  min-height: 7.5rem;
+  margin: 0 1rem;
+  @apply (--cells-operations-list-indicators-skeleton); }
+
+cells-skeleton-item {
+  margin: 10px 10px;
+  --cells-skeleton-item-actions: { margin: 0; background: transparent; };
+  --cells-skeleton-item-actions-box: { margin-top: .6875rem; };
+  @apply (--cells-operations-list-indicators-skeleton-item); }
+
+</style></template></dom-module>

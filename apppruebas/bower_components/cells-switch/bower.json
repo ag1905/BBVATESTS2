@@ -1,0 +1,60 @@
+{
+  "name": "cells-switch",
+  "version": "10.0.6",
+  "description": "An element that toggles between two states",
+  "keywords": [
+    "control",
+    "toggle",
+    "button",
+    "switch",
+    "checked"
+  ],
+  "ignore": [],
+  "main": [
+    "cells-switch.html"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "cells-atom-icon": "^10.0.0",
+    "iron-checked-element-behavior": "polymerElements/iron-checked-element-behavior#1 - 2",
+    "iron-a11y-keys-behavior": "polymerElements/iron-a11y-keys-behavior#1 - 2"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "coronita-icons": "^10.0.0",
+    "iron-test-helpers": "polymerElements/iron-test-helpers#1 - 2",
+    "cells-demo-helper": "^10.0.0",
+    "cells-banking-theme": "^10.0.0",
+    "cells-coronita-theme": "^11.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9.0",
+        "cells-atom-icon": "^10.0.0",
+        "iron-checked-element-behavior": "polymerElements/iron-checked-element-behavior#^1.0.0",
+        "iron-a11y-keys-behavior": "polymerElements/iron-a11y-keys-behavior#^1.0.0"
+      },
+      "devDependencies": {
+        "cells-sass": "^2.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+        "coronita-icons": "^10.0.0",
+        "iron-test-helpers": "polymerElements/iron-test-helpers#^1.0.0",
+        "cells-demo-helper": "^10.0.0",
+        "cells-banking-theme": "^10.0.0",
+        "cells-coronita-theme": "^10.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "cells-global-dashboard-pending": "Saldo en pesos",
+
+  "cells-global-dashboard-deposits-with-currency-header": "Inversiones a plazo en",
+  "cells-global-dashboard-deposits-header": "Inversiones a plazo",
+  "cells-global-dashboard-deposit-description": "Inversión a plazo BBVA",
+  "cells-global-dashboard-deposits-available": "Saldo",
+
+  "cells-global-dashboard-loans-pending": "Saldo pendiente",
+  "cells-global-dashboard-loans-initial": "Crédito otorgado",
+
+  "cells-global-dashboard-cards-available": "Saldo disponible",
+  "cells-global-dashboard-cards-disposed": "Saldo actual",
+
+  "cells-global-dashboard-funds-header": "Fondos de inversión",
+  "cells-global-dashboard-fund-description": "Fondo de inversión BBVA",
+  "cells-global-dashboard-funds-shares": "Títulos",
+  "cells-global-dashboard-accounts-header": "Cuentas"
+}

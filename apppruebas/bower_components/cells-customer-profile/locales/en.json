@@ -1,0 +1,11 @@
+{
+  "cells-customer-profile-edit": "Edit",
+  "cells-customer-profile-password": "Password",
+  "cells-customer-profile-mobile": "Mobile",
+  "cells-customer-profile-email": "Email",
+  "cells-customer-profile-birthdate": "Birthdate",
+  "cells-customer-profile-address": "Address",
+  "cells-customer-profile-mask": "Hide data",
+  "cells-customer-profile-unmask": "Show data",
+  "cells-customer-profile-change": "Change"
+}

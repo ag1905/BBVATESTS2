@@ -1,0 +1,52 @@
+{
+  "name": "glomo-one-click-dm",
+  "version": "0.7.6",
+  "description": "DM to parse cards offer data",
+  "keywords": [
+    "dm",
+    "i18n"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "cells-dm-global-apis-cards": "~1.8.0",
+    "cells-dm-global-apis-loans": "~2.1.4",
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "cells-i18n-behavior": "9 - 10"
+  },
+  "devDependencies": {
+    "cells-demo-helper": "9 - 10",
+    "cells-demo-dm-helper": "9 - 10",
+    "cells-shadow-query-selector": "^1.0.0",
+    "cells-moment-import": "~10.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "cells-dm-global-apis-cards": "~1.7.0",
+        "cells-dm-global-apis-loans": "~2.1.4",
+        "polymer": "Polymer/polymer#^1.9",
+        "cells-i18n-behavior": "^9.0.0"
+      },
+      "devDependencies": {
+        "cells-demo-helper": "^9.0.0",
+        "cells-demo-dm-helper": "^9.0.0",
+        "cells-shadow-query-selector": "^1.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  },
+  "main": [
+    "glomo-one-click-dm.html"
+  ]
+}

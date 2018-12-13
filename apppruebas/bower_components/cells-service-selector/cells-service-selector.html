@@ -1,0 +1,102 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-service-selector-styles.html">
+
+<link rel="import" href="../cells-left-swipe-action/cells-left-swipe-action.html">
+<link rel="import" href="../cells-atom-message/cells-atom-message.html">
+<link rel="import" href="../cells-atom-subheader/cells-atom-subheader.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-avatar-item/cells-avatar-item.html">
+<link rel="import" href="../cells-atom-message/cells-atom-message.html">
+<link rel="import" href="../cells-stripes-spinner-veil/cells-stripes-spinner-veil.html">
+<link rel="import" href="../filter-tags/filter-tags.html">
+
+<!--
+`<cells-service-selector>` displays a list of services, from which one can be chosen.
+
+Example:
+
+```html
+<cells-service-selector class="demo"
+  services="[[services]]"
+  list-title="Selecciona un servicio">
+</cells-service-selector>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-service-selector-scope      | scope description | default value  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-service-selector">
+  <template>
+    <style include="cells-service-selector-styles cells-service-selector-shared-styles">
+    </style>
+
+    <template is="dom-if" if="[[listTitle]]">
+      <cells-atom-subheader>
+        <span class="heading">[[t(listTitle)]]</span>
+        <template is="dom-if" if="[[_showMore]]">
+          <a href="#" on-click="_viewAll" id="viewMore">{{t('cells-service-selector-view-all')}}</a>
+        </template>
+      </cells-atom-subheader>
+    </template>
+
+    <filter-tags selected-filters="[[filteredCategories]]"></filter-tags>
+
+    <!-- No products -->
+    <template is="dom-if" if="[[!renderedCount]]">
+      <cells-atom-message
+        type="info"
+        icon="coronita:info"
+        icon-size="24"
+        message="[[message]]">
+        <content></content>
+      </cells-atom-message>
+    </template>
+
+    <template is="dom-repeat" items="[[_computeProducts(_productList)]]" as="product" filter="{{_computeSearch(filterServices)}}" rendered-item-count="{{renderedCount}}">
+      <!-- Servicies -->
+      <template is="dom-if" if={{!showCategories}}>
+
+        <cells-left-swipe-action id="swipe" class$="transactions-swipe [[_checkedOptions(product.options)]]"
+          data-index="[[index]]"
+          open="[[_checkedOpened(index, selected)]]"
+          disabled="[[_checkedServiceType(product.billNumber)]]">
+          <cells-avatar-item
+            main="[[product.name]]"
+            secondary="[[product.alias]]"
+            tertiary="[[formatedAgreementNumber(product.secondary)]]"
+            info="[[formatReferenceNumber(product.billNumber)]]"
+            avatar="[[product.logo.url]]"
+            data-id$="[[product.id]]"
+            data-index$="[[index]]"
+            on-tap="_onServiceItemTap">
+          </cells-avatar-item>
+          <cells-stripes-spinner-veil open="[[_checkedOpened(index, selected)]]"></cells-stripes-spinner-veil>
+          <template is="dom-repeat" items="[[product.options]]" data-service$="[[index]]">
+            <cells-left-swipe-action-button on-click="_onClickOption" data-type$="[[item.type]]">
+              <cells-atom-icon class="swipe-actions__icon icon-size-16" icon="[[item.icon]]"></cells-atom-icon>
+              <span>{{t(item.key)}}</span>
+            </cells-left-swipe-action-button>
+          </template>
+        </cells-left-swipe-action>
+      </template>
+
+      <!-- Categories -->
+      <template is="dom-if" if={{showCategories}}>
+        <cells-avatar-item
+          main="[[product.name]]"
+          data-id$="[[product.id]]"
+          data-index$="[[index]]"
+          on-tap="_onCategoryItemTap">
+        </cells-avatar-item>
+      </template>
+    </template>
+  </template>
+  <script src="cells-service-selector.js"></script>
+</dom-module>

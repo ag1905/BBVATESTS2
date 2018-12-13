@@ -1,0 +1,37 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  
+  @apply --cells-event-button;
+}
+
+button {
+  padding: rem(11px) rem(20px);
+  outline: none;
+  @apply --cells-event-button-button;
+}
+
+.btn-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @apply --cells-event-button-wrapper;
+  &__text {
+    font-size: rem(16px);
+    @apply --cells-event-button-wrapper-text;
+  }
+  &__icon {
+    @apply --cells-event-button-wrapper-icon;
+  }
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}

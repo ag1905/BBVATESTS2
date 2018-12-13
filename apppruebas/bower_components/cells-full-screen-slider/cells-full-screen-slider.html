@@ -1,0 +1,126 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-swipeable-pages/iron-swipeable-pages.html">
+<link rel="import" href="../iron-image/iron-image.html">
+<link rel="import" href="../cells-pagination-bullets/cells-pagination-bullets.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../cells-apng-canvas/cells-apng-canvas.html">
+<link rel="import" href="cells-full-screen-slider-styles.html">
+
+<!--
+`<cells-full-screen-slider>` is a component that displays a carousel of slides with an image or animation,
+title, text and optional customizable background color and image for each slide.
+
+Custom content provided in light DOM is placed below the slider.
+
+Example:
+
+```html
+<cells-full-screen-slider slides="[[slides]]"></cells-full-screen-slider>
+```
+
+## Data model
+
+__Slides property__
+
+You can set custom duration for each slide by adding a delay property to each item of the
+slides array. Otherwise, the default value for the delay property will be used.
+
+```json
+[{
+  image: '../images/slide-1.svg',
+  placeholder: 'data:image/svg+xml;base64...',
+  title: 'Slide title',
+  text: 'Slide text lorem ipsum dolor sit amet...',
+  backgroundColor: '#003E7B',
+  backgroundImage: 'path-to-image.svg',
+  delay: 5000 // custom duration for each slide
+}];
+```
+
+__Animated images__
+
+To use animations use `animation` property instead of `image`. The value must be a path of an APNG image (Animated PNG),
+that will be rendered as canvas. When using animations, the `placeholder` attribute is not used.
+
+```json
+[{
+  animation: '../images/animation.png',
+  title: 'Slide title',
+  text: 'Slide text lorem ipsum dolor sit amet...'
+}];
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                          | Description                             | Default            |
+| :----------------------------------------| :---------------------------------------| :----------------- |
+| --cells-full-screen-slider               | mixin applied to the whole component    | {}                 |
+| --cells-full-screen-slider-content       | mixin for the bottom container          | {}                 |
+| --cells-full-screen-slider-pager         | mixin applied to the pagination bullets | {}                 |
+| --cells-full-screen-slider-slide         | mixin applied to each slide             | {}                 |
+| --cells-full-screen-slider-slide-image   | mixin for the slide image               | {}                 |
+| --cells-full-screen-slider-slide-wrapper | mixin for the slide content wrapper     | {}                 |
+| --cells-full-screen-slider-slide-title   | mixin for the slide title               | {}                 |
+| --cells-full-screen-slider-slide-text    | mixin for the slide text                | {}                 |
+| --cells-full-screen-slider-slides-color  | text color                              | #fff               |
+| --cells-full-screen-slider_canvas-width  | canvas width                            | auto               |
+| --cells-full-screen-slider_canvas-height | canvas height                           | 36vh               |
+| --cells-full-screen-slider-bullet-inactive-color | color for the inactive pagination bullets | rgba(255,255,255, .4) |
+| --cells-full-screen-slider-bullet-active-color | color for the active pagination bullet | #fff |
+
+@demo demo/mobile.html
+-->
+<dom-module id="cells-full-screen-slider">
+  <template strip-whitespace>
+    <style include="cells-full-screen-slider-styles cells-full-screen-slider-shared-styles"></style>
+
+    <div class="images on-top" id="images">
+      <template is="dom-repeat" items="[[slides]]">
+        <template is="dom-if" if="[[item.image]]">
+          <iron-image src$="[[item.image]]" preload fade placeholder$="[[_getImagePlaceholder(slides, selected)]]" class$="slide__img fade [[_computeCanvasClass(index, selected)]]" sizing="contain"></iron-image>
+        </template>
+        <template is="dom-if" if="[[item.animation]]">
+          <cells-apng-canvas
+            src="[[item.animation]]"
+            class$="slide__img fade [[_computeCanvasClass(index, selected)]]"
+            autoplay="[[_shouldAnimationPlay(index, selected, frozen)]]">
+          </cells-apng-canvas>
+        </template>
+      </template>
+    </div>
+
+    <template is="dom-if" if="[[showArrows]]">
+      <cells-st-button id="leftArrowButton" class="transparent arrow-button">
+        <button on-click="_onPreviousArrowClick">
+          <cells-atom-icon class="btn-icon" icon="coronita:back"></cells-atom-icon>
+        </button>
+      </cells-st-button>
+      <cells-st-button id="rigthArrowButton" class="transparent arrow-button">
+        <button on-click="_onNextArrowClick">
+          <cells-atom-icon class="btn-icon" icon="coronita:forward"></cells-atom-icon>
+        </button>
+      </cells-st-button>
+    </template>
+
+    <iron-swipeable-pages id="slider" class="slides" selected="{{selected}}" threshold="0.1" edge-swipe-sensitivity="10" disabled$="[[disableSwipe]]">
+      <template is="dom-repeat" items="[[slides]]">
+        <div class="slide" style$="background-color: [[item.backgroundColor]]; background-image: url([[item.backgroundImage]])">
+          <div class="slide__content">
+            <h2 class="slide__title">[[item.title]]</h2>
+            <p class="slide__text">[[item.text]]</p>
+          </div>
+        </div>
+      </template>
+    </iron-swipeable-pages>
+
+    <cells-pagination-bullets class="pager on-top" slides="[[slides]]" selected="[[selected]]" no-click></cells-pagination-bullets>
+
+    <div class="bottom">
+      <content></content>
+    </div>
+
+  </template>
+  <script src="cells-full-screen-slider.js"></script>
+</dom-module>

@@ -1,0 +1,112 @@
+<dom-module id="glomo-one-click-resume-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --glomo-one-click-resume; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+.container {
+  padding: 1.875rem;
+  color: var(--bbva-white, #FFF);
+  background: var(--bbva-core-blue, #004481);
+  @apply --glomo-one-click-resume-container; }
+
+.header {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-bottom: 1.375rem;
+  @apply --glomo-one-click-resume-header; }
+  .header__title {
+    text-transform: uppercase;
+    @apply --glomo-one-click-resume-header-title; }
+
+.box {
+  padding: 0 0 1.25rem 0;
+  @apply --glomo-one-click-resume-box; }
+  .box--inherit {
+    padding: 0;
+    @apply --glomo-one-click-resume-box-inherit; }
+  .box__label {
+    display: block;
+    font-size: .875rem;
+    @apply --glomo-one-click-resume-box-label; }
+    .box__label--title {
+      margin: 0 0 .625rem 0;
+      @apply --glomo-one-click-resume-box-label-title; }
+  .box__row {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin: 0 0 .625rem 0;
+    @apply --glomo-one-click-resume-box-row; }
+  .box__amount {
+    margin: 0 0 1.25rem 0;
+    @apply --glomo-one-click-resume-box-amount; }
+
+.change-button {
+  font-size: .875rem;
+  font-weight: bold;
+  color: var(--bbva-light-blue, #5bbeff);
+  @apply --glomo-one-click-resume-change-button; }
+
+.separator {
+  display: block;
+  margin: 0 0 1.25rem 0;
+  width: 40px;
+  height: 1px;
+  opacity: 0.2;
+  background: var(--bbva-white, #FFF);
+  @apply --glomo-one-click-resume-separator; }
+
+cells-product-item {
+  padding: 0;
+  background: transparent;
+  color: var(--bbva-white, #FFF);
+  --cells-product-item-item-name: { margin-bottom: .625rem; color: var(--bbva-white, #FFF); };
+  --cells-product-item-description-value: { color: var(--bbva-white, #FFF); };
+  @apply --glomo-one-click-resume-product-item; }
+
+cells-atom-amount {
+  color: var(--bbva-white, #FFF) !important;
+  @apply --glomo-one-click-resume-amount; }
+
+cells-icon-message {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 1.25rem 0 0 0;
+  color: var(--bbva-white, #FFF);
+  font-style: italic;
+  @apply --glomo-one-click-resume-icon-message; }
+
+</style></template></dom-module>

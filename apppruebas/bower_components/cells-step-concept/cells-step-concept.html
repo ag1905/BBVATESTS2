@@ -1,0 +1,91 @@
+<link rel="import" href="../cells-atom-button/cells-atom-button.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-molecule-input/cells-molecule-input.html">
+<link rel="import" href="../cells-step/cells-step.html">
+<link rel="import" href="../cells-step-behavior/cells-step-behavior.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-step-concept-styles.html">
+
+
+<!--
+`<cells-step-concept>` Component containing inputs for an operation concept and reference.
+
+Example:
+
+```html
+<cells-step-concept></cells-step-concept>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-step-concept-scope      | scope description | default value  |
+| --cells-step-concept  | empty mixin     | {}             |
+| --cells-step-concept-full  | empty mixin     | {}             |
+| --cells-step-concept-filled-p  | empty mixin     | {}             |
+| --cells-step-concept-secondary-input  | empty mixin     | {}             |
+| --cells-step-concept-btn-primary  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-step-concept">
+  <template>
+    <style include="cells-step-concept-styles cells-step-concept-shared-styles"></style>
+    <cells-step id="stepContainer"
+        active="[[active]]"
+        title="[[title]]"
+        collapsed="{{collapsed}}"
+        current-step="[[currentStep]]"
+        max-steps="[[maxSteps]]"
+        change-label="[[t('cells-step-concept-change','Change')]]"
+        last-step="[[lastStep]]"
+        previous="[[previous]]"
+        next="[[next]]"
+        scrolled="[[scrolled]]"
+        decorated="[[decorated]]">
+      <div class="filled">
+        <template is="dom-if" if="[[showReference]]">
+          <p>Ref: [[_reference]]</p>
+        </template>
+        <p>[[_concept]]</p>
+      </div>
+
+      <div class="full">
+        <template is="dom-if" if="[[showReference]]">
+          <cells-molecule-input id="refInput"
+            class="secondary--input"
+            label="[[t('cells-step-concept-reference', 'Reference')]]"
+            value="{{_reference}}"
+            disabled$="[[!active]]"
+            icon="[[iconCode]]"
+            icon-size="[[iconSize]]"
+            with-icon>
+          </cells-molecule-input>
+        </template>
+
+        <cells-molecule-input id="conceptInput"
+          class="secondary--input"
+          max-length="[[max]]"
+          allowed-chars=[[allowedChars]]
+          label="[[t('cells-step-concept-concept', 'Concept')]]"
+          value="{{_concept}}"
+          disabled$="[[!active]]"
+          icon="[[iconCode]]"
+          icon-size="[[iconSize]]"
+          with-icon>
+        </cells-molecule-input>
+
+        <button is="cells-atom-button" id="continueBtn"
+          class="btn--primary btn--l"
+          disabled$="[[disableBtn]]"
+          on-click="_onContinue">
+          [[t('cells-step-concept-continue', 'Continue')]]
+        </button>
+      </div>
+    </cells-step>
+  </template>
+  <script src="cells-step-concept.js"></script>
+</dom-module>

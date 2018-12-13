@@ -1,0 +1,47 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-skeleton-item-last-movement-styles.html">
+
+<!--
+`<cells-skeleton-item-last-movement>` Skeleton item for last movements.
+
+Example:
+
+```html
+<cells-skeleton-item-last-movement></cells-skeleton-item-last-movement>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                                | Description       | Default        |
+|:-----------------------------------------------|:------------------|:--------------:|
+| --cells-skeleton-item-last-movement-item-wrapper | empty mixin for the item wrapper | {} |
+| --cells-skeleton-item-last-movement | empty mixin for the :host | {} |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-skeleton-item-last-movement">
+  <template>
+    <style include="cells-skeleton-item-last-movement-styles cells-skeleton-item-last-movement-shared-styles"></style>
+
+    <div class="item__wrapper">
+      <div class="item__header">
+        <div class="item-mask item-mask--xs" item-mask></div>
+      </div>
+
+      <div class="item__content">
+        <div class="item__content--top">
+          <div class="item-mask" item-mask></div>
+          <div class="item-mask" item-mask></div>
+        </div>
+        <div class="item__content--bottom">
+          <div class="item-mask item-mask--xs" item-mask></div>
+        </div>
+      </div> <!-- item__content -->
+    </div> <!-- item__wrapper -->
+
+    <content></content>
+  </template>
+  <script src="cells-skeleton-item-last-movement.js"></script>
+</dom-module>

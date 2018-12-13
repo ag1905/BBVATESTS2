@@ -1,0 +1,121 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-product-item/cells-product-item.html">
+<link rel="import" href="../cells-atom-subheader/cells-atom-subheader.html">
+<link rel="import" href="../cells-atom-message/cells-atom-message.html"/>
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-skeleton-group/cells-skeleton-group.html">
+<link rel="import" href="global-products-list-styles.html">
+<!--
+List products group
+
+Example:
+
+```html
+<global-products-list></global-products-list>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --global-products-list-scope      | scope description | default value  |
+| --global-products-list  | empty mixin | {}  |
+| --global-products-list-hidden | empty mixin | {}  |
+| --global-products-list-products | empty mixin | {}  |
+| --global-products-list-subheader  | empty mixin | {}  |
+| --global-products-list-amount | empty mixin | {}  |
+| --global-products-list-additional-list  | empty mixin | {}  |
+| --global-products-list-additional-list-icon | empty mixin | {}  |
+| --global-products-list-additional-list-item | empty mixin | {}  |
+
+@demo demo/index.html
+-->
+<dom-module id="global-products-list">
+  <template>
+    <style include="global-products-list-styles global-products-list-shared-styles"></style>
+    <section hidden$="[[!loaded]]">
+      <template is="dom-repeat" items="[[productsList]]" as="groupOfProducts" sort="_sortGroupsOfProducts">
+        <div class="products">
+          <cells-atom-subheader>
+            <span class="heading">[[t(groupOfProducts.headerTitle)]]</span>
+            <template is="dom-if" if="[[groupOfProducts.headerAmount]]">
+              <div class="products-header__additional">
+                <cells-atom-amount amount="[[groupOfProducts.headerAmount.amount]]" currency-code="[[groupOfProducts.headerAmount.currency]]"
+                  local-currency="[[localCurrency]]">
+                </cells-atom-amount>
+              </div>
+            </template>
+          </cells-atom-subheader>
+          <template is="dom-repeat" items="[[groupOfProducts.products]]" as="product">
+            <cells-product-item
+              name="[[product.name]]"
+              description="[[product.description]]"
+              primary-amount="[[_parseAmount(product.primaryAmount)]]"
+              secondary-amount="[[_parseAmount(product.secondaryAmount)]]"
+              local-currency="[[localCurrency]]"
+              img-src="[[product.imgSrc]]"
+              show-img-overlay="[[_getProductOverlay(product)]]"
+              img-overlay-icon="[[_setProductOverlayIcon(product)]]"
+              data-id$="[[product.id]]"
+              data-group$="[[product.group]]"
+              on-tap="_onProductItemTap"
+              class$="[[_getClassStatus(product.status)]] [[product.isChildClass]] [[product.isFirstChildClass]]"              
+              visible-chars="[[visibleChars]]"
+              status="[[product.status]]"
+              default-image="[[defaultImage]]">
+              <template is="dom-if" if="[[product.icon]]">
+                <cells-atom-icon slot="icons" class$="icons icon-[[_computeProductIcon(product.icon)]] icon-size-18" icon="[[product.icon]]"></cells-atom-icon>
+              </template>
+              <template is="dom-if" if="[[product.statusdescription]]">
+                <div slot="text-right-image" class$="text-right-image status [[product.status]]">[[t(product.statusdescription)]]</div>
+              </template>
+              <template is="dom-if" if="[[product.simpleNumber]]">
+                <div slot="text-below-image" class="text-below-image description">
+                  <span class="amount">[[product.simpleNumber]]</span>
+                </div>
+              </template>
+
+              <template is="dom-if" if="[[product.additionalList]]">
+                <ul class="additional-list">
+                  <template is="dom-repeat" items="[[product.additionalList]]">
+                    <li class$="additional-list__item [[item.css]]">
+                      <template is="dom-if" if="[[item.icon]]">
+                      <cells-atom-icon slot="icons" class$="icons icon-size-18" icon="[[item.icon]]"></cells-atom-icon>
+                      </template>
+                      <span>[[t(item.label)]]</span>
+                      <span>[[item.value]]</span>
+                    </li>
+                  </template>
+                </ul>
+              </template>
+
+              <template is="dom-if" if="[[product.isChild]]">
+                  <div slot="text-below-image" class="text-below-image info-card-child">
+                    <span class="amount">{{_setInfoTextChild(product)}}</span>
+                  </div>
+                </template>
+            </cells-product-item>
+          </template>
+        </div>
+      </template>
+    </section>
+
+    <template is="dom-if" if="[[!loaded]]">
+      <cells-skeleton-group animation-disabled="[[!loaded]]"></cells-skeleton-group>
+    </template>
+
+    <template is="dom-if" if="[[error]]">
+      <article class="products">
+        <cells-atom-message on-cells-atom-message-link-clicked="_notifyRefreshProducts"
+          icon="coronita:GM05" icon-size="24"
+          message="{{t('cells-global-atom-message-text')}}"
+          link="{{t('cells-global-atom-message-link')}}"></cells-atom-message>
+      </article>
+    </template>
+  </template>
+  <script src="global-products-list.js"></script>
+</dom-module>

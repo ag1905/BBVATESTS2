@@ -1,0 +1,47 @@
+{
+  "name": "cells-map-options",
+  "version": "1.1.0",
+  "description": "Cells maps options",
+  "keywords": [
+    "web-component"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.9",
+    "cells-device-behavior": "~9.0.0"
+  },
+  "devDependencies": {
+    "cells-demo-helper": "^9.0.0",
+    "cells-sass": "^2.0.0",
+    "cells-shadow-query-selector": "^1.0.0",
+    "cells-st-button": "^10.0.8",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9",
+        "cells-device-behavior": "~9.0.0"
+      },
+      "devDependencies": {
+        "cells-demo-helper": "^9.0.0",
+        "cells-sass": "^2.0.0",
+        "cells-shadow-query-selector": "^1.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  },
+  "main": [
+    "cells-map-options.html"
+  ]
+}

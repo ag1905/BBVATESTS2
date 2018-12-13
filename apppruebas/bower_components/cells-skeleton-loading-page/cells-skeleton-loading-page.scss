@@ -1,0 +1,52 @@
+@import "bower_components/cells-sass/main";
+:host {
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity 150ms linear;
+  z-index: 100; //💩
+  background-color: var(--cells-skeleton-loading-page-bg-color, #F4F4F4);
+  position: fixed;
+  top: rem(60px);
+  height: 100%;
+  left: 0;
+  width: 100%;
+  padding: rem(10px);
+  pointer-events: none;
+  box-sizing:border-box;
+
+  @apply --cells-skeleton-loading-page;
+}
+
+:host([hidden]) {
+  display: none !important;
+}
+
+:host([visible]) {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0ms;
+  @apply --cells-skeleton-loading-page-visible;
+}
+
+cells-skeleton-group {
+  transform: translateY(100vh);
+  transition: transform cubic-bezier(0.4, 0, 0.2, 1) 800ms;
+  transition-delay: 150ms;
+  will-change: transform;
+
+  @apply --cells-skeleton-loading-page-group;
+}
+
+:host([visible]) cells-skeleton-group {
+  transform: translateY(0);
+}
+
+:host([visible]:not([no-entry-animation])) cells-skeleton-group {
+  display: block;
+
+  @for $i from 1 through 6 {
+    &:nth-of-type(#{$i}) {
+      transition-delay: calc(var(--cells-skeleton-loading-page-delay, 70ms) * #{$i - 1});
+    }
+  }
+}

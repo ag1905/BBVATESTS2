@@ -1,0 +1,8 @@
+{
+  "title": "Nuevo destinatario",
+  "continue": "Continuar",
+  "choose-another-recipient": "Elegir otro destinatario",
+  "cells-modal-new-recipient-selector-mx-key-intro": "Introduce una cuenta CLABE, tarjeta o celular para que podamos comprobar si tenemos los datos del destinatario:",
+  "cells-modal-new-recipient-selector-mx-saved": "Este contacto ya estaba guardado en tu agenda.",
+  "cells-modal-new-recipient-selector-mx-key-input": "Nº CLABE, tarjeta o celular"
+}

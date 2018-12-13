@@ -1,0 +1,57 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
+<link rel="import" href="../cells-d3-import/cells-d3-import.html">
+<link rel="import" href="cells-3d-horizontal-bar-chart-styles.html">
+<!--
+`<cells-3d-horizontal-bar-chart>` draws a 3D percentage bar.
+
+  It expects two numbers `data-right` and `data-left`.
+
+  This component calculates the sumatory of this numbers (100%) and draws two bars based on data.
+
+  The percentage bar is reactive to data change and it is responsive to window resize.
+
+
+  Basic example of using with minimum properties:
+
+    <cells-3d-horizontal-bar-chart data-left="3" data-right="1">
+    </cells-3d-horizontal-bar-chart>
+
+  Full example of using with all properties setted:
+
+    <cells-3d-horizontal-bar-chart data-left="3" data-right="1" start-point="90"
+      bar-stroke="9" chart-height="55" animation-time="3500" animated>
+    </cells-3d-horizontal-bar-chart>
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                                        | Description                              | Default          |
+|:------------------------------------------------------:|:----------------------------------------:| :---------------:|
+|--cells-3d-horizontal-bar-chart                         | empty mixin                              | {}               |
+|--cells-3d-horizontal-bar-chart-chart                   | mixin for chart container                | {}               |
+|--cells-3d-horizontal-bar-chart-bar-left                | mixin for left bar                       | {}               |
+|--cells-3d-horizontal-bar-chart-bar-right               | mixin for right bar                      | {}               |
+|--cells-3d-horizontal-bar-chart-shadow                  | mixin for all shadow                     | {}               |
+|--cells-3d-horizontal-bar-chart-shadow-left             | mixin for left shadow                    | {}               |
+|--cells-3d-horizontal-bar-chart-shadow-right            | mixin for right shadow                   | {}               |
+|--cells-3d-horizontal-bar-chart-background-color        | var for background color                 | transparent      |
+|--cells-3d-horizontal-bar-chart-chart-background-color  | var for chart container background color | transparent      |
+|--cells-3d-horizontal-bar-chart-bar-left-color          | var for left bar color                   | #F5CB5C          |
+|--cells-3d-horizontal-bar-chart-bar-right-color         | var for right bar color                  | #EDEDED          |
+|--cells-3d-horizontal-bar-chart-shadow-opacity          | var for shadow opacity                   | 0.4              |
+|--cells-3d-horizontal-bar-chart-shadow-left-color       | var for left shadow color                | #121212          |
+|--cells-3d-horizontal-bar-chart-shadow-right-color      | var for right shadow color               | #121212          |
+
+@demo demo/index.html
+@hero cells-3d-horizontal-bar-chart.jpg
+-->
+<dom-module id="cells-3d-horizontal-bar-chart">
+  <template>
+    <style include="cells-3d-horizontal-bar-chart-styles cells-3d-horizontal-bar-chart-shared-styles"></style>
+    <div id="chart" class="chart"></div>
+    <slot></slot>
+  </template>
+  <script src="cells-3d-horizontal-bar-chart.js"></script>
+</dom-module>

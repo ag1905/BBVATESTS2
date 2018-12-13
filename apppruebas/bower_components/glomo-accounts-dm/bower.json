@@ -1,0 +1,29 @@
+{
+  "name": "glomo-accounts-dm",
+  "version": "4.9.5",
+  "description": "GloMo DM for GLOBAL API /accounts",
+  "keywords": [
+    "dm",
+    "data",
+    "manager",
+    "glomo",
+    "global api",
+    "accounts"
+  ],
+  "main": [
+    "glomo-accounts-dm.html"
+  ],
+  "dependencies": {
+    "cells-amount-behavior": "~10.3.0",
+    "cells-dm-global-apis-accounts": "~8.8.0",
+    "cells-i18n-behavior": "~9.0.0",
+    "polymer": "Polymer/polymer#^1.7.0"
+  },
+  "devDependencies": {
+    "cells-demo-dm-helper": "~10.0.2",
+    "cells-demo-helper": "~10.0.6",
+    "iron-component-page": "PolymerElements/iron-component-page",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+    "test-fixture": "polymerelements/test-fixture#^1.0.0"
+  }
+}

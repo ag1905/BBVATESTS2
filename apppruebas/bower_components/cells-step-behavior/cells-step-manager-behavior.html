@@ -1,0 +1,421 @@
+<script>
+  (function(window) {
+    'use strict';
+    window.CellsBehaviors = window.CellsBehaviors || {};
+    window.CellsBehaviors.StepManagerBehavior = {
+      properties: {
+        /**
+         * Current active step.
+         * @property  currentStep
+         * @type      {Number}
+         * @value     1
+         */
+        currentStep: {
+          notify: true,
+          type: Number,
+          value: 1
+        },
+        /**
+         * Max. number of available steps.
+         * @property  maxSteps
+         * @type      {Number}
+         * @readOnly
+         */
+        maxSteps: {
+          notify: true,
+          type: Number
+        },
+        /**
+         * Last active step
+         * @property  lastActiveStep
+         * @type      {Object}
+         */
+        lastActiveStep: {
+          type: Object
+        },
+        /**
+         * Flags if operation can be executed.
+         * @property  canExecute
+         * @type      {Boolean}
+         */
+        canExecute: {
+          notify: true,
+          type: Boolean,
+          value: false
+        },
+        /**
+         * Animation timeout delay, in milliseconds
+         * @property  animationTimeout
+         * @type      {Number}
+         * @value     1500
+         */
+        animationTimeout: {
+          type: Number,
+          value: 500
+        },
+        /**
+         * Flags if step should active automatically or will use their <em>scrollComplete</em> method.
+         * @type  {Boolean}
+         */
+        autoActivateStep: {
+          type: Boolean,
+          value: false
+        },
+        /**
+         * Flags if should apply decoration to registered steps.
+         * @type  {Boolean}
+         */
+        decorateSteps: {
+          type: Boolean,
+          value: false
+        },
+        /**
+         * Flags if OPX has finished.
+         * @type  {Boolean}
+         */
+        hasFinished: {
+          notify: true,
+          type: Boolean,
+          value: false
+        },
+        /**
+         * Can be used to store last server response.
+         * @type    {Object}
+         * @private
+         */
+        _lastResponse: {
+          type: Object
+        },
+        /**
+         * Available map of steps for this operations.
+         * @type      {Object}
+         * @private
+         */
+        _steps: {
+          type: Object,
+          value: function() {
+            return {};
+          }
+        },
+        /**
+         * Step initial image
+         * @type {Array}
+         */
+        stepsInit: {
+          type: Object,
+          value: {
+            1: {
+              active: true,
+              collapsed: false,
+              decorated: false,
+              disabled: false,
+              next: false,
+              scrolled: false,
+              previous: false,
+            },
+            default: {
+              active: false,
+              collapsed: false,
+              decorated: false,
+              disabled: false,
+              next: false,
+              scrolled: false,
+              previous: false,
+            }
+          }
+        }
+      },
+
+      /**
+       * Retrieves last registered step.
+       * @returns {*}
+       */
+      getLastStep: function() {
+        var lastStep;
+        var length = Object.keys(this._steps).length;
+        if (length) {
+          lastStep = this._steps[length];
+        }
+        return lastStep;
+      },
+
+      /**
+       * Retrieves last current active step.
+       * Fires event `cells-scroll-zone`.
+       *
+       * @see {@link http://iamdustan.com/smoothscroll/|smooth scroll polyfill}
+       *
+       * @param   evt {Event}
+       * @returns {String}
+       */
+      getLastActiveStep: function(evt) {
+        this.fire('cells-scroll-zone', this.lastActiveStep);
+        return this.lastActiveStep && this.lastActiveStep.id;
+      },
+
+      /**
+       * Resgister an unique step into an unique index.
+       * If index exists, reports an error.
+       *
+       * @param   payload {Object} From event "register-step".
+       * @throws  {Error} If step index already exists.
+       */
+      registerStep: function(payload) {
+        var data = (payload && (payload.data || payload.detail)) || payload;
+        if (data && data.index && data.node) {
+          var index = data.index;
+          var node = data.node;
+          if (this._steps[index] === undefined) {
+            this._steps[index] = node;
+            this.set('maxSteps', Object.keys(this._steps).length);
+          } else {
+            console.warn('step#%d is already registered!', index);
+          }
+        }
+      },
+
+      /**
+       * Unregister steps
+       */
+      unregisterSteps: function() {
+        this.set('_steps', {});
+      },
+
+      /**
+       * Init settings in step
+       */
+      initSteps: function() {
+        var steps = Object.keys(this._steps);
+
+        if (steps.length) {
+          steps.forEach(function(step) {
+            this.applySettingsStep(this._steps[step], this.stepsInit[step] || this.stepsInit.default);
+          }, this);
+        }
+      },
+
+      /**
+       * Apply setting in step
+       */
+      applySettingsStep: function(step, settings) {
+        Object.keys(settings).forEach(function(prop) {
+          step.set(prop, settings[prop]);
+        }, this);
+      },
+
+      /**
+       * Tries to launch every 'reset()' method of each registered step.
+       */
+      resetSteps: function() {
+        var steps = Object.keys(this._steps);
+        if (steps.length) {
+          steps.forEach(function(step) {
+            step = this._steps[step];
+            if (step.reset instanceof Function) {
+              this._resetStepProps(step);
+            }
+          }, this);
+        }
+      },
+
+      /**
+       * Tries to launch every 'reset()' method of each registered step that comes after the given index.
+       *
+       * @param index {Number} Starting point
+       */
+      resetFollowingSteps: function(index) {
+        var steps = Object.keys(this._steps);
+        if (steps.length && steps.length > index) {
+          steps = steps.splice(index);
+          steps.forEach(function(step) {
+            step = this._steps[step];
+            if (step.set instanceof Function) {
+              this._resetStepProps(step);
+              step.reset();
+              if (this.decorateSteps && step.decorated) {
+                step.set('decorated', false);
+              }
+            }
+          }, this);
+        }
+      },
+
+      /**
+       * Resets <em>active</em>, <em>collapsed</em> and <em>scrolled</em> {step} properties.
+       *
+       * @param   step {Object}
+       * @private
+       */
+      _resetStepProps: function(step) {
+        [
+          'active',
+          'collapsed',
+          'scrolled',
+          'disabled',
+          'previous'
+        ].forEach(function(prop) {
+          if (step.get(prop)) {
+            step.set(prop, false);
+          }
+        });
+      },
+
+      /**
+       * Performs animation to scroll to last active step
+       *
+       * @param   activeSteps {Array} Array of current active steps
+       * @private
+       */
+      __gotoNext: function(activeSteps) {
+
+        var step;
+
+        //For every step being edited
+        if (activeSteps.length) {
+
+          //Recover last one
+          step = activeSteps.pop();
+
+          //Collapse any other if is valid
+          for (var i = activeSteps.length - 1, l = 0; l <= i; i--) {
+            if (!activeSteps[i].collapsed && activeSteps[i].active) {
+              if (activeSteps[i].isValid()) {
+                activeSteps[i].close();
+              } else {
+                activeSteps[i].set('active', false);
+              }
+            }
+          }
+        }
+
+        //Replace last active step, animate and evaluate if can execute
+        if (step) {
+          var currentStep = step.get('currentStep');
+          var prev = this._steps[(currentStep - 1)];
+          if (prev) {
+            prev.set('previous', true);
+          }
+          var next = this._steps[(currentStep + 1)];
+          if (next) {
+            next.set('next', true);
+          }
+          this.set('currentStep', currentStep);
+          this.set('lastActiveStep', step);
+
+          if (this.autoActivateStep) {
+            step.set('active', true);
+          }
+
+          if (this.decorateSteps) {
+            this._addDecoration();
+          }
+
+          // Animate only after first fixed step
+          var animate = (prev && !prev.fixed) || step.isValid();
+          this.async(function() {
+            if (animate) {
+              this.getLastActiveStep();
+            }
+            this._canExecute(step);
+          }.bind(this), this.animationTimeout);
+        }
+      },
+
+      /**
+       * Adds decoration for last edited step unless last step is already decorated.
+       */
+      _addDecoration: function() {
+        const lastStep = this.getLastStep();
+        if (lastStep && !lastStep.decorated) {
+          Object.keys(this._steps).forEach(function(index) {
+            this._steps[index].set('decorated', false);
+          }, this);
+
+          var lastEdited;
+          Object.keys(this._steps).forEach(function(index) {
+            var step = this._steps[index];
+            if (step.active && step.collapsed) {
+              lastEdited = step;
+            }
+          }, this);
+
+          if (lastEdited && !(this.getLastStep().collapsed)) {
+            lastEdited.set('decorated', true);
+          }
+        }
+      },
+
+      /**
+       * Implementation of "_nextStep".
+       *
+       * @private
+       */
+      __nextStep: function() {
+        var activeSteps = [];
+        if (this.lastActiveStep) {
+          activeSteps.push(this.lastActiveStep);
+        }
+        var steps = Object.keys(this._steps) ||  [];
+
+        //For every step, search for those under edition (!collapsed && active)
+        steps.forEach(function(index) {
+          var current = this._steps[index];
+          if (current) {
+            var previous = this._steps[(index - 1)];
+            var collapsed = current.collapsed;
+
+            //Has before step opened
+            var hasBeforeOpened = steps.find(function(key) {
+              return !this._steps[key].collapsed && Number(key) < Number(index);
+            }.bind(this));
+            var active = current.active || !previous || !hasBeforeOpened;
+
+            current.set('next', false);
+            current.set('previous', false);
+            if (!current.fixed && !collapsed && active && !activeSteps.includes(current)) {
+              activeSteps.push(current);
+            }
+          }
+        }, this);
+
+        this.set('autoActivateStep', activeSteps.length === 1);
+        this.__gotoNext(activeSteps);
+      },
+
+      /**
+       * Advances into following non-valid step.
+       *
+       * @private
+       */
+      _nextStep: function() {
+        //let bindings propagate
+        Polymer.RenderStatus.afterNextRender(this, this.__nextStep.bind(this));
+      },
+
+      /**
+       * Evaluates if user is ready to execute the operation.
+       * An operation is ready to be executed if all its steps are closed and validated.
+       *
+       * @param   step {HTMLElement}
+       * @private
+       */
+      _canExecute: function(step) {
+        var steps = Object.keys(this._steps);
+        var canExecute = !steps.some(function(index) {
+          var step = this._steps[index];
+          return !(step.collapsed && step.isValid());
+        }, this);
+        if (canExecute) {
+          this.set('lastActiveStep', this._steps[steps.length]);
+          this.getLastActiveStep();
+        }
+        this.set('canExecute', canExecute);
+      }
+
+      /**
+       * Fired on getting last active step.
+       * @event cells-scroll-zone
+       */
+    };
+  }(window));
+</script>

@@ -1,0 +1,167 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../bgadp-catalogs/bgadp-catalogs.html"/>
+<link rel="import" href="../cells-global-apis-behaviors/cells-global-apis-behaviors.html" />
+
+<!--
+# cells-dm-global-apis-catalogs
+
+## Example:
+
+```html
+<cells-dm-global-apis-catalogs></cells-dm-global-apis-catalogs>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="cells-dm-global-apis-catalogs">
+  <template></template>
+  <script>
+    /*global BGADPCatalogs*/
+    /*eslint new-cap: 0*/
+    (function(Polymer) {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'cells-dm-global-apis-catalogs',
+
+        behaviors: [
+          CellsBehaviors.CellsGlobalApisHandleRequest
+        ],
+
+        properties: {
+          /**
+           * Chosen domain to make requests.
+           * @type {String}
+           */
+          host: String,
+          /**
+           * Local currency
+           * @type {String}
+           */
+          localCurrency: String,
+          /**
+           * Banks list
+           * @type  {Object}
+           */
+          banks: {
+            type: Array,
+            value: function() {
+              return [];
+            },
+            notify: true
+          },
+          /**
+          * Contact Books API version
+          * @type {String}
+          */
+          catalogsApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * Type of token is required: 'Tsec' or 'JWT'
+           * @type {String}
+           */
+          requiredToken: {
+            type: String,
+            value: 'tsec'
+          }
+        },
+
+        getBanks: function() {
+          if (!this.banks || !this.banks.length) {
+            this._getBanks();
+          } else {
+            this.fire('set-banks', this.banks);
+          }
+        },
+
+        /**
+         * Get banks
+         */
+        _getBanks: function() {
+          this._getRecords('BANKS').then(
+            function(response) {
+              response = this._parseBanks(response) || [];
+              this.set('banks', response);
+              this.fire('set-banks', response);
+            }.bind(this),
+            function(response) {
+              this.fire('error-on-get-banks');
+            }.bind(this)
+          );
+        },
+        /**
+         * Parse banks
+         */
+        _parseBanks: function(banks) {
+          return banks && banks.reduce(function(acc, bank) {
+            var name = bank.descriptions.find(function(local) {
+              return local.language === this.localCurrency || local.language === 'SPA';
+            }.bind(this));
+
+            acc.push({
+              id: bank.id,
+              name: name && name.value
+            });
+
+            return acc;
+          }.bind(this), []);
+        },
+        /**
+        * Get catalogs
+        */
+        _getCatalogs: function() {
+          var service = this._serviceCatalogs({
+            host: this.host,
+            version: this.catalogsApiVersion,
+            requiredToken: this.requiredToken
+          });
+
+          service.generateRequest().then(
+            function() {
+              this.fire('set-catalogs', this._parseResponse(service.getLastResponse()));
+            }.bind(this),
+            function(error) {
+              this.fire('error-on-get-catalogs');
+            }.bind(this)
+          );
+        },
+        /**
+        * Get records
+        */
+        _getRecords: function(id) {
+          var service = this._serviceCatalogsRecords({
+            host: this.host,
+            params: {'catalog-id': id},
+            version: this.catalogsApiVersion,
+            requiredToken: this.requiredToken
+          });
+
+          return service.generateRequest().then(
+            function() {
+              return this._parseResponse(service.getLastResponse());
+            }.bind(this),
+            function(error) {
+              this.fire('error-on-get-records');
+            }.bind(this)
+          );
+        },
+        /**
+        * Service catalogs
+        */
+        _serviceCatalogs: function(params) {
+          return new BGADPCatalogs.catalogs.get(params);
+        },
+        /**
+        * Service catalogs
+        */
+        _serviceCatalogsRecords: function(params) {
+          return new BGADPCatalogs.catalogs.catalog.records.get(params);
+        }
+      });
+    }(Polymer));
+  </script>
+</dom-module>

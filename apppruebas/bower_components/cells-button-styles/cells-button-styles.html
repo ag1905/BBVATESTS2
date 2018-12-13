@@ -1,0 +1,142 @@
+<dom-module id="cells-button-styles"><template><style>
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+button:focus {
+  @apply --cells-global-focus; }
+
+button:active {
+  @apply --cells-global-active; }
+
+/* Basic button styles (normalization) */
+button {
+  font: inherit;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer; }
+  button::-moz-focus-inner {
+    padding: 0;
+    border: 0; }
+
+/**
+ * Gives the appearance of a button
+ */
+.btn {
+  --cells-font-smoothing: { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; };
+  --cells-button-bg-primary: var(--bbva-core-blue, #004481);
+  --cells-button-bg-primary-interactive: #053967;
+  --cells-button-bg-secondary: var(--bbva-medium-blue, #237ABA);
+  --cells-button-bg-secondary-interactive: #1B6092;
+  --cells-button-bg-disabled: var(--bbva-200, #E9E9E9);
+  --cells-button-fg-primary: var(--bbva-white, #fff);
+  --cells-button-fg-primary-interactive: rgba(255, 255, 255, 0.6);
+  --cells-button-fg-secondary: var(--bbva-white, #fff);
+  --cells-button-fg-secondary-interactive: rgba(255, 255, 255, 0.6);
+  --cells-button-fg-disabled: var(--bbva-white, #fff);
+  --cells-button-fg-link: var(--bbva-medium-blue, #237ABA);
+  --cells-button-fg-link-interactive: var(--bbva-medium-blue, #237ABA);
+  font-family: inherit, sans-serif;
+  font-size: var(--cells-button-font-size, 0.875rem);
+  font-weight: 700;
+  border-radius: 1px;
+  min-height: var(--cells-button-min-height, 3.125rem);
+  min-width: var(--cells-button-min-width, 9rem);
+  padding: 0 1.25em;
+  @apply --cells-font-smoothing;
+  @apply --cells-button; }
+
+/**
+ * Types
+ */
+.primary {
+  background-color: var(--cells-button-bg-primary);
+  color: var(--cells-button-fg-primary);
+  @apply --cells-button-primary; }
+
+.secondary {
+  background-color: var(--cells-button-bg-secondary);
+  color: var(--cells-button-fg-secondary);
+  @apply --cells-button-secondary; }
+
+.link {
+  color: var(--cells-button-fg-link);
+  font-weight: 700;
+  @apply --cells-font-smoothing;
+  @apply --cells-button-link; }
+
+/**
+ * Sizes
+ */
+.small {
+  min-height: var(--cells-button-min-height-small, 2.625rem);
+  @apply --cells-button-small; }
+
+/**
+ * State
+ */
+.primary:hover,
+.primary:focus,
+.primary:active {
+  background-color: var(--cells-button-bg-primary-interactive);
+  color: var(--cells-button-fg-primary-interactive);
+  @apply --cells-button-primary-interactive; }
+
+.secondary:hover,
+.secondary:focus,
+.secondary:active {
+  background-color: var(--cells-button-bg-secondary-interactive);
+  color: var(--cells-button-fg-secondary-interactive);
+  @apply --cells-button-secondary-interactive; }
+
+/**
+ * Disabled
+ */
+.btn:disabled {
+  background-color: var(--cells-button-bg-disabled);
+  color: var(--cells-button-fg-disabled);
+  @apply --cells-button-disabled; }
+
+.primary:disabled {
+  @apply --cells-button-primary-disabled; }
+
+.secondary:disabled {
+  @apply --cells-button-secondary-disabled; }
+
+.link:disabled {
+  background-color: transparent;
+  color: var(--cells-button-fg-link);
+  @apply --cells-button-link-disabled; }
+
+.btn.on-dark:disabled {
+  background-color: rgba(233, 233, 233, 0.3);
+  color: rgba(255, 255, 255, 0.3);
+  @apply --cells-button-disabled-on-dark; }
+
+/**
+ * Subtext
+ * <button class="btn">Some text <span class="subtext">Subtext</span></button>
+ */
+.subtext {
+  font-size: var(--cells-button-font-size-subtext, 0.6875rem);
+  font-weight: 500;
+  display: block;
+  @apply --cells-button-subtext; }
+
+/**
+ * With icons
+ */
+.btn-icon-left {
+  margin-right: 0.625rem;
+  margin-left: -0.3125rem; }
+
+.btn-icon-right {
+  margin-right: -0.3125rem;
+  margin-left: 0.625rem; }
+
+</style></template></dom-module>

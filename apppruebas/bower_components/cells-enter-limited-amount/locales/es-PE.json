@@ -1,0 +1,15 @@
+{
+  "cells-enter-limited-amount-amount": "Importe (S/)",
+  "cells-enter-limited-amount-continue": "Continuar",
+  "cells-enter-limited-amount-available": "En tu cuenta tienes ",
+  "cells-enter-limited-amount-and": "y",
+  "cells-enter-limited-amount-available-balance": "Saldo insuficiente. Selecciona un importe igual o inferior a tu saldo de ",
+  "cells-enter-limited-amount-available-balance-after": " o selecciona otra cuenta para poder completar la operación.",
+  "cells-enter-limited-amount-only-multiple": "Solo múltiplos de ${multiple}",
+  "cells-enter-limited-amount-multiple-range": "Ingresa una cifra múltiplo de ${multiple}, entre",
+  "cells-enter-limited-amount-multiple-range-and": "y",
+  "cells-enter-limited-amount-multiple-range-error": "Por favor, el importe ingresado debe ser múltiplo de ${multiple}",
+  "cells-enter-limited-amount-error-max-limit": "El importe que deseas transferir supera el monto máximo permitido para esta operación.",
+  "cells-enter-limited-amount-available-balance-default-message": "El importe ingresado supera el saldo disponible en tu cuenta",
+  "cells-enter-limited-amount-change-amount-label": "Cambiar moneda"
+}

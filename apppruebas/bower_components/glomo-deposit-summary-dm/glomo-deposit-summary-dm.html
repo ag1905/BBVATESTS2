@@ -1,0 +1,176 @@
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../cells-dm-global-apis-deposits/cells-dm-global-apis-deposits.html" />
+<link rel="import" href="../cells-product-format-behavior/cells-product-format-behavior.html" />
+
+<!--
+# glomo-deposit-summary-dm
+
+Glomo DM of deposits summary
+
+Example:
+```html
+<glomo-deposit-summary-dm></glomo-deposit-summary-dm>
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="glomo-deposit-summary-dm">
+  <template>
+    <cells-dm-global-apis-deposits
+      id="dm"
+      host="[[host]]"
+      deposit-id="[[productId]]"
+      deposit="{{_deposit}}"
+      deposits-api-version="[[depositsApiVersion]]">
+    </cells-dm-global-apis-deposits>
+  </template>
+</dom-module>
+<script>
+  (function() {
+    'use strict';
+
+    Polymer({
+
+      is: 'glomo-deposit-summary-dm',
+
+      behaviors: [
+        CellsBehaviors.CellsProductFormatBehavior
+      ],
+
+      properties: {
+        /**
+         * Chosen domain to make requests.
+         * @type {String}
+         */
+        host: String,
+        /**
+         * Deposit Id
+         * @type {String}
+         */
+        productId: String,
+        /**
+         * Deposit
+         * @type {Object}
+         */
+        deposit: {
+          type: Object,
+          computed: '_parseDepositResponse(_deposit)',
+          notify: true
+        },
+        /**
+         * Deposit
+         * @type {Object}
+         */
+        _deposit: Object,
+        /**
+         * Deposit more info
+         * @type {Object}
+         */
+        moreInfo: {
+          type: Object,
+          notify: true
+        },
+        /**
+        * Deposits API version
+        * @type {String}
+        */
+        depositsApiVersion: {
+          type: String,
+          value: '0'
+        }
+      },
+
+      /**
+       * Get deposit
+       */
+      getProduct: function() {
+        this.$.dm.getDeposit({ expand: 'participants,related-contracts' });
+      },
+
+      /**
+       * Parse deposit
+       */
+      _parseDepositResponse: function(response) {
+        var deposit = this._deposit || response[0];
+        this.set('moreInfo', this._generateMoreInfo(deposit, response.participants, response.realtedContracts));
+        this.fire('deposit-response-success', response);
+
+        return response;
+      },
+
+      /**
+      * Generate more info
+      */
+      _generateMoreInfo: function(deposit, participants, relatedContracts) {
+        var moreInfo = [
+          {
+            title: 'cells-product-more-info-general',
+            items: [
+              {
+                key: 'cells-product-more-info-product-type',
+                value: deposit.depositType.name
+              },
+              {
+                key: 'cells-product-more-info-deposit-number',
+                value: deposit.number,
+                label: true,
+                payload: deposit.number,
+                class: 'cursive'
+              },
+              {
+                key: 'cells-product-more-info-opening-date',
+                value: deposit.openingDate,
+                isDate: true
+              }
+            ]
+          }
+        ];
+
+        if (deposit && deposit.relatedContracts.length) {
+          moreInfo.push(this._generateRelatedContracts(deposit.relatedContracts));
+        }
+
+        if (participants && participants.length) {
+          moreInfo.push(this._generateParticipants(participants));
+        }
+
+        return moreInfo;
+      },
+
+      /**
+      * Generate participans
+      */
+      _generateParticipants: function(participants) {
+        return {
+          title: 'cells-product-more-info-participants',
+          items: participants.map(function(participant) {
+            return {
+              key: 'cells-product-more-info-participant-' + participant.participantType.id.toLowerCase(),
+              value: participant.firstName + ' ' + participant.lastName
+            };
+          })
+        };
+      },
+
+      /**
+       * Generate related contracts
+       */
+      _generateRelatedContracts: function(relateds) {
+        return {
+          title: 'cells-product-more-info-related-contracts',
+          items: relateds.map(function(contract) {
+            var masked = contract.number.indexOf('*') !== -1 ? true : false;
+            return {
+              key: 'cells-product-more-info-related-contract-' + contract.product.id.toLowerCase(),
+              value: masked ? contract.number.replace('*', '• ') : this._formatProduct(contract.number, 'account'),
+              label: true,
+              payload: contract.number,
+              class: 'cursive'
+            };
+          }.bind(this))
+        };
+      }
+    });
+  }());
+</script>

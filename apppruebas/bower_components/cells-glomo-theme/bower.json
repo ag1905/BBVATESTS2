@@ -1,0 +1,11 @@
+{
+  "name": "cells-glomo-theme",
+  "version": "10.0.44",
+  "description": "Includes variables, mixins and common style properties of Glomo components like colors, font families and font styles.",
+  "main": [
+    "cells-glomo-theme.html"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2"
+  }
+}

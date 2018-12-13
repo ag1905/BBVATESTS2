@@ -1,0 +1,13 @@
+{
+  "cells-new-cellular-alias": "_Recipient alias",
+  "cells-new-cellular-continue-button": "_Contine",
+  "cells-new-cellular-continue-info": "_When the operation is continued",
+  "cells-new-cellular-form-mobile-provider": "_Provider",
+  "cells-new-cellular-invalid-alias": "You already have a saved contact with this Alias",
+  "cells-new-cellular-name": "_Recipient name",
+  "cells-new-cellular-number": "_Cellular number",
+  "new-recipient-save-label": "_Save contact",
+  "new-recipient-save-sub-label": "_This contact will be saved for future operations",
+  "new-recipient-saved-label": "_Add cellular",
+  "new-recipient-saved-sub-label": "_This phone will be added to the “${alias}” contact that you have saved"
+}

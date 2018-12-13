@@ -1,0 +1,79 @@
+<dom-module id="cells-sign-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  font-family: var(--cells-fontDefault);
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: auto;
+  @apply (--cells-sign); }
+
+h1, h2 {
+  margin: 0;
+  padding: 0; }
+
+h1, h2 {
+  font-weight: normal; }
+
+.heading {
+  background-image: url("http://bbva-files.s3.amazonaws.com/cells/assets/glomo/images/access/fractal-bbva-gold.svg");
+  background-position: bottom left;
+  background-size: cover;
+  max-height: 240px;
+  @apply (--cells-sign-heading); }
+
+.subheader {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  @apply (--cells-sign-subheader); }
+  .subheader-img {
+    margin: 4.0625rem auto 4.0625rem;
+    @apply (--cells-sign-subheader-img); }
+
+.main {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0 auto;
+  width: calc(100% - 8% * 2);
+  padding: 0 8%;
+  @apply (--cells-sign-main); }
+
+.text {
+  font-weight: normal;
+  color: var(--cells-sign-text-color, #121212);
+  font-size: 0.8125rem;
+  line-height: 0.8125rem;
+  text-align: center;
+  margin: 2.5rem 0 1.875rem;
+  @apply (--cells-sign-text); }
+
+.sign-form {
+  width: 100%;
+  max-width: 100%;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  @apply (--cells-sign-form); }
+
+</style></template></dom-module>

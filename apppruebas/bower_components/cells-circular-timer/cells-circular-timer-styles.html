@@ -1,0 +1,41 @@
+<dom-module id="cells-circular-timer-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-circular-timer; }
+
+.wrapper {
+  margin: 0 auto;
+  height: 200px;
+  width: 200px;
+  position: relative;
+  @apply --cells-circular-timer-wrapper; }
+
+svg {
+  height: 100%;
+  width: 100%;
+  @apply --cells-circular-timer-svg; }
+
+circle {
+  stroke-width: var(--cells-circular-timer-circle-stroke-width, 5px);
+  stroke: var(--cells-circular-timer-circle-stroke-color, green);
+  transition: stroke-dashoffset 1s linear;
+  fill: none;
+  -webkit-transform-origin: center center;
+          transform-origin: center center;
+  @apply --cells-circular-timer-circle; }
+  circle.time-running-out {
+    stroke: var(--cells-circular-timer-time-running-out-circle-stroke-color, blue); }
+
+.count {
+  color: var(--cells-circular-timer-count-text-color, #000);
+  font-size: 1.375em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  @apply --cells-circular-timer-count; }
+
+</style></template></dom-module>

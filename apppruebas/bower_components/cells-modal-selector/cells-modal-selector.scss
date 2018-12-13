@@ -1,0 +1,98 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+	--cells-middle-modal-md-content-padding: 1.25em 0em 1.875em;
+	--cells-middle-modal-md-overlay-background-color: var(--bbva-core-blue, #004481);
+	--cells-middle-modal-md-overlay-opacity: 0.9;
+
+	@apply --cells-modal-selector;
+}
+
+.cells-modal-selector-content {
+	position: relative;
+	display: flex;
+	align-items: center;
+	padding: .35rem rem(40px);
+	min-height: 2.5rem;
+
+	&:hover {
+		outline: 0;
+		cells-atom-icon {
+			display: block;
+		}
+		@apply --cells-modal-selector-content-label-hover;
+	}
+
+	&.selected {
+		background-color: var(--cells-modal-selector-label-focus-color, var(--bbva-core-blue, #004481));
+		color: var(--bbva-white, #FFF);
+		cells-atom-icon {
+			display: block;
+		}
+		@apply --cells-modal-selector-content-label-selected;
+	}
+
+	cells-atom-icon {
+		display: none;
+		position: absolute;
+		top: 50%;
+		right: 2rem;
+		margin-top: -.8125rem;
+		color: var(--bbva-white);
+		line-height: 0;
+		@apply --cells-modal-selector-icon;
+	}
+
+	@apply --cells-modal-selector-content;
+}
+
+.cells-modal-selector-img-label {
+	margin-right: rem(20px);
+	height: rem(40px);
+	width: rem(40px);
+	object-fit: contain;
+	font-size: var(--cells-text-size-11);
+}
+
+.cells-modal-selector-label {
+	-webkit-font-smoothing: antialiased;
+	font-size: 1rem;
+	line-height: 1.25;
+	display: block;
+	overflow: hidden;
+	@apply --cells-fontDefaultNormal;
+	@apply --cells-modal-selector-label;
+}
+
+.cells-modal-selector-img {
+	-webkit-font-smoothing: antialiased;
+	display: block;
+	overflow: hidden;
+	text-indent: -99999px;
+	background-repeat: no-repeat !important;
+	background-position: center !important;
+	height: rem(42px);
+
+	&:hover {
+		background-color: var(--cells-modal-selector-img-hover-background-color,  var(--bbva-100, #004481)) !important;
+		@apply --cells-modal-selector-img-hover;
+	}
+
+	label {
+		height: rem(42px);
+		display: block;
+	}
+
+	@apply --cells-modal-selector-img;
+}
+
+.list {
+	padding: 0;
+	@apply --cells-modal-selector-list;
+	}
+
+.check-icon {
+	width: 26px;
+	height: 26px;
+	@apply --cells-modal-selector-check-icon;
+}

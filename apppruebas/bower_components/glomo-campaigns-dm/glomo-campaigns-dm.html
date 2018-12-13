@@ -1,0 +1,320 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-dm-global-apis-campaigns/cells-dm-global-apis-campaigns.html">
+<script src="../moment/min/moment-with-locales.min.js"></script>
+
+<!--
+`<glomo-campaigns-dm>` description.
+
+Example:
+
+```html
+<glomo-campaigns-dm></glomo-campaigns-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-campaigns-dm">
+  <template>
+    <cells-dm-global-apis-campaigns
+      id="dm"
+      host="[[host]]"
+      offers="{{retrievedOffers}}"
+      offer-id="[[offerId]]"
+      on-successful-requested-assistance-call="_bubbleRequestAssistance"
+      on-error-on-request-assistance-call="_bubbleRequestAssistance">
+    </cells-dm-global-apis-campaigns>
+
+  </template>
+  <script>
+    (function() {
+
+      /*global moment*/
+      /*eslint new-cap: 0*/
+
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-campaigns-dm',
+        properties: {
+          /**
+          * Host
+          */
+          host: {
+            type: String
+          },
+
+          /**
+          * List of retrieved offers
+          **/
+          retrievedOffers: {
+            type: Array
+          },
+
+          /**
+            * List of filtered offers
+            **/
+          offers: {
+            type: Array,
+            notify: true,
+            observer: '_onOffersChanged'
+          },
+
+          /**
+          * Offer Id
+          */
+          offerId: String,
+
+          /**
+          List of offers filtered for dashboard
+          **/
+          dashboardOffers: {
+            type: Array,
+            notify: true,
+            observer: '_onDashboardOffersChanged'
+          },
+
+          closedOffers: {
+            type: Object
+          },
+
+          /**
+          * Configuration for dashboard campaigns
+          */
+          config: {
+            type: Object
+          },
+
+          /**
+          * Check if offers have to reloaded
+          */
+          reload: {
+            type: Boolean,
+            observer: '_setReload',
+            value: false
+          },
+
+          /**
+          * Reload offers data
+          */
+          reloadOffers: {
+            type: Boolean,
+            value: false
+          }
+
+        },
+
+        observers: [
+          '_manageOffers(retrievedOffers, config)',
+          '_manageDashboardOffers(offers, closedOffers.*, config)'
+        ],
+
+        /**
+        Retrieve the campaigns for the current user
+        */
+        getOffers: function() {
+          this.dispatchEvent(new CustomEvent('get-closed-offers', {
+            bubbles: true,
+            composed: true
+          }));
+
+          if (this._isRequestCached()) {
+            this._notifyDashboardOffers(this.offers, this.config);
+          } else {
+            this.$.dm.getOffers();
+          }
+        },
+
+        /**
+        * Request assistance call
+        */
+        requestAssitanceCall: function() {
+          this.$.dm.requestAssistanceCall();
+        },
+
+        /**
+        * Returns true if the current request is cached
+        **/
+        _isRequestCached: function() {
+          return (this.offers || []).length > 0 && !this.reloadOffers;
+        },
+
+        /**
+        * Check if is mandatory reload offers data
+        */
+        _setReload: function(reload) {
+          if (reload && reload.action === 'go-to-next') {
+            this.reloadOffers = true;
+            this.getOffers();
+          }
+        },
+
+        /**
+         * filter and parses offers
+          ** @param {offers} Array with the filtered and parsed offers
+          ** @param {config} Object campains configuration
+          **/
+        _manageOffers: function(retrievedOffers, config) {
+          var filteredOffers = this._filterOffersByWhitelist(retrievedOffers, config);
+          filteredOffers = this._filterOffersByDate(filteredOffers);
+
+          //ordering the offers by priority
+          filteredOffers.sort(function(a, b) {
+            return a.priority - b.priority;
+          });
+
+          filteredOffers = this._parseOffers(filteredOffers, config);
+          this.set('offers', filteredOffers);
+        },
+
+        /**
+         * filter and parses offers
+          ** @param {offers} Array with the filtered and parsed offers
+          ** @param {closedOffers} Array with closed offers saved in the storage
+          ** @param {config} Object campains configuration
+          **/
+        _manageDashboardOffers: function(offers, closedOffers, config) {
+          //filter offers to be shown in the dashboard
+          closedOffers = (closedOffers || {}).value || closedOffers || {};
+          var dashboardOffers = this._filterOffersInDashboard(offers, closedOffers);
+          this.set('dashboardOffers', dashboardOffers);
+        },
+
+        /**
+          * Filter offers to show in the dashboard
+          ** @param {offers} Array list of retrieved offers
+          ** @param {Object} Object with the closed offers
+         **/
+        _filterOffersInDashboard: function(offers, closedOffers) {
+          var maxTimesOffersClosed = ((this.config || {}).dashboard || {}).maxTimesOffersClosed || 0;
+          offers = (offers && offers.length > 0) ? offers : [];
+
+          var result = offers.filter(function(item) {
+            var isShown = (closedOffers[item.offerId] || 0) <= maxTimesOffersClosed;
+            return item.isShownInDashboard && isShown;
+          }, this);
+
+          return result;
+        },
+
+        /**
+        Filter offers by date getting only offers starting on today or before,
+        and finishing today or after.
+        **/
+        _filterOffersByDate: function(offers) {
+          var now = moment();
+
+          var result = (offers || []).filter(function(item) {
+            var startDate = moment(item.period.startDate);
+            var endDate = moment(item.period.endDate);
+            return startDate.isBefore(now) && endDate.isAfter(now);
+          }, this);
+
+          return result;
+        },
+
+        /**
+        * Filter offers getting only offers with product.id in whitelist
+        */
+        _filterOffersByWhitelist: function(offers, config) {
+          var whiteList = config.whiteList || [];
+
+          return (offers || []).filter(function(item) {
+            return whiteList.includes(item.product.id);
+          });
+        },
+
+        /**
+          * generate the campaigns to show
+          */
+        _parseOffers: function(offers, config) {
+          config = config || {};
+          var offer;
+          var parsedOffers = [];
+
+          parsedOffers = (offers || []).map(function(item) {
+            return {
+              offerId: item.id,
+              description: item.description,
+              offerType: item.offerType,
+              isSimulationAllowed: item.isSimulationAllowed,
+              endDate: item.period.endDate,
+              amount: ((item.amounts || []).length > 0) ? item.amounts[0] : {},
+              isShownInDashboard: item.isShownInDashboard,
+              isImproved: item.isImproved,
+              product: {
+                productId: item.product.id,
+                contractId: item.product.contractId
+              },
+              smallImg: (config.offersConfig[item.product.id] || {}).smallImg,
+              bigImg: (config.offersConfig[item.product.id] || {}).bigImg,
+              campaignColor: (config.offersConfig[item.product.id] || {}).color || '#FFF'
+            };
+          });
+
+          return parsedOffers;
+        },
+
+        _onOffersChanged: function(offers) {
+          this.dispatchEvent(new CustomEvent('campaigns-retrieved', {
+            detail: this.offers,
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+        * Notifify the offers according with the config
+        ** @param {offers} Array with the filtered and parsed offers
+        **/
+        _onDashboardOffersChanged: function(offers) {
+          this._notifyDashboardOffers(offers, this.config);
+        },
+
+        /**
+        * Notifify the offers according with the config
+        ** @param {offers} Array with the filtered and parsed offers
+        ** @param {config} Object campains configuration
+        **/
+        _notifyDashboardOffers: function(offers, config) {
+          var dashboardConfig = (config || {}).dashboard || {};
+          offers = offers || [];
+          var offersNumber = (Number.isInteger(dashboardConfig.offersNumber)) ? dashboardConfig.offersNumber : 0;
+          var positions = (dashboardConfig.positions instanceof Array) ? dashboardConfig.positions : [];
+          positions = positions.slice(0, offersNumber);
+
+          for (var i = 0; i < positions.length && i < offers.length; i++) {
+            this._notifyOffer(offers[i], positions[i]);
+          }
+        },
+
+        /**
+        * Notify a campaign
+        ** @param {data} Object with the campaign data
+        ** @param {key} String key of the dynamic event
+        */
+        _notifyOffer: function(offer, position) {
+          this.dispatchEvent(new CustomEvent('dashboard-campaigns-position-' + position, {
+            detail: offer,
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        _bubbleRequestAssistance: function(ev) {
+          this.dispatchEvent(new CustomEvent(ev.type, {
+            detail: ev.detail,
+            bubbles: true,
+            composed: true
+          }));
+          this.dispatchEvent(new CustomEvent('close-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+        }
+      });
+    }());
+
+  </script>
+
+</dom-module>

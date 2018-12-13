@@ -1,0 +1,39 @@
+{
+  "name": "cells-step-searcher",
+  "version": "1.1.3",
+  "description": "Extends `cells-step` with searcher functionality",
+  "keywords": [
+    "i18n",
+    "cells",
+    "cells-step",
+    "searcher"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.7.0",
+    "cells-i18n-behavior": "#^3.0.0",
+    "cells-step": "^3.1.0",
+    "cells-step-behavior": "#^3.2.0",
+    "cells-atom-button": "^4.0.1"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+    "cells-glomo-theme": "^5.0.0",
+    "coronita-icons": "^2.0.0",
+    "cells-st-button": "~1.0.1",
+    "paper-button": "^1.0.14",
+    "cells-demo-helper": "^1.3.2",
+    "cells-demo-mobile": "~1.2.10",
+    "cells-demo-helpers": "~0.2.0",
+    "cells-theme-base": "~4.0.12",
+    "iron-demo-helpers": "^1.2.5",
+    "cells-molecule-input": "~9.0.0"
+  },
+  "main": [
+    "cells-step-searcher.html"
+  ]
+}

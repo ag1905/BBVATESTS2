@@ -1,0 +1,56 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-new-recipient-review-pe;
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+button:active { @apply --cells-global-active; }
+
+
+dl {
+  font-size: var(--cells-text-size-14);
+  margin: rem(30px) rem(0px) rem(40px) rem(20px);
+  @apply --cells-product-more-info-dl;
+}
+
+dt {
+  @apply --cells-fontDefaultLight;
+  color: var(--cells-product-more-info-dt-color, var(--bbva-500));
+  text-align: left;
+  @apply --cells-product-more-info-dt;
+}
+
+dd {
+  @apply --cells-fontDefaultNormal;
+  margin: rem(5px) 0 rem(30px);
+  display: flex;
+  align-items: center;
+  color: var(--cells-product-more-info-dd-color, var(--bbva-600));
+  font-size: var(--cells-text-size-16);
+  &.with-info {
+    margin-bottom: rem(5px);
+  }
+  @apply --cells-product-more-info-dd;
+}

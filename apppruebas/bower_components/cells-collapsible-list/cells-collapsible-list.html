@@ -1,0 +1,65 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-skeleton-loading-page/cells-skeleton-loading-page.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../iron-list/iron-list.html">
+<link rel="import" href="cells-collapsible-list-styles.html">
+<!--
+`<cells-collapsible-list>` description.
+
+Example:
+
+```html
+<cells-collapsible-list></cells-collapsible-list>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-collapsible-list  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-collapsible-list">
+  <template>
+    <style include="cells-collapsible-list-styles cells-collapsible-list-shared-styles"></style>
+    <slot></slot>
+      <cells-st-button class$="btn-hide full link [[hideButtonClass]]" on-click="_hideList">
+        <button>[[t(closeListBtn)]]</button>
+      </cells-st-button>
+      <div id="scrollContainer" class="scroll-container">
+        <template is="dom-repeat" items="[[items]]" as="item" id="tapList" scroll-target="scrollContainer">
+          <div 
+            id$="item-[[item.id]]"
+            index$="[[index]]" 
+            tabindex$="[[tabIndex]]" 
+            class$="cells-collapsible-list-item item-[[item.extraClass]]">
+            <div on-tap="fireModel">
+              <div class="cells-collapsible-list-item__info">
+                <span class="main">[[t(item.main)]]</span>
+                <span class="secondary">[[t(item.secondary)]]</span>
+                <span class="tertiary">[[t(item.tertiary)]]</span>
+              </div>
+            </div>
+            <div class="cells-collapsible-list-item__icon" on-tap="_dispatchGoRoute">
+              <cells-atom-icon icon$="[[item.iconList]]" class$="icon-size-[[item.iconSize]]"></cells-atom-icon>
+              <span>[[t(item.textIcon)]]</span>
+            </div>
+          </div>
+        </template>
+      </div>
+      <cells-st-button class="btn-show full link" on-click="_showList">
+        <button>[[t('cells-collapsible-list-show-list')]]</button>
+      </cells-st-button>
+  </template>
+  <script src="cells-collapsible-list.js"></script>
+</dom-module>

@@ -1,0 +1,58 @@
+{
+  "name": "cells-transactions-slider",
+  "version": "0.3.1",
+  "description": "Sections with Transactions list",
+  "keywords": [
+    "web-component"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "cells-sections-slider": "~2.0.0",
+    "cells-transactions-list": "~7.5.0",
+    "polymer": "Polymer/polymer#^1.9"
+  },
+  "devDependencies": {
+    "cells-coronita-theme": "^9.0.0",
+    "cells-demo-helper": "^9.0.0",
+    "cells-glomo-theme": "~5.5.0",
+    "cells-radio-tabs": "~9.0.0",
+    "cells-sass": "^2.0.0",
+    "cells-shadow-query-selector": "^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "resolutions": {
+    "cells-i18n-behavior": "9 - 10",
+    "moment": "2.17.1",
+    "webcomponentsjs": "^0.7"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "cells-sections-slider": "~2.0.0",
+        "cells-transactions-list": "~7.5.0",
+        "polymer": "Polymer/polymer#^1.9"
+      },
+      "devDependencies": {
+        "cells-coronita-theme": "^9.0.0",
+        "cells-demo-helper": "^9.0.0",
+        "cells-glomo-theme": "~5.5.0",
+        "cells-radio-tabs": "~9.0.0",
+        "cells-sass": "^2.0.0",
+        "cells-shadow-query-selector": "^1.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+      },
+      "resolutions": {
+        "cells-i18n-behavior": "9 - 10",
+        "moment": "2.17.1",
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  },
+  "main": [
+    "cells-transactions-slider.html"
+  ]
+}

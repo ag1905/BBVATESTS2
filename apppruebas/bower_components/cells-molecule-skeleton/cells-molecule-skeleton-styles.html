@@ -1,0 +1,188 @@
+<dom-module id="cells-molecule-skeleton-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host(.is-noactive) {
+  @apply (--cells-molecule-skeleton-noactive); }
+  :host(.is-noactive) .skeleton-screen {
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    z-index: -10;
+    position: absolute;
+    transition: opacity 600ms ease-in-out, z-index 0ms 700ms ease-in-out; }
+
+.skeleton-screen {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  opacity: 1;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+  background-color: var(--cells-background-primary);
+  @apply (--cells-molecule-skeleton-screen); }
+
+.skeleton-screen__header {
+  border-top: 1px solid var(--cells-KMW_colour);
+  background-color: var(--cells-KM7_colour);
+  @apply (--cells-molecule-skeleton-screen-header); }
+
+.skeleton-screen__repeat {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0.625rem 0.8rem;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--cells-transparent_colour);
+  -webkit-animation: border-bottom 400ms 600ms ease-out forwards;
+          animation: border-bottom 400ms 600ms ease-out forwards;
+  @apply (--cells-molecule-skeleton-screen-repeat); }
+  .skeleton-screen__repeat .skeleton-screen__col,
+  .skeleton-screen__repeat .skeleton-screen__line {
+    -webkit-flex: 1 0 auto;
+        -ms-flex: 1 0 auto;
+            flex: 1 0 auto;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+    .skeleton-screen__repeat .skeleton-screen__col:last-child,
+    .skeleton-screen__repeat .skeleton-screen__line:last-child {
+      -webkit-align-items: flex-end;
+          -ms-flex-align: end;
+                  -ms-grid-row-align: flex-end;
+              align-items: flex-end;
+      @apply (--cells-molecule-skeleton-screen-child); }
+
+.skeleton-screen__col {
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  @apply (--cells-molecule-skeleton-screen-col); }
+
+.skeleton-screen__line {
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+              -ms-grid-row-align: center;
+          align-items: center;
+  @apply (--cells-molecule-skeleton-screen-line); }
+  .skeleton-screen__line .skeleton-screen__step {
+    margin-bottom: 0;
+    margin-right: 1rem; }
+
+.skeleton-screen__step {
+  width: 0;
+  height: 16px;
+  background-color: var(--cells-skeleton-color-pulse-step1);
+  margin-bottom: 0.5rem;
+  -webkit-animation: open 1.5s 800ms cubic-bezier(0, 0, 0.12, 0.99) forwards, pulse 4s 880ms ease-out infinite;
+          animation: open 1.5s 800ms cubic-bezier(0, 0, 0.12, 0.99) forwards, pulse 4s 880ms ease-out infinite;
+  @apply (--cells-molecule-skeleton-screen-step); }
+  .skeleton-screen__step:last-child {
+    margin-bottom: 0;
+    @apply (--cells-molecule-skeleton-screen-last-child); }
+
+.skeleton-screen__step--step-1 {
+  max-width: 5.625rem;
+  @apply (--cells-molecule-skeleton-step-1); }
+
+.skeleton-screen__step--step-2 {
+  max-width: 10rem;
+  @apply (--cells-molecule-skeleton-step-2); }
+
+.skeleton-screen__step--step-3 {
+  max-width: 4.375rem;
+  @apply (--cells-molecule-skeleton-step-3); }
+
+.skeleton-screen__step--step-4 {
+  max-width: 1.875rem;
+  height: 12px;
+  @apply (--cells-molecule-skeleton-step-4); }
+
+.skeleton-screen__step--step-5 {
+  max-width: 10rem;
+  height: 24px;
+  @apply (--cells-molecule-skeleton-step-5); }
+
+.skeleton-screen__step--step-6 {
+  max-width: 3.75rem;
+  height: 40px;
+  @apply (--cells-molecule-skeleton-step-6); }
+
+.skeleton-screen__step--step-7 {
+  max-width: 1.875rem;
+  @apply (--cells-molecule-skeleton-step-7); }
+
+@-webkit-keyframes border-bottom {
+  100% {
+    border-bottom-color: rgba(215, 215, 215, 0.5); } }
+
+@keyframes border-bottom {
+  100% {
+    border-bottom-color: rgba(215, 215, 215, 0.5); } }
+
+@-webkit-keyframes open {
+  0% {
+    width: 0; }
+  100% {
+    width: 100%; } }
+
+@keyframes open {
+  0% {
+    width: 0; }
+  100% {
+    width: 100%; } }
+
+@-webkit-keyframes pulse {
+  0% {
+    background-color: #e5e5e5; }
+  30% {
+    background-color: #e5e5e5; }
+  40% {
+    background-color: #f1f1f1; }
+  50% {
+    background-color: #e5e5e5; }
+  60% {
+    background-color: #e5e5e5; }
+  70% {
+    background-color: #f1f1f1; }
+  80% {
+    background-color: #e5e5e5; }
+  100% {
+    background-color: #e5e5e5; } }
+
+@keyframes pulse {
+  0% {
+    background-color: #e5e5e5; }
+  30% {
+    background-color: #e5e5e5; }
+  40% {
+    background-color: #f1f1f1; }
+  50% {
+    background-color: #e5e5e5; }
+  60% {
+    background-color: #e5e5e5; }
+  70% {
+    background-color: #f1f1f1; }
+  80% {
+    background-color: #e5e5e5; }
+  100% {
+    background-color: #e5e5e5; } }
+
+:host {
+  @apply (--cells-molecule-skeleton); }
+
+</style></template></dom-module>

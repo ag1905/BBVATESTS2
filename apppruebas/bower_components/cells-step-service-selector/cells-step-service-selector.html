@@ -1,0 +1,155 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../cells-atom-message/cells-atom-message.html"/>
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href="../cells-avatar-item/cells-avatar-item.html"/>
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html"/>
+<link rel="import" href="../cells-molecule-input/cells-molecule-input.html"/>
+<link rel="import" href="../cells-service-selector/cells-service-selector.html"/>
+<link rel="import" href="../cells-step-behavior/cells-step-behavior.html"/>
+<link rel="import" href="../cells-step-searcher/cells-step-searcher.html"/>
+<link rel="import" href="../cells-glomo-bill-payment-service-detail/cells-glomo-bill-payment-service-detail.html"/>
+<link rel="import" href="./cells-step-service-selector-styles.html"/>
+<link rel="import" href="../iron-collapse/iron-collapse.html"/>
+
+<!--
+# cells-step-service-selector
+
+Contains the logic for a service selector step in an operative.
+
+## Dependencies
+
+* [cells-i18n-behavior](https://globaldevtools.bbva.com/bitbucket/projects/CBH/repos/cells-i18n-behavior/browse)
+* [cells-service-selector](https://globaldevtools.bbva.com/bitbucket/projects/CO/repos/cells-service-selector/browse)
+* [cells-avatar-item](https://globaldevtools.bbva.com/bitbucket/projects/BGCM/repos/cells-avatar-item/browse)
+* [cells-step-searcher](https://globaldevtools.bbva.com/bitbucket/projects/CO/repos/cells-step-searcher/browse)
+* [cells-step-behavior](https://globaldevtools.bbva.com/bitbucket/projects/CBH/repos/cells-step-behavior/browse)
+* [cells-molecule-input](https://globaldevtools.bbva.com/bitbucket/projects/BGCM/repos/cells-molecule-input/browse)
+
+## Locale Keys
+
+| KEY | EN | ES | es_CL | es_MX |
+|:---|:---|:---|:---|:---|
+| cells-step-service-selector-view-all | "View all" | "Ver todos" | "Ver todos" | "Ver todos" |
+| cells-step-service-selector-saved | "Saved" | "Guardados" | "Guardados" | "Guardados" |
+| cells-step-service-selector-service-search | "Search service" | "Buscar servicio" | "Buscar servicio" | "Buscar servicio" |
+| cells-step-service-selector-no-match | "No match found" | "No se ha obtenido ningún resultado" | "No se ha obtenido ningún resultado" | "No se ha obtenido ningún resultado" |
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-step-service-selector-scope      | scope description | default value  |
+| --cells-step-service-selector  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-step-service-selector">
+  <template>
+    <style include="cells-step-service-selector-styles cells-step-service-selector-shared-styles"></style>
+    <cells-step-searcher id="stepContainer"
+      active="[[active]]"
+      collapsed="{{collapsed}}"
+      title="[[title]]"
+      current-step="[[currentStep]]"
+      max-steps="[[maxSteps]]"
+      change-label="[[changeLabel]]"
+      class-to-toggle="step-active"
+      previous="[[previous]]"
+      next="[[next]]"
+      scrolled="[[scrolled]]"
+      searching="[[searching]]">
+
+      <!-- STATE FILLED: Final step to show when item and amount are selected -->
+      <div class="filled">
+        <cells-avatar-item
+          id="avatarItem"
+          main="[[selected.name]]"
+          secondary="[[formatAgreementNumber(selected.id)]]"
+          info="[[formatReferencetNumber(referenceNumber)]]"
+          avatar="[[selected.logo.url]]"
+          data-id$="[[selected.id]]">
+        </cells-avatar-item>
+        <cells-atom-amount
+          class="amount-huge"
+          amount="[[amountValue.amount]]"
+          currency-code="[[amountValue.currency]]"
+          local-currency="[[localCurrency]]">
+        </cells-atom-amount>
+      </div>
+
+      <!-- STATE SHARED: cells-molecule-input to search items -->
+      <div class$="shared [[_checkedSearchMode(searchMode)]]" id="shared">
+        <iron-collapse opened="[[_checkedOpened(opened, 1, 0)]]">
+          <cells-molecule-input
+            id="inputViewAll"
+            on-click="_onToggleFinder"
+            class="secondary--input"
+            label="[[t(_searcherLabel)]]"
+            type="text"
+            icon="coronita:search"
+            icon-toggled="coronita:close"
+            toggle-empty-fill-icons
+            disabled$="[[!finder]]"
+            value="{{inputValue}}">
+          </cells-molecule-input>
+        </iron-collapse>
+      </div>
+
+      <!-- STATE FULL: list of items stored -->
+      <div class="full">
+        <iron-collapse opened="[[_checkedOpened(opened, 0)]]">
+          <cells-service-selector
+            id="storedServicesSelector"
+            list-title="[[t('cells-step-service-selector-saved')]]"
+            services="[[storedServices]]"
+            filter-services="{{inputValue}}"
+            max-services="3"
+            selected="{{closeSwipeService}}"
+            agreement-enabled="[[agreementEnabled]]"
+            message="[[t('cells-step-service-selector-no-stored-services')]]">
+          </cells-service-selector>
+        </iron-collapse>
+      </div>
+
+      <!-- STATE SEARCHER: all items to search and the process of setting amount-->
+      <div class="searcher">
+        <!-- STATE ONE: Searching all items-->
+        <iron-collapse no-animation opened="[[_checkedOpened(opened, 1)]]" class="searcher__serching">
+          <cells-service-selector
+            id="searcherSelector"
+            services="[[_services]]"
+            categories="[[categories]]"
+            show-categories="[[showCategories]]"
+            view-all="[[viewAll]]"
+            max-services="0"
+            agreement-enabled="[[agreementEnabled]]"
+            searching="[[searching]]"
+            filter-services="{{inputValue}}"
+            selected-category="[[selectedCategory]]"
+            selected="{{closeSwipeService}}"
+            message="[[t('cells-step-service-selector-no-services')]]">
+          </cells-service-selector>
+        </iron-collapse>
+
+        <!-- STATE TWO: Process to set amount -->
+        <iron-collapse no-animation opened="[[_checkedOpened(opened, 2)]]">
+          <cells-glomo-bill-payment-service-detail
+            id="billPaymentService"
+            cached="{{serviceCached}}"
+            selectable="[[!showCategories]]"
+            selected-service="[[selected]]"
+            reference="{{referenceNumber}}"
+            agreement-enabled="[[agreementEnabled]]"
+            bill-information="[[bills]]"
+            amount="{{amountValue}}"
+            local-currency="[[localCurrency]]"
+            numeral-positive-only="[[numeralPositiveOnly]]">
+          </cells-glomo-bill-payment-service-detail>
+        </iron-collapse>
+      </div>
+    </cells-step-searcher>
+  </template>
+  <script src="cells-step-service-selector.js"></script>
+</dom-module>

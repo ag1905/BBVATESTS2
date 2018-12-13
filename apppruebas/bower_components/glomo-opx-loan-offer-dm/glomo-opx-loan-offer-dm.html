@@ -1,0 +1,106 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-step-behavior/cells-step-manager-behavior.html" />
+
+<!--
+`<glomo-opx-loan-offer-dm>`
+  > CELLS Data Manager for GLOBAL APIS Cardless Withdrawal
+
+Example:
+
+```html
+<glomo-opx-loan-offer-dm></glomo-opx-loan-offer-dm>
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="glomo-opx-loan-offer-dm">
+  <template></template>
+  <script>
+    (function(Polymer, CellsBehaviors) {
+
+      'use strict';
+
+      Polymer({
+        is: 'glomo-opx-loan-offer-dm',
+
+        behaviors: [
+          CellsBehaviors.StepManagerBehavior
+        ],
+
+        properties: {
+          /**
+           * Started component
+           */
+          started: Boolean
+        },
+
+        /**
+         * Init and manage cache products
+         */
+        init: function() {
+          if (!this.started) {
+            this._init();
+            this.started = true;
+          }
+        },
+
+        /**
+         * Init services and step
+         */
+        _init: function() {
+          this.dispatchEvent(new CustomEvent('init-services', {
+            bubbles: true,
+            composed: true
+          }));
+          this.restart();
+        },
+
+        /**
+         * Restart state steps
+         */
+        restart: function() {
+          this.resetManagerSteps();
+          this.currentStep = 1;
+
+          this.initSteps();
+        },
+
+        /**
+         * Set default values in steps.
+         */
+        resetManagerSteps: function() {
+          this.lastActiveStep = null;
+          this.canExecute = false;
+        },
+
+        /**
+         * Next Step
+         */
+        nextStep: function() {
+          this.canExecute = !!this.lastActiveStep;
+          this._nextStep();
+        },
+
+        /**
+         * Do loan offer
+         */
+        doLoanOffer: function() {
+          if (this.canExecute) {
+            this.dispatchEvent(new CustomEvent('do-loan-offer', {
+              bubbles: true,
+              composed: true
+            }));
+          }
+        },
+
+        /**
+         * Disable execute
+         */
+        disableExecute: function() {
+          this.canExecute = false;
+        }
+      });
+    }(Polymer, CellsBehaviors));
+  </script>
+</dom-module>

@@ -1,0 +1,32 @@
+{
+  "name": "cells-checkbox-button",
+  "version": "9.0.1",
+  "description": "An accessible custom checkbox button that can be used inside a cells-checkbox-group component",
+  "keywords": [
+    "checkbox",
+    "button",
+    "icon",
+    "input",
+    "a11y"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.9.0",
+    "cells-atom-icon": "^9.0.0"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+    "coronita-icons": "^9.0.0",
+    "cells-demo-helper": "#^9.0.0",
+    "cells-coronita-theme": "^9.0.0",
+    "cells-banking-theme": "^9.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "main": [
+    "cells-checkbox-button.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  }
+}

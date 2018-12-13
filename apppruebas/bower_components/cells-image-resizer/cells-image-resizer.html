@@ -1,0 +1,298 @@
+<link rel="import" href="../polymer/polymer.html">
+<!--
+`<cells-image-resizer>` description.
+
+Example:
+
+```html
+<cells-image-resizer></cells-image-resizer>
+```
+
+### Simple example to use &lt;cells-image-resizer&gt;:
+
+    <template>
+      ...
+      <input id="ifile" type="file">
+      <cells-image-resizer output-data='{{result}}'></cells-image-resizer>
+      <paper-button on-tap='_exe'>Process</paper-button>
+      <img src$='[[_computeBlob(hasil)]]'>
+      ...
+    </template>
+    <script>
+      Polymer({
+        ...
+        _exe: function() {
+          this.$.coba.processImageFile(this.$.ifile.files);
+        },
+        ...
+      });
+    </script>
+
+
+### Set scale or width and/or height as you want.
+#### Scale become the highest priority to be executed.
+
+#### You can set scale number to be executed
+
+    <cells-image-resizer output-data='{{result}}' scale='0.5'></cells-image-resizer>
+
+
+#### You can set maxWidth and/or maxHeight to be executed
+
+    <cells-image-resizer output-data='{{result}}' max-width='1024'></cells-image-resizer>
+    <cells-image-resizer output-data='{{result}}' max-height='768'></cells-image-resizer>
+    <cells-image-resizer output-data='{{result}}' max-width='1024' max-height='400'></cells-image-resizer>
+
+
+### You can change output type between 'blob' and 'base64'.
+Don't forget to handle both type carefully or you got an error.
+
+    <cells-image-resizer output-data='{{result}}' output-type='base64' scale='0.5'></cells-image-resizer>
+
+@demo demo/index.html
+-->
+<dom-module id="cells-image-resizer">
+  <template></template>
+  <script>
+    (function() {
+      'use strict';
+
+      if (!HTMLCanvasElement.prototype.toBlob) {
+        Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
+          value: function(callback, type, quality) {
+            var binStr = atob(this.toDataURL(type, quality).split(',')[1]);
+            var len = binStr.length;
+            var arr = new Uint8Array(len);
+
+            for (var i = 0; i < len; i++) {
+              arr[i] = binStr.charCodeAt(i);
+            }
+
+            callback(new Blob([ arr ], {type: type || 'image/png'}));
+          }
+        });
+      }
+
+      Polymer({
+
+        is: 'cells-image-resizer',
+
+        properties: {
+          /** Maximum size in MB, of image target. */
+          maxSize: {
+            type: Number,
+            value: 10
+          },
+          /** Maximum width of image target. */
+          maxWidth: {
+            type: Number,
+            value: 0
+          },
+          /** Maximum height of image target. */
+          maxHeight: {
+            type: Number,
+            value: 0
+          },
+          /** A Number between 0 and 1 indicating scale percentage of image target. */
+          scale: {
+            type: Number,
+            value: 0
+          },
+          /** A Number between 0 and 1 indicating image quality if the requested type is image/jpeg or image/webp. If this argument is anything else, the default value for image quality is used. Other arguments are ignored. */
+          imageQuality: {
+            type: Number,
+            value: 0.92
+          },
+          /** Set output image in blob or base64. */
+          outputType: {
+            type: String,
+            value: 'blob'
+          },
+          /** Get your resized image here. */
+          outputData: {
+            type: String,
+            value: '',
+            notify: true
+          },
+          /** File name to resize. */
+          fileName: {
+            type: String,
+            notify: true
+          },
+          /** File type to resize. */
+          fileType: {
+            type: String,
+            notify: true
+          },
+          /** File size to resize. */
+          fileSize: {
+            type: String,
+            notify: true
+          },
+          /** True when resize is in progress. */
+          loading: {
+            type: Boolean,
+            value: false,
+            notify: true
+          },
+          /** It will tell you when error occured. */
+          error: {
+            type: Object,
+            notify: true
+          }
+        },
+
+        _checkedErrors(file) {
+          if (!file || !file[0]) {
+            this.set('error', {
+              code: '100',
+              message: 'cells-image-resizer-not-file'
+            });
+            return true;
+          }
+
+          if (!file[0].type.match('image.*')) {
+            this.set('error', {
+              code: '101',
+              message: 'cells-image-resizer-not-image-file'
+            });
+            return true;
+          }
+
+          if (!file[0].size > 0) {
+            this.set('error', {
+              code: '102',
+              message: 'cells-image-resizer-file-not-has-content'
+            });
+            return true;
+          }
+
+          if (file[0].size >= (this.maxSize * Math.pow(1024, 2))) {
+            this.set('error', {
+              code: '103',
+              message: 'cells-image-resizer-file-exceeds-max-size'
+            });
+            return true;
+          }
+
+          if (isNaN(this.maxWidth) && isNaN(this.maxHeight) && isNaN(this.scale) && isNaN(this.imageQuality)) {
+            this.set('error', {
+              code: '104',
+              message: 'cells-image-resizer-values-must-contain-number'
+            });
+            return true;
+          }
+
+          if (!this.outputType.match('blob|base64')) {
+            this.set('error', {
+              code: '105',
+              message: 'cells-image-resizer-type-not-supported'
+            });
+            return true;
+          }
+
+          return false;
+        },
+
+        /**
+         * Get dimensions of process image
+         * @param {Number} Size with of input image
+         * @param {Number} Size height of input image
+         */
+        _getDimensions: function(width, height) {
+          var notMax = (this.maxWidth === 0 && this.maxHeight === 0);
+          var nodeWidth = notMax ? 64 : this.maxWidth;
+          var nodeHeight = notMax ? 64 : this.maxHeight;
+
+          if (this.scale > 0) {
+            width = width * this.scale;
+            height = height * this.scale;
+          } else if (nodeWidth > 0 && nodeHeight > 0) {
+            width = nodeWidth;
+            height = nodeHeight;
+          } else if (nodeWidth > 0) {
+            height *= nodeWidth / width;
+            width = nodeWidth;
+          } else if (nodeHeight > 0) {
+            width *= nodeHeight / height;
+            height = nodeHeight;
+          }
+
+          return {
+            width: width,
+            height: height
+          };
+        },
+
+        /**
+         * On load image, generate blob or base64
+         * @param {Event} On load img
+         */
+        _onLoad: function(e) {
+          var img = e.target;
+          var dimensions = this._getDimensions(img.width, img.height);
+          var c = document.createElement('canvas');
+
+          if (!URL) {
+            delete this.src;
+          } else {
+            URL.revokeObjectURL(this.src);
+          }
+
+          c.width = dimensions.width;
+          c.height = dimensions.height;
+          var cCtx = c.getContext('2d');
+          cCtx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
+
+          if (this.outputType === 'blob') {
+            this.supportBlob = 'iya';
+
+            c.toBlob(function(blob) {
+              this.outputData = blob;
+            }.bind(this), this.fileType, Number(this.imageQuality));
+          } else if (this.outputType === 'base64') {
+            this.outputData = c.toDataURL(this.fileType, Number(this.imageQuality));
+          }
+          this.loading = false;
+        },
+
+        /**
+         * Process the image file with the given value.
+         * @param {Object} file An input file
+         */
+        processImageFile: function(file) {
+          if (!this._checkedErrors(file)) {
+            this.loading = true;
+            this.fileName = file[0].name;
+            this.fileType = file[0].type;
+            this.fileSize = file[0].size;
+
+            var URL = window.URL || window.webkitURL;
+            var img = new Image;
+
+            img.onload = this._onLoad.bind(this);
+
+            if (!URL) {
+              var reader = new FileReader();
+              reader.onload = function(result) {
+                img.src = result.target.result;
+              };
+
+              reader.error = this._onErrorReader.bind(this);
+              reader.readAsDataURL(file[0]);
+            } else {
+              img.src = URL.createObjectURL(file[0]);
+            }
+          }
+        },
+
+        _onErrorReader: function(error) {
+          this.set('error', {
+            code: error.target.error.code,
+            message: error.target.error.message
+          });
+        }
+      });
+    }());
+  </script>
+</dom-module>

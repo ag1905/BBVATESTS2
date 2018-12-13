@@ -1,0 +1,19 @@
+{
+  "cells-credentials-form-user-id": "Celular",
+  "cells-credentials-form-user-password": "Clave de acceso",
+  "cells-credentials-form-forgotten-pwd": "¿Has olvidado tu clave de acceso?",
+  "cells-credentials-form-button-login": "Acceso",
+  "cells-credentials-form-greeting": "Hola",
+  "cells-credentials-form-change-user": "Cambiar usuario",
+  "cells-credentials-form-new-user": "No eres usuario.",
+  "cells-credentials-form-register": "Regístrate",
+  "cells-credentials-form-user-id-clear-icon": "Borrar campo",
+  "cells-credentials-form-user-password-toggle-icon": "Ver/ocultar clave de acceso",
+  "cells-credentials-form-user-password-clear-icon": "Borrar campo",
+  "cells-credentials-form-user-document-type": "Tipo de documento",
+  "cells-mx-phone-error-message": "El número del celular contine caracteres erróneos",
+  "cells-mx-password-repeat-error-message": "Un dígito no puede repetirse más de 3 veces",
+  "cells-mx-password-followed-error-message": "No es posible insertar más de 3 dígitos consecutivos",
+  "cells-credentials-form-generic-error-message": "El campo contiene caracteres erróneos",
+  "cells-credentials-form-min-characters-error-message": "Cantidad de caracteres incorrecta"
+}

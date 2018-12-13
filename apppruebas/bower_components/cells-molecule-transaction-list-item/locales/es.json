@@ -1,0 +1,8 @@
+{
+  "cells-molecule-transaction-list-item-card": "Tarjeta BBVA",
+  "cells-molecule-transaction-list-item-account": "Cuenta BBVA",
+  "cells-molecule-transaction-list-item-financeable": "Financiable",
+  "cells-molecule-transaction-list-item-financed": "Financiado",
+  "cells-molecule-transaction-list-item-date": "Fecha de vencimiento: ",
+  "cells-molecule-transaction-list-item-number": "Número: "
+}

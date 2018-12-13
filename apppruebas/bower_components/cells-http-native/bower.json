@@ -1,0 +1,44 @@
+{
+  "name": "cells-http-native",
+  "version": "10.1.0",
+  "authors": [
+    "The Cells Authors"
+  ],
+  "description": "Web Component that encapsulate a Cordova plugin for communicating with HTTP servers. Allows for SSL pinning!.",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "http",
+    "ssl-pinning",
+    "cordova"
+  ],
+  "main": "cells-http-native.html",
+  "dependencies": {
+    "iron-ajax": "PolymerElements/iron-ajax#1 - 2",
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "devDependencies": {
+    "webcomponentsjs": "^1.0.0",
+    "web-component-tester": "^6.0.0",
+    "cells-ajax": "9 - 10"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "iron-ajax": "PolymerElements/iron-ajax#^1.0.0",
+        "polymer": "Polymer/polymer#^1.9.0"
+      },
+      "devDependencies": {
+        "webcomponentsjs": "^0.7",
+        "web-component-tester": "^4.0.0",
+        "cells-ajax": "^9.0.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

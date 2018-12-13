@@ -1,0 +1,152 @@
+<script>
+  window.CellsBehaviors = window.CellsBehaviors || {};
+  window.CellsBehaviors.StepImplBehavior = {
+
+    properties: {
+      /**
+       * Time delay to activate any step, in milliseconds.
+       * @type      {Number}
+       * @value     100
+       * @readOnly
+       */
+      activeDelay: {
+        readOnly: true,
+        type: Number,
+        value: 100
+      },
+      /**
+       * Not initialize with attached
+       * @type {Boolean}
+       */
+      notInitializeWithAttached: Boolean
+    },
+
+    listeners: {
+      'fixed-changed': '_fixedObserver'
+    },
+
+    observers: [
+      '_isScrolled(collapsed, active, previous)'
+    ],
+
+    attached: function() {
+      if (!this.notInitializeWithAttached) {
+        this.initialize();
+      }
+    },
+
+    /**
+     * Private observer callback for property <em>fixed</em>
+     * Also assigns value for <em>active</em> and <em>collapsed</em> in case of true.
+     *
+     * @param   evt {Event}
+     * @private
+     */
+    _fixedObserver: function(evt) {
+
+      if (evt && evt instanceof Event) {
+        evt = evt.detail;
+      }
+      if (evt && evt.hasOwnProperty('data')) {
+        evt = evt.data;
+      }
+
+      var value = (evt && evt.hasOwnProperty('value'))
+        ? evt.value
+        : evt;
+
+      if (value === true) {
+        this.set('active', value);
+        this.set('collapsed', value);
+      }
+    },
+
+    /**
+     * Observer for properties <em>collpased</em>, <em>active</em> and <em>previous</em>.
+     *
+     * @param   collapsed {Boolean}
+     * @param   active {Boolean}
+     * @param   previous {Boolean}
+     * @private
+     */
+    _isScrolled: function(collapsed, active, previous) {
+      this.async(function() {
+
+        // Step has been collapsed, is active but is not scrolled
+        if ((this.collapsed && this.active) || this.fixed) {
+          this.set('scrolled', true);
+        }
+
+        // Step has been des-collapsed, is active but was scrolled before
+        // if (!this.collapsed && !!this.active && !!this.scrolled) {
+        //   this.set('scrolled', false);
+        // }
+      }.bind(this), this.animationTimeout);
+    },
+
+    /**
+     * Initializes the step
+     */
+    initialize: function() {
+      this.fire('register-step', {
+        index: this.currentStep,
+        node: this
+      });
+      //Set lastStep value
+      this.set('lastStep', this.currentStep === this.maxSteps);
+    },
+
+    /**
+     * Validates the step.
+     */
+    isValid: function() {
+      console.warn('isValid() method should be implemented');
+    },
+
+    /**
+     * Resets the step's state.
+     */
+    reset: function() {
+      console.warn('reset() method should be implemented');
+    },
+
+    /**
+     * Close steps and set its output values
+     */
+    close: function() {
+      console.warn('close() method sould be implemented');
+    },
+
+    /**
+     * Activates this step after <em>ACTIVE_DELAY</em> time.
+     * <em>payload</em> parameter must be a valid <cells-step/> wrapper HTMLElement
+     *
+     * @param payload {Object}
+     */
+    scrollComplete: function(payload) {
+      if (payload && payload instanceof Event) {
+        payload = payload.detail;
+      }
+
+      if (payload && payload.hasOwnProperty('data')) {
+        payload = payload.data;
+      }
+
+      if (payload && payload.get && payload.get('id') === this.id) {
+        this.async(
+          function() {
+            payload.set('active', true);
+          },
+          this.activeDelay
+        );
+      }
+    }
+
+    /**
+     * Fire in `attached` method.
+     * Payload contains this step index & reference.
+     *
+     * @event 'register-step'
+     */
+  };
+</script>

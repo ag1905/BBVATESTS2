@@ -1,0 +1,107 @@
+<!--
+`cells-button-styles` is a style module that contains classes for styling standard HTML buttons.
+
+## Button classes
+
+This component follows [OOCSS](https://www.smashingmagazine.com/2011/12/an-introduction-to-object-oriented-css-oocss/) or
+the [Single Responsibility Principle applied to CSS](https://csswizardry.com/2012/04/the-single-responsibility-principle-applied-to-css/),
+so it's necessary to use two classes for predefined button types because each class is responsible of doing only one thing.
+This approach makes it easier to override button styles or to use your own classes for button types that are not available in the default styles.
+
+- __btn__: gives the appearance of a button (__size, padding and font__ properties).
+- __primary__: background and __color__ for primary buttons according to default design.
+- __secondary__: background and __color__ for secondary buttons according to default desing.
+- __link__: __color__ and font-weight for buttons with the appearance of a link.
+- __small__: __smaller__ buttons according to default design.
+- __on-dark__: used only for __disabled buttons on dark__ background which have a reduced __opacity__.
+
+__Button types:__
+
+    <button class="btn primary">Primary button</button>
+    <button class="btn secondary">Secondary button</button>
+
+__Multilined:__
+
+    <button class="btn primary">
+      Main text
+      <span class="subtext">Subtext</span>
+    </button>
+
+__A link button in a paragraph of text:__
+
+    <p>Lorem ipsum dolor sit amet, <button class="link">consectetur adipisicing</button> elit. Assumenda, suscipit.</p>
+
+__A transparent button with an icon:__
+
+    <button on-click="doSomething">
+      <iron-icon icon="icon:menu" aria-label="Menu"></iron-icon>
+    </button>
+
+__Disabled buttons:__ ("primary" or "secondary" classes don't have visual effects on disabled buttons)
+
+    <button class="btn" disabled>Disabled button</button>
+    <button class="btn primary" disabled>Disabled button</button>
+
+__Disabled buttons on dark background:__
+
+    <button class="btn on-dark" disabled>Disabled button</button>
+
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+### Custom Properties
+| Custom Property                         | Selector          | CSS Property                       | Value                                                             |
+| --------------------------------------- | ----------------- | ---------------------------------- | ----------------------------------------------------------------- |
+| --bbva-core-blue                        | .btn              | --cells-button-bg-primary          |  ![#004481](https://placehold.it/15/004481/000000?text=+) #004481 |
+| --bbva-medium-blue                      | .btn              | --cells-button-bg-secondary        |  ![#237ABA](https://placehold.it/15/237ABA/000000?text=+) #237ABA |
+| --bbva-200                              | .btn              | --cells-button-bg-disabled         |  ![#E9E9E9](https://placehold.it/15/E9E9E9/000000?text=+) #E9E9E9 |
+| --bbva-white                            | .btn              | --cells-button-fg-primary          |  ![#fff](https://placehold.it/15/fff/000000?text=+) #fff          |
+| --bbva-white                            | .btn              | --cells-button-fg-secondary        |  ![#fff](https://placehold.it/15/fff/000000?text=+) #fff          |
+| --bbva-white                            | .btn              | --cells-button-fg-disabled         |  ![#fff](https://placehold.it/15/fff/000000?text=+) #fff          |
+| --bbva-medium-blue                      | .btn              | --cells-button-fg-link             |  ![#237ABA](https://placehold.it/15/237ABA/000000?text=+) #237ABA |
+| --bbva-medium-blue                      | .btn              | --cells-button-fg-link-interactive |  ![#237ABA](https://placehold.it/15/237ABA/000000?text=+) #237ABA |
+| --cells-button-font-size                | .btn              | font-size                          |  0.875rem                                                         |
+| --cells-button-min-height               | .btn              | min-height                         |  3.125rem                                                         |
+| --cells-button-min-width                | .btn              | min-width                          |  9rem                                                             |
+| --cells-button-bg-primary               | .primary          | background-color                   | `No fallback value`                                               |
+| --cells-button-fg-primary               | .primary          | color                              | `No fallback value`                                               |
+| --cells-button-bg-secondary             | .secondary        | background-color                   | `No fallback value`                                               |
+| --cells-button-fg-secondary             | .secondary        | color                              | `No fallback value`                                               |
+| --cells-button-fg-link                  | .link             | color                              | `No fallback value`                                               |
+| --cells-button-min-height-small         | .small            | min-height                         |  2.625rem                                                         |
+| --cells-button-bg-primary-interactive   | .primary:active   | background-color                   | `No fallback value`                                               |
+| --cells-button-fg-primary-interactive   | .primary:active   | color                              | `No fallback value`                                               |
+| --cells-button-bg-secondary-interactive | .secondary:active | background-color                   | `No fallback value`                                               |
+| --cells-button-fg-secondary-interactive | .secondary:active | color                              | `No fallback value`                                               |
+| --cells-button-bg-disabled              | .btn:disabled     | background-color                   | `No fallback value`                                               |
+| --cells-button-fg-disabled              | .btn:disabled     | color                              | `No fallback value`                                               |
+| --cells-button-fg-link                  | .link:disabled    | color                              | `No fallback value`                                               |
+| --cells-button-font-size-subtext        | .subtext          | font-size                          |  0.6875rem                                                        |
+### @apply
+| Mixins                               | Selector              | Value |
+| ------------------------------------ | --------------------- | ----- |
+| --cells-global-focus                 | button:focus          | {}    |
+| --cells-global-active                | button:active         | {}    |
+| --cells-global-active                | button:active         | {}    |
+| --cells-font-smoothing               | .btn                  | {}    |
+| --cells-button                       | .btn                  | {}    |
+| --cells-button-primary               | .primary              | {}    |
+| --cells-button-secondary             | .secondary            | {}    |
+| --cells-font-smoothing               | .link                 | {}    |
+| --cells-button-link                  | .link                 | {}    |
+| --cells-button-small                 | .small                | {}    |
+| --cells-button-primary-interactive   | .primary:active       | {}    |
+| --cells-button-secondary-interactive | .secondary:active     | {}    |
+| --cells-button-disabled              | .btn:disabled         | {}    |
+| --cells-button-primary-disabled      | .primary:disabled     | {}    |
+| --cells-button-secondary-disabled    | .secondary:disabled   | {}    |
+| --cells-button-link-disabled         | .link:disabled        | {}    |
+| --cells-button-disabled-on-dark      | .btn.on-dark:disabled | {}    |
+| --cells-button-subtext               | .subtext              | {}    |
+
+@pseudoElement cells-button-styles
+@demo demo/index.html
+@hero cells-button-styles.png
+-->

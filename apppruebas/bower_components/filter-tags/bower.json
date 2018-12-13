@@ -1,0 +1,26 @@
+{
+  "name": "filter-tags",
+  "version": "1.0.2",
+  "description": "Filter tags",
+  "keywords": [
+    "i18n"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.0",
+    "cells-i18n-behavior": "ssh://git@globaldevtools.bbva.com:7999/cbh/cells-i18n-behavior.git#3.1.0",
+    "cells-molecule-link-icon": "^2.1.1"
+  },
+  "devDependencies": {
+    "cells-sass": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-sass.git#^2.0.0",
+    "cells-demo-mobile": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-demo-mobile.git#^1.2.10",
+    "cells-demo-lang-switcher": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-demo-lang-switcher.git#^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+    "cells-theme-base": "ssh://git@globaldevtools.bbva.com:7999/ct/cells-theme-base.git#^4.0.12",
+    "coronita-icons": "~2.0.0"
+  },
+  "main": [
+    "filter-tags.html"
+  ]
+}

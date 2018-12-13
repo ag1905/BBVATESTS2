@@ -1,0 +1,25 @@
+<dom-module id="cells-step-enter-amount-styles"><template><style>
+:host {
+  @apply (--cells-step-enter-amount); }
+  :host ::content cells-step .filled ::content cells-atom-amount {
+    height: 2.25rem;
+    @apply (--cells-step-enter-amount-number); }
+  :host cells-enter-limited-amount {
+    margin-left: 1.875rem;
+    margin-right: 1.875rem; }
+  :host cells-molecule-input[has-content] {
+    border-bottom: 1px solid var(--bbva-500, #666); }
+  :host cells-atom-icon {
+    color: var(--bbva-500, #666); }
+
+:host(:not([active])) {
+  pointer-events: none; }
+  :host(:not([active])) cells-enter-limited-amount {
+    --cells-enter-limited-amount__txt: { color: #BDBDBD; }; }
+  :host(:not([active])) .switch-container {
+    display: none; }
+
+:host(:not([decorated])) {
+  --cells-step-after-position: relative; }
+
+</style></template></dom-module>

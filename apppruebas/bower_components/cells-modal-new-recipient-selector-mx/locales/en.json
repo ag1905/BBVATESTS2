@@ -1,0 +1,8 @@
+{
+  "title": "New Recipient",
+  "continue": "Continue",
+  "choose-another-recipient": "Choose another recipient",
+  "cells-modal-new-recipient-selector-mx-key-intro": "Write a CLABE account, card or cell phone so you can check if you have the recipient's data:",
+  "cells-modal-new-recipient-selector-mx-saved": "This contact was already saved in your agenda.",
+  "cells-modal-new-recipient-selector-mx-key-input": "Nº CLABE, card or cell phone"
+}

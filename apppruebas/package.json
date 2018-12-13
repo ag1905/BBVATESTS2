@@ -1,0 +1,42 @@
+{
+  "_args": [
+    [
+      "cells-app-template@3.0.8",
+      "/Users/franciscofernandezdetorres/Documents/githubpaco/cells-salesforce-segments"
+    ]
+  ],
+  "_from": "cells-app-template@3.0.8",
+  "_id": "cells-app-template@3.0.8",
+  "_inBundle": false,
+  "_integrity": "sha1-+vs9fS/LKT7PIVmN8NQBGsVkZXY=",
+  "_location": "/cells-app-template",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "cells-app-template@3.0.8",
+    "name": "cells-app-template",
+    "escapedName": "cells-app-template",
+    "rawSpec": "3.0.8",
+    "saveSpec": null,
+    "fetchSpec": "3.0.8"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://globaldevtools.bbva.com:443/artifactory/api/npm/npm-repo/cells-app-template/-/cells-app-template-3.0.8.tgz",
+  "_spec": "3.0.8",
+  "_where": "/Users/franciscofernandezdetorres/Documents/githubpaco/cells-salesforce-segments",
+  "author": "",
+  "description": "Basic app template",
+  "keywords": [
+    "npm-library",
+    "piscosour-template",
+    "piscosour-recipe"
+  ],
+  "license": "ISC",
+  "main": "scripts/app-bootstrap.js",
+  "name": "cells-app-template",
+  "scripts": {},
+  "version": "3.0.8"
+}

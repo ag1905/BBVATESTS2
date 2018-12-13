@@ -1,0 +1,27 @@
+{
+  "name": "bgadp-payments",
+  "description": "BGADP Data provider 'bgadp-payments' importer",
+  "version": "0.2.0",
+  "main": "bgadp-payments.html",
+  "ignore": [
+    "**/.*"
+  ],
+  "keywords": [
+    "data",
+    "provider",
+    "dp",
+    "data provider",
+    "xhr",
+    "ajax",
+    "api",
+    "global api",
+    "bgadp-payments"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.8.0"
+  },
+  "devDependencies": {
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0"
+  }
+}

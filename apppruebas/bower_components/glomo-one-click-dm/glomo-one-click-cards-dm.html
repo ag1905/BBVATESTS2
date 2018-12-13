@@ -1,0 +1,731 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-dm-global-apis-cards/cells-dm-global-apis-cards.html" />
+<link rel="import" href="../cells-moment-import/cells-moment-import.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+
+<!--
+`<glomo-one-click-cards-dm>` description.
+
+Example:
+
+```html
+<glomo-one-click-cards-dm></glomo-one-click-cards-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-one-click-cards-dm">
+  <template>
+    <cells-dm-global-apis-cards
+      id="dm"
+      host="[[host]]"
+      card-id="[[cardId]]"
+      card="{{_card}}"
+      cash-advances="{{cashAdvances}}"
+      offer-id="[[offerId]]"
+      offer-detail="{{_offer}}"
+      offer-simulation="{{_offerSimulation}}"
+      limit-id="[[limitId]]"
+      put-limits-response="{{_limitResponse}}"
+      cards-api-version="[[cardsApiVersion]]"
+      on-error-on-get-card-offer-detail="_bubbleErrorResponse">
+    </cells-dm-global-apis-cards>
+  </template>
+  <script>
+    (function() {
+      /* global moment */
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-one-click-cards-dm',
+
+        behaviors: [
+          CellsBehaviors.i18nBehavior
+        ],
+
+        properties: {
+          /**
+          * Chosen host to make requests to. Check providers.
+          * @type {String}
+          */
+          host: {
+            type: String
+          },
+          /**
+          * Contact data
+          */
+          contact: {
+            type: Object
+          },
+          /**
+          * Cards API version
+          * @type {String}
+          */
+          cardsApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+          * Card
+          */
+          _card: Object,
+          /**
+          * Card
+          */
+          card: {
+            type: Object,
+            computed: '_parseCard(_card)',
+            notify: true
+          },
+          /**
+          * Account id default selected
+          */
+          defaultProductId: {
+            type: Object,
+            notify: true
+          },
+          /**
+          * Card Id
+          */
+          cardId: {
+            type: String,
+            notify: true
+          },
+          /**
+          * Offer id
+          */
+          offerId: String,
+          /**
+          * Offer
+          * @type {Object}
+          * @private
+          */
+          _offer: {
+            type: Object,
+            observer: '_parseOfferResponse'
+          },
+          /**
+          * Formatted Offer
+          * @type {Object}
+          */
+          offer: {
+            type: Object,
+            notify: true
+          },
+          /**
+          * Formatted Simulation
+          * @type {Object}
+          */
+          offerSimulation: Object,
+          /**
+          * Offer Simulation
+          * @type {Object}
+          * @private
+          */
+          _offerSimulation: {
+            type: Object,
+            observer: '_parseOfferSimulationResponse'
+          },
+
+          /**
+          * Control if simulation is allowed
+          */
+          isSimulationAllowed: {
+            type: Boolean,
+            value: false
+          },
+
+          editedMonthlyPayment: {
+            type: String,
+            notify: true
+          },
+
+          oneClickType: String,
+
+          /**
+          * Cash Advance result
+          * @type {Object}
+          */
+          cashAdvancesResult: {
+            type: Object,
+            notify: true,
+            computed: '_parseCashAdvancesResponse(cashAdvances)'
+          },
+          /**
+          * Date format
+          * @type {String}
+          */
+          formatDate: {
+            type: String,
+            value: 'd [de] MMMM [de] YYYY'
+          },
+          /**
+          * Local currency
+          */
+          localCurrency: String,
+          /**
+          * Visible chars
+          */
+          visibleChars: Number,
+          /**
+          * State campaing on fetch detail and dashboard
+          */
+          stateCampaings: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+          * Limit id
+          */
+          limitId: {
+            type: String,
+            value: 'GRANTED_CREDIT'
+          },
+          /**
+          * Limit response private
+          */
+          _limitResponse: Object,
+          /**
+          * Limit response
+          */
+          limitResponse: {
+            type: Object,
+            notify: true,
+            computed: '_parseLimitResponse(_limitResponse)'
+          },
+          /**
+          * Value of fees percentage
+          */
+          itemizeFeesPercentage: String,
+          /**
+          * Body request
+          */
+          body: String
+        },
+
+        observers: [
+          '_fetchOfferCard(_offer, card)'
+        ],
+
+        listeners: {
+          'error-on-put-card-limits': '_closeSpinner'
+        },
+
+        init: function() {
+          if (this.cardId && !this.card) {
+            this.$.dm.getCard(this.cardId);
+          }
+
+          if (this.offerId && this.cardId && !this.offer) {
+            this._spinnerStatus('open-solid');
+            this.$.dm.getOfferDetail();
+            this.dispatchEvent(new CustomEvent('get-contact-detail', {
+              bubbles: true,
+              composed: true
+            }));
+          } else {
+            this._spinnerStatus('close-solid');
+          }
+
+          if (this.offerSimulation) {
+            this.defaultProductId = this.offerSimulation.receivingAccount.id;
+            this.dispatchEvent(new CustomEvent('set-response', {
+              bubbles: true,
+              composed: true,
+              detail: this.offerSimulation
+            }));
+          }
+        },
+
+        reset: function() {
+          this.offer = undefined;
+          this.defaultProductId = undefined;
+        },
+
+        doCardCashAdvances: function() {
+          var offer = Object.assign({}, this.offerSimulation, {
+            offerId: String(this.offerId),
+            rates: this.offerSimulation.ratesSimulation,
+            advanceType: {
+              id: 'FREE_ADVANCE',
+              name: 'Avance libre disponibilidad'
+            }
+          });
+
+          this._spinnerStatus('open');
+          this.$.dm.getCardCashAdvances(offer);
+        },
+
+        doCardLimit: function(offer) {
+          if (offer) {
+            this.body = {
+              offerId: String(this.offerId),
+              amountLimits: [
+                {
+                  amount: offer.amount,
+                  currency: offer.currency
+                }
+              ]
+            };
+
+            this.set('offer.requestedAmount', {
+              amount: offer.amount,
+              currency: offer.currency
+            });
+          }
+
+          this._spinnerStatus('open');
+          this.$.dm.putCardLimit(this.body);
+        },
+
+        getOfferSimulation: function(offer) {
+          this._spinnerStatus('open');
+          this.oneClickType = offer.type;
+          var body = {
+            requestedAmount: {
+              amount: offer.amount,
+              currency: offer.currency
+            },
+            rates: [
+              {
+                rateType: {
+                  id: 'CAT',
+                  name: 'CAT'
+                },
+                calculationDate: this.offer.rates.yearly ? this.offer.rates.yearly.dateUnFormated : undefined,
+                mode: {
+                  id: 'PERCENTAGE'
+                },
+                unit: {
+                  percentage: this.offer.rates.yearly.percentage,
+                }
+              }
+            ],
+            fees: {
+              itemizeFees: [
+                {
+                  feeType: 'DIRECT_PERIODIC',
+                  name: 'Direct monthly',
+                  mode: {
+                    id: 'AMOUNT',
+                    name: 'Amount'
+                  },
+                  itemizeFeeUnit: {
+                    amount: 0,
+                    currency: offer.currency
+                  }
+                }
+              ]
+            }
+          };
+
+          if (this.offer && this.offer.type && this.offer.type.id !== 'CREDIT_LIMIT_INCREASE') {
+            this.offer.terms.number = offer.terms;
+            body.terms = this.offer.terms;
+          }
+
+          this.$.dm.getOfferSimulation(body);
+        },
+
+        _parseOfferResponse: function(offer) {
+          this.set('offer', this._parseOffer(offer));
+
+          if (offer.type.id !== 'CREDIT_LIMIT_INCREASE') {
+            this._spinnerStatus('close');
+          }
+        },
+
+        _parseOffer: function(offer) {
+          var rate = this._getCalculationDate(offer.rates);
+          var date = rate.calculationDate || null;
+          var itemizeFee = offer.details && offer.details.fees && offer.details.fees.itemizeFees && offer.details.fees.itemizeFees[0];
+          offer.details.suggestedAmount = Array.isArray(offer.details.suggestedAmount) ? this._getRequestAmount(offer.details.suggestedAmount) : offer.details.suggestedAmount;
+
+          return {
+            id: offer.id,
+            type: offer.type,
+            details: {
+              itemizeFeeAmount: itemizeFee && itemizeFee.itemizeFeeUnit && itemizeFee.itemizeFeeUnit.amount
+            },
+            editable: offer.isEditable,
+            isSimulationAllowed: this.isSimulationAllowed,
+            amount: this._getAmount(offer.details),
+            terms: this._getTerms(offer.details),
+            fees: offer.details.fees,
+            receivingAccount: this._getProduct(offer.details),
+            rates: this._getRates(offer.rates),
+            installmentAmount: offer.details.installmentAmount,
+            requestedAmount: offer.details.suggestedAmount
+          };
+        },
+
+        _fetchOfferCard: function(offer, card) {
+          if (offer && card) {
+            this.set('offer', Object.assign({}, this.offer, {
+              card: {
+                grantedCredit: card.grantedCredit,
+                id: card.id,
+                name: card.name,
+                number: card.number
+              }
+            }));
+            this._spinnerStatus('close');
+          }
+        },
+
+        _getCalculationDate: function(rates) {
+          return rates && rates.find(function(rate) {
+            return rate.calculationDate;
+          });
+        },
+
+        _getRequestAmount: function(amounts) {
+          return amounts && amounts.find(function(amount) {
+            return amount.currency === this.localCurrency;
+          }.bind(this));
+        },
+
+        _getRates: function(rates) {
+          return rates.reduce(function(total, item) {
+            var id = item.rateType && item.rateType.id;
+            var percentage = item.unit && item.unit.percentage;
+
+            if (id === 'CAT') {
+              total.yearly = {
+                type: id,
+                percentage: percentage,
+                date: moment(item.calculationDate).format(this.formatDate),
+                dateUnFormated: item.calculationDate
+              };
+            } else if (id === 'TASA ANUAL SALDO') {
+              total.ponderate = {
+                type: id,
+                percentage: percentage
+              };
+            } else if (id === 'TASA MENSUAL') {
+              total.monthly = {
+                type: id,
+                percentage: percentage
+              };
+            }
+            return total;
+          }.bind(this), {});
+        },
+
+        _getAmount: function(amount) {
+          var minimumAmount = this._formatAmount(!Array.isArray(amount.minimumAmount) ? [amount.minimumAmount] : amount.minimumAmount);
+          var maximumAmount = this._formatAmount(!Array.isArray(amount.maximumAmount) ? [amount.maximumAmount] : amount.maximumAmount);
+          return {
+            suggestedAmount: amount.suggestedAmount && amount.suggestedAmount.amount,
+            minimumAmount: minimumAmount[0] && minimumAmount[0].amount,
+            minimumAmountCurrency: minimumAmount[0] && minimumAmount[0].currency,
+            maximunAmount: maximumAmount[0] && maximumAmount[0].amount,
+            maximunAmountCurrency: maximumAmount[0] && maximumAmount[0].currency,
+            monthlyPayment: amount.installmentAmount && amount.installmentAmount.amount,
+            totalAmount: amount.totalAmount && amount.totalAmount.amount
+          };
+        },
+
+        _formatAmount: function(amount) {
+          return amount.filter(function(item) {
+            return { amount: item.amount, currency: item.currency } ? (item.currency === this.localCurrency) : '';
+          }.bind(this));
+        },
+
+        _getTerms: function(term) {
+          var allowedTerms = this._generateAllowedTerms(term.allowedTerms);
+          return {
+            allowedTerms: allowedTerms,
+            minimumTerms: term && term.minimumTerms,
+            maximumTerms: term && term.maximumTerms,
+            suggestedTerm: term && term.suggestedTerm,
+            number: term && term.suggestedTerm,
+            stepTerm: allowedTerms ? this._calculateStepTerm(allowedTerms) : null,
+            frequency: term.allowedTerms && term.allowedTerms.length && term.allowedTerms[0].frequency
+          };
+        },
+
+        _getProduct: function(product) {
+          return product && product.receivingAccount ? {
+            id: product.receivingAccount.id,
+            number: product.receivingAccount.number,
+            numberType: {
+              id: 'SIMPLE_ACCOUNT'
+            }
+          } : undefined;
+        },
+
+        _generateAllowedTerms: function(terms) {
+          return terms && terms.map(function(term) {
+            return term.number;
+          });
+        },
+
+        _calculateStepTerm: function(terms) {
+          return terms && terms.length ? terms[1] - terms[0] : terms[0];
+        },
+
+        _parseOfferSimulationResponse: function(simulation) {
+          this._spinnerStatus('close');
+
+          if (simulation.terms) {
+            this.offer.terms.number = simulation.terms.number;
+            this.offer.terms.frequency = simulation.terms.frequency;
+          }
+
+          this.offer.amount.suggestedAmount = simulation.requestedAmount.amount;
+          this.offer.amount.totalAmount = simulation.total.amount;
+          this.offer.ratesSimulation = simulation.rates;
+
+          this.offer = Object.assign({}, this.offer, {
+            simulate: true,
+            requestedAmount: simulation.requestedAmount,
+            installmentAmount: simulation.installmentAmount
+          });
+        },
+
+        _parseCashAdvancesResponse: function(response) {
+          this._spinnerStatus('close');
+          var rates = this._getRates(this._offer.rates);
+          this.stateCampaings = true;
+          this.dispatchEvent(new CustomEvent('navigate-to-review', {
+            detail: {
+              productId: this.cardId,
+              offerId: this.offerId
+            },
+            bubbles: true,
+            composed: true
+          }));
+
+          var result = {
+            id: response.id,
+            date: response.applyDate,
+            title: this.oneClickType + '-successful-response-success',
+            origin: {
+              product: {
+                id: response.receivingAccount.id,
+                name: response.receivingAccount.id
+              },
+              number: response.receivingAccount.number,
+              avatar: {
+                src: './images/oneClicks/itemAccount.png',
+                type: 'card'
+              }
+            },
+            amount: {
+              amount: response.requestedAmount.amount,
+              currency: response.requestedAmount.currency,
+            },
+            headerAdditionalInfo: {
+              card: {
+                text: this.oneClickType + '-successful-response-card',
+                musk: {
+                  value: this.card.number,
+                  chars: this.visibleChars || 5,
+                  symbol: '•'
+                }
+              },
+              amount: {
+                text: this.oneClickType + '-successful-response-monthly',
+                amount: response.installmentAmount.amount,
+                currency: response.installmentAmount.currency
+              },
+              term: {
+                text: this.oneClickType + '-successful-response-term',
+                months: this.oneClickType + '-successful-response-months',
+                value: response.terms.number
+              },
+              rates: {
+                text: this.oneClickType + '-successful-response-rate',
+                value: rates.monthly.percentage + ' %'
+              }
+            },
+            topInfo: [
+              {
+                key: this.oneClickType + '-successful-response-charge-account',
+                value: response.receivingAccount.numberType.id,
+                musk: {
+                  value: response.receivingAccount.number,
+                  chars: this.visibleChars || 4,
+                  simbol: '•'
+                },
+                class: 'bold spacing'
+              }
+            ],
+            message: {
+              type: 'info',
+              text: this.oneClickType + '-successful-response-message-info',
+              icon: 'coronita:info'
+            },
+            bottomInfo: [
+              {
+                key: this.oneClickType + '-successful-page-number',
+                value: response.id,
+                class: 'inline spacing separator'
+              },
+              {
+                key: this.oneClickType + '-successful-response-receive',
+                class: 'inline secondary'
+              },
+              {
+                value: this.contact.info[1].value,
+                class: 'bold spacing'
+              }
+            ],
+            buttons: {
+              primary: {
+                text: this.oneClickType + '-successful-response-next',
+                action: 'go-to-next',
+                class: 'btn--primary btn--l'
+              },
+              secondary: {
+                hidden: true
+              }
+            }
+          };
+
+          result.headerAdditionalInfo.fee = { text: this.t(this.oneClickType + '-successful-response-fee', '', { fee: 0 }) };
+          if (response.fees.itemizeFees.feeType === 'SPECIFIC_TRANSACTION') {
+            result.headerAdditionalInfo.fee = { text: this.t(this.oneClickType + '-successful-response-fee', '', { fee: response.fees.itemizeFees.itemazeFeeUnit.amount }) };
+          }
+          return result;
+        },
+
+        _parseLimitResponse: function(response) {
+          this._spinnerStatus('close');
+          this.stateCampaings = true;
+          this.dispatchEvent(new CustomEvent('navigate-to-review', {
+            detail: {
+              productId: this.cardId,
+              offerId: this.offerId
+            },
+            bubbles: true,
+            composed: true
+          }));
+
+          return {
+            date: response.operationDate,
+            title: this.oneClickType + '-successful-response-success',
+            origin: {
+              avatar: {
+                src: './images/oneClicks/itemAccount.png',
+                type: 'card'
+              }
+            },
+            amount: {
+              amount: this.offer.requestedAmount.amount,
+              currency: this.offer.requestedAmount.currency,
+            },
+            bottomInfo: [
+              {
+                value: this.card.name,
+                musk: {
+                  value: this.card.number,
+                  chars: this.visibleChars || 4,
+                  simbol: '•'
+                },
+                class: 'bold spacing'
+              },
+              {
+                key: this.oneClickType + '-successful-page-number',
+                value: this.offerId,
+                class: 'inline spacing separator'
+              },
+              {
+                key: this.oneClickType + '-successful-response-receive',
+                class: 'inline secondary'
+              },
+              {
+                value: this.contact.info[1].value,
+                class: 'bold spacing'
+              }
+            ],
+            buttons: {
+              primary: {
+                text: this.oneClickType + '-successful-response-next',
+                action: 'go-to-next',
+                class: 'btn--primary btn--l'
+              },
+              secondary: {
+                hidden: true
+              }
+            }
+          };
+        },
+
+        _closeSpinner: function() {
+          this._spinnerStatus('close');
+        },
+
+        _spinnerStatus: function(action) {
+          this.dispatchEvent(new CustomEvent(action + '-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        _parseCard: function(card) {
+          var response = {
+            currencies: card.currencies,
+            description: {
+              value: card.number,
+              masked: true
+            },
+            id: card.cardId,
+            name: card.alias || card.title && card.title.name,
+            number: card.number,
+            status: card.status && card.status.id,
+            grantedCredit: card.grantedCredits && card.grantedCredits[0] && card.grantedCredits[0].amount
+          };
+
+          if (card.images && card.images.length && card.images[0].url) {
+            response.imgSrc = card.images[0].url;
+          }
+
+          this.dispatchEvent(new CustomEvent('set-card-offer', {
+            bubbles: true,
+            composed: true,
+            detail: response
+          }));
+          return response;
+        },
+
+        setSimulationAllowed: function(isSimulationAllowed) {
+          this.isSimulationAllowed = this.isEditable = isSimulationAllowed || false;
+        },
+
+        setDefaultOffer: function() {
+          this.dispatchEvent(new CustomEvent('set-default-offer', {
+            detail: this.offer,
+            bubbles: true,
+            composed: true
+          }));
+
+          this.dispatchEvent(new CustomEvent('navigate-to-resume', {
+            detail: {
+              productId: this.cardId,
+              offerId: this.offerId
+            },
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+        * Dispatch response error service
+        */
+        _bubbleErrorResponse: function(ev) {
+          this.dispatchEvent(new CustomEvent('close-solid-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+          this.dispatchEvent(new CustomEvent(ev && ev.type, {
+            bubbles: true,
+            composed: true
+          }));
+        }
+      });
+    }());
+  </script>
+</dom-module>

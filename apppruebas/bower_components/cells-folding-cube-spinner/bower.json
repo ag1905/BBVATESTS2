@@ -1,0 +1,21 @@
+{
+  "name": "cells-folding-cube-spinner",
+  "version": "0.1.0",
+  "description": "Web Component version of the folding cube animation from Spinkit spinners.",
+  "keywords": [
+    "spinner",
+    "loader",
+    "spinkit"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0"
+  },
+  "main": [
+    "cells-folding-cube-spinner.html"
+  ]
+}

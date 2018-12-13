@@ -1,0 +1,331 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`<glomo-operations-dm-uy>` description.
+
+Example:
+
+```html
+<glomo-operations-dm-uy></glomo-operations-dm-uy>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-operations-dm-uy">
+  <template>
+  </template>
+  <script>
+    (function() {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-operations-dm-uy',
+
+        properties: {
+          /**
+          * Product Id
+          * @type {String}
+          */
+          productId: {
+            type: String
+          },
+          /**
+          * Product Type
+          * @type {String}
+          */
+          productType: {
+            type: String,
+            value: 'dashboard'
+          },
+          /**
+          * Product
+          */
+          product: {
+            type: Object
+          },
+          /**
+          * Local currency
+          * @type {Object}
+          */
+          localCurrency: {
+            type: String
+          },
+          /**
+          * Continue page
+          * @type {String}
+          */
+          continue: String,
+          /**
+          * Operations list
+          * @type {Object}
+          */
+          operations: {
+            type: Object,
+            value: {
+              featured: [],
+              full: []
+            }
+          }
+        },
+        /**
+        * Reset
+        **/
+        reset: function() {
+          this.set('operations', {
+            featured: [],
+            full: []
+          });
+        },
+        /**
+        * Dispatch operations for a page
+        **/
+        getOperations: function(product) {
+          if (this.operations.featured.length <= 0) {
+            this._parseOperations(product);
+          }
+          this.dispatchEvent(new CustomEvent('featured-operations-list', { 'detail': this.operations.featured }));
+        },
+
+        /**
+        * Dispatch full operations for a page
+        **/
+        getFullOperations: function(product) {
+          if (this.operations.full.length <= 0) {
+            this._parseOperations(product);
+          }
+          this.dispatchEvent(new CustomEvent('full-operations-list', { 'detail': this.operations.full }));
+        },
+
+        /**
+        * Dispatch operations of dashboard
+        **/
+        getDashboardOperations: function(accounts) {
+          var payload = this._getDashboardOperations(accounts).featured;
+          this.dispatchEvent(new CustomEvent('dashboard-operations-list', { 'detail': payload }));
+        },
+
+        _parseOperations: function(product) {
+          var page = this.productType || 'dashboard';
+          var operations = [];
+
+          this.set('product', product);
+
+          operations = this['_get' + (page[0].toUpperCase() + page.substring(1)) + 'Operations'](product);
+          this.set('operations', operations);
+        },
+
+        /*
+        * Get currency major of product
+        */
+        _getCurrency: function(product) {
+          if ((product && product.currencies || []).length > 0) {
+            return product.currencies.find(function(currency) {
+              return currency.isMajor;
+            });
+          }
+        },
+
+        /**
+         * Gets dashboard operations
+         **/
+        _getDashboardOperations: function(accounts) {
+          let someOperable = accounts !== undefined && accounts.length > 0 ? accounts.some(account=>{
+            return account.products !== undefined ? account.products.some(product=>{
+              return product.status === 'ACTIVATED' && this._getCurrency(product).currency !== 'UYI';
+            }) : false;
+          }) : false;
+          return {
+            featured: [ {
+              label: 'cells-operations-list-transfer',
+              id: 'transfer',
+              eventDetail: {
+                continue: 'dashboard'
+              },
+              eventName: 'navigation-to-transfer',
+              icon: 'coronita:transfer',
+              disabled: !someOperable
+            } ]
+          };
+        },
+
+        /**
+        * Returns a group of operation lists
+        */
+        _getFullResponse: function(data) {
+          return [
+            {
+              title: 'glomo-operations-operate-title',
+              style: 'primary',
+              operations: data[0]
+            },
+            {
+              title: 'glomo-operations-configure-title',
+              style: 'secondary',
+              operations: data[1]
+            }
+          ];
+        },
+
+        /**
+        * Returns common operatives
+        */
+        _getCommonOperations: function(product) {
+          return {
+            editAlias: {
+              label: 'cells-operations-edit-alias',
+              eventName: 'navigation-to-edit-' + this.productType + '-alias',
+              eventDetail: {
+                productId: this.productId,
+                productType: this.productType,
+                continue: this.continue
+              },
+              id: 'editAlias',
+              icon: 'coronita:edit',
+              disabled: this._checkCardStatus(product, 'editAlias')
+            }
+          };
+        },
+
+        /**
+         * Gets account operations
+         **/
+        _getAccountOperations: function(product) {
+          let featuredOperations;
+          let fullOperations;
+          let currency = this._getCurrency(product) || {};
+          let status = typeof product.status === 'object' ? product.status.id : product.status;
+          let operations = Object.assign(this._getCommonOperations(product), {
+            transfer: {
+              label: 'cells-operations-transfer',
+              id: 'transfer',
+              eventDetail: {
+                productId: this.productId,
+                continue: 'account'
+              },
+              eventName: 'navigation-product-to-transfer',
+              icon: 'coronita:transfer',
+              type: 'operation',
+              disabled: currency.currency === 'UYI' || status !== 'ACTIVATED'
+            }
+          });
+
+          let getFeaturedOperations = function(account) {
+            return [
+              operations.transfer
+            ];
+          };
+
+          let getFullOperations = function(account) {
+            var commonOperations = [
+              operations.transfer
+            ];
+            var specificOperations = [
+              operations.editAlias
+            ];
+            return this._getFullResponse([commonOperations, specificOperations]);
+          };
+
+          return {
+            featured: getFeaturedOperations.bind(this)(product),
+            full: getFullOperations.bind(this)(product)
+          };
+        },
+
+        _getDepositOperations: function() {
+          var featuredOperations;
+          var fullOperations;
+
+          //configure here your operations
+          var operations = Object.assign(this._getCommonOperations(), {});
+
+          var getFeaturedOperations = function() {
+            return [
+              operations.editAlias
+            ];
+          };
+
+          var getFullOperations = function() {
+            return this._getFullResponse([
+              [],
+              []
+            ]);
+          };
+
+          return {
+            featured: getFeaturedOperations.bind(this)(),
+            full: getFullOperations.bind(this)()
+          };
+        },
+
+        _getFundOperations: function() {
+          var featuredOperations;
+          var fullOperations;
+
+          //configure here your operations
+          var operations = Object.assign(this._getCommonOperations(), {});
+
+          var getFeaturedOperations = function() {
+            return [
+              operations.editAlias
+            ];
+          };
+
+          var getFullOperations = function() {
+            return this._getFullResponse([
+              [], []
+            ]);
+          };
+
+          return {
+            featured: getFeaturedOperations.bind(this)(),
+            full: getFullOperations.bind(this)()
+          };
+        },
+
+        _getLoanOperations: function() {
+          var featuredOperations;
+          var fullOperations;
+
+          //configure here your operations
+          var operations = Object.assign(this._getCommonOperations(), {});
+
+          var getFeaturedOperations = function() {
+            return [
+              operations.editAlias
+            ];
+          };
+
+          var getFullOperations = function() {
+            return this._getFullResponse([
+              [],
+              []
+            ]);
+          };
+
+          return {
+            featured: getFeaturedOperations.bind(this)(),
+            full: getFullOperations.bind(this)()
+          };
+        },
+
+        _checkCardStatus: function(card, operationType) {
+          if (card && this.productType === 'card') {
+            var status = card.overdraft ? 'OVERDRAFT' : card.status.id;
+            switch (status) {
+              case 'BLOCKED':
+                return true;
+              case 'CANCELED':
+                return true;
+              case 'OVERDRAFT':
+              case 'INOPERATIVE':
+                return !!(operationType === 'transfer' || operationType === 'billPay');
+            }
+          }
+          return false;
+        }
+      });
+    }());
+  </script>
+</dom-module>

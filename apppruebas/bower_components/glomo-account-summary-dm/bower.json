@@ -1,0 +1,27 @@
+{
+  "name": "glomo-account-summary-dm",
+  "version": "2.11.3",
+  "description": "Datamanager of account summary",
+  "keywords": [
+    "dm",
+    "data",
+    "datamanager"
+  ],
+  "main": [
+    "glomo-account-summary-dm.html"
+  ],
+  "dependencies": {
+    "cells-dm-global-apis-accounts": "~8.8.0",
+    "cells-product-format-behavior": "~1.1.0",
+    "polymer": "Polymer/polymer#^1.7.0",
+    "cells-moment-import": "~10.0.0"
+  },
+  "devDependencies": {
+    "cells-demo-dm-helper": "^0.2.1",
+    "cells-demo-helper": "^1.3.5",
+    "iron-component-page": "PolymerElements/iron-component-page",
+    "web-component-tester": "^6.5.0",
+    "test-fixture": "polymerelements/test-fixture#^1.0.0",
+    "cells-service-caller-form": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-service-caller-form.git#^1.0.0"
+  }
+}

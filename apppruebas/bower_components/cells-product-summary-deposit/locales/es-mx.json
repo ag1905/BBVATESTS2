@@ -1,0 +1,12 @@
+{
+  "cells-organism-product-summary-days-label": "días",
+  "cells-organism-product-summary-day-label": "día",
+  "cells-organism-product-summary-deposit-currentBalances": "Saldo",
+  "cells-organism-product-summary-deposit-maturityDate": "Fecha de Vencimiento",
+  "cells-organism-product-summary-deposit-totalContributions": "Total de inversiones",
+  "cells-organism-product-summary-deposit-initialAmount": "Monto inicial",
+  "cells-organism-product-summary-deposit-termNumber": "Plazo",
+  "cells-organism-product-summary-deposit-annualYieldRate": "Interés",
+  "cells-organism-product-summary-deposit-preTaxGat": "GAT - Antes de impuestos",
+  "cells-product-summary-more-info-deposit": "Detalle de inversión a plazo"
+}

@@ -1,0 +1,57 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-image-overlay-styles.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../iron-image/iron-image.html">
+
+<!--
+# cells-image-overlay
+An image with an optional overlay and icon to cover it.
+
+Expects one mandatory param:
+* **image-src**: Url of the cover image.
+
+If the mandatory property is omitted or invalid, a default card cover image will be displayed.
+
+Optional parameters:
+
+* **show-overlay**: Cover the image with a stylable overlay.
+* **icon**: optional <cells-atom-icon> to show on top of the overlay, vertically and horizontally centered.
+* **icon-size**: size property to set on <cells-atom-icon>.
+
+* **width**: Width of the image.
+* **height**: Height of the image.
+* **alt**: Alternative text of the image.
+* **default-image**: Image shown if the image is not available.
+
+Example:
+```html
+<cells-image-overlay image-src="https://openapi.bbva.com/ccds/covers?&default_image=true&v=4&country=es&app_id=com.bbva.buzz&pg=0000003514"></cells-image-overlay>
+```
+```html
+<cells-image-overlay image-src="https://openapi.bbva.com/ccds/covers?&default_image=true&v=4&country=es&app_id=com.bbva.buzz&pg=0000003514" show-overlay alt="a card image"></cells-image-overlay>
+```
+```html
+<cells-image-overlay image-src="https://openapi.bbva.com/ccds/covers?&default_image=true&v=4&country=es&app_id=com.bbva.buzz&pg=0000003514" show-overlay icon="banking:G15" alt="a card image"></cells-image-overlay>
+```
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|-----------------|-----------------|----------------|
+| @apply(--cells-image-overlay-img) | empty mixin for img |
+| @apply(--cells-image-overlay-icon) | empty mixin for cells-atom-icon |
+| @apply(--cells-image-overlay-layer) | empty mixin for the overlay (.inactive) |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-image-overlay">
+  <template>
+    <style include="cells-image-overlay-styles cells-image-overlay-shared-styles"></style>
+    <iron-image src$="[[imageSrc]]" height$="[[height]]" width$="[[width]]" alt$="[[alt]]" error="{{_imageError}}" fade="[[fade]]" preload="[[preload]]"></iron-image>
+    <div hidden$="[[!showOverlay]]" class="inactive">
+      <cells-atom-icon class$="icon-size-[[iconSize]]" icon="[[icon]]"></cells-atom-icon>
+    </div>
+  </template>
+  <script src="cells-image-overlay.js"></script>
+</dom-module>

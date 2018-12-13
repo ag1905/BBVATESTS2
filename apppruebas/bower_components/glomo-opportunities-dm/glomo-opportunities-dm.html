@@ -1,0 +1,129 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`<glomo-opportunities-dm>` description.
+
+Example:
+
+```html
+<glomo-opportunities-dm></glomo-opportunities-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-opportunities-dm">
+  <template>
+  </template>
+  <script>
+    (function() {
+
+      'use strict';
+
+      Polymer({
+        is: 'glomo-opportunities-dm',
+        properties: {
+          offers: {
+            type: Array,
+            value: [],
+            observer: '_onOffersChanged'
+          },
+
+          parsedOffers: {
+            type: Array,
+            observer: '_onParsedOffersChanged'
+          },
+
+          headerFontColor: {
+            type: String,
+            value: 'var(--bbva-white, #fff)'
+          },
+
+          headerBackgroundColor: {
+            type: String,
+            value: 'var(--cells-molecule-header-dark, #072146)'
+          }
+
+        },
+
+        init: function() {
+          if (!this.offers || this.offers.length === 0) {
+            this._toggleSpinner(true);
+            this._retrieveOffers();
+          }
+        },
+
+        /**
+        * Retrieves offers
+        **/
+        _retrieveOffers: function() {
+          this.dispatchEvent(new CustomEvent('get-offers', {
+            bubbles: true,
+            composed: true
+          }));
+
+          this.dispatchEvent(new CustomEvent('get-app-settings', {
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        _onOffersChanged: function(offers) {
+          this._setExpandedOffers(offers);
+        },
+
+        /**
+         * Set expanded value in the first element
+         **/
+        _setExpandedOffers: function(offers) {
+          var parsedOffers;
+
+          parsedOffers = (offers || []).map(function(item, index) {
+            if (index === 0) {
+              return Object.assign({
+                className: 'big'
+              }, item);
+            } else {
+              return item;
+            }
+          });
+          this.set('parsedOffers', parsedOffers);
+        },
+
+        /**
+         * parsedOffers observer
+         * */
+        _onParsedOffersChanged: function(offers) {
+          this._notifyOffers(offers);
+          this._toggleSpinner(false);
+        },
+
+        /**
+         * Notify the offers list
+         * */
+        _notifyOffers: function(offers) {
+          this.dispatchEvent(new CustomEvent('opportunities-notify-offers-list', {
+            detail: offers,
+            bubbles: true,
+            composed: true
+          }));
+
+          this.dispatchEvent(new CustomEvent('opportunities-notify-header-color', {
+            detail: {
+              backgroundColor: ((offers || []).length > 0) ? offers[0].campaignColor : this.headerBackgroundColor,
+              color: this.headerFontColor
+            },
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        _toggleSpinner: function(state) {
+          this.dispatchEvent(new CustomEvent((state ? 'open' : 'close') + '-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+        }
+      });
+    }());
+  </script>
+</dom-module>

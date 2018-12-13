@@ -1,0 +1,55 @@
+{
+  "name": "cells-molecule-spinner",
+  "description": "Spinner with icon and informative message",
+  "version": "10.2.4",
+  "keywords": [
+    "molecule",
+    "spinner",
+    "informative",
+    "icon",
+    "i18n"
+  ],
+  "dependencies": {
+    "cells-atom-icon": "^10.0.0",
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#1 - 2",
+    "cells-i18n-behavior": "^13.0.0",
+    "cells-spinner-stripes": "^10.0.0"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "cells-demo-helper": "^10.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "coronita-icons": "^10.0.0",
+    "webcomponentsjs": "^1.0.0"
+  },
+  "main": [
+    "cells-molecule-spinner.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "cells-atom-icon": "^10.0.0",
+        "polymer": "Polymer/polymer#^1.9.0",
+        "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0",
+        "cells-i18n-behavior": "^13.0.0",
+        "cells-spinner-stripes": "^10.0.0"
+      },
+      "devDependencies": {
+        "cells-sass": "^2.0.0",
+        "cells-demo-helper": "^10.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "coronita-icons": "^10.0.0",
+        "webcomponentsjs": "^0.7"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

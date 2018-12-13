@@ -1,0 +1,145 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../cells-dm-global-apis-investment-funds/cells-dm-global-apis-investment-funds.html"/>
+
+<!--
+# glomo-fund-summary-dm
+
+Data provider description.
+
+Example:
+```html
+<glomo-fund-summary-dm></glomo-fund-summary-dm>
+```
+
+It exposes `last-response`, `last-error` and `last-request` as properties that will be updated (as the case may be) once `generateRequest` is called.
+Also, It fires `response`, `error` and `request-in-progress`.
+
+@demo demo/index.html
+-->
+
+<dom-module id="glomo-fund-summary-dm">
+  <template>
+    <cells-dm-global-apis-investment-funds id="dm"
+      host="[[host]]"
+      fund="{{_fund}}"
+      investment-funds-api-version="[[investmentFundsApiVersion]]"></cells-dm-global-apis-investment-funds>
+  </template>
+</dom-module>
+<script>
+  (function() {
+    'use strict';
+
+    Polymer({
+
+      is: 'glomo-fund-summary-dm',
+
+      properties: {
+        /**
+         * Host
+         * @type {String}
+         */
+        host: String,
+        /**
+         * Product Id
+         * @type {String}
+         */
+        productId: String,
+        /**
+         * Fund
+         * @type {Object}
+         */
+        fund: {
+          type: Object,
+          computed: '_parseFundResponse(_fund)',
+          notify: true
+        },
+        /**
+         * Fund
+         * @type {Object}
+         * @private
+         */
+        _fund: Object,
+        /**
+         * More info of fund
+         */
+        moreInfo: {
+          type: Object,
+          notify: true
+        },
+        /**
+        * Investment funds API version
+        * @type {String}
+        */
+        investmentFundsApiVersion: {
+          type: String,
+          value: '0'
+        }
+      },
+
+      getProduct: function() {
+        var fundId = this.productId;
+        var investmentId;
+
+        if (/\w+\-\w+/.test(fundId)) {
+          fundId = fundId.split('-');
+          investmentId = fundId[0];
+          fundId = fundId[1];
+        }
+
+        if (investmentId) {
+          this.$.dm.getFund(investmentId, fundId, {expand: 'conditions,limits'});
+        }
+      },
+
+      _parseFundResponse: function(fund) {
+        if (!this.short) {
+          this.set('moreInfo', this._generateMoreInfo(fund));
+        }
+
+        this.fire('fund-response-success', fund);
+        return fund;
+      },
+
+      _generateMoreInfo: function(fund) {
+        var moreInfo = [
+          {
+            title: 'cells-product-more-info-general',
+            items: [
+              {
+                key: 'cells-product-more-info-product-type',
+                value: fund.alias
+              },
+              {
+                key: 'cells-product-more-info-fund-number',
+                value: fund.fundId,
+                label: true,
+                payload: fund.fundId
+              }
+            ]
+          }
+        ];
+
+        if (fund.serie) {
+          moreInfo.push(this._generateSerie(fund.serie));
+        }
+
+        return moreInfo;
+      },
+
+      /**
+       * Generate serie
+       */
+      _generateSerie: function(serie) {
+        return {
+          title: 'cells-product-more-info-conditions',
+          items: [
+            {
+              key: 'cells-product-more-info-fund-serie',
+              value: serie
+            }
+          ]
+        };
+      }
+    });
+  }());
+</script>

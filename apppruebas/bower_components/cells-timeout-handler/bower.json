@@ -1,0 +1,26 @@
+{
+  "name": "cells-timeout-handler",
+  "version": "1.2.0",
+  "description": "Time out handler sesion",
+  "keywords": [
+    "dm"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.9.0"
+  },
+  "devDependencies": {
+    "cells-demo-helper": "^1.0.0",
+    "cells-demo-dm-helper": "^0.2.9",
+    "cells-shadow-query-selector": "^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  },
+  "main": [
+    "cells-timeout-handler.html"
+  ]
+}

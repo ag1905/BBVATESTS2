@@ -1,0 +1,245 @@
+<dom-module id="cells-collapsible-list-styles"><template><style>
+:host {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  width: 95%;
+  overflow: hidden;
+  transition: all .3s ease-in-out;
+  height: 0;
+  background: var(--bbva-white, #fff);
+  will-change: top;
+  @apply --cells-collapsible-list; }
+  :host .scroll-container {
+    width: 100%;
+    overflow: hidden;
+    outline: none;
+    transition: all .3s ease-in-out;
+    @apply --cells-collapsible-list-scroll-container; }
+  :host .btn-hide {
+    display: none;
+    min-height: 0;
+    max-height: 0;
+    opacity: 0;
+    -webkit-transform: translateY(-100%);
+            transform: translateY(-100%);
+    outline: none;
+    will-change: transform;
+    @apply --cells-collapsible-list-btn-show; }
+  :host .btn-show {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    -webkit-transform: translateY(100%);
+            transform: translateY(100%);
+    transition: all .3s ease-in-out;
+    outline: none;
+    will-change: transform;
+    background: var(--bbva-white, #fff);
+    @apply --cells-collapsible-list-btn-hide; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+:host([complete]) {
+  width: 100vw;
+  @apply --cells-collapsible-list-complete; }
+  :host([complete]) .scroll-container {
+    overflow: auto;
+    @apply --cells-collapsible-list-scroll-container-complete; }
+  :host([complete]) .btn-hide {
+    display: block;
+    -webkit-animation: showButton .3s ease-in-out .3s forwards, growButton .3s ease-in-out .1s forwards;
+            animation: showButton .3s ease-in-out .3s forwards, growButton .3s ease-in-out .1s forwards;
+    @apply --cells-collapsible-list-btn-show-complete; }
+    :host([complete]) .btn-hide.with-shadow {
+      box-shadow: 0 3px 6px -2px rgba(0, 0, 0, 0.3);
+      z-index: 1; }
+
+:host([collapsed]) {
+  transition-delay: .3s;
+  opacity: .9; }
+  :host([collapsed]) .scroll-container {
+    overflow: hidden;
+    width: 100%;
+    transition-delay: .3s;
+    outline: none;
+    @apply --cells-collapsible-list-scroll-container-collapsed; }
+  :host([collapsed]) .btn-hide {
+    display: block;
+    min-height: 50px;
+    max-height: 50px;
+    -webkit-animation: hideButton .3s ease-in-out forwards;
+            animation: hideButton .3s ease-in-out forwards;
+    will-change: opacity;
+    @apply --cells-collapsible-list-btn-show-collapsed; }
+  :host([collapsed]) .btn-show {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    transition-delay: .4s;
+    z-index: 15;
+    @apply --cells-collapsible-list-btn-hide-collapsed; }
+
+:host([collapsed].fromHalf) .btn-hide {
+  display: none; }
+
+:host([is-hidden]) {
+  -webkit-transform: translate(-50%, 100%);
+          transform: translate(-50%, 100%); }
+
+@-webkit-keyframes growButton {
+  0% {
+    min-height: 0;
+    max-height: 0; }
+  50% {
+    min-height: 50px;
+    max-height: 50px; }
+  100% {
+    min-height: initial;
+    max-height: initial; } }
+
+@keyframes growButton {
+  0% {
+    min-height: 0;
+    max-height: 0; }
+  50% {
+    min-height: 50px;
+    max-height: 50px; }
+  100% {
+    min-height: initial;
+    max-height: initial; } }
+
+@-webkit-keyframes showButton {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(-100%);
+            transform: translateY(-100%); }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+            transform: translateY(0); } }
+
+@keyframes showButton {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(-100%);
+            transform: translateY(-100%); }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+            transform: translateY(0); } }
+
+@-webkit-keyframes hideButton {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+            transform: translateY(0); }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(-100%);
+            transform: translateY(-100%); } }
+
+@keyframes hideButton {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+            transform: translateY(0); }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(-100%);
+            transform: translateY(-100%); } }
+
+.cells-collapsible-list-item {
+  background-color: var(--bbva-white, #fff);
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: auto;
+  -webkit-align-items: flex-start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  padding: 25px 30px 25px 60px;
+  border-bottom: 1px solid var(--bbva-200, #E9E9E9);
+  outline: none;
+  position: relative;
+  @apply --cells-collapsible-list-item; }
+  .cells-collapsible-list-item__info {
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    padding-right: 35px;
+    outline: none;
+    @apply --cells-collapsible-list-item-info; }
+    .cells-collapsible-list-item__info > * {
+      display: block;
+      margin-bottom: 3px;
+      font-weight: 100;
+      font-size: var(--cells-text-size-14);
+      font-style: italic;
+      color: var(--bbva-500, #666);
+      outline: none;
+      @apply --cells-collapsible-list-item-info-children; }
+      .cells-collapsible-list-item__info > *.main {
+        font-weight: 400;
+        font-style: initial;
+        margin-bottom: 6px;
+        color: var(--bbva-dark-medium-blue, #1464A5);
+        position: relative;
+        @apply --cells-collapsible-list-item-info-children-main; }
+        .cells-collapsible-list-item__info > *.main:before {
+          content: '';
+          position: absolute;
+          left: -30px;
+          top: 3px;
+          display: block;
+          height: 10px;
+          width: 10px;
+          border-radius: 50%;
+          @apply --cells-collapsible-list-item-info-children-main-before; }
+          .item-primary .cells-collapsible-list-item__info > *.main:before {
+            background-color: var(--bbva-core-blue, #004481);
+            @apply --cells-collapsible-list-item-info-primary-children-main-before; }
+          .item-secondary .cells-collapsible-list-item__info > *.main:before {
+            background-color: var(--bbva-dark-teal, #02A5A5);
+            @apply --cells-collapsible-list-item-info-secondary-children-main-before; }
+      .cells-collapsible-list-item__info > *.secondary {
+        @apply --cells-collapsible-list-item-info-children-secondary; }
+      .cells-collapsible-list-item__info > *.tertiary {
+        @apply --cells-collapsible-list-item-info-children-tertiary; }
+  .cells-collapsible-list-item__icon {
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+    color: var(--bbva-dark-medium-blue, #1464A5);
+    font-size: var(--cells-text-size-12);
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    z-index: 10;
+    @apply --cells-collapsible-list-item-icon; }
+    .cells-collapsible-list-item__icon cells-atom-icon {
+      margin-bottom: 0.3125rem;
+      @apply --cells-collapsible-list-item-icon-icon; }
+    .cells-collapsible-list-item__icon span {
+      @apply --cells-collapsible-list-item-text; }
+
+</style></template></dom-module>

@@ -1,0 +1,35 @@
+{
+  "name": "cells-modal-select-amount",
+  "version": "1.0.10",
+  "description": "Modal select amount",
+  "keywords": [
+    "i18n",
+    "web-component"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "cells-st-button": "~10.0.0",
+    "cells-amount-behavior": "~10.0.0",
+    "cells-bottom-modal": "~10.0.0",
+    "cells-i18n-behavior": "9 - 10",
+    "cells-molecule-amount-input": "~1.2.0",
+    "cells-icon-message": "~10.0.0"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "cells-demo-helper": "9 - 10",
+    "coronita-icons": "9 - 10",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "cells-coronita-theme": "9 - 10"
+  },
+  "main": [
+    "cells-modal-select-amount.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^v1.0.2",
+    "cells-atom-icon": "9 - 10"
+  }
+}

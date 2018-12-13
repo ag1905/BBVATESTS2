@@ -1,0 +1,46 @@
+{
+  "name": "cells-amount-behavior",
+  "version": "10.3.2",
+  "keywords": [
+    "behavior",
+    "amount",
+    "format",
+    "decimal",
+    "currency",
+    "integer",
+    "decimal",
+    "fractional"
+  ],
+  "description": "Methods and constants to format monetary amounts",
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "chai-spies": "chaijs/chai-spies",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "main": [
+    "cells-amount-behavior.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9.0"
+      },
+      "devDependencies": {
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "chai-spies": "chaijs/chai-spies",
+        "web-component-tester": "^4.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

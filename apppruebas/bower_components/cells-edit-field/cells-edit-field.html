@@ -1,0 +1,104 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html"/>
+<link rel="import" href="../cells-st-button/cells-st-button.html"/>
+<link rel="import" href="../cells-molecule-input/cells-molecule-input.html"/>
+<link rel="import" href="cells-edit-field-styles.html"/>
+
+<!--
+# cells-edit-field
+
+> Displays an editable text input
+
+## Example
+
+**Default**:
+```html
+<cells-edit-field
+  placeholder="Alias"
+  value="My Alias">
+</cells-edit-field>
+```
+ ```
+
+## Dependencies
+
+* Poylmer
+* [cells-molecule-input](https://globaldevtools.bbva.com/bitbucket/projects/BGCM/repos/cells-molecule-input/browse)
+
+## API
+
+| NAME | Description | Type | Binding |
+|:-----|:------------|:-----|:--------|
+| placeholder | (for input) Field to be edited | String | IN |
+| value | Default input value | String | IN |
+| title | Header title (can be a key to translate) | String | IN |
+| pattern | Regular expression (*) pattern to validate input value | String | IN |
+| minLength | Min. value length | Number | IN |
+| maxLength | Max. value length | Number | IN |
+| type | Input type | String (default is "text") (**) | IN |
+
+(*) [MDN Regular Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+(**) [MDN ElementInput](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input)
+
+## Output Events
+
+| NAME | Description | Payload |
+|:-----|:------------|:--------|
+| cells-close-edit-field | Fired on closing modal | --- |
+| cells-save-edit-field Fired on saving input | value |
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-edit-field-scope      | scope description | default value  |
+| --cells-edit-field | empty mixin | {} |
+| --cells-edit-field-btn-primary | empty mixin | {} |
+| --cells-edit-field-btn-transparent | empty mixin | {} |
+| --cells-edit-field-btn-transparent-active | empty mixin | {} |
+| --cells-edit-field-info__icon-color | mixin applied to info icon color | #5bbeff |
+| --cells-edit-field-info__icon | empty mixin | {} |
+| --cells-edit-field-info__label | empty mixin | {} |
+| --cells-edit-field-molecule-input | empty mixin | {} |
+
+
+@demo demo/index.html
+-->
+<dom-module id="cells-edit-field">
+  <template>
+    <style include="cells-edit-field-styles cells-edit-field-shared-styles"></style>
+      <h1 heading>[[t(title, title)]]</h1>
+      <cells-molecule-input
+        id="input"
+        type="[[type]]"
+        label="[[t(placeholder, placeholder)]]"
+        value="{{value}}"
+        text-field-icon-size="icon-size-16"
+        icon="[[actionIcon]]"
+        auto-validate
+        allowed-value="[[pattern]]"
+        error-message="[[t(errorMessage)]]"
+        error-message-icon="[[errorIcon]]"
+        invalid="{{invalid}}"
+        max-length="[[maxLength]]"
+        min-length="[[minLength]]">
+      </cells-molecule-input>
+      <template is="dom-if" if="[[!invalid]]">
+        <div class="info">
+          <cells-atom-icon class=" icon-size-18 info__icon" icon="[[infoIcon]]"></cells-atom-icon>
+          <label class="info__label">[[t(infoMessage)]]</label>
+        </div>
+      </template>
+      <div class="buttons">
+        <cells-st-button class="primary">
+          <button on-click="save" disabled$="[[_checkFieldValue(value, invalid, defaultValue)]]">[[t('cells-edit-field-save','Save')]]</button>
+        </cells-st-button>
+        <cells-st-button class="transparent">
+          <button on-click="close">[[t('cells-edit-field-cancel','Cancel')]]</button>
+        </cells-st-button>
+      </div>
+  </template>
+  <script src="cells-edit-field.js"></script>
+</dom-module>

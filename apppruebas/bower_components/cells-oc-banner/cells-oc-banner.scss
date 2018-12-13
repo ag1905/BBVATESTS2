@@ -1,0 +1,226 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: var(--cells-oc-banner-display, block);
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  background-color: rgba(255, 255, 255, 0.6);
+  position: relative;
+  @apply --cells-oc-banner;
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.banner {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.6);
+  @apply --cells-oc-banner-banner;
+
+  .banner-content {
+    display: flex;
+    flex: 1;
+    @apply --cells-oc-banner-banner-content;
+  }
+
+  &__img {
+    display: flex;
+    width: rem(100px);
+    align-items: center;
+    justify-content: center;
+    background: var(--cells-oc-banner-background-color, #237ABA);
+    @apply --cells-oc-banner-banner-img;
+
+  }
+
+  &__info {
+    padding: 0 rem(10px);
+    flex-grow: 2;
+    @apply --cells-oc-banner-banner-info;
+
+    &__date {
+      @apply --cells-fontDefaultMediumItalic;
+      color: var(--bbva-dark-gold, #b79e5e);
+      font-size: var(--cells-text-size-12, 12px);
+      @apply --cells-oc-banner-banner-info-date;
+    }
+
+    &__description {
+      @apply --cells-fontDefaultBold;
+      font-size: var(--cells-text-size-14, 14px);
+      @apply --cells-oc-banner-banner-info-description;
+    }
+
+    &__amount__description {
+      font-size: var(--cells-text-size-14, 14px);
+      @apply --cells-oc-banner-banner-info-amount-description;
+    }
+
+    &__iwant {
+      display: block;
+      line-height: rem(32px);
+      color: var(--bbva-medium-blue, #237ABA);
+      font-size: var(--cells-text-size-14, 14px);
+      @apply --cells-oc-banner-banner-info-iwant;
+    }
+  }
+
+  &__close {
+
+    padding: rem(10px);
+    background-color: rgba(255, 255, 255, 0.6);
+    @apply --cells-oc-banner-banner-close;
+
+    .close-icon {
+      color:var(--bbva-500, #666);
+      @apply --cells-oc-banner-banner-close-icon;
+    }
+  }
+
+  &-closed {
+    height: 0;
+    overflow: hidden;
+    @apply --cells-oc-banner-banner-closed;
+  }
+}
+
+cells-atom-date {
+  display: inline;
+  color: var(--bbva-dark-gold, #b79e5e);
+  @apply --cells-oc-banner-banner-atom-date;
+}
+
+cells-atom-amount {
+  --cells-atom-amount-integer: {
+    font-size: 200px
+  }
+  @apply --cells-oc-banner-banner-atom-amount;
+}
+
+:host(.animated) {
+  .banner {
+    &-opened {
+      animation-name: displayBanner;
+      transition: all 0.4s ease;
+      animation-duration: 1.5s;
+      @apply --cells-oc-banner-banner-opened;
+  
+    }
+  
+    @keyframes displayBanner {
+      0% {
+        transform: translateX(-100%);
+      }
+  
+      100% {
+        transform: translateX(0);
+      }
+  
+    }
+  
+    &-closed {
+      transition: height 0.4s ease-out;
+      animation-duration: 1.5s;
+      height: 0;
+      overflow: hidden;
+      @apply --cells-oc-banner-banner-closed;
+    }
+  }
+}
+
+:host(.big) {
+  .banner {
+    height: auto;
+    background: var(--cells-oc-banner-background-color, #237ABA);
+    @apply --cells-oc-banner-banner-big;
+    .banner-content {
+      flex-direction: column;
+      padding: rem(30px);
+      width: 100%;
+      @apply --cells-oc-banner-banner-content-big;
+    }
+
+    &__img {
+      width: 100%;
+      
+      height: rem(130px);
+      margin-bottom: rem(20px);
+      @apply --cells-oc-banner-banner-img-big;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        @apply --cells-oc-banner-banner-img-img-big;
+      }
+    }
+    &__info {
+      color: var(--bbva-white, #fff);
+      @apply --cells-oc-banner-banner-info-big;
+      &__date {
+        color: var(--bbva-light-gold, #e6d5a4);
+        font-size: var(--cells-text-size-14, 14px);
+        @apply --cells-oc-banner-banner-info-date-big;
+      }
+      &__description {
+        font-size: var(--cells-text-size-24, 24px);
+        margin: 10px 0;
+        @apply --cells-oc-banner-banner-info-description-big;
+      }
+      &__amount__description {
+        display: block;
+        margin: 15px 0 20px;
+        font-size: var(--cells-text-size-16, 16px);
+        @apply --cells-oc-banner-banner-info-amount-description-big;
+      }
+      &__iwant {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--bbva-white, #fff);
+        background: var(--bbva-core-blue,#004481);
+        height: rem(50px);
+        width: rem(144px);
+        @apply --cells-oc-banner-banner-info-iwant-big;
+      }
+    }
+    &__close {
+      display: none;
+      @apply --cells-oc-banner-banner-close-big;
+    }
+  }
+  cells-atom-date {
+    color: var(--bbva-light-gold, #e6d5a4);
+    @apply --cells-oc-banner-banner-atom-date-big;
+  }
+  cells-atom-amount {
+    color: var(--bbva-white, #fff);
+    font-size: 42px;
+    width: 100%;
+    --cells-atom-amount-fractional: unquote("{
+      font-size: 24px;
+    }");
+    --cells-atom-amount-currency: unquote("{
+      font-size: 26px;
+    }");
+    @apply --cells-oc-banner-banner-atom-amount-big;
+  }
+}
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+button:active { @apply --cells-global-active; }

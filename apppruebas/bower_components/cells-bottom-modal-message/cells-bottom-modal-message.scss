@@ -1,0 +1,32 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  position: fixed;
+  bottom: 0;
+  @apply(--cells-bottom-modal-message);
+}
+
+.modal {
+  --cells-bottom-modal-body-padding: 30px;
+  --cells-bottom-modal-header-wrapper: unquote("{
+    min-height: 0;
+  }");
+
+  --cells-bottom-modal-full-height-body: unquote("{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  }");
+
+  --cells-bottom-modal-body: unquote("{
+    max-width: 80%;
+    font-size: 14px;
+    margin: 0 auto;
+  }");
+
+  --cells-atom-message__message--text: unquote("{
+    font-weight: 300;
+  }");
+
+  @apply(--cells-bottom-modal-message-modal);
+}

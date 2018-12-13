@@ -1,0 +1,38 @@
+<dom-module id="cells-modal-select-amount-styles"><template><style>
+:host {
+  box-sizing: border-box;
+  display: block;
+  --cells-bottom-modal-header-shadow-dragging: none;
+  --cells-bottom-modal-footer-shadow-dragging: none;
+  --cells-bottom-modal-full-height-body: { display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; padding: 48px 24px 24px; };
+  --cells-bottom-modal-footer: { box-shadow: none!important; height: auto; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; padding: 0 24px 48px; };
+  --cells-btn--extend: { display: block; };
+  @apply --cells-modal-select-amount; }
+
+cells-bottom-modal {
+  --cells-bottom-modal-full-height-body: { min-height: 200px; };
+  --cells-bottom-modal-full-height-header-wrapper: { background-color: var(--bbva-100, #f4f4f4); }; }
+
+cells-molecule-amount-input {
+  @apply --cells-modal-select-amount-input; }
+
+cells-icon-message {
+  margin: 0 0 1.875rem 0;
+  @apply --cells-modal-select-amount-message; }
+
+.btn--primary {
+  margin: auto auto 1.125rem;
+  width: 9rem;
+  @apply --cells-modal-select-amount-btn-primary; }
+
+.btn--transparent {
+  margin: 0 auto;
+  font-size: 0.8125rem;
+  color: var(--bbva-medium-blue, #237ABA);
+  @apply --cells-fontDefaultBold;
+  @apply --cells-modal-select-amount-btn-transparent; }
+  .btn--transparent:active {
+    opacity: 0.5;
+    @apply --cells-modal-select-amount-btn-transparent-active; }
+
+</style></template></dom-module>

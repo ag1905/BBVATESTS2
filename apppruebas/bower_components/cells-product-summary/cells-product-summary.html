@@ -1,0 +1,229 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-molecule-card-cover-ccds-wrapper/cells-molecule-card-cover-ccds-wrapper.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-molecule-mask/cells-molecule-mask.html">
+<link rel="import" href="../cells-key-values/cells-key-values.html">
+<link rel="import" href="../cells-key-values/cells-key-values-list-styles.html">
+<link rel="import" href="../cells-3d-horizontal-bar-chart/cells-3d-horizontal-bar-chart.html">
+<link rel="import" href="../cells-spinner-stripes/cells-spinner-stripes.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../cells-heading/cells-heading.html">
+<link rel="import" href="cells-product-summary-styles.html">
+<!--
+
+`<cells-product-summary>` displays product information with optional fields like product name, image, icon,
+masked heading and different lists of key and values (typically monetary values or other information related to the product).
+
+Check out the demo to see different configuration options.
+
+`mainItems`, `optionalItems` and `additionalItems` expects the same format as [`<cells-key-values>`](http://bbva-files.s3.amazonaws.com/cells/bbva-catalog/index.html#/elements/cells-key-values).
+
+Example:
+
+```html
+<cells-product-summary
+  heading="Product Name"
+  img-src="http://path-to/image.png"
+  main-items='[{
+    "key": "Available",
+    "value": [{
+      "amount": 30000,
+      "currencyCode": "USD"
+    }]
+  }]'>
+</cells-product-summary>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                              | Description       | Default        |
+|:---------------------------------------------|:------------------|:--------------:|
+| --general-padding | padding applied to :host | 20px |
+| --cells-fontDefault | font-family applied to :host | sans-serif |
+| --cells-product-summary-padding | padding for cells-product-summary | var(--general-padding) |
+| --cells-product-summary-border-radius | border-radius of the card | 2px |
+| --cells-product-summary-after | Mixin applied to :host::after | {} |
+| --cells-product-summary-background-color | Background color | var(--bbva-100, #F4F4F4) |
+| --cells-product-summary-card-background-color | Background color for the card | var(--bbva-white, #fff) |
+| --cells-product-summary | Mixin applied to :host | {} |
+| --cells-product-summary-loading-background-color | background applied for content-loading | var(--bbva-white, #fff) |
+| --cells-product-summary-loading | Mixin applied to content-loading | {} |
+| --cells-product-summary-bottom-summary | Mixin applied to the container of the additional items and "More info" button | {} |
+| --cells-product-summary-loading-background-color | Background color for the card | var(--bbva-white, #fff) |
+| --cells-product-summary-header | Mixin applied to the header wrapper | {} |
+| --cells-product-summary-header-img | Mixin applied to the header image | {} |
+| --cells-product-summary-header-span | Mixin applied to the header text | {} |
+| --cells-product-summary-header-icon | Mixin applied to the header icon | {} |
+| --cells-product-summary-header-mask | Mixin applied to the header mask | {} |
+| --cells-product-summary-header-mask-wrapper | Mixin applied to the header mask wrapper (See cells-molecule-mask) | {} |
+| --cells-product-summary-header-mask-separator | Mixin applied to the header mask separator (See cells-molecule-mask) | {} |
+| --cells-product-summary-more-info | Mixin applied to the "More info" button container | {} |
+| --cells-product-summary-more-info-btn | Mixin applied to the "More info" button | {} |
+| --cells-product-summary-content-progress-bar | Mixin applied to the progress bar wrapper | {} |
+| --cells-product-summary-progress-bar-left-color | Color of the left bar of the default progress bar | #1464A5 |
+| --cells-product-summary-progress-bar-right-color | Color of the right bar of the default progress bar | #F4F4F4 |
+| --cells-product-summary-progress-bar-shadow-opacity | Shadow opacity of the default progress bar | 0.8 |
+| --cells-product-summary-progress-bar-shadow-color | Shadow color of the default progress bar | #eee |
+| --cells-product-summary-content-main-items | Mixin applied to the main list of items | {} |
+| --cells-product-summary-content-main-items-not-first-child | Mixin applied to list items (`<li>`) in the main list but the first one | {} |
+| --cells-product-summary-optional-items | Mixin applied to the optional list of items (second list) | {} |
+| --cells-product-summary-optional-items-list | Mixin applied to the optional list items ul  | {} |
+| --cells-product-summary-optional-items-list-item | Mixin applied to the optional list items li  | {} |
+| --cells-product-summary-optional-items-list-item-inline | Mixin applied to the optional list items li inline | {} |
+| --cells-product-summary-optional-items-list-item-not-first-key-value | Mixin applied to the optional list items li:not first key value  | {} |
+| --cells-product-summary-optional-items-list-key-icon | Mixin applied to the optional list items li key icon  | {} |
+| --cells-product-summary-additional-items | Mixin applied to the additional list of items (third list) | {} |
+| --cells-product-summary-additional-items-list | Mixin applied to the additional list items ul  | {} |
+| --cells-product-summary-additional-items-list-item | Mixin applied to the additional list items li  | {} |
+| --cells-product-summary-additional-items-list-item-inline | Mixin applied to the additional list items li inline | {} |
+| --cells-product-summary-additional-items-list-item-not-first-key-value | Mixin applied to the additional list items li:not first key value  | {} |
+| --cells-product-summary-value-italic | Mixin applied to value items with class ".value-italic" | {} |
+| --cells-product-summary-full-width | Mixin applied to :host with class "full-width" | {} |
+| --cells-product-summary-full-width-main-optional-items | Mixin applied to the main and optional list items in "full-width" | {} |
+
+### Styling list items
+
+A sizing class for [`<cells-atom-amount>`](http://bbva-files.s3.amazonaws.com/cells/bbva-catalog/index.html#/elements/cells-atom-amount) can be set for each value in a `class` property.
+
+Example:
+```json
+"mainItems": [{
+  "localCurrency": "USD",
+  "key": "Disponible",
+  "value": [{
+    "amount": 3500000,
+    "currencyCode": "USD",
+    "class": "amount-huge",
+    "decimalsHidden": true
+  }]
+```
+
+To display a value in italics, use the class `value-italic`.
+
+
+@demo demo/index.html
+@hero cells-product-summary.png
+@composer
+@description displays product information with an optional product name, image, icon, masked heading and different lists of key and values (typically monetary values or other information related to the product).
+@type UI
+@platforms android, ios, desktop
+@family cells-catalog-distributors-family
+-->
+<dom-module id="cells-product-summary">
+  <template>
+    <!-- Import other shared styles before component styles to allow overriding -->
+    <style include="cells-key-values-list-styles cells-product-summary-styles cells-product-summary-shared-styles"></style>
+
+    <div class="content-loading">
+      <slot name="spinner">
+        <cells-spinner-stripes paused id="spinner"></cells-spinner-stripes>
+      </slot>
+    </div>
+
+    <template is="dom-if" if="[[!loading]]">
+
+      <div>
+        <slot name="header"></slot>
+      </div>
+
+      <div class="content-error" hidden$="[[!error]]">
+        <slot name="error">
+          <cells-icon-message type="[[typeError]]" icon="[[iconError]]" message="[[errorMessage]]"></cells-icon-message>
+        </slot>
+      </div>
+
+      <div hidden$="[[error]]">
+        <div class="summary-content">
+          <cells-heading level="[[headingLevel]]" class="header" id="header" hidden$="[[!heading]]">
+            <template is="dom-if" if="[[imgSrc]]">
+              <cells-molecule-card-cover-ccds-wrapper class="header__img" id="headerImg" alt="" aria-hidden="true" preload image-src="[[imgSrc]]"
+                placeholder="[[imgPlaceholder]]" width="[[imgWidth]]" height="[[imgHeight]]">
+              </cells-molecule-card-cover-ccds-wrapper>
+            </template>
+            <span class="header__text" id="headerText">[[heading]]</span>
+            <template is="dom-if" if="[[maskedHeading]]">
+              <cells-molecule-mask class="header__mask" id="headerMask" masked value="[[maskedHeading]]" mask-chars="[[maskCharsHeading]]"
+                visible-chars="[[visibleCharsHeading]]">
+              </cells-molecule-mask>
+            </template>
+            <template is="dom-if" if="[[iconCode]]">
+              <cells-atom-icon id="headerIcon" icon="[[iconCode]]" class$="header__icon icon-size-[[iconSize]]"></cells-atom-icon>
+            </template>
+          </cells-heading>
+
+          <div class="main-items">
+            <ul class="cells-key-values-list reversed">
+              <template is="dom-repeat" items="[[mainItems]]" id="mainItemsList">
+                <li>
+                  <cells-key-values class="reversed" key="[[item.key]]" value="[[item.value]]" local-currency="[[item.localCurrency]]" language="[[item.language]]"
+                    mask-chars="[[item.maskChars]]" mask-visible-chars="[[item.visibleChars]]" abbreviations="[[abbreviations]]">
+                  </cells-key-values>
+                </li>
+              </template>
+            </ul>
+          </div>
+
+          <template is="dom-if" if="[[progressValue]]">
+            <div class="progress-bar">
+              <slot name="progress-bar">
+                <cells-3d-horizontal-bar-chart id="progressBar" bar-stroke="9" chart-height="23" data-right="[[_rightProgress]]" data-left="[[progressValue]]"
+                  animated>
+                </cells-3d-horizontal-bar-chart>
+              </slot>
+            </div>
+          </template>
+
+          <template is="dom-if" if="[[optionalItems]]">
+            <div class="optional-items">
+              <ul class="cells-key-values-list inline">
+                <template is="dom-repeat" items="[[optionalItems]]" id="optionalItemsList">
+                  <li>
+                    <cells-key-values class$="[[optionalItemsAlign]]" key="[[item.key]]" value="[[item.value]]" local-currency="[[item.localCurrency]]" language="[[item.language]]"
+                      mask-chars="[[item.maskChars]]" mask-visible-chars="[[item.visibleChars]]">
+                      <cells-st-button class="link transparent" slot="after-key" hidden$="[[!item.icon]]">
+                        <button id="[[item.icon.id]]" on-tap="_optionalItemsKeyIconTapped" aria-label$="[[t(labelMoreInfo,'More Info')]]">
+                          <cells-atom-icon
+                            icon="[[item.icon.keyIcon]]"
+                            class="cells-key-values-list-key-icon">
+                          </cells-atom-icon>
+                        </button>
+                      </cells-st-button>
+                    </cells-key-values>
+                  </li>
+                </template>
+              </ul>
+            </div>
+          </template>
+
+          <div class="bottom-summary">
+            <template is="dom-if" if="[[additionalItems.length]]">
+              <div class="additional-items">
+                <ul class="cells-key-values-list inline">
+                  <template is="dom-repeat" items="[[additionalItems]]" id="additionalItemsList">
+                    <li>
+                      <cells-key-values class$="[[additionalItemsAlign]] [[item.class]]" masked="[[item.masked]]" key="[[item.key]]" value="[[item.value]]" local-currency="[[item.localCurrency]]"
+                        language="[[item.language]]" mask-chars="[[item.maskChars]]" mask-visible-chars="[[item.visibleChars]]">
+                      </cells-key-values>
+                    </li>
+                  </template>
+                </ul>
+              </div>
+            </template>
+
+            <slot name="footer"></slot>
+
+            <cells-st-button class="more-info link" hidden$="[[hideMoreInfoButton]]">
+              <button class="more-info__btn" on-click="_moreInfoClicked">[[t(labelMoreInfo,'More Info')]]</button>
+            </cells-st-button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+  </template>
+  <script src="cells-product-summary.js"></script>
+</dom-module>

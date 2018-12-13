@@ -1,0 +1,21 @@
+<script src="../cropperjs/dist/cropper.min.js"></script>
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-image-cropper-styles.html">
+
+<!--
+`cells-image-cropper`
+Polymer 1.0 element that wraps around Cropper.js
+
+@demo demo/index.html
+-->
+
+<dom-module id="cells-image-cropper">
+  <link rel="import" type="css" href="../cropperjs/dist/cropper.min.css">
+  <style include="cells-image-cropper-styles cells-image-cropper-shared-styles"></style>
+  <template>
+    <div id="wrapper">
+      <img id="image" src="[[src]]">
+    </div>
+  </template>
+  <script src="cells-image-cropper.js"></script>
+</dom-module>

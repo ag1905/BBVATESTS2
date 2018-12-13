@@ -1,0 +1,32 @@
+{
+  "name": "cells-circular-timer",
+  "version": "9.2.0",
+  "description": "Shows a countdown in the 0:00 format and a circle that changes with time.",
+  "keywords": [
+    "timer",
+    "circular",
+    "countdown"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.9.0"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "cells-theme-base": "^9.0.0",
+    "web-component-tester": "^3.0.0",
+    "paper-toast": "PolymerElements/paper-toast#^1.3.0",
+    "paper-tabs": "PolymerElements/paper-tabs#^1.7.0",
+    "iron-pages": "PolymerElements/iron-pages#^1.0.8",
+    "cells-demo-helper": "^9.0.0",
+    "cells-st-button": "^9.0.0",
+    "cells-coronita-theme": "^9.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "main": [
+    "cells-circular-timer.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  }
+}

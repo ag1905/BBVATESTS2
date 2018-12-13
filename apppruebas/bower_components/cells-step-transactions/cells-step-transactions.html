@@ -1,0 +1,70 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-transactions-list/cells-transactions-list.html">
+<link rel="import" href="../iron-collapse/iron-collapse.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-atom-message/cells-atom-message.html">
+<link rel="import" href="cells-step-transactions-styles.html">
+<!--
+Step of transactions and balance
+
+Example:
+
+```html
+<cells-step-transactions></cells-step-transactions>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-step-transactions  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-step-transactions">
+  <template>
+    <style include="cells-step-transactions-styles cells-step-transactions-shared-styles"></style>
+    <section>
+      <template is="dom-if" if="[[_checkedTransactions(transactions)]]">
+        <div class="header" on-click="_toggle">
+          <div class="header__summary">
+            <h2>[[t('cells-step-transactions-title')]]</h2>
+            <template is="dom-if" if="[[balances]]">
+              <div class="balances">
+                <span>[[t('cells-step-transactions-balances')]]</span>
+                <cells-atom-amount class="balances-amount"
+                  amount="[[balances.currentBalance.amount]]"
+                  currency-code="[[balances.currentBalance.currency]]"
+                  local-currency="[[localCurrency]]"></cells-atom-amount>
+              </div>
+            </template>
+          </div>
+          <cells-atom-icon icon="coronita:unfold" class$="icon icon-size-24 [[_checkedOpened(opened)]]"></cells-atom-icon>
+        </div>
+        <iron-collapse opened="{{opened}}">
+          <cells-transactions-list id="transactions"
+            transactions="[[transactions]]"
+            skeleton-items="[[skeletonItems]]"
+            disable-view-all
+            disable-message-empty="[[_checkedTransactions(transactions)]]"></cells-transactions-list>
+        </iron-collapse>
+    </template>
+    <template is="dom-if" if="[[error]]">
+      <cells-atom-message on-cells-atom-message-link-clicked="_refresh"
+        icon="coronita:alert" icon-size="24"
+        message="{{t('cells-step-transactions-notification-title')}}"
+        link="{{t('cells-step-transactions-notification-button')}}"></cells-atom-message>
+    </template>
+    </section>
+  </template>
+  <script src="cells-step-transactions.js"></script>
+</dom-module>

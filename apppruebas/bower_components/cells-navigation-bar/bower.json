@@ -1,0 +1,61 @@
+{
+  "name": "cells-navigation-bar",
+  "version": "10.2.1",
+  "description": "Navigation bar with optional icons.",
+  "keywords": [
+    "i18n",
+    "navigation",
+    "menu"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "cells-atom-icon": "9 - 10",
+    "cells-i18n-behavior": "9 - 10",
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "cells-coronita-theme": "9 - 10",
+    "cells-banking-theme": "9 - 10",
+    "cells-demo-helper": "9 - 10",
+    "coronita-icons": "9 - 10",
+    "cells-sass": "^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "main": [
+    "cells-navigation-bar.html"
+  ],
+  "composer": {
+    "description": "Navigation bar with optional icons",
+    "preview": "cells-navigation-bar.png",
+    "type": "UI",
+    "platforms": "android, ios, desktop",
+    "family": "cells-catalog-navigation-family"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "cells-atom-icon": "^10.0.0",
+        "cells-i18n-behavior": "^10.0.0",
+        "polymer": "Polymer/polymer#^1.9.0"
+      },
+      "devDependencies": {
+        "cells-coronita-theme": "^10.0.0",
+        "cells-banking-theme": "^10.0.0",
+        "cells-demo-helper": "^10.0.0",
+        "coronita-icons": "^10.0.0",
+        "cells-sass": "^2.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

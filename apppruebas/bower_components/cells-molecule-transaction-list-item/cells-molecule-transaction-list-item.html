@@ -1,0 +1,140 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-molecule-mask/cells-molecule-mask.html">
+<link rel="import" href="../cells-atom-date/cells-atom-date.html">
+<link rel="import" href="cells-molecule-transaction-list-item-styles.html">
+
+<!--
+`<cells-molecule-transaction-list-item>` shows an item from a list with a transaction detail.
+
+Example:
+```html
+<cells-molecule-transaction-list-item></cells-molecule-transaction-list-item>
+```
+
+__data object__:
+```json
+
+{
+  "id": "500A1114",
+  "localAmount": {
+    "amount": -80000,
+    "currency": "CLP"
+  },
+  "originAmount": {
+    "amount": -80000,
+    "currency": "CLP"
+  },
+  "moneyFlow": {
+    "id": "EXPENSE",
+    "name": "Expense"
+  },
+  "concept": "Retirada en cajero",
+  "transactionType": {
+    "id": "PURCHASE",
+    "name": "Compra"
+  },
+  "operationDate": "2016-07-16T13:33:00Z",
+  "accountedDate": "2016-07-16T13:33:00Z",
+  "financingType": {
+    "id": "NON_FINANCING",
+    "name": "Non financing"
+  },
+  "status": {
+    "id": "SETTLED",
+    "name": "Settled"
+  },
+  "contract": {
+    "id": "2001",
+    "number": "050400010100001603",
+    "numberType": {
+      "id": "LIC",
+      "name": "Local Identification Code"
+    },
+    "product": {
+      "id": "ACCOUNTS",
+      "name": "Cuentas"
+    },
+    "alias": "Cuenta corriente lcred"
+  },
+  "tags": [
+    "Banca"
+  ],
+  "additionalInformation": [
+    {
+      "key": "cells-molecule-transaction-list-item-card",
+      "value": "050400010100001603",
+      "type": "musked"
+    },
+    {
+      "key": "cells-molecule-transaction-list-item-date",
+      "value": "2016-07-16T13:33:00Z",
+      "type": "date"
+    },
+    {
+      "type": "text",
+      "value": "Compra"
+    }
+  ]
+}
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:---------------:|:---------------:| :-------------:|
+| --cells-molecule-transaction-list-item-transaction-name     | mixin for transaction name | empty  |
+| --cells-molecule-transaction-list-item-associated-product     | mixin for associated product | empty  |
+| --cells-molecule-transaction-list-item-item-active-background-color     | mixin for active background color | #F4F4F4  |
+| --cells-molecule-transaction-list-item  | empty mixin     | {}             |
+| --cells-molecule-transaction-list-item-item-active | empty mixin | {} |
+| --cells-molecule-transaction-list-item-info | empty mixin | {} |
+| --cells-molecule-transaction-list-item-balance | empty mixin | {} |
+| --cells-molecule-transaction-list-item-name | empty mixin | {} |
+| --product-description | empty mixin | {} |
+| --cells-fontDefaultLight | empty mixin | {} |
+| --cells-molecule-transaction-list-item-associated-product | empty mixin | {} |
+| --cells-fontDefaultLight | empty mixin | {} |
+| --iban | empty mixin | {} |
+| --cells-molecule-transaction-list-item | empty mixin | {} |
+
+@demo demo/index.html
+@hero cells-molecule-transaction-list-item.jpg
+-->
+<dom-module id="cells-molecule-transaction-list-item">
+  <template>
+    <style include="cells-molecule-transaction-list-item-styles cells-molecule-transaction-list-item-shared-styles"></style>
+    <div class="transaction-info">
+      <p class="transaction-name text-ellipsis">[[transaction.concept]]</p>
+      <template is="dom-if" if="[[transaction.additionalInformation]]">
+        <ul class="additional-info">
+          <template is="dom-repeat" items="[[transaction.additionalInformation]]">
+            <li class="additional-info__item">
+              <span class$="additional-info__item--label [[_checkedKey(item.key)]]">[[t(item.key)]]</span>
+              <template is="dom-if" if="[[_checkedType(item.type, 'musked')]]">
+                <cells-molecule-mask value="[[item.value]]" masked mask-chars="&bull;"></cells-molecule-mask>
+              </template>
+              <template is="dom-if" if="[[_checkedType(item.type, 'date')]]">
+                <cells-atom-date date="[[item.value]]" format="[[formatDate]]" locale="[[localeDate]]"></cells-atom-date>
+              </template>
+              <template is="dom-if" if="[[_checkedType(item.type, 'text')]]">
+                <span class="text">[[item.value]]</span>
+              </template>
+            </li>
+          </template>
+        </ul>
+      </template>
+      <div class="transaction-status">[[t(_transactionFinanceable)]]</div>
+    </div>
+    <div class="balance">
+      <cells-atom-amount class="amount-medium balance__amount"
+        amount="[[transaction.localAmount.amount]]"
+        currency-code="[[transaction.localAmount.currency]]" local-currency="[[localCurrency]]">
+      </cells-atom-amount>
+    </div>
+  </template>
+  <script src="cells-molecule-transaction-list-item.js"></script>
+</dom-module>

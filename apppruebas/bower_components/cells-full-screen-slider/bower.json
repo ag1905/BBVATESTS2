@@ -1,0 +1,35 @@
+{
+  "name": "cells-full-screen-slider",
+  "version": "4.2.1",
+  "description": "Full screen carousel of slides with image or animation, text and custom background.",
+  "keywords": [
+    "slider",
+    "carousel",
+    "animation",
+    "canvas",
+    "apng"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "iron-swipeable-pages": "fernandezpaco/iron-swipeable-pages#dcef5fd8d78e01a6907",
+    "iron-image": "PolymerElements/iron-image#^1.2.3",
+    "cells-apng-canvas": "ssh://git@globaldevtools.bbva.com:7999/bgcm/cells-apng-canvas.git#~1.0.0",
+    "cells-pagination-bullets": "ssh://git@globaldevtools.bbva.com:7999/bgcm/cells-pagination-bullets.git#~2.0.0",
+    "cells-st-button": "^10.0.7"
+  },
+  "devDependencies": {
+    "cells-atom-button": "ssh://git@globaldevtools.bbva.com:7999/ca/cells-atom-button.git#^3.0.14",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "coronita-icons": "^9.0.0",
+    "cells-glomo-theme": "ssh://git@globaldevtools.bbva.com:7999/tp/cells-glomo-theme.git#^4.0.7",
+    "paper-tabs": "PolymerElements/paper-tabs#^1.6.2",
+    "paper-styles": "PolymerElements/paper-styles#^1.1.4",
+    "cells-sass": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-sass.git#^1.0.15",
+    "cells-demo-mobile": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-demo-mobile.git#1.2.10"
+  },
+  "main": [
+    "cells-full-screen-slider.html"
+  ]
+}

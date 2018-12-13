@@ -1,0 +1,34 @@
+<dom-module id="glomo-transactions-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --glomo-transactions; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+button:active {
+  @apply --cells-global-active; }
+
+cells-transactions-list {
+  @apply --cells-glomo-transactions; }
+  cells-transactions-list:not[hidden] + cells-transactions-list {
+    padding: 0 0 2rem 0;
+    @apply --cells-glomo-transactions-transactions; }
+
+</style></template></dom-module>

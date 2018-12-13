@@ -1,0 +1,11 @@
+{
+  "cells-change-current-password": "_Current Password",
+  "cells-change-new-password": "_New password",
+  "cells-change-password-confirm": "_Confirm your password",
+  "cells-change-password-info-message": "_Your password must be 6 numbers. You can not use more than 3 numbers equal or more than 3 consecutive.",
+  "cells-change-password-no-equal-error": "_Passwords do not match",
+  "cells-mx-password-repeat-error-message": "_You can not use more than 3 equal numbers.",
+  "cells-mx-password-followed-error-message": "_You can not use more than 3 consecutive numbers.",
+  "cells-change-password-enough-characters-error-message": "_Your password must be 6 numbers",
+  "cells-change-password-save": "_Modify"
+}

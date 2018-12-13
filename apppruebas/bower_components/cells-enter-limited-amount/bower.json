@@ -1,0 +1,43 @@
+{
+  "name": "cells-enter-limited-amount",
+  "version": "4.1.11",
+  "description": "Enter amount component",
+  "keywords": [
+    "i18n",
+    "molecule",
+    "enter",
+    "amount",
+    "input",
+    "button"
+  ],
+  "dependencies": {
+    "cells-atom-amount": "~9.1.0",
+    "cells-st-button": "~10.0.0",
+    "cells-atom-icon": "~9.0.1",
+    "cells-i18n-behavior": "~9.0.1",
+    "cells-molecule-amount-input": "~1.5.0",
+    "polymer": "Polymer/polymer#^1.9.1",
+    "cells-switch": "^10.0.3"
+  },
+  "main": [
+    "cells-enter-limited-amount.html"
+  ],
+  "devDependencies": {
+    "coronita-icons": "~10.3.0",
+    "cells-demo-helper": "~9.0.0",
+    "cells-glomo-theme": "~10.1.0",
+    "cells-sass": "~2.0.0",
+    "cells-shadow-query-selector": "~1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^3.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "cells-coronita-theme": "^2.3.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^v1.0.2",
+    "cells-switch": "^10.0.3",
+    "cells-amount-behavior": "^9.0.0",
+    "cells-atom-icon": "9 - 10",
+    "iron-input": "^2.0.0"
+  }
+}

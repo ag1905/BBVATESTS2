@@ -1,0 +1,73 @@
+<script>
+  /*global CellsBehaviors*/
+  /*eslint new-cap: 0*/
+  window.CellsBehaviors = window.CellsBehaviors || {};
+  window.CellsBehaviors.CellsGlobalApisHandleRequestError = {
+
+    properties: {
+
+      apiErrorsEvents: {
+        type: Object,
+        value: {
+          403: {
+             61: 'tsec-invalid',
+             68: 'tsec-expired',
+             69: 'tsec-cancelled',
+            161: 'wrong-access-key',
+            162: 'user-blocked',
+            164: 'user-blocked-cause-retrials',
+            168: 'wrong-otp-sms'
+          }
+        }
+      }
+
+    },
+
+    /**
+     * Returns a function that executes _handleError and then executes callback function
+     */
+    _generateErrorHandler: function(callback) {
+      return function(error) {
+        this._handleError(error);
+        callback.bind(this)(error);
+      }.bind(this)
+    },
+
+    /**
+     * Returns a function that executes _handleError and then fires an event
+     */
+    _generateErrorFireEventHandler: function(eventType) {
+      return function(error) {
+        this._handleError(error);
+        this._fireErrorEvent(eventType);
+      }.bind(this)
+    },
+
+    _fireErrorEvent: function(eventType) {
+      this.dispatchEvent(new CustomEvent(eventType, {
+        bubbles: true,
+        composed: true
+      }));
+    },
+
+    _extractResponse: function(response) {
+      try {
+        return JSON.parse(response);
+      } catch (e) {
+        return null;
+      }
+    },
+
+    _handleError: function(error) {
+      if (error && error.response) {
+        var response = this._extractResponse(error.response);
+        var status = Number(response['http-status']);
+        var code = Number(response['error-code']);
+
+        if (this.apiErrorsEvents[status] && this.apiErrorsEvents[status][code]) {
+          this._fireErrorEvent(this.apiErrorsEvents[status][code]);
+        }
+      }
+    }
+  };
+</script>

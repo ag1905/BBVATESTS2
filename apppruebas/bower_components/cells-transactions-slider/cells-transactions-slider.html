@@ -1,0 +1,78 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-transactions-slider-styles.html">
+<link rel="import" href="../cells-sections-slider/cells-sections-slider.html">
+<link rel="import" href="../cells-transactions-list/cells-transactions-list.html">
+<!--
+`<cells-transactions-slider>` description.
+
+Example:
+
+```html
+<cells-transactions-slider></cells-transactions-slider>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-transactions-slider  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-transactions-slider">
+  <template>
+    <style include="cells-transactions-slider-styles cells-transactions-slider-shared-styles"></style>
+    <cells-sections-slider id="slider"
+    entry-animation="slide-from-left-animation">
+      <section>
+        <cells-transactions-list id="pendings"
+          avatar-item
+          transactions="[[pendings]]"
+          skeleton-items="[[skeletonItems]]"
+          disable-view-all
+          disable-message-empty="[[_checkedTransactions(transactions)]]"
+          image-empty-list="[[imageEmptyList]]"
+          spinner="[[spinner]]"
+          loaded="{{loadedPendings}}"
+          local-currency="[[localCurrency]]"
+          transaction-group-date-format="[[transactionGroupDateFormat]]"
+          decimals-hidden="[[decimalsHidden]]"
+          product-type="pendings"></cells-transactions-list>
+      </section>
+      <section>
+        <cells-transactions-list id="expireds"
+          avatar-item
+          transactions="[[expireds]]"
+          skeleton-items="[[skeletonItems]]"
+          disable-view-all
+          disable-message-empty="[[_checkedTransactions(transactions)]]"
+          image-empty-list="[[imageEmptyList]]"
+          spinner="[[spinner]]"
+          loaded="[[loadedExpireds]]"
+          local-currency="[[localCurrency]]"
+          transaction-group-date-format="[[transactionGroupDateFormat]]"
+          decimals-hidden="[[decimalsHidden]]"
+          product-type="expireds"></cells-transactions-list>
+      </section>
+      <section>
+        <cells-transactions-list id="rejects"
+          avatar-item
+          transactions="[[rejects]]"
+          skeleton-items="[[skeletonItems]]"
+          disable-view-all
+          disable-message-empty="[[_checkedTransactions(transactions)]]"
+          image-empty-list="[[imageEmptyList]]"
+          spinner="[[spinner]]"
+          loaded="[[loadedRejects]]"
+          local-currency="[[localCurrency]]"
+          transaction-group-date-format="[[transactionGroupDateFormat]]"
+          decimals-hidden="[[decimalsHidden]]"
+          product-type="rejects"></cells-transactions-list>
+      </section>
+    </cells-sections-slider>
+  </template>
+  <script src="cells-transactions-slider.js"></script>
+</dom-module>

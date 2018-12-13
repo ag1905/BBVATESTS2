@@ -1,0 +1,232 @@
+<link rel="import" href="cells-organism-menu-sidebar-styles.html">
+
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`cells-organism-menu-sidebar` is the component for the sidebar menu with app logo and
+links to login/logout, profile settings and contact.
+
+## Properties
+
+### user
+
+if `user` property is setted, the user is logged, then, it will show the sidebar for logged user, will show the profile user, and the footer with button loggout. So, will show the styles for user logged.
+
+So, the property `userLogged` will be setted to __true__:
+
+__Example:__
+
+```js
+var userProfile = {
+  firstName: 'María',
+  avatar: {
+    url: './user-avatar.jpg'
+  }
+}
+```
+
+```html
+<cells-organism-menu-sidebar user="[[userProfile]]">
+</cells-organism-menu-sidebar>
+```
+
+### available-sections
+
+This shows the menu of links and buttons.
+
+__Example:__
+
+```js
+var sections = [{
+  label: 'Notificaciones',
+  icon: 'coronita:alarm',
+  link: '#notifications',
+  action: 'notifications-event',
+  count: 10,
+  status: {
+    showNoLogged: true,
+    showLogged: true
+  }
+}, {
+  label: 'Asistencia',
+  icon: 'coronita:communication',
+  link: '#help',
+  status: {
+    showNoLogged: false,
+    showLogged: false
+  }
+}, {
+  label: 'Productos para mí',
+  icon: 'coronita:supermarket',
+  link: '#products',
+  count: 2,
+  status: {
+    showNoLogged: true,
+    showLogged: false
+  }
+}, {
+  label: 'Ajustes',
+  icon: 'coronita:settings',
+  action: 'settings-event',
+  status: {
+    showNoLogged: false,
+    showLogged: true
+  }
+}]
+```
+
+```html
+<cells-organism-menu-sidebar user="[[userProfile]]" available-sections="[[sections]]">
+</cells-organism-menu-sidebar>
+```
+
+When a menu link is clicked, the link fire an event, this event is the action of link.
+
+__example__
+
+```js
+document.addEventListener('notifications-event', function() {
+  // Listen event to click in link Notificaciones
+})
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:---------------:|:---------------:| :-------------:|
+| --general-dimension-avatar | general dimesion for avatar | rem(80px) |
+| --cells-fontDefault | font-family for host | sans-serif |
+| --cells-organism-menu-sidebar-color | color applied to host | var(--bbva-white, #fff) |
+| --cells-organism-menu-sidebar-bg | background applied to host | #062146 url("http://bbva-files.s3.amazonaws.com/cells/assets/glomo/images/access/fractal-bbva-navy.svg") bottom left no-repeat |
+| --cells-organism-menu-sidebar | mixin applied to host | {} |
+| --cells-organism-menu-sidebar-user-logged-bg | background for :host([user-logged]) | url("http://bbva-files.s3.amazonaws.com/cells/assets/glomo/images/access/fractal-bbva-core-blue.svg") bottom left no-repeat |
+| --cells-organism-menu-sidebar-user-logged | mixin applied to :host([user-logged]) | {} |
+| --cells-organism-menu-sidebar-before-bg-color | color for :host:before | var(--bbva-navy, #072146) |
+| --cells-organism-menu-sidebar-before | mixin applied to :host:before | {} |
+| --cells-organism-menu-sidebar-user | mixin applied to .user | {} |
+| --cells-organism-menu-sidebar-user-avatar | mixin applied to .user__avatar | {} |
+| --cells-organism-menu-sidebar-user-info-color | value for --cells-st-button-text-color-transparent | var(--bbva-white, #fff) |
+| --cells-organism-menu-sidebar-user-info-hover | value for --cells-st-button-text-color-transparent-hover | var(--bbva-white, #fff) |
+| --cells-organism-menu-sidebar-user-info-active | value for --cells-st-button-text-color-transparent-hover-active | var(--bbva-white, #fff) |
+| --cells-organism-menu-sidebar-user-info | mixin applied to .user__info | {} |
+| --cells-organism-menu-sidebar-user-info-name | mixin applied to .user__info-name | {} |
+| --cells-organism-menu-sidebar-user-info-profile | mixin applied to .user__info-profile | {} |
+| --cells-organism-menu-sidebar-user-info-button | mixin applied to .user__info-button | {} |
+| --cells-organism-menu-sidebar-nav-list | mixin applied to .nav-list | {} |
+| --cells-organism-menu-sidebar-nav-list-animate-sidebar | mixin applied to :host([animate-sidebar-items]) | {} |
+| --cells-organism-menu-sidebar-nav-list-user-logged | mixin applied to :host([user-logged]) | {} |
+| --cells-organism-menu-sidebar-nav-list-user-logged-li | mixin applied to .nav-list-li | {} |
+| --cells-organism-menu-sidebar-link-item-color | color for .link-item | inherit |
+| --cells-organism-menu-sidebar-link-item-bg | background for .link-item | transparent |
+| --cells-organism-menu-sidebar-link-item | mixin for .link-item | {} |
+| --cells-organism-menu-sidebar-link-item-disabled | mixin for .link-item disabled | {} |
+| --cells-organism-menu-sidebar-link-item-icon | mixin for .link-item-icon | {} |
+| --cells-organism-menu-sidebar-link-item-text | mixin for .link-item-text | {} |
+| --cells-organism-menu-sidebar-link-item-count-bg-color| background for .link-item-count | var(--bbva-red, #DA3851) |
+| --cells-organism-menu-sidebar-link-item-count | mixin for .link-item-count | {} |
+| --cells-organism-menu-sidebar-link-item-count-icon | mixin for .link-item-count iron-icon | {} |
+| --cells-organism-menu-sidebar-link-item-count-icon-color | Color for .link-item-count iron-icon | var(--bbva-navy, #072146) |
+| --cells-organism-menu-sidebar-link-item-count | mixin for .link-item-count | {} |
+| --cells-organism-menu-sidebar-footer | mixin for .footer | {} |
+
+@demo demo/index.html
+@hero cells-organism-menu-sidebar.png
+@composer
+@description is the component for the sidebar menu with app logo and links to login/logout, profile settings and contact.
+@type UI
+@platforms android, ios, desktop
+@family cells-catalog-navigation-family
+-->
+<dom-module id="cells-organism-menu-sidebar">
+  <template>
+    <style include="cells-organism-menu-sidebar-styles cells-organism-menu-sidebar-shared-styles"></style>
+
+    <div class$="user [[_checkedHideAvatart(hideAvatar)]] [[_checkedReminded(userLogged, userReminded)]]"
+      hidden$="[[!userReminded]]">
+      <img class="user__avatar"
+        aria-hidden="true"
+        src$="[[_avatarUrl]]"
+        height$="[[avatarSize]]"
+        width$="[[avatarSize]]"
+        on-error="_avatarUrlError"
+        hidden$="[[hideAvatar]]"
+        alt$="[[user.firstName]]">
+
+      <div class="user__info">
+
+        <template is="dom-if" if="[[disableProfileLink]]">
+          <span class="user__info-name text-ellipsis">[[user.firstName]]</span>
+        </template>
+
+        <template is="dom-if" if="[[!disableProfileLink]]">
+          <cells-st-button class="transparent user-profile">
+            <button class="user__info-button" on-tap="_profile">
+              <span class="user__info-name text-ellipsis">[[user.firstName]]</span>
+              <span class="user__info-profile">[[t('cells-organism-menu-sidebar-profile-settings', 'Profile')]]</span>
+            </button>
+          </cells-st-button>
+        </template>
+      </div>
+    </div>
+
+    <ul class="nav-list">
+      <template is="dom-repeat" items="[[availableSections]]">
+        <li class="nav-list-li">
+
+          <template is="dom-if" if="[[_linkIsButton(item)]]">
+            <button class="link-item" on-tap="_linkClicked" disabled$="[[_checkButtonDisabled(item,userLogged)]]">
+                <span class="link-item-icon">
+                  <template is="dom-if" if="[[item.count]]">
+                    <span class="link-item-count">[[item.count]] <iron-icon icon="[[item.icon]]" style$="width: [[sectionIconSize]]px; height: [[sectionIconSize]]px;" aria-hidden="true">
+                  </iron-icon></span>
+                  </template>
+                  <template is="dom-if" if="[[!item.count]]">
+                    <iron-icon icon="[[item.icon]]" style$="width: [[sectionIconSize]]px; height: [[sectionIconSize]]px;" aria-hidden="true">
+                  </iron-icon>
+                  </template>
+                </span>
+                <span class="link-item-text">[[t(item.label)]]</span>
+              </button>
+          </template>
+
+          <template is="dom-if" if="[[!_linkIsButton(item)]]">
+            <a href$="[[item.link]]" class$="link-item [[_checkLinkDisabled(item,userLogged)]]" tabindex$="[[_checktabIndex(item,userLogged)]]" on-tap="_linkClicked">
+              <span class="link-item-icon">
+                <template is="dom-if" if="[[item.count]]">
+                  <span class="link-item-count">[[item.count]] <iron-icon icon="[[item.icon]]" style$="width: [[sectionIconSize]]px; height: [[sectionIconSize]]px;" aria-hidden="true">
+                </iron-icon></span>
+                </template>
+                <template is="dom-if" if="[[!item.count]]">
+                  <iron-icon icon="[[item.icon]]" style$="width: [[sectionIconSize]]px; height: [[sectionIconSize]]px;" aria-hidden="true">
+                </iron-icon>
+                </template>
+              </span>
+              <span class="link-item-text">[[t(item.label)]]</span>
+            </a>
+          </template>
+
+        </li>
+      </template>
+    </ul>
+
+    <div class="footer" hidden$="[[!userLogged]]">
+      <button id="btnLogout" on-tap="doLogout" class="link-item">
+          <span class="link-item-icon">
+            <iron-icon icon="[[iconLogoutId]]" style$="width: [[sectionIconSize]]px; height: [[sectionIconSize]]px;" aria-hidden="true"></iron-icon>
+          </span>
+          <span class="link-item-text">[[t('cells-organism-menu-sidebar-dialog-logout', 'Logout')]]</span>
+      </button>
+    </div>
+
+  </template>
+  <script src="cells-organism-menu-sidebar.js"></script>
+</dom-module>

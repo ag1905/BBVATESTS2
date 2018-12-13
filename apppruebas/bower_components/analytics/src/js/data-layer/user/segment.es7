@@ -1,0 +1,44 @@
+/**
+ * Recoge la información del perfil del usuario.
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer.user
+ * @class     bgdmjs.analytics.dataLayer.user.Segment
+ */
+export default class BgdmjsAnalyticsDataLayerUserSegment
+{
+    /**
+     * Perfil del cliente para la parte privada.
+     * Esta variable se formará por la concatenación del código del país y
+     * del código que identifique el segmento o tipo de cliente (ej: 001002).
+     *
+     * Los códigos de cada país son:
+     *
+     * - Argentina : 005
+     * - Bancomer  : 003
+     * - Chile     : 008
+     * - Colombia  : 004
+     * - Compass   : 006
+     * - España    : 724
+     * - Perú      : 001
+     * - Venezuela : 007
+     *
+     * @property global
+     * @type     {string}
+     */
+    global  = '';
+    /**
+     * Cuando un cliente realiza un proceso, éste puede ser
+     * clasificado como un tipo específico de cliente.
+     *
+     * Se trata de una tipología en la que se clasifica al
+     * cliente en relación con un proceso/producto concreto.
+     *
+     * Esta clasificación del cliente en relación con un
+     * producto específico se recoge en esta variable.
+     *
+     * @property profile
+     * @type     {string}
+     */
+    profile = '';
+};

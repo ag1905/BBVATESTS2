@@ -1,0 +1,18 @@
+{
+  "cells-transactions-list-title": "Transactions",
+  "cells-transactions-list-empty": "There are no transactions to display.",
+  "cells-transactions-list-empty-product-account": "There are no transactions to display for this account.",
+  "cells-transactions-list-empty-product-card": "There are no transactions to display for this card.",
+  "cells-transactions-list-search": "Search Transaction...",
+  "cells-transactions-list-error-initial-load": "Unable to load your transactions. Try again.",
+  "cells-transactions-list-error-load-more": "Unable to load more transactions. Try again.",
+  "cells-transactions-list-last-transactions": "Last transactions",
+  "cells-transactions-list-view-all": "View all",
+  "cells-transactions-list-no-transactions": "There are no movements",
+  "cells-transactions-list-pending-transactions": "Pending movements",
+  "cells-transactions-list-settled-transactions": "Settled movements",
+  "cells-transactions-list-empty-product-pendings": "__No tienes retiros pendientes de cobro__",
+  "cells-transactions-list-empty-product-settleds": "__No tienes retiros vencidos__",
+  "cells-transactions-list-empty-product-rejects": "__No tienes retiros cancelados__",
+  "cells-transactions-list-new-operation": "__Enviar Efectivo móvil__"
+}

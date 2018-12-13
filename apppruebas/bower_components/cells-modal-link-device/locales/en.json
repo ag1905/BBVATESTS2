@@ -1,0 +1,12 @@
+{
+  "cells-modal-link-device-info-link-phone": "Vincular celular",
+  "cells-modal-link-device-info-unlink-phone": "Desvincular celular",
+  "cells-modal-link-device-info-message-link": "Al vincular, podrás utilizar tu número de celular como número de cuenta para recibir transferencias.",
+  "cells-modal-link-device-info-message-unlink": "Al oprimir <strong>'Desvincular'</strong>, tu número de celular ya no estará asociado a tu cuenta <b>'${originName}'.</b>",
+  "cells-modal-link-device-accept": "Acepto",
+  "cells-modal-link-device-term-conditions": "Términos y condiciones",
+  "cells-modal-link-device-link": "Vincular",
+  "cells-modal-link-device-unlink": "Desvincular",
+  "cells-modal-link-device-cancel": "Cancelar",
+  "cells-modal-link-device-image": "Imagen vincular/desvincular dispositivo"
+}

@@ -1,0 +1,241 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+	font-family: var(--cells-fontDefault);
+	@apply(--cells-glomo-bill-payment-service-detail);
+}
+
+.reference-number {
+	font-size: var(--cells-glomo-bill-payment-service-detail-reference-number-font-size, var(--cells-text-size-14));
+	margin: 0 3.75rem rem(30px) 5.6rem;
+	color: var(--cells-glomo-bill-payment-service-detail-reference-number-color, var(--bbva-500));
+	@apply(--cells-glomo-bill-payment-service-detail-reference-number);
+}
+
+.amount-wrapper {
+	position: relative;
+
+	& > cells-atom-icon {
+		position: absolute;
+		top: 50%;
+		right: 0;
+		margin: -12px 1.5rem 0 0;
+		color: var(--cells-glomo-bill-payment-service-detail-cells-molecule-amount-input-icon-color, var(--bbva-300));
+		z-index: 8;
+		cursor: pointer;
+		@apply(--cells-glomo-bill-payment-service-detail-amount-wrapper-icon);
+	}
+
+	@apply(--cells-glomo-bill-payment-service-detail-amount-wrapper);
+}
+
+.separator {
+	width: 40px;
+  height: 1px;
+  margin: 0 auto rem(30px) 5.6rem;
+  background-color: #e9e9e9;
+  @apply(--cells-glomo-bill-payment-service-detail-separator);
+}
+
+.amount-label {
+	font-size: var(--cells-glomo-bill-payment-service-detail-amount-label-font-size, var(--cells-text-size-14));
+	margin: 0 3.75rem rem(10px) 5.6rem;
+	color: var(--cells-glomo-bill-payment-service-detail-amount-label-color, var(--bbva-500));
+	@apply(--cells-glomo-bill-payment-service-detail-amount-label);
+}
+
+.amount {
+	display: block;
+	font-size: var(--cells-glomo-bill-payment-service-detail-amount-font-size, 1rem);
+	margin: 0 3.75rem 0 5.6rem;
+	color: var(--cells-glomo-bill-payment-service-detail-amount-color, var(--bbva-500));
+	@apply(--cells-glomo-bill-payment-service-detail-amount);
+
+	cells-atom-amount {
+		font-size: var(--cells-glomo-bill-payment-service-detail-amount-number-font-size, 3rem);
+		color: var(--cells-glomo-bill-payment-service-detail-amount-number-color, var(--bbva-core-blue));
+	}
+}
+
+.date {
+	align-items: baseline;
+	color: var(--cells-glomo-bill-payment-service-detail-date-color, var(--bbva-500));
+	display: flex;
+	font-size: var(--cells-glomo-bill-payment-service-detail-date-font-size, var(--cells-text-size-14));
+	margin: rem(10px) 3.75rem 0 5.6rem;
+	width: 100%;
+	@apply(--cells-glomo-bill-payment-service-detail-date);
+}
+cells-atom-date {
+	font-style: italic;
+	font-weight: 500;
+	margin-left: 5px;
+	--cells-atom-date-color: var(--bbva-dark-gold, #b79e5e);
+	@apply(--cells-glomo-bill-payment-service-detail-atom-date);
+}
+
+cells-molecule-amount-input {
+	padding: .16rem 0;
+	color: var(--cells-glomo-bill-payment-service-detail-amount-color, var(--bbva-500));
+
+	--cells-molecule-amount-input-input-color: var(--cells-glomo-bill-payment-service-detail-amount-color, var(--bbva-500));
+	--cells-molecule-amount-input-icon: unquote("{
+		top: .16rem;
+		right: 2.5rem;
+		width: 3.125rem;
+		height: 3.125rem;
+		color: var(--cells-glomo-bill-payment-service-detail-cells-molecule-amount-input-icon-color, var(--bbva-300));
+	}");
+	@apply(--cells-glomo-bill-payment-service-detail-cells-molecule-amount-input);
+}
+
+cells-molecule-icons-input, .amount-wrapper {
+	width: auto;
+	margin: rem(12px) rem(32px);
+	@apply(--cells-glomo-bill-payment-service-detail-cells-molecule-amount-inputs);
+}
+
+cells-molecule-icons-input {
+	color: var(--cells-glomo-bill-payment-service-detail-cells-molecule-amount-input-icon-color, var(--bbva-300));
+	--cells-molecule-icons-input-secondary-input: unquote("{
+		border:none;
+		background:none;
+	}");
+	--cells-molecule-icons-input-third-icon-secondary-input: unquote("{
+		width: 80%;
+	}");
+	@apply(--cells-glomo-bill-payment-service-detail-cells-molecule-amount-input-icon);
+}
+
+cells-avatar-item {
+	margin: rem(12px) rem(32px) rem(8px) rem(32px);
+	--cells-avatar-item-list-secondary: unquote("{
+		font-style: italic;
+	}");
+	--cells-avatar-item-list-info: unquote("{
+		font-size: rem(14px);
+		font-weight: 300;
+		color: #fff;
+	}");
+}
+cells-bottom-modal {
+	height: 100%;
+	.imageInfo {
+		display: flex;
+		justify-content: center;
+	}
+	.textInfo {
+		display: block;
+		text-align: center;
+		margin: rem(30px) rem(20px);
+		background: var(--bbva-white-light-blue);
+		padding: rem(30px) rem(20px);
+		color: var(--bbva-light-blue);
+
+		p {
+			color: var(--bbva-600);
+			font-size: var(--cells-text-size-14);
+		}
+	}
+
+	--cells-bottom-modal-footer: unquote("{
+		justify-content: center;
+		box-shadow: none;
+	}");
+
+}
+
+.anotherAmount {
+	height: 0;
+	margin: 0 3rem;
+	overflow: hidden;
+	transition: all .35s;
+
+	&.collapsed{
+		height: 60px;
+	}
+
+	cells-molecule-amount-input {
+		margin: 0;
+		--cells-molecule-amount-input-icon: unquote("{
+			top: .16rem;
+			right: 0;
+			width: 3.125rem;
+			height: 3.125rem;
+			color: var(--cells-glomo-bill-payment-service-detail-cells-molecule-amount-input-icon-color, var(--bbva-300));
+		}");
+	};
+
+	@apply(--cells-glomo-bill-payment-service-detail-another-amount);
+}
+
+.alias {
+	height: 70px;
+	overflow: hidden;
+	transition: all 1s;
+	cells-molecule-icons-input {
+		width: rem(240px);
+	}
+	&--hidden {
+		height: 0;
+	}
+}
+
+.cells-glomo-bill-payment-service-detail__select-amount-area {
+		margin: var(--cells-glomo-bill-payment-service-detail-select-amount-area-margin, 2.5rem 3.375rem);
+	--cells-atom-radio-button-checked-color: unquote(var(--bbva-medium-blue));
+	--cells-atom-radio-button-before: unquote("{
+		background: var(--bbva-100);
+		}");
+
+	--cells-atom-radio-button-radio: unquote("{
+		margin: 1.25rem 0;
+		padding-left: 3rem;
+	}");
+
+	--cells-text-size-m: unquote("{
+		font-size: 0.875rem;
+	}");
+
+	--cells-atom-amount: unquote("{
+		font-weight: 700;
+	}");
+	@apply(--cells-glomo-bill-payment-service-detail-select-amount-area);
+}
+
+.cells-glomo-bill-payment-service-detail {
+	&__service-heading {
+		margin: var(--cells-glomo-bill-payment-service-detail-service-heading-margin, 0);
+		position: relative;
+		@apply(--cells-glomo-bill-payment-service-detail-service-heading);
+	}
+	&__save-service {
+		margin: rem(38px) auto rem(48px) 5rem;
+		@apply(--cells-glomo-bill-payment-service-detail-save-service);
+	}
+	&__button-area {
+		margin: rem(24px) auto 0 auto;
+		width: var(--cells-glomo-bill-payment-service-detail-button-area-width, rem(240px));
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		@apply(--cells-glomo-bill-payment-service-detail-button-area);
+		button {
+			margin: var(--cells-glomo-bill-payment-service-detail-button-area-button-margin, 0 0 rem(12px) 0);
+			text-transform: none;
+			@apply(--cells-glomo-bill-payment-service-detail-button);
+		}
+	}
+}
+
+cells-atom-radio-button[hidden] {
+	display:none;
+}
+
+.inline {
+	display: flex;
+	align-items: center;
+
+	span {margin: 0 1rem 0 0;}
+}

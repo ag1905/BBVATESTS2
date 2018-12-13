@@ -1,0 +1,49 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+
+    --cells-product-summary-header-icon: unquote("{
+      padding-bottom: 0px;
+    }");
+
+    --cells-product-summary-bottom-summary: unquote("{
+      flex-direction: column;
+    }");
+
+    --cells-product-summary: unquote("{
+      padding: 0;
+      min-height: 237px;
+    }");
+
+    --cells-product-summary-header: unquote("{
+      margin-top: 50px;
+    }");
+
+    --cells-product-summary-more-info: unquote("{
+      margin-top: 0;
+    }");
+
+    .footer {
+      margin: 20px 10px 0 10px;
+      @apply(--cells-product-summary-account-footer);
+      .inline {
+        display: inline-block;
+        width: 100%;
+        font-size: var(--cells-text-size-14, .875rem);
+        @apply(--cells-product-summary-account-footer-inline);
+        .key {
+          color: var(--bbva-500, #666666);
+          float: left;
+          @apply(--cells-product-summary-account-footer-inline-key);
+        }
+        .value-container {
+          color: var(--bbva-600, #121212);
+          font-style: italic;
+          float: right;
+          @apply(--cells-product-summary-account-footer-inline-value-container);
+        }
+      }
+   }
+
+    @apply(--cells-product-summary-account);
+}

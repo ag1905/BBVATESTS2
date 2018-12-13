@@ -1,0 +1,80 @@
+<dom-module id="cells-molecule-group-transactions-list-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  background-color: var(--cells-molecule-group-transactions-list-background, #fff);
+  text-align: left;
+  overflow-x: hidden;
+  --molecule-group-transactions-separation-size: 1.875rem;
+  @apply (--cells-molecule-group-transactions-list); }
+
+.transaction-group {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  @apply (--cells-molecule-group-transactions-list-group); }
+
+.transaction-group__container {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-bottom: 0.1875rem;
+  @apply (--cells-molecule-group-transactions-list-group-container); }
+
+.transaction-group__date {
+  padding: 1.5rem 1.75rem 0;
+  z-index: 1;
+  font-size: 0.75rem;
+  color: var(--cells-molecule-group-transactions-list-date, #d8be75);
+  @apply (--cells-fontDefaultMediumItalic);
+  @apply (--cells-molecule-group-transactions-list-group-date); }
+
+.transaction-group__link {
+  padding: 1.5rem 0.5rem 0;
+  @apply (--cells-molecule-group-transactions-list-group-link); }
+
+.transaction-group__date--year {
+  text-align: center;
+  font-size: 1.25rem;
+  background: #F5F5F5;
+  padding: 5px;
+  margin: 20px 0 -10px;
+  font-style: normal;
+  font-weight: normal;
+  box-shadow: 0 2px 0 0 #D3D3D3;
+  border-radius: 2px;
+  @apply (--cells-molecule-group-transactions-list-group-year); }
+
+.transaction-list {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+          flex-direction: column; }
+  .transaction-list ::content > * {
+    -webkit-flex: 1;
+            flex: 1;
+    padding: 0;
+    @apply (--cells-molecule-group-transactions-list-item); }
+    .transaction-list ::content > *:nth-last-child(2) {
+      margin-bottom: 0;
+      @apply (--cells-molecule-group-transactions-list-item-last); }
+    .transaction-list ::content > *:not(:first-child) {
+      @apply (--cells-molecule-group-transactions-list-item-not-first); }
+
+</style></template></dom-module>

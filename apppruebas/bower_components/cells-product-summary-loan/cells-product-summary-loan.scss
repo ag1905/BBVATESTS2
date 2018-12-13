@@ -1,0 +1,68 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  @apply --cells-product-summary-loan;
+}
+
+.footer {
+  margin: rem(30px) 0 0;
+  @apply --cells-product-summary-loan-footer;
+}
+
+cells-product-summary {
+  --cells-product-summary-bottom-summary: unquote('{
+    flex-direction: column;
+  }');
+
+  @apply --cells-product-summary-loan-product-summary;
+}
+
+.fees {
+  padding: rem(30px) 0 0 0;
+  border-top: 1px solid var(--bbva-200,#e9e9e9);
+  font-size: rem(14px);
+  @apply --cells-product-summary-loan-product-fees;
+
+  &__header {
+    margin: 0 0 1.25rem 0;
+    @apply --cells-product-summary-loan-product-fees-header;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 rem(10px) 0;
+    &.installment {
+      padding-top: rem(30px);
+    }
+    @apply --cells-product-summary-loan-product-fees-row;
+  }
+
+  cells-atom-amount {
+    font-weight: bold;
+    @apply --cells-product-summary-loan-product-amount;
+  }
+}
+
+.title {
+  text-transform: uppercase;
+  font-weight: bold;
+
+  &--secondary {
+    font-style: italic;
+    @apply --cells-product-summary-loan-product-title-secondary;
+  }
+
+  @apply --cells-product-summary-loan-product-title;
+}
+
+.desc {
+  color: var(--cells-product-summary-loan-product-desc-color, var(--bbva-500, #666666));
+  @apply --cells-product-summary-loan-product-desc;
+}
+
+.date {
+  font-style: italic;
+  color: var(--cells-product-summary-loan-product-date-color, var(--bbva-dark-gold, #b79e5e));
+  @apply --cells-product-summary-loan-product-date;
+}

@@ -1,0 +1,56 @@
+<dom-module id="glomo-about-info-styles"><template><style>
+:host {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --glomo-about-info; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+.about-info__header {
+  margin: 2.5rem 0 1.875rem 0;
+  max-width: 5rem; }
+
+.about-info__content {
+  width: 100%;
+  text-align: center; }
+  .about-info__content--list {
+    list-style: none;
+    padding: 0;
+    margin: 0; }
+    .about-info__content--list li {
+      margin-bottom: 1.25rem; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+button:active {
+  @apply --cells-global-active; }
+
+</style></template></dom-module>

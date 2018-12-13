@@ -1,0 +1,76 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-avatar-item-styles.html">
+<link rel="import" href="../cells-contact-avatar/cells-contact-avatar.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+
+<!--
+`<cells-avatar-item>` Displays an icon and up to 3 different info values next to it
+
+Example:
+
+```html
+<cells-avatar-item
+  main="main"
+  secondary="secondary"
+  info="info"
+  avatar="assets/avatar.png">
+</cells-avatar-item>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                          | Description       | Default        |
+|:-----------------------------------------|:------------------|:--------------:|
+| --cells-avatar-item-scope                | scope description | default value  |
+| --cells-avatar-item                      | empty mixin       | {}             |
+| --cells-avatar-picture                   | empty mixin       | {}             |
+| --cells-avatar-item-list                 | empty mixin       | {}             |
+| --cells-avatar-item-list-title           | empty mixin       | {}             |
+| --cells-avatar-item-list-secondary       | empty mixin       | {}             |
+| --cells-avatar-item-list-secondary-extra | empty mixin       | {}             |
+| --cells-avatar-item-list-info            | empty mixin       | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-avatar-item">
+  <template>
+    <style include="cells-avatar-item-styles cells-avatar-item-shared-styles"></style>
+
+    <div class="cells-avatar-item-content">
+      <div class="cells-avatar-item-picture">
+        <cells-contact-avatar
+          src="[[avatar]]"
+          alt="[[main]]">
+        </cells-contact-avatar>
+      </div>
+  
+      <div class="cells-avatar-item-list">
+        <template is="dom-if" if={{main}}>
+          <p class$="cells-avatar-item-list__main [[_classSubTitle]]">[[main]]</p>
+        </template>
+        <template is="dom-if" if={{secondary}}>
+          <p class="cells-avatar-item-list__secondary">[[secondary]]</p>
+        </template>
+        <template is="dom-if" if={{tertiary}}>
+          <p class="cells-avatar-item-list__secondary-extra">[[tertiary]]</p>
+        </template>
+        <template is="dom-if" if={{info}}>
+          <p class="cells-avatar-item-list__info">[[info]]</p>
+        </template>
+      </div>
+    </div>
+
+    <template is="dom-if" if="[[amount]]">
+      <div class="cells-avatar-item-amount">
+        <cells-atom-amount class="amount-medium balance__amount"
+        amount="[[amount.amount]]"
+        currency-code="[[amount.currency]]"
+        decimals-hidden="[[decimalsHidden]]"
+        local-currency="[[localCurrency]]"></cells-atom-amount>
+      </div>
+    </template>
+  </template>
+  <script src="cells-avatar-item.js"></script>
+</dom-module>

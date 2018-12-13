@@ -1,0 +1,31 @@
+{
+  "name": "cells-product-summary-fund",
+  "version": "1.3.5",
+  "description": "Wraps fund type product detail",
+  "keywords": [
+    "product",
+    "summary",
+    "fund"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "cells-product-summary": "~9.0.0",
+    "cells-i18n-behavior": "~9.0.0",
+    "polymer": "Polymer/polymer#^1.6.0",
+    "moment": "^2.12.0"
+  },
+  "devDependencies": {
+    "cells-demo-helper": "~9.0.0",
+    "cells-glomo-theme": "~5.4.0",
+    "cells-sass": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-sass.git#^1.0.15",
+    "coronita-icons": "ssh://git@globaldevtools.bbva.com:7999/ct/coronita-icons.git#^1.1.3",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0"
+  },
+  "main": [
+    "cells-product-summary-fund.html"
+  ],
+  "resolutions": {
+    "cells-atom-icon": "^9.0.0"
+  }
+}

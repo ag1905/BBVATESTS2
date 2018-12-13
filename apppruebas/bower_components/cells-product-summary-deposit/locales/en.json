@@ -1,0 +1,12 @@
+{
+  "cells-organism-product-summary-days-label":"days",
+  "cells-organism-product-summary-day-label":"day",
+  "cells-organism-product-summary-deposit-currentBalances":"Balance",
+  "cells-organism-product-summary-deposit-maturityDate":"Maturity Date",
+  "cells-organism-product-summary-deposit-totalContributions":"Total Contributions",
+  "cells-organism-product-summary-deposit-initialAmount":"Initial Amount",
+  "cells-organism-product-summary-deposit-termNumber":"Term",
+  "cells-organism-product-summary-deposit-annualYieldRate":"Annual Yield Rate",
+  "cells-organism-product-summary-deposit-preTaxGat":"Pre Tax GAT",
+  "cells-product-summary-more-info-deposit": "Investment detail"
+}

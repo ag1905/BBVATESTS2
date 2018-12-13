@@ -1,0 +1,42 @@
+<!--
+1. typography:
+  - font-face
+  - font-family
+  - text-size
+
+2. vars:
+  - color
+  - layout: grid-gutter, paddings, margins, heights
+
+3. mixins:
+  - text-styles: font weights and styles (bold, italic, etc.) and styles for headings, paragraphs, dates...
+  - buttons
+  - boxes
+  - utils: reusable mixins
+
+4. components:
+  - vars and mixins applied to specific components that contain the component name as prefix
+
+5. shared:
+  - styles imported by components (one dom-module by component)
+  - common reusable styles (eg: full-height-page)
+-->
+
+<!-- typography -->
+<link rel="import" href="cells-glomo-theme-font-face.html">
+<link rel="import" href="cells-glomo-theme-font-family.html">
+<link rel="import" href="cells-glomo-theme-text-size.html">
+
+<!-- vars -->
+<link rel="import" href="cells-glomo-theme-color.html">
+<link rel="import" href="cells-glomo-theme-layout.html">
+
+<!-- mixins -->
+<link rel="import" href="cells-glomo-theme-utils.html">
+<link rel="import" href="cells-glomo-theme-text-styles.html">
+<link rel="import" href="cells-glomo-theme-buttons.html">
+<link rel="import" href="cells-glomo-theme-boxes.html">
+<link rel="import" href="cells-glomo-theme-components.html">
+
+<!-- style modules -->
+<link rel="import" href="cells-glomo-theme-shared.html">

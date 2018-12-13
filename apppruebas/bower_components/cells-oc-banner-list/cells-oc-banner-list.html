@@ -1,0 +1,65 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-oc-banner/cells-oc-banner.html">
+<link rel="import" href="cells-oc-banner-list-styles.html">
+
+<!--
+`<cells-oc-banner-list>` show a list of banners with the campaigns info.
+
+Example:
+
+```html
+<cells-oc-banner-list></cells-oc-banner-list>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-oc-banner-list  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+| --cells-oc-banner-list-list  | Mixin applied to list items     | {}  |
+| --cells-oc-banner-list-list-item  | Mixin applied for each item list     | {}  |
+| --cells-oc-banner-list-list-item-big  | Mixin applied for each big item list     | {}  |
+| --cells-oc-banner-list-empty-img--padding-bottom  | Padding bottom of empty image     | 30.9px  |
+| --cells-oc-banner-list-empty-title--padding-bottom  | Padding bottom of empty title     | 30px  |
+| --cells-oc-banner-list-empty  | Mixin applied to list empty     | {}  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-oc-banner-list">
+  <template>
+    <style include="cells-oc-banner-list-styles cells-oc-banner-list-shared-styles"></style>
+
+    <template is="dom-if" if="[[campaigns]]">
+
+      <template is="dom-if" if="[[empty]]">
+        <div class="empty">
+            <img class="empty__img" alt="vacio" src="[[imageEmpty]]">
+            <span class="empty__title">[[t('cells-oc-banner-list-empty-title')]]</span>
+            <span class="empty__message">[[t('cells-oc-banner-list-empty-message')]]</span>
+        </div>
+      </template>
+
+      <template is="dom-if" if="[[!empty]]">
+        <ul class="oc-banner-list">
+          <template is="dom-repeat" items=[[campaigns]]>
+            <li class$="oc-banner-list__item [[item.className]]">
+              <cells-oc-banner 
+                image-location=[[imageLocation]]
+                campaign=[[item]]
+                class$="[[item.className]]"
+                no-close>
+              </cells-oc-banner>
+            </li>
+          </template>
+        </ul>
+      </template>
+
+    </template>
+
+  </template>
+  <script src="cells-oc-banner-list.js"></script>
+</dom-module>

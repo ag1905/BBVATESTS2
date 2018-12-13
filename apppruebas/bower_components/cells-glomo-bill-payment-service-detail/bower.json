@@ -1,0 +1,53 @@
+{
+  "name": "cells-glomo-bill-payment-service-detail",
+  "version": "1.10.0",
+  "description": "Displays the information of a selected service inside the Glomo's bill payment flow",
+  "keywords": [
+    "service alias storing",
+    "service detail",
+    "glomo",
+    "i18n"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "cells-i18n-behavior": "^3.1.0",
+    "cells-atom-button": "^4.0.0",
+    "cells-atom-amount": "^8.0.1",
+    "cells-molecule-icons-input": "#^1.0.0",
+    "cells-checkbox-button": "^1.0.7",
+    "cells-atom-input": "^3.1.0",
+    "cells-avatar-item": "^1.0.0",
+    "cells-atom-radio-button": "^2.0.2",
+    "cells-molecule-amount-input": "~1.2.2",
+    "cells-atom-date": "^10.0.2"
+  },
+  "devDependencies": {
+    "cells-coronita-theme": "^1.0.1",
+    "cells-glomo-theme": "^5.3.1",
+    "cells-demo-event-toaster": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-demo-event-toaster.git#^1.2.0",
+    "coronita-icons": "^2.0.0",
+    "banking-icons": "^1.0.0",
+    "cells-sass": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-sass.git#^2.0.0",
+    "paper-input": "PolymerElements/paper-input#^1.1.20",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.4.1",
+    "paper-listbox": "PolymerElements/paper-listbox#^1.1.2",
+    "paper-item": "PolymerElements/paper-item#^1.2.1",
+    "cells-demo-lang-switcher": "^1.0.1",
+    "cells-demo-resizable-viewport": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-demo-resizable-viewport.git#^0.1.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.2.5",
+    "paper-styles": "PolymerElements/paper-styles#^1.1.5"
+  },
+  "main": [
+    "cells-glomo-bill-payment-service-detail.html"
+  ],
+  "resolutions": {
+    "iron-input": "^2.0.0",
+    "iron-icon": "^2.0.0",
+    "cells-atom-amount": "9.1.0",
+    "cells-amount-behavior": "^9.0.0",
+    "webcomponentsjs": "^v1.0.2"
+  }
+}

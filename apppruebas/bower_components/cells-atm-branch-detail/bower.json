@@ -1,0 +1,30 @@
+{
+  "name": "cells-atm-branch-detail",
+  "version": "1.6.5",
+  "description": "Show basic info of atms and branchs ",
+  "keywords": [
+    "i18n",
+    "web-component"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.9",
+    "cells-i18n-behavior": "~9.0.0",
+    "cells-key-values": "~9.1.0",
+    "cells-operations-list": "~10.0.0",
+    "iron-image": "PolymerElements/iron-image#^2.1.2",
+    "cells-skeleton-item": "~9.0.1",
+    "cells-skeleton-custom": "~10.0.0"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "cells-demo-helper": "~9.0.1",
+    "cells-glomo-theme": "~5.5.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^6.0.0",
+    "coronita-icons": "^2.0.0"
+  },
+  "main": [
+    "cells-atm-branch-detail.html"
+  ]
+}

@@ -1,0 +1,46 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  @apply(--cells-skeleton-item-account-transfer);
+}
+
+.item__wrapper {
+
+    width: 100%;
+    padding: rem(12px) rem(30px) rem(8px);
+    box-sizing: border-box;
+
+  .item__content--top,
+  .item__content--bottom {
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .item__content--bottom {
+    padding-bottom: rem(20px);
+  }
+
+  .item__content--top {
+    margin-bottom: rem(5px);
+  }
+
+  .item-mask {
+    width: 40%;
+    height: rem(18px);
+    background-color: var(--bbva-200);
+
+    &.item-mask:first-child {
+      width: 55%;
+    }
+
+    &.item-mask--xs {
+      width: 20%;
+      height: rem(15px);
+
+      &:first-child {
+        width: 20%;
+      }
+    }
+  }
+}

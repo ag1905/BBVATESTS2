@@ -1,0 +1,184 @@
+@import "bower_components/cells-sass/main";
+:host {
+  display: block;
+  color: var(--cells-product-item-color, #121212);
+  background-color: var(--cells-product-item-background-color, #fff);
+  font-family: var(--cells-fontDefault, sans-serif);
+  padding: rem(15px) rem(20px);
+  font-weight: 300;
+
+  --cells-molecule-mask-number-font-size: var(--cells-product-item-description-value-font-size, rem(12px));
+
+  --cells-molecule-card-cover-icon: unquote("{
+    padding: 5px;
+    border-radius: 50%;
+    background: #DA3851;
+    margin: 0;
+    @apply --cells-product-item-overlay-icon;
+  }");
+
+  --cells-molecule-card-cover-icon-text-container: unquote("{
+    border-radius: 0;
+    opacity: 1;
+    padding: 0;
+    background-color: rgba(255,255,255,.8);
+    @apply --cells-product-item-overlay-layer;
+  }");
+
+  @apply --cells-product-item;
+}
+
+:host(:active) {
+  background-color: var(--cells-product-item-active-background-color, #F4F4F4);
+  @apply --cells-product-item-active;
+}
+
+:host([hidden]), [hidden] {
+  display: none;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  align-items: top;
+
+  /* Main block */
+  &__info {
+    flex: 1;
+    min-width: 0;
+    @apply --cells-product-item-item-info;
+  }
+  &__title {
+    display: flex;
+    flex-direction: column;
+    color: var(--cells-product-item-title-color, #2A86CA);
+    @apply --cells-product-item-item-title;
+  }
+  &__name {
+    display: flex;
+    margin: 0;
+    padding-right: rem(20px);
+    position: relative;
+    line-height: 1.125;
+    margin-bottom: rem(5px);
+    font-size: rem(18px);
+    font-weight: 500;
+    color: var(--cells-product-item-title-color, #2A86CA);
+    @apply --cells-fontDefaultMedium;
+    :host(.frozen) &,
+    :host(.blocked) & {
+      color: var(--cells-product-item-disabled-text-color, #D3D3D3);
+      @apply --cells-product-item-item-name-state;
+    }
+    @apply --cells-product-item-item-name;
+  }
+  &__label {
+    display: block;
+    @include ellipsis;
+    @apply --cells-product-item-item-label;
+  }
+  &__additional {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    @apply --cells-product-item-item-additional;
+  }
+  &__image {
+    margin-right: rem(10px);
+    @apply --cells-product-item-item-image;
+  }
+  &__data {
+    @apply --cells-product-item-item-data;
+  }
+  &__number {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-style: italic;
+    @apply --cells-product-item-item-number;
+  }
+  cells-molecule-mask {
+    --cells-molecule-mask-number-font-size: rem(14px);
+    color: var(--cells-product-item-color, #121212);
+    font-weight: 400;
+    font-style: italic;
+    :host(.frozen) &,
+    :host(.blocked) & {
+      color: var(--cells-product-item-disabled-text-color, #D3D3D3);
+      @apply --cells-product-item-description-value-state;
+    }
+    @apply --cells-product-item-description-value;
+  }
+
+  /* Quantities/amounts block */
+
+  &__quantities {
+    white-space: nowrap;
+    @apply --cells-product-item-item-quantities;
+  }
+  &__primary-amount,
+  &__secondary-amount {
+    position: relative;
+    text-align: right;
+    display: block;
+    @include clearfix;
+    @apply --cells-product-item-amount;
+  }
+  &__primary-amount {
+    @apply --cells-product-item-item-primary-amount;
+  }
+  &__secondary-amount {
+    @apply --cells-product-item-item-secondary-amount;
+  }
+  .amount-large,
+  .amount-medium {
+    float: right;
+    margin-bottom: rem(5px);
+    :host(.frozen) &,
+    :host(.blocked) & {
+      color: var(--cells-product-item-disabled-text-color, #D3D3D3);
+      @apply --cells-product-item-amount-state;
+    }
+    @apply --cells-product-item-amount-amount;
+  }
+  .amount-label {
+    display: block;
+    clear: both;
+    font-size: rem(14px);
+    color: var(--cells-product-item-amount-label-color, #666);
+    margin-bottom: rem(10px);
+    :host(.frozen) &,
+    :host(.blocked) & {
+      color: var(--cells-product-item-disabled-text-color, #BDBDBD);
+      @apply --cells-product-item-amount-label-state;
+    }
+    @apply --cells-product-item-amount-label;
+  }
+
+  /* Contents. No mixins here, as they are light dom and can be styled from outside */
+
+  ::slotted(.icons) {
+    color: var(--cells-product-item-title-icon-color, inherit);
+    flex-shrink: 0;
+    margin-left: 0.5em;
+  }
+  ::slotted(.description) {
+    font-size: rem(18px);
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1.125;
+    margin-bottom: rem(5px);
+  }
+  ::slotted(.text-right-image) {
+    font-style: italic;
+    color: #DA3851;
+    font-size: rem(14px);
+  }
+  ::slotted(.text-below-image) {
+    font-size: rem(15px);
+    margin-top: rem(5px);
+    font-weight: normal;
+  }
+
+  @apply --cells-product-item-item;
+}

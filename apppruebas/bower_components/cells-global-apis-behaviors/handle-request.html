@@ -1,0 +1,120 @@
+<script>
+  /*global CellsBehaviors*/
+  /*eslint new-cap: 0*/
+  window.CellsBehaviors = window.CellsBehaviors || {};
+  window.CellsBehaviors.CellsGlobalApisHandleRequest = {
+
+    properties: {
+      /**
+       * Pagination
+       */
+      apiInfo: Object,
+      /**
+       * Pagination
+       */
+      pagination: {
+        type: Object,
+        notify: true
+      },
+      /**
+       * Page
+       */
+      page: Number,
+      /**
+       * Total Pages
+       */
+      totalPages: Number,
+      /**
+       * Total Elements
+       */
+      totalElements: Number,
+      /**
+       * Page size
+       */
+      pageSize: Number,
+      /**
+       * Next key of links pagination
+       */
+      nextKey: String,
+      /**
+       * Previous key of links pagination
+       */
+      previousKey: String,
+      /**
+       * First key of links pagination
+       */
+      firstKey: String,
+      /**
+       * Last key of links pagination
+       */
+      lastKey: String
+    },
+
+    /**
+     * Parse response
+     */
+    _parseResponse: function(response) {
+      if (response) {
+        this.set('apiInfo', response.apiInfo);
+
+        if (response.pagination) {
+          this._generatePagination(response.pagination);
+        }
+
+        return response.data;
+      }
+
+      return this._errorHandler(response);
+    },
+    /**
+     * Generate pagination
+     */
+    _generatePagination: function(pagination) {
+      this.page = pagination.page;
+      this.totalPages = pagination.totalPages;
+      this.totalElements = pagination.totalElements;
+      this.pageSize = pagination.pageSize;
+
+      if (pagination.links) {
+        this.nextKey = this._getPaginationKey(pagination.links.next);
+        this.previousKey = this._getPaginationKey(pagination.links.previous);
+        this.firstKey = this._getPaginationKey(pagination.links.first);
+        this.lastKey = this._getPaginationKey(pagination.links.last);
+      }
+
+      this.set('pagination', pagination);
+    },
+    /**
+     * Error handler
+     */
+    _errorHandler: function(response) {
+      return null;
+    },
+    /**
+     * Get pagination key of url
+     */
+    _getPaginationKey: function(url) {
+      var params = null;
+      if (url) {
+        params = this.queryParamsToJSON(url);
+      }
+
+      return params && params.paginationKey;
+    },
+    /**
+     * Util - Parse url params string to json
+     */
+    queryParamsToJSON: function(queryString) {
+      if (queryString.indexOf('?') > -1) {
+        queryString = queryString.split('?')[1];
+      }
+      var pairs = queryString.split('&');
+      var result = {};
+      pairs.forEach(function(pair) {
+        pair = pair.split('=');
+        result[pair[0]] = decodeURIComponent(pair[1] || '');
+      });
+      return result;
+    }
+  };
+</script>

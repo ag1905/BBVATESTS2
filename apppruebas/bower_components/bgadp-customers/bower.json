@@ -1,0 +1,33 @@
+{
+  "name": "bgadp-customers",
+  "description": "BGADP Data provider 'bgadp-customers' importer",
+  "version": "1.10.2",
+  "main": [
+    "bgadp-customers.html",
+    "docs.html"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "keywords": [
+    "data",
+    "provider",
+    "dp",
+    "data provider",
+    "xhr",
+    "ajax",
+    "api",
+    "global api",
+    "bgadp-customers"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2"
+  },
+  "resolutions": {
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  }
+}

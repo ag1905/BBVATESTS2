@@ -1,0 +1,89 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-molecule-skeleton-styles.html">
+<!--
+Your component description.
+
+Example:
+
+```html
+<cells-molecule-skeleton></cells-molecule-skeleton>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:---------------:|:---------------:| :-------------:|
+| --cells-skeleton-color-pulse-step1      | var description | rgb(229, 229, 229)  |
+| --cells-skeleton-color-pulse-step2      | var description | rgb(241, 241, 241  |
+| --cells-skeleton-color-border      | var description | default value  |
+| --cells-molecule-skeleton  | empty mixin     | {}             |
+| --cells-molecule-skeleton-background-primary|                 |        #fff    |
+| --cells-molecule-skeleton-screen-header     |                 |        #fff    |
+| --cells-molecule-skeleton-background-color  |                 |        #F0F2EF |
+| --cells-molecule-skeleton-transparent       |                 |    transparent |
+
+@demo demo/index.html
+@hero cells-molecule-skeleton.jpg
+-->
+<dom-module id="cells-molecule-skeleton">
+  <template>
+    <style include="cells-molecule-skeleton-styles cells-molecule-skeleton-shared-styles"></style>
+    <section id="skeleton-screen" class="skeleton-screen is-active">
+      <template is="dom-if" if="{{skeletonAccountList}}">
+        <template is="dom-repeat" items="{{_createLengthArray(skeletonItems)}}">
+          <div class="skeleton-screen__header skeleton-screen__repeat">
+            <div class="skeleton-screen__col">
+              <div class="skeleton-screen__step skeleton-screen__step--step-3"></div>
+            </div>
+            <div class="skeleton-screen__col">
+              <div class="skeleton-screen__step skeleton-screen__step--step-3"></div>
+            </div>
+          </div>
+          <template is="dom-repeat" items="{{_createLengthArray(skeletonSubItems)}}">
+            <div class="skeleton-screen__repeat">
+              <div class="skeleton-screen__col">
+                <div class="skeleton-screen__step skeleton-screen__step--step-1"></div>
+              </div>
+              <div class="skeleton-screen__col">
+                <div class="skeleton-screen__step skeleton-screen__step--step-3"></div>
+                <div class="skeleton-screen__step skeleton-screen__step--step-4"></div>
+              </div>
+            </div>
+          </template>
+
+        </template>
+      </template>
+      <template is="dom-if" if="{{skeletonCardList}}">
+        <template is="dom-repeat" items="{{_createLengthArray(skeletonItems)}}">
+          <div class="skeleton-screen__header skeleton-screen__repeat">
+            <div class="skeleton-screen__col">
+              <div class="skeleton-screen__step skeleton-screen__step--step-3"></div>
+            </div>
+            <div class="skeleton-screen__col">
+              <div class="skeleton-screen__step skeleton-screen__step--step-3"></div>
+            </div>
+          </div>
+
+          <template is="dom-repeat" items="{{_createLengthArray(skeletonSubItems)}}">
+
+          <div class="skeleton-screen__repeat">
+            <div class="skeleton-screen__line">
+              <div class="skeleton-screen__step skeleton-screen__step--step-6"></div>
+              <div class="skeleton-screen__step skeleton-screen__step--step-7"></div>
+            </div>
+            <div class="skeleton-screen__col">
+              <div class="skeleton-screen__step skeleton-screen__step--step-3"></div>
+              <div class="skeleton-screen__step skeleton-screen__step--step-4"></div>
+            </div>
+          </div>
+
+          </template>
+        </template>
+      </template>
+    </section>
+    <content></content>
+  </template>
+  <script src="cells-molecule-skeleton.js"></script>
+</dom-module>

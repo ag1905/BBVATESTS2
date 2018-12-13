@@ -1,0 +1,166 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-customer-profile;
+
+  .customer {
+    &-avatar {
+      height: 244px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #072146;
+      @apply --cells-customer-profile-customer-avatar;
+      
+      & .edit-button {
+        --cells-st-button-text-color-transparent: white;
+        position: absolute;
+        bottom: rem(20px);
+        right: rem(20px);
+        @apply --cells-customer-profile-customer-avatar-button;
+      }
+      .portrait {
+        width: 126px;
+        height: 126px;
+        @apply --cells-customer-profile-customer-avatar-initials;
+        cells-contact-avatar {
+          width: 100%;
+          height: 100%;
+          --cells-contact-avatar-image: unquote("{
+            width: 100%;
+            height: 100%;
+          }");
+          --cells-contact-avatar-initial-bg: var(--bbva-dark-core-blue, #043263);
+          --cells-contact-avatar-initial-color-bg: var(--bbva-core-blue, #004481);
+          --cells-contact-avatar-initial: unquote("{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+          }");
+          --cells-contact-avatar-initial-content: unquote("{
+            font-size: 48px;
+          }");
+          --cells-contact-avatar-initial-before: unquote("{
+            width: 50%;
+            height: 100%;
+          }");
+          @apply --cells-customer-profile-customer-avatar-initials-contact;
+        }
+      }
+    }
+  
+    &-name {
+      text-align: center;
+      margin-bottom: 60px;
+      @apply --cells-customer-profile-customer-name;
+      & .first-name {
+        margin: 30px 0 0; 
+        font-size: rem(24px);
+        color: #121212;
+        @apply (--cells-fontDefaultMedium);
+        @apply --cells-customer-profile-customer-first-name;
+      }
+      & .last-name {
+        margin: 0;
+        color: #666666;
+        font-size: rem(18px);
+        @apply --cells-customer-profile-customer-last-name;
+      }
+    }
+  
+    &-info {
+      margin: 0 40px;
+      @apply --cells-customer-profile-customer-info;
+      img {
+        height: 35px;
+        margin-right: 20px;
+        width: 26px;
+        @apply --cells-customer-profile-customer-info-img;
+      }
+      &__group {
+        padding: 0;
+        &:not(:last-of-type) {
+          border-bottom: 1px solid #e9e9e9;
+        }
+        @apply --cells-customer-profile-customer-info-group;
+      }
+
+      &__item {
+        display: flex;
+        align-items: center;
+        margin: 30px 0;
+        @apply --cells-customer-profile-customer-info-item;
+
+        .info-button {
+          color: var(--bbva-medium-blue, #237ABA);
+          padding-left: 8px;
+          @apply --cells-customer-profile-customer-info-item-button;
+        }
+
+        .after-key {
+          position: absolute;
+          right: 35px;
+          color: var(--bbva-medium-blue, #237ABA);
+          @apply (--cells-fontDefaultMedium);
+          @apply --cells-customer-profile-customer-info-item-after-key;
+        }
+      }
+    }
+  }
+}
+
+cells-atom-date {
+  --cells-atom-date-color: #121212;
+  @apply --cells-customer-profile-date;
+}
+
+cells-key-values {
+  @apply --cells-customer-profile-key-values;
+  --cells-key-values-key: unquote("{
+    font-size: 14px;
+    font-weight: 200;
+  }");
+
+  --cells-key-values-value: unquote("{
+    width: 210px;
+    font-size: 16px;
+    @apply --cells-customer-profile-key-values-value;
+  }");
+  --cells-key-values-value-mask: unquote("{
+    font-style: italic;
+    font-size: 16px;
+    display: block;
+    @apply --cells-customer-profile-key-values-value-mask;
+  }");
+
+  &.italic-value {
+    --cells-key-values-value: unquote("{
+      font-style: italic;
+      @apply --cells-customer-profile-italic-key-values-value;
+    }");
+    @apply --cells-customer-profile-italic-key-values;
+  }
+
+  &.masked {
+    --cells-key-values-value: unquote("{
+      font-size: 18px;
+      letter-spacing: 2px;
+      @apply --cells-customer-profile-masked-key-values-value;
+    }");
+    @apply --cells-customer-profile-masked-key-values;
+  }
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}

@@ -1,0 +1,40 @@
+{
+  "name": "cells-welcome-slider",
+  "version": "5.3.1",
+  "description": "A component for the start page of an application with access/register buttons and a slider.",
+  "keywords": [
+    "i18n",
+    "slider",
+    "carousel",
+    "login",
+    "register",
+    "access"
+  ],
+  "composer": {
+    "description": "UI slider for welcome pages",
+    "type": "UI",
+    "platforms": "android, ios, desktop",
+    "family": "cells-catalog-widgets-family",
+    "name": "cells-welcome-slider",
+    "preview": "cells-preview-default.jpg"
+  },
+  "ignore": [],
+  "dependencies": {
+    "cells-atom-button": "~4.1.0",
+    "cells-full-screen-slider": "~4.2.0",
+    "cells-i18n-behavior": "~3.6.1",
+    "polymer": "Polymer/polymer#^1.9.1"
+  },
+  "main": [
+    "cells-welcome-slider.html"
+  ],
+  "devDependencies": {
+    "cells-demo-helper": "^9.0.0",
+    "cells-glomo-theme": "~5.4.0",
+    "cells-sass": "^2.0.0",
+    "coronita-icons": "^9.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  }
+}

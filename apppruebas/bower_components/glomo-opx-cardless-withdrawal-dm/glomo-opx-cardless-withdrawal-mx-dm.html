@@ -1,0 +1,672 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-step-behavior/cells-step-manager-behavior.html" />
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-product-format-behavior/cells-product-format-behavior.html" />
+<link rel="import" href="../cells-dm-global-apis-transfer/cells-dm-global-apis-transfer.html" />
+<link rel="import" href="../cells-params/cells-params.html">
+
+<!--
+`<glomo-opx-cardless-withdrawal-mx-dm>`
+  > CELLS Data Manager for GLOBAL APIS Cardless Withdrawal
+
+Example:
+
+```html
+<glomo-opx-cardless-withdrawal-mx-dm></glomo-opx-cardless-withdrawal-mx-dm>
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="glomo-opx-cardless-withdrawal-mx-dm">
+  <template>
+    <cells-dm-global-apis-transfer
+    id="dm"
+    host="[[host]]"
+    transfer-api-version="[[transferApiVersion]]"
+    local-currency="[[currency]]"
+    simulation-result="{{_simulationResponse}}"
+    transfer-result="{{_transferResponse}}"
+    native="[[native]]">
+  </cells-dm-global-apis-transfer>
+
+    <cells-params id="params"></cells-params>
+  </template>
+  <script>
+    (function(Polymer, CellsBehaviors) {
+
+      'use strict';
+
+      Polymer({
+        is: 'glomo-opx-cardless-withdrawal-mx-dm',
+
+        behaviors: [
+          CellsBehaviors.i18nBehavior,
+          CellsBehaviors.StepManagerBehavior,
+          CellsBehaviors.CellsProductFormatBehavior
+        ],
+
+        properties: {
+          /*------------------------ CONFIG ------------------------*/
+          /**
+           * Host
+           */
+          host: {
+            type: String
+          },
+          /**
+           * API Version
+           */
+          transferApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * Currency (local currency of the country)
+           */
+          currency: {
+            type: String
+          },
+
+          /*-------------------------- IN --------------------------*/
+          /**
+           * Started component
+           */
+          started: {
+            type: Boolean
+          },
+          /**
+           * ID of selected destination. (step 1)
+           */
+          selectedDestination: {
+            type: String,
+            observer: '_onDestinationSelected'
+          },
+          /**
+           * Withdrawal amount. (step 2)
+           */
+          amount: {
+            type: Number,
+            observer: '_amountChanged'
+          },
+          /**
+           * Source. (step 3)
+           */
+          selectedSource: {
+            type: Object,
+            observer: '_selectedSrcObserver'
+          },
+          /**
+           * Concept. (step 4) (optional)
+           */
+          concept: String,
+          /**
+           * Product Id (used when the process is started from product detail)
+           */
+          productId: String,
+          /**
+           * Available products (from DM)
+           */
+          products: {
+            type: Array,
+            notify: true,
+            observer: '_fetchProducts'
+          },
+          /**
+           * User info of customer detail
+           */
+          user: Object,
+
+          /*-------------------------- OUT -------------------------*/
+          /**
+           * List of source products.
+           */
+          sourceList: {
+            type: Array
+          },
+          /**
+           * Parsed response
+           */
+          parsedResponse: {
+            type: Object,
+            notify: true
+          },
+          /**
+          * Account Id by default
+          */
+          defaultProductId: {
+            type: String,
+            notify: true
+          },
+          /**
+          * Finished operation
+          */
+          finished: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+          * State account on fetch detail and dashboard
+          */
+          stateAccounts: {
+            type: Boolean,
+            notify: true
+          },
+
+          /**
+           * Code to share in detail transaction
+           */
+          code: String,
+          /**
+           * Operation type
+           */
+          forMeOperationType: {
+            type: Boolean,
+            value: false
+          },
+          /**
+           * Source max
+           */
+          sourceMaxLimit: {
+            type: Number,
+            notify: true
+          },
+
+          mobileNumber: String,
+          /**
+           * Native request
+           */
+          native: {
+            type: Boolean,
+            value: false
+          },
+
+          /*------------------------ PRIVATE -----------------------*/
+          /**
+           * Service response
+           */
+          _transferResponse: {
+            type: Object,
+            observer: '_onResponse'
+          },
+
+          _simulationResponse: {
+            type: Object,
+            observer: '_onSimulationResponse'
+          },
+
+          /**
+          * Control if a new contacts has been saved
+          */
+          _savedContact: {
+            type: Boolean,
+            value: false
+          }
+
+        },
+
+        listeners: {
+          'transfer-error': '_closeControlVeil'
+        },
+
+        observers: [
+          '_canExecuteObserver(canExecute)'
+        ],
+
+        /**
+         * Init and manage cache products
+         */
+        init: function() {
+          this.dispatchEvent(new CustomEvent('reset-scroll'));
+          if (!this.started) {
+            this._init();
+            this.started = true;
+          }
+
+          if (!this.mobileNumber) {
+            this._getMobileNumber();
+          }
+
+          if (this.finished) {
+            this._init();
+            this.finished = false;
+          } else {
+            this._fetchProducts();
+          }
+
+          this.defaultProductId = this.productId;
+        },
+
+        _setEnoughFunds: function(source, amount) {
+          return source && source.length && source.map(function(product) {
+            var overcome = !this._hasEnoughFunds(product.primaryAmount.amount, amount);
+
+            return Object.assign({}, product, {
+              hasTextMessage: overcome,
+              disabled: overcome
+            });
+          }.bind(this)) || [];
+        },
+
+        /**
+         * Init services and step
+         */
+        _init: function() {
+          this.dispatchEvent(new CustomEvent('init-services', {
+            bubbles: true,
+            composed: true
+          }));
+          this.restart();
+        },
+
+        _fetchProducts: function() {
+          this.set('sourceList', this._setEnoughFunds(this.products));
+          this.dispatchEvent(new CustomEvent('fetch-source', {
+            bubbles: true,
+            composed: true,
+            detail: this.sourceList || []
+          }));
+        },
+
+        /**
+         * Destination is selected (step 1)
+         */
+        _onDestinationSelected: function(destination) {
+          if (destination && !this.selectedSource || destination && this.selectedSource && !this.selectedSource.disabled) {
+            this._nextStep();
+          }
+        },
+
+        /**
+         * Amount is setted. (step 2)
+         */
+        _amountChanged: function(amount) {
+          var overcome = false;
+          this.set('sourceList', this._setEnoughFunds(this.sourceList, amount));
+          this.dispatchEvent(new CustomEvent('fetch-source', {
+            bubbles: true,
+            composed: true,
+            detail: this.sourceList
+          }));
+
+          if (this.selectedSource && this.selectedSource.primaryAmount) {
+            overcome = !this._hasEnoughFunds(this.selectedSource.primaryAmount.amount, amount);
+          }
+
+          if (amount && !overcome) {
+            this._nextStep();
+          }
+        },
+
+        /**
+         * Observer for property selectedSrc (step 3)
+         */
+        _selectedSrcObserver: function(product) {
+          if (product && !product.disabled) {
+            this._setLimits(product);
+
+            if (this.selectedDestination && this.amount) {
+              this._nextStep();
+            }
+          }
+        },
+
+        /**
+         * Observer for concept. (step 4)
+         * @param   payload {String} Transfer concept
+         */
+        setConcept: function(concept) {
+          this.concept = concept.concept || null;
+          this._nextStep();
+        },
+
+        disableExecute: function() {
+          this.canExecute = false;
+        },
+
+        /**
+         * Restart state steps
+         */
+        restart: function() {
+          this.resetManagerSteps();
+          this.set('currentStep', 1);
+
+          // Method of manager step behavior
+          this.initSteps();
+        },
+
+        /**
+         * Reset all, steps and content steps
+         */
+        resetAll: function() {
+          this.restart();
+          this.resetContent();
+          this.finished = true;
+        },
+
+        /**
+         * Reset content of steps
+         */
+        resetContent: function() {
+          //PUBLIC
+          this.selectedSource = null;
+          this.selectedDestination = null;
+          this.amount = '';
+          this.concept = null;
+          this.productId = null;
+          this.defaultProductId = null;
+          this.references = null;
+          this.sourceId = '';
+          this.sourceCurrency = '';
+          this._savedContact = false;
+
+          this.restart();
+          this.dispatchEvent(new CustomEvent('reset-scroll'));
+        },
+
+        /**
+         * Set default values in steps.
+         */
+        resetManagerSteps: function() {
+          this.lastActiveStep = null;
+          this.canExecute = false;
+          this.hasFinished = false;
+          this._lastResponse = null;
+        },
+
+        /**
+         * Manage result
+         */
+        _onResponse: function(response) {
+          this.set('parsedResponse', this._parseResponse(response));
+          this.stateAccounts = true;
+          this._closeControlVeil();
+          this._goToReview();
+        },
+
+        /**
+         * Throw event to open control veil
+         */
+        _openControlVeil: function() {
+          this.dispatchEvent(new CustomEvent('open-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+         * Throw event to close control veil
+         */
+        _closeControlVeil: function() {
+          this.dispatchEvent(new CustomEvent('close-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+         * Make withdrawal operation
+         */
+        doWithdrawal: function() {
+          var destination = this.selectedDestination;
+          this.set('forMeOperationType', this._isForMe(this.selectedDestination));
+
+          if (this.forMeOperationType && this.user) {
+            destination.number = this.mobileNumber;
+          }
+
+          this._openControlVeil();
+          this.$.dm.makeMobileTransfer(this.selectedSource, destination, this.amount, this.concept);
+        },
+
+        /**
+         * Check if the amount is over the max limit.
+         * @param amount {Number} Transfer amount
+         * @param maxLimit {Number} Account maximum limit
+         */
+        _hasEnoughFunds: function(maxLimit, amount) {
+          return !(maxLimit <= 0 || amount && maxLimit && amount > maxLimit);
+        },
+        /**
+         * Set limit amount
+         */
+        _setLimits: function(product) {
+          if (product && product.primaryAmount) {
+            this.sourceMaxLimit = product.primaryAmount.amount;
+          }
+        },
+
+        /**
+        * Notify user was saved
+        */
+        setSavedContact: function(ev) {
+          this._savedContact = true;
+        },
+
+        /**
+         * Go to review transfer on success
+         */
+        _goToReview: function() {
+          this.dispatchEvent(new CustomEvent('cardless-withdrawal-successful', {
+            bubbles: true,
+            composed: true,
+            detail: {
+              page: 'cardless-withdrawal-review'
+            }
+          }));
+
+          this.async(function() {
+            this.resetAll();
+          }, 400);
+        },
+        /**
+         * Checks if the withdrawal is "for me"
+         */
+        _isForMe(destination) {
+          return !destination.number || destination.number === this.mobileNumber;
+        },
+        /**
+         * Divide withdrawal codes four by four
+         */
+        _splitCodes(withdrawalCodes) {
+          var codes = {};
+          withdrawalCodes.forEach(function(element) {
+            codes[element.id] = element.value.match(/.{1,4}/g);
+          });
+
+          return codes;
+        },
+        /**
+         * Parse withdrawal codes
+         */
+        _getWithdrawalCodes: function(response) {
+          var codes = this._splitCodes(response.withdrawalCodes);
+          var processedCodes = [];
+          var keys = {
+            'RECEIVER_CODE': 'cells-successful-response-withdrawal-code',
+            'SENDER_CODE': 'cells-successful-response-security-code'
+          };
+
+          ['RECEIVER_CODE', 'SENDER_CODE'].forEach(function(key) {
+            if (codes[key]) {
+              if (key === 'SENDER_CODE') {
+                this.code = codes[key];
+              }
+              processedCodes.push({
+                key: keys[key],
+                split: codes[key]
+              });
+            }
+          }.bind(this));
+
+          return processedCodes;
+        },
+        /**
+         * Generate additional info of response
+         */
+        _getAdditionalInfo: function(response) {
+          var additionalInfo = [];
+
+          if (this.selectedSource && this.selectedSource.name) {
+            additionalInfo.push({
+              key: 'cells-successful-response-withdrawal-account',
+              value: this.selectedSource.name,
+              musk: {
+                value: response.sender.contract.number,
+                chars: 4,
+                simbol: '•'
+              },
+              class: 'bold spacing md'
+            });
+          }
+
+          additionalInfo.push({
+            key: 'cells-successful-response-concept',
+            value: response.concept || 'cells-step-product-default-concept',
+            class: 'bold spacing md'
+          });
+
+          if (response.mobileTransferId) {
+            additionalInfo.push({
+              key: 'cells-successful-response-folio',
+              value: response.mobileTransferId,
+              class: 'inline secondary'
+            });
+          }
+
+          return additionalInfo;
+        },
+
+        /**
+         * Parse mobile transfer response
+         */
+        _parseResponse: function(response) {
+          if (response) {
+            var operations = [{
+              label: 'Enviar por correo electrónico',
+              id: 'share',
+              icon: 'coronita:email',
+              disabled: true
+            },
+            {
+              label: 'Sucursales y Cajeros',
+              id: 'atm',
+              icon: 'coronita:bbvaofice',
+              disabled: true
+            }];
+            return {
+              status: response.status.id,
+              id: response.mobileTransferId,
+              date: response.date,
+              title: 'cells-successful-response-withdrawal-review-title',
+              subtitle: ' ',
+              message: !this.forMeOperationType ? {
+                type: 'info',
+                icon: 'coronita:info',
+                text: 'cells-successful-response-message-info'
+              } : '',
+              origin: {
+                avatar: {
+                  src: this.selectedDestination && this.selectedDestination.avatar
+                },
+                product: {
+                  name: this.selectedDestination && this.selectedDestination.name,
+                }
+              },
+              amount: response.sentMoney[0],
+              topInfo: !this.forMeOperationType ? [
+                {
+                  value: this.selectedDestination.name,
+                  class: 'bold lg'
+                },
+                {
+                  value: this._formatProduct((response.receiver.mobile).replace('+', ''), 'phone'),
+                  class: 'inline cursive secondary'
+                },
+                {
+                  key: this.selectedDestination.edited ? 'cells-successful-response-edited-contact' : this._savedContact && !this.selectedDestination.edited ? 'cells-successful-response-saved-contact' : '',
+                  value: '',
+                  icon: this.selectedDestination.edited ? 'coronita:correct' : this._savedContact && !this.selectedDestination.edited ? 'coronita:correct' : '',
+                  class: 'inline secondary cursive spacing'
+                }
+              ] : [
+                {
+                  value: this.selectedDestination.name,
+                  class: 'bold lg'
+                }
+              ],
+              codes: this._getWithdrawalCodes(response),
+              additionalInfo: this._getAdditionalInfo(response),
+              operations: operations,
+              buttons: this._getButtonsConfig()
+            };
+          }
+        },
+
+        _canExecuteObserver(canExecute) {
+          if (canExecute) {
+            this.$.dm.makeMobileTransferSimulation(this.selectedSource, this.destination, this.amount, this.concept);
+          }
+        },
+
+        _onSimulationResponse: function(simulation) {
+          this._closeControlVeil();
+
+          if (simulation) {
+            this.dispatchEvent(new CustomEvent('withdrawal-simulation', {
+              bubbles: true,
+              composed: true,
+              detail: simulation
+            }));
+          }
+        },
+        /*
+         * Set configuration for buttons
+         */
+        _getButtonsConfig: function() {
+          var buttons = {
+            secondary: {
+              text: 'cells-successful-response-new-withdrawal',
+              action: 'new-operation',
+              class: 'btn--tertiary btn--l'
+            }
+          };
+          buttons.primary = !this.forMeOperationType ? {
+            text: 'cells-successful-response-share-code',
+            action: 'share-code',
+            class: 'btn--primary btn--l'
+          } : {
+            text: 'cells-successful-response-exit',
+            action: 'go-to-next',
+            class: 'btn--primary btn--l'
+          };
+
+          return buttons;
+        },
+
+        _getMobileNumber: function() {
+          this.$.params.getData('userInfo').then(function(user) {
+            this.set('mobileNumber', user.userId);
+          }.bind(this));
+        },
+        /*
+         * Notify copy code
+         */
+        copyCode: function() {
+          this.dispatchEvent(new CustomEvent('clipboard-code', {
+            bubbles: true,
+            composed: true,
+            detail: this.code
+          }));
+        },
+        /**
+         * Send otp sign operation otp/key
+         */
+        signRequest: function(sign) {
+          this._openControlVeil();
+          this.$.dm.signRequest(sign);
+        }
+      });
+    }(Polymer, CellsBehaviors));
+  </script>
+</dom-module>

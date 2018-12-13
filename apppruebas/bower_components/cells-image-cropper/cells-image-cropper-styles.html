@@ -1,0 +1,47 @@
+<dom-module id="cells-image-cropper-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-image-cropper; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+button:active {
+  @apply --cells-global-active; }
+
+#wrapper {
+  display: block;
+  min-height: 280px;
+  @apply --cells-image-cropper-wrapper; }
+
+#image {
+  @apply --cells-image-cropper-image; }
+
+.cropper-view-box {
+  border-radius: 50% !important;
+  box-shadow: 0 0 0 1px transparent;
+  outline: 0;
+  @apply --cells-image-cropper-view-box; }
+
+.cropper-modal {
+  background: var(--bbva-white, #FFF);
+  opacity: .65;
+  @apply --cells-image-cropper-view-modal; }
+
+</style></template></dom-module>

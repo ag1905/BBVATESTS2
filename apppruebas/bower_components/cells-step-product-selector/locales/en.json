@@ -1,0 +1,11 @@
+{
+  "cells-product-selector-title": "No destinations",
+  "cells-product-selector-text": "Add a new one and save it for next transfers",
+  "cells-accounts-title": "charge accounts",
+  "cells-cards-title": "charge cards",
+  "cells-account-title": "charge account",
+  "cells-card-title": "charge card",
+  "cells-products-title": "charge products",
+  "cells-product-selector-error-message-credit-card-payment": "__Saldo insuficiente para poder operar__",
+  "cells-product-selector-error-message-amount-operation": "_Saldo insuficiente para poder operar_"
+}

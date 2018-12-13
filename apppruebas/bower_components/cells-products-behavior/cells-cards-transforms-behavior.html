@@ -1,0 +1,85 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./cells-products-behavior.html">
+<link rel="import" href="../global-products-lists-behavior/global-products-lists-behavior.html" />
+
+<script>
+  /**
+   * Groups cards common transforms
+   * @polymerBehavior CellsBehaviors.CardsTransforms
+   */
+  (function(w) {
+    'use strict';
+    w.CellsBehaviors = window.CellsBehaviors || {};
+    var CardsTransformsImpl = {
+      _parseCards: function(cards) {
+        var res = [];
+
+        if (cards && cards.length) {
+          cards.forEach(function(card) {
+            if (this._getStatus(card) && this.typeCardName !== 'DEBIT_CARD') {
+              res.push(this._extractCards(card));
+            }
+          }.bind(this));
+        }
+
+        return res; 
+      },
+
+      _getStatus: function(card) {
+        return card && card.status && card.status.id === 'OPERATIVE' && card.activations && card.activations.length && card.activations.every(function(activation) {
+          return activation.activationId === 'ON_OFF' ? activation.isActive : false;
+        });
+      },
+
+      _extractCards: function(card) {
+        if (card) {
+          var cardCurrencyMajor = this._obtainCurrencyMajor(card);
+          var _extractedCard = {};
+          _extractedCard.description = {};
+          _extractedCard.id = card.cardId;
+          _extractedCard.name = (card.alias) ? card.alias : card.cardType.name;
+          _extractedCard.description.value = card.number;
+          _extractedCard.description.masked = true;
+          _extractedCard.imgSrc = (card.images && Array.isArray(card.images)) ? card.images[0].url : null;
+          _extractedCard.currencies = (card.currencies) ? card.currencies : null;
+          _extractedCard.productType = 'CARDS';
+          _extractedCard.status = card.status.id;
+
+          if (this.typeCardName !== 'DEBIT_CARD') {
+            if (card.availableBalance) {
+              this._extractAvailableBalance(this.typeCardName, _extractedCard, cardCurrencyMajor, card);
+            }
+          }
+          return _extractedCard;
+        }
+      },
+
+      _extractAvailableBalance: function(typeCardName, productObject, productCurrencyMajor, product, productCurrencyMinor) {
+        if (product.availableBalance) {
+          this._obtainPrimaryAmount(product, productObject, productCurrencyMajor, 'primaryAmount', typeCardName);
+
+          if (productCurrencyMinor) {
+            this._obtainPrimaryAmount(product, productObject, productCurrencyMinor, 'primaryAmountOtherCurrency', typeCardName);
+          }
+        }
+        if (product.disposedBalance) {
+          productObject.secondaryAmount = {};
+          var productCurrentDisposedBalanceMajor = this._findFirst(
+            product.disposedBalance.currentBalances,
+            { field: 'currency', value: productCurrencyMajor }
+          );
+          productObject.secondaryAmount.amount = productCurrentDisposedBalanceMajor && productCurrentDisposedBalanceMajor.amount;
+          productObject.secondaryAmount.currency = productCurrencyMajor;
+          productObject.secondaryAmount.label = this._getIsOperative(product)
+            ? this.doTranslation(
+              this.productsType[typeCardName].grantedCredits.title,
+              this.productsType[typeCardName].grantedCredits.fallback
+            )
+            : '';
+        }
+        return productObject;
+      }
+    };
+    w.CellsBehaviors.CardsTransforms = [CellsBehaviors.GlobalProductsListsBehavior, CellsBehaviors.ProductsBehavior, CardsTransformsImpl];
+  }(window));
+</script>

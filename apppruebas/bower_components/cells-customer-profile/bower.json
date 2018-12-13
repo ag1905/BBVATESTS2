@@ -1,0 +1,60 @@
+{
+  "name": "cells-customer-profile",
+  "version": "1.2.1",
+  "description": "Show basic customer info",
+  "keywords": [
+    "i18n",
+    "web-component"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "cells-i18n-behavior": "9 - 10",
+    "cells-key-values": "^10.1.1",
+    "cells-contact-avatar": "^10.0.1",
+    "cells-st-button": "~10.0.0",
+    "cells-atom-icon": "^10.0.3",
+    "cells-atom-date": "^10.0.2",
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "cells-demo-helper": "9 - 10",
+    "cells-shadow-query-selector": "^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "coronita-icons": "9 - 10"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9",
+        "cells-i18n-behavior": "^9.0.0",
+        "cells-key-values": "9 - 10",
+        "cells-contact-avatar": "9 - 10",
+        "cells-st-button": "9 - 10",
+        "cells-atom-icon": "9 - 10",
+        "cells-atom-date": "9 - 10"
+      },
+      "devDependencies": {
+        "cells-sass": "^2.0.0",
+        "cells-demo-helper": "^9.0.0",
+        "cells-shadow-query-selector": "^1.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+        "coronita-icons": "^9.0.0",
+        "cells-glomo-theme": "^5.4.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "main": [
+    "cells-customer-profile.html"
+  ]
+}

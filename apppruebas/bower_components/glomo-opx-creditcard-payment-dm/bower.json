@@ -1,0 +1,29 @@
+{
+  "name": "glomo-opx-creditcard-payment-dm",
+  "version": "1.5.2",
+  "description": "DM used to manage Credit Card Payment operative",
+  "keywords": [
+    "dm"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "cells-i18n-behavior": "9 - 10",
+    "cells-dm-global-apis-transfer": "~4.6.0",
+    "cells-step-behavior": "~3.2.5"
+  },
+  "devDependencies": {
+    "cells-demo-helper": "9 - 10",
+    "cells-demo-dm-helper": "9 - 10",
+    "cells-shadow-query-selector": "^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "main": [
+    "glomo-opx-creditcard-payment-dm.html"
+  ]
+}

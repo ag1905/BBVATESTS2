@@ -1,0 +1,746 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../bgadp-accounts/bgadp-accounts.html">
+<link rel="import" href="../bgadp-api-aggregator/bgadp-api-aggregator.html">
+<link rel="import" href="../bgadp-pe-accounts/bgadp-pe-accounts.html">
+<link rel="import" href="../cells-global-apis-behaviors/cells-global-apis-behaviors.html" />
+
+<!--
+Manages requests related to Accounts.
+
+Example:
+```html
+<cells-dm-global-apis-accounts
+  account-id="[[accountId]]"
+  accounts="{{accounts}}"
+  account="{{account}}"
+  transactions="{{transactions}}"
+  indicators="{{indicators}}"
+  customized-formats="{{customizedFormats}}"></cells-dm-global-apis-accounts>
+```
+-->
+
+<dom-module id="cells-dm-global-apis-accounts">
+  <template></template>
+  <script>
+  (function(Polymer) {
+    /*global BGADPAccounts*/
+    /*global BGADPApiAggregator*/
+    /*global BGADPPeAccounts*/
+    /*eslint new-cap: 0*/
+    Polymer({
+
+      is: 'cells-dm-global-apis-accounts',
+
+      behaviors: [
+        CellsBehaviors.CellsGlobalApisHandleRequest,
+        CellsBehaviors.CellsGlobalApisHandleRequestSign,
+        CellsBehaviors.CellsGlobalApisHandleRequestError
+      ],
+
+      properties: {
+        /**
+         * Host
+         */
+        host: String,
+        /**
+         * Stores accounts
+         */
+        accounts: {
+          type: Object,
+          notify: true
+        },
+        /**
+         * Accounts request
+         */
+        _accounts: Object,
+        /**
+         * Accounts Balance request
+         */
+        _accountsBalance: Object,
+        /**
+         * Accounts Balance Common request
+         */
+        _accountsBalanceCommon: Object,
+        /**
+         * Accounts Balance Currency request
+         */
+        _accountsBalanceCurrency: Object,
+        /**
+         * Stores a single account object
+         */
+        account: {
+          type: Object,
+          notify: true
+        },
+        /**
+         * Account Id for those DP which require it
+         */
+        accountId: String,
+        /**
+         * Customized format Id
+         */
+        customizedFormatId: String,
+        /**
+         * Transaction Id
+         */
+        transactionId: String,
+        /**
+         * Account types
+         */
+        accountTypes: {
+          type: Array,
+          notify: true
+        },
+        /**
+        * Accounts transactions
+        */
+        transactions: {
+          type: Array,
+          notify: true
+        },
+        /**
+        * Accounts transaction detail
+        */
+        transactionDetail: {
+          type: Object,
+          notify: true
+        },
+        /**
+         * Accounts indicators after getting them from retrieved indicators
+         */
+        indicators: {
+          type: Array,
+          notify: true
+        },
+        /**
+         * Hold Id
+         */
+        holdId: String,
+        /**
+        * Account Holds
+        */
+        holds: {
+          type: Array,
+          notify: true
+        },
+        /**
+        * Account Holds Balances
+        */
+        holdsBalances: {
+          type: Object,
+          notify: true
+        },
+        /**
+        * Account Hold
+        */
+        hold: {
+          type: Array,
+          notify: true
+        },
+        /**
+         * Custom formats
+         */
+        customizedFormats: {
+          type: Array,
+          notify: true
+        },
+        /**
+        * Accounts API version
+        */
+        accountsApiVersion: {
+          type: String,
+          value: '0'
+        },
+        /**
+        * Api agreggator API version
+        */
+        apiAggregatorApiVersion: {
+          type: String,
+          value: '0'
+        },
+        /**
+        * requiredToken, 'jwt' or 'tsec' or empty
+        */
+        requiredToken: {
+          type: String,
+          value: 'tsec'
+        }
+
+      },
+
+      /**
+       * Get Full accounts
+       */
+      getFullAccounts: function() {
+        var requests = [
+          {
+            endPoint: '/accounts/v' + this.accountsApiVersion + '/accounts',
+            params: {view: 'full', expand: 'related-contracts,limits,holds,customized-formats'}
+          },
+          {
+            endPoint: '/accounts/v' + this.accountsApiVersion + '/balances'
+          },
+          {
+            endPoint: '/accounts/v' + this.accountsApiVersion + '/balances',
+            params: {'accountType.id': 'COMMON_ACCOUNT'}
+          },
+          {
+            endPoint: '/accounts/v' + this.accountsApiVersion + '/balances',
+            params: {'accountType.id': 'CURRENCY_ACCOUNT'}
+          }
+        ];
+        var service = this._apiAggregatorService({
+          host: this.host,
+          body: this._generateBody(requests),
+          version: this.apiAggregatorApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        service.generateRequest().then(
+          function() {
+            this.set('accounts', this._parseFullAccounts(this._parseResponse(service.getLastResponse())));
+          }.bind(this),
+          function(error) {
+            this.fire('error-on-get-full-accounts');
+          }.bind(this)
+        );
+      },
+      /**
+       * Generate body to api-aggregator by request array
+       */
+      _generateBody: function(requests) {
+        return requests.reduce(function(acc, request, i) {
+          acc.push({
+            id: String(i),
+            url: request.endPoint + (request.params ? '?' + this._encodeData(request.params) : ''),
+            method: request.method || 'GET'
+          });
+
+          return acc;
+        }.bind(this), []);
+      },
+      /**
+       * Parse accounts
+       */
+      _parseFullAccounts: function(response) {
+        var keys = ['items', 'balances', 'balancesCommon', 'balancesCurrency'];
+        return response.reduce(function(acc, _response, i) {
+          if (_response.status === 200 && _response.body) {
+            acc[keys[i]] = this._parseResponse(JSON.parse(_response.body));
+          }
+
+          return acc;
+        }.bind(this), {});
+      },
+      /**
+       * Get accounts
+       */
+      getAccounts: function() {
+        var service = this._accountsService({
+          host: this.host,
+          params: {views: 'full', expand: 'related-contracts,limits,holds,customized-formats'},
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        service.generateRequest().then(
+          function() {
+            var response = this._parseResponse(service.getLastResponse());
+            this.set('_accounts', response);
+            this.fire('set-accounts', response);
+          }.bind(this),
+          function(error) {
+            this.fire('error-on-get-accounts');
+          }.bind(this)
+        );
+      },
+      /**
+       * Get accounts balances
+       */
+      getAccountsBalances: function() {
+        var service = this._accountsBalanacesService({
+          host: this.host,
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        service.generateRequest().then(function() {
+          this.set('_accountsBalance', this._parseResponse(service.getLastResponse()));
+        }.bind(this));
+      },
+      /**
+       * Get accounts balances common
+       */
+      getAccountsBalancesCommon: function() {
+        var service = this._accountsBalanacesService({
+          host: this.host,
+          params: {'accountType.id': 'COMMON_ACCOUNT'},
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        service.generateRequest().then(function() {
+          this.set('_accountsBalanceCommon', this._parseResponse(service.getLastResponse()));
+        }.bind(this));
+      },
+      /**
+       * Get accounts balances currency
+       */
+      getAccountsBalancesCurrency: function() {
+        var service = this._accountsBalanacesService({
+          host: this.host,
+          params: {'accountType.id': 'CURRENCY_ACCOUNT'},
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        service.generateRequest().then(function() {
+          this.set('_accountsBalanceCurrency', this._parseResponse(service.getLastResponse()));
+        }.bind(this));
+      },
+      /**
+       * Get account
+       */
+      getAccount: function(params) {
+        var service = this._accountService({
+          host: this.host,
+          params: Object.assign({'account-id': this.accountId}, params),
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        service.generateRequest().then(
+          function() {
+            this.set('account', this._parseResponse(service.getLastResponse()));
+          }.bind(this),
+          function(error) {
+            this.fire('error-on-get-account');
+          }.bind(this)
+        );
+      },
+      /**
+       * Get account indicators
+       */
+      getAccountIndicators: function(params) {
+        var service = this._accountIndicatorsService({
+          host: this.host,
+          params: Object.assign({'account-id': this.accountId}, params),
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        service.generateRequest().then(function() {
+          this.set('indicators', this._parseResponse(service.getLastResponse()));
+        }.bind(this));
+      },
+      /**
+       * Get account transactions
+       */
+      getTransactions: function(params) {
+        var service = this._accountTransactionsService({
+          host: this.host,
+          params: Object.assign({'account-id': this.accountId}, params),
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        service.generateRequest().then(function() {
+          var response = this._parseResponse(service.getLastResponse()) || [];
+          this.set('transactions', response);
+          this.fire('set-account-transactions', response);
+        }.bind(this));
+      },
+      /**
+      * Get more pages transactions service
+      */
+      getMoreTransactions: function(params) {
+        if (this.pagination && this.page <= this.totalPages && this.nextKey) {
+          this.fire('get-more-data', true);
+          var allParams = Object.assign(params, {expand: '&paginationKey=' + this.nextKey});
+          this.getTransactions(allParams);
+        }
+      },
+      /**
+       * Get account transaction detail
+       */
+      getTransactionDetail: function() {
+        var service = this._accountTransactionDetailService({
+          host: this.host,
+          params: Object.assign({ 'account-id': this.accountId, 'transaction-id': this.transactionId }),
+          requiredToken: this.requiredToken
+        });
+        service.generateRequest().then(
+          function() {
+            var response = this._parseResponse(service.getLastResponse()) || [];
+            this.set('transactionDetail', response);
+            this.fire('set-account-transaction-detail', response);
+          }.bind(this),
+          function(error) {
+            this.fire('error-on-get-account-transaction-detail');
+          }.bind(this)
+        );
+      },
+      /**
+       * Get account customized formats
+       */
+      getAccountCustomizedFormats: function(params) {
+        var service = this._accountCustomizedFormatsService({
+          host: this.host,
+          params: Object.assign({'account-id': this.accountId}, params),
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        service.generateRequest().then(function() {
+          this.set('customizedFormats', this._parseResponse(service.getLastResponse()));
+        }.bind(this));
+      },
+      /**
+       * Get account types
+       */
+      getAccountTypes: function() {
+        var service = this._accountTypesService({
+          host: this.host,
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        service.generateRequest().then(function() {
+          this.set('accountTypes', this._parseResponse(service.getLastResponse()));
+        }.bind(this));
+      },
+      /**
+       * Update alias
+       */
+      patchAccountAlias: function(alias) {
+        var service = this._accountPatchService({
+          host: this.host,
+          body: {alias: alias},
+          params: Object.assign({'account-id': this.accountId}),
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        return service.generateRequest().then(
+          function() {
+            var response = this._parseResponse(service.getLastResponse());
+            this.set('account', response);
+            this.fire('patch-alias', alias);
+            this.fire('patch-account', response);
+          }.bind(this),
+          function(error) {
+            this.fire('error-on-patch-account');
+          }.bind(this)
+        );
+      },
+      /**
+       * Get holds of account
+       */
+      getAccountHolds: function(params) {
+        var service = this._accountHolds({
+          host: this.host,
+          params: Object.assign({'account-id': this.accountId}, params),
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        return service.generateRequest().then(
+          function() {
+            var response = this._parseResponse(service.getLastResponse()) || [];
+            this.set('holds', response);
+            this.fire('set-account-holds', response);
+          }.bind(this),
+          function(error) {
+            this.fire('error-on-get-holds');
+          }.bind(this)
+        );
+      },
+      /**
+       * Get holds blaances of account
+       */
+      getAccountHoldsBalances: function(params) {
+        var service = this._accountHoldsBalances({
+          host: this.host,
+          params: Object.assign({'account-id': this.accountId}, params),
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        return service.generateRequest().then(
+          function() {
+            var response = this._parseResponse(service.getLastResponse()) || {};
+            this.set('holdsBalances', response);
+            this.fire('set-account-holds-balances', response);
+          }.bind(this),
+          function(error) {
+            this.fire('error-on-get-holds-balances');
+          }.bind(this)
+        );
+      },
+      /**
+       * Get hold of account
+       */
+      getAccountHold: function(params) {
+        var service = this._accountHold({
+          host: this.host,
+          params: Object.assign({'account-id': this.accountId, 'hold-id': this.holdId}, params),
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        return service.generateRequest().then(
+          function() {
+            var response = this._parseResponse(service.getLastResponse());
+            this.set('hold', response);
+            this.fire('set-account-hold', response);
+          }.bind(this),
+          function(error) {
+            this.fire('error-on-get-hold');
+          }.bind(this)
+        );
+      },
+      /**
+       * Method for updating of the format to the current account
+       */
+      putAccountCustomizedFormat: function(value) {
+        var service = this._accountCustomizedFormatServicePut({
+          host: this.host,
+          params: {
+            'account-id': this.accountId,
+            'customized-format-id': this.customizedFormatId || 'SIMPLE_ACCOUNT'
+          },
+          body: {value: value},
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        service.generateRequest().then(function() {
+          this.set('customizedFormats', []);
+          this.getAccountCustomizedFormats();
+          this.fire('cells-account-simple-changed', this._parseResponse(service.getLastResponse()));
+        }.bind(this));
+      },
+      /**
+       * Link phone number to account
+       */
+      linkAccountSPEI: function(phoneNumber) {
+        var service = this._accountCustomizedFormatServicePut({
+          host: this.host,
+          params: {
+            'account-id': this.accountId,
+            'customized-format-id': 'SPEI'
+          },
+          body: {value: phoneNumber},
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        service.generateRequest().then(
+          function() {
+            this.set('customizedFormats', []);
+            this.getAccountCustomizedFormats();
+            this.dispatchEvent(new CustomEvent('cells-account-spei-link-success', {
+              bubbles: true,
+              composed: true,
+              detail: this._parseResponse(service.getLastResponse())
+            }));
+          }.bind(this),
+          function(error) {
+            this.dispatchEvent(new CustomEvent('cells-account-spei-link-error', {
+              bubbles: true,
+              composed: true
+            }));
+          }.bind(this)
+        );
+      },
+      /**
+       * Unlink phone number
+       */
+      unlinkAccountSPEI: function() {
+        var service = this._accountCustomizedFormatServiceDelete({
+          host: this.host,
+          params: {
+            'account-id': this.accountId,
+            'customized-format-id': 'SPEI'
+          },
+          version: this.accountsApiVersion,
+          requiredToken: this.requiredToken
+        });
+
+        service.generateRequest().then(
+          function() {
+            this.set('customizedFormats', []);
+            this.getAccountCustomizedFormats();
+            this.dispatchEvent(new CustomEvent('cells-account-spei-unlink-success', {
+              bubbles: true,
+              composed: true,
+              detail: this._parseResponse(service.getLastResponse())
+            }));
+          }.bind(this),
+          function(error) {
+            this.dispatchEvent(new CustomEvent('cells-account-spei-unlink-error', {
+              bubbles: true,
+              composed: true
+            }));
+          }.bind(this)
+        );
+      },
+      /**
+       * Generate params
+       * {view: 'full', expand: 'related-contracts,limits,holds,customized-formats'}
+       * view=full&expand=related-contracts%2Climits%2Cholds%2Ccustomized-formats
+       */
+      _encodeData: function(data) {
+        return Object.keys(data).map(function(key) {
+          return [key, data[key]].map(encodeURIComponent).join('=');
+        }).join('&');
+      },
+      /**
+       * Accounts list
+       * /accounts/v0/accounts
+       */
+      _accountsService: function(params) {
+        var service = new BGADPAccounts.accounts.get(params);
+        this._addSignListener(service);
+        return service;
+      },
+      /**
+       * Account detail
+       * /accounts/v0/accounts/{account-id}
+       */
+      _accountService: function(params) {
+        var service = new BGADPAccounts.accounts.account.get(params);
+        this._addSignListener(service);
+        return service;
+      },
+      /**
+       * Account balances
+       * /accounts/v0/balances
+       */
+      _accountsBalanacesService: function(params) {
+        var service = new BGADPAccounts.accounts.balances.get(params);
+        this._addSignListener(service);
+        return service;
+      },
+      /**
+       * Account detail indicators
+       * /accounts/v0/accounts/{account-id}/indicators
+       */
+      _accountIndicatorsService: function(params) {
+        var service = new BGADPAccounts.accounts.account.indicators.get(params);
+        this._addSignListener(service);
+        return service;
+      },
+      /**
+       * Account detail transactions
+       * /accounts/v0/accounts/{account-id}/transactions
+       */
+      _accountTransactionsService: function(params) {
+        var service = new BGADPAccounts.accounts.account.transactions.get(params);
+        this._addSignListener(service);
+        return service;
+      },
+      /**
+       * Account detail transaction detail
+       * /accounts/v0/accounts/{account-id}/transactions/{transaction-id}
+       */
+      _accountTransactionDetailService: function(params) {
+        var service = new BGADPAccounts.accounts.account.transactions.transaction.get(params);
+        this._addSignListener(service);
+        return service;
+      },
+      /**
+       * Account detail customizedFormats
+       * /accounts/v0/accounts/{account-id}/customizedFormats
+       */
+      _accountCustomizedFormatsService: function(params) {
+        var service = new BGADPAccounts.accounts.account.customizedFormats.get(params);
+        this._addSignListener(service);
+        return service;
+      },
+      /**
+       * Account detail customizedFormats PUT
+       * PUT /accounts/v0/accounts/{account-id}/customizedFormats/{customized-format-id}
+       */
+      _accountCustomizedFormatServicePut: function(params) {
+        var service = new BGADPAccounts.accounts.account.customizedFormats.customizedFormat.put(params);
+        this._addSignListener(service);
+        return service;
+      },
+      /**
+       * Account detail customizedFormats DELETE
+       * DELETE /accounts/v0/accounts/{account-id}/customizedFormats/{customized-format-id}
+       */
+      _accountCustomizedFormatServiceDelete: function(params) {
+        var service = new BGADPAccounts.accounts.account.customizedFormats.customizedFormat.delete(params);
+        this._addSignListener(service);
+        return service;
+      },
+      /**
+       * Update account detail params
+       * /accounts/v0/accounts/{account-id}
+       */
+      _accountPatchService: function(params) {
+        var service = new BGADPAccounts.accounts.account.patch(params);
+        this._addSignListener(service);
+        return service;
+      },
+      /**
+       * Account types
+       * /accounts/v0/account-types
+       */
+      _accountTypesService: function(params) {
+        var service = new BGADPAccounts.accounts.accountTypes.get(params);
+        this._addSignListener(service);
+        return service;
+      },
+      /**
+       * Account holds
+       * /accounts/v0/accounts/{account-id}/holds
+       */
+      _accountHolds: function(params) {
+        var service = new BGADPAccounts.accounts.account.holds.get(params);
+        this._addSignListener(service);
+        return service;
+      },
+      /**
+       * Account holds
+       * /accounts/v0/accounts/{account-id}/holds/balances
+       */
+      _accountHoldsBalances: function(params) {
+        var service = new BGADPPeAccounts.accounts.account.holds.balances.get(params);
+        this._addSignListener(service);
+        return service;
+      },
+      /**
+       * Account hold
+       * /accounts/v0/accounts/{account-id}/holds/{hold-id}
+       */
+      _accountHold: function(params) {
+        var service = new BGADPAccounts.accounts.account.holds.hold.get(params);
+        this._addSignListener(service);
+        return service;
+      },
+      /**
+       * Update account detail params
+       * /api-aggregator/v0/api-aggregator
+       */
+      _apiAggregatorService: function(params) {
+        var service = new BGADPApiAggregator.apiAggregator.post(params);
+        this._addSignListener(service);
+        return service;
+      }
+
+      /**
+       * Fired on success alias change
+       * @event 'cells-account-alias-changed'
+       */
+
+      /**
+       * Fired on success simple account change
+       * @event 'cells-account-simple-changed'
+       */
+    });
+  }(Polymer));
+  </script>
+</dom-module>

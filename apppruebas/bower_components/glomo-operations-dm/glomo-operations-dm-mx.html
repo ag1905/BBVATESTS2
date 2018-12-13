@@ -1,0 +1,538 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`<glomo-operations-dm-mx>` description.
+
+Example:
+
+```html
+<glomo-operations-dm-mx></glomo-operations-dm-mx>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-operations-dm-mx">
+  <template>
+  </template>
+  <script>
+    (function() {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-operations-dm-mx',
+
+        properties: {
+          /**
+          * Product Id
+          * @type {String}
+          */
+          productId: {
+            type: String
+          },
+          /**
+          * Product Type
+          * @type {String}
+          */
+          productType: {
+            type: String,
+            value: 'dashboard'
+          },
+          /**
+          * Product
+          */
+          product: {
+            type: Object
+          },
+          /**
+          * Local currency
+          * @type {Object}
+          */
+          localCurrency: {
+            type: String
+          },
+          /**
+          * Continue page
+          * @type {String}
+          */
+          continue: String,
+          /**
+          * Operations list
+          * @type {Object}
+          */
+          operations: {
+            type: Object,
+            value: {
+              featured: [],
+              full: []
+            }
+          }
+        },
+
+        /**
+        * Reset
+        **/
+        reset: function() {
+          this.set('operations', {
+            featured: [],
+            full: []
+          });
+        },
+        /**
+        * Dispatch operations for a page
+        **/
+        getOperations: function(product) {
+          if (this.operations.featured.length <= 0) {
+            this._parseOperations(product);
+          }
+          this.dispatchEvent(new CustomEvent('featured-operations-list', { 'detail': this.operations.featured }));
+        },
+
+        /**
+        * Dispatch full operations for a page
+        **/
+        getFullOperations: function(product) {
+          if (this.operations.full.length <= 0) {
+            this._parseOperations(product);
+          }
+          this.dispatchEvent(new CustomEvent('full-operations-list', { 'detail': this.operations.full }));
+        },
+
+        /**
+        * Dispatch operations of dashboard
+        **/
+        getDashboardOperations: function(accounts) {
+          var payload = this._getDashboardOperations().featured;
+          if (accounts && !accounts.length) {
+            payload = [ {
+              label: 'cells-operations-list-transfer',
+              id: 'transfer',
+              eventDetail: {
+                continue: 'dashboard'
+              },
+              eventName: 'navigation-to-transfer',
+              icon: 'coronita:transfer'
+            } ];
+          }
+
+          this.dispatchEvent(new CustomEvent('dashboard-operations-list', { 'detail': payload}));
+        },
+
+        _parseOperations: function(product) {
+          var page = this.productType || 'dashboard';
+          var operations = [];
+
+          this.set('product', product);
+
+          operations = this['_get' + (page[0].toUpperCase() + page.substring(1)) + 'Operations'](product);
+          this.set('operations', operations);
+        },
+
+        /**
+       * Checks if is an SPEI Account
+       * **/
+        _isSPEIAccount: function(product) {
+          var result = false;
+          var customizedFormats = (product || {}).customizedFormats || [];
+
+          return customizedFormats.some(function(item) {
+            return item.customizedFormatId === 'SPEI';
+          });
+        },
+
+        /*
+        * Get currency major of product
+        */
+        _getCurrency: function(product) {
+          if ((product && product.currencies || []).length > 0) {
+            return product.currencies.find(function(currency) {
+              return currency.isMajor;
+            });
+          }
+        },
+
+        /**
+         * Gets dashboard operations
+         **/
+        _getDashboardOperations: function() {
+          return {
+            featured: [{
+              label: 'cells-operations-list-transfer',
+              id: 'transfer',
+              eventDetail: {
+                continue: 'dashboard'
+              },
+              eventName: 'navigation-to-transfer',
+              icon: 'coronita:transfer'
+            }, {
+              label: 'cells-operations-list-bill-pay',
+              id: 'billPay',
+              eventDetail: {
+                continue: 'dashboard'
+              },
+              eventName: 'navigation-to-bill-payments',
+              icon: 'coronita:sales'
+            }, {
+              label: 'cells-operations-list-buy-aire',
+              id: 'buyAire',
+              icon: 'coronita:chargemovil',
+              eventName: 'navigation-to-mobile-top-up',
+              eventDetail: {
+                continue: 'dashboard'
+              }
+            }, {
+              label: 'cells-operations-card-less-withdraw',
+              id: 'cardLessWithdraw',
+              icon: 'coronita:mobilecashdollar',
+              eventName: 'navigation-to-cardless-withdrawal',
+              class: 'cardless',
+              eventDetail: {
+                continue: 'dashboard'
+              }
+            }]
+          };
+        },
+
+        /**
+        * Returns a group of operation lists
+        */
+        _getFullResponse: function(data) {
+          return [
+            {
+              title: 'glomo-operations-operate-title',
+              style: 'primary',
+              operations: data[0]
+            },
+            {
+              title: 'glomo-operations-configure-title',
+              style: 'secondary',
+              operations: data[1]
+            }
+          ];
+        },
+        /**
+        * Returns common operatives
+        */
+        _getCommonOperations: function(product) {
+          return {
+            editAlias: {
+              label: 'cells-operations-edit-alias',
+              eventName: 'navigation-to-edit-' + this.productType + '-alias',
+              eventDetail: {
+                productId: this.productId,
+                productType: this.productType,
+                continue: this.continue
+              },
+              id: 'editAlias',
+              icon: 'coronita:edit',
+              disabled: this._checkCardStatus(product, 'editAlias')
+            }
+          };
+        },
+
+        /**
+         * Gets account operations
+         **/
+        _getAccountOperations: function(product) {
+          var featuredOperations;
+          var fullOperations;
+          var currency = this._getCurrency(product) || {};
+          var operations = Object.assign(this._getCommonOperations(product), {
+            transfer: {
+              label: 'cells-operations-transfer',
+              id: 'transfer',
+              eventDetail: {
+                productId: this.productId,
+                continue: 'account'
+              },
+              eventName: 'navigation-product-to-transfer',
+              icon: 'coronita:transfer',
+              type: 'operation'
+            },
+
+            withdraw: {
+              label: 'cells-operations-card-less-withdraw',
+              id: 'cardLessWithdraw',
+              eventDetail: {
+                productId: this.productId,
+                continue: 'account'
+              },
+              class: 'cardless',
+              eventName: 'navigation-product-to-cardless-withdrawal',
+              icon: 'coronita:mobilecashdollar',
+              type: 'operation'
+            },
+
+            billpay: {
+              label: 'cells-operations-bill-pay',
+              id: 'billPay',
+              eventDetail: {
+                productId: this.productId,
+                continue: 'account'
+              },
+              eventName: 'navigation-product-to-bill-payments',
+              icon: 'coronita:sales',
+              type: 'operation'
+            },
+
+            buyAire: {
+              label: 'cells-operations-buy-aire',
+              id: 'buyAire',
+              eventDetail: {
+                productId: this.productId,
+                continue: 'account'
+              },
+              eventName: 'navigation-product-to-mobile-top-up',
+              icon: 'coronita:chargemovil',
+              type: 'operation'
+            },
+            payCard: {
+              label: 'cells-operations-pay-credit-card',
+              id: 'payCard',
+              eventDetail: {
+                productId: this.productId,
+                continue: 'account'
+              },
+              eventName: 'navigation-product-to-credit-card-payment',
+              icon: 'coronita:creditcard',
+              type: 'operation',
+              disabled: false
+            },
+
+            linkPhone: {
+              label: 'cells-operations-link-phone',
+              id: 'linkPhone',
+              eventDetail: {
+                productId: this.productId,
+                continue: 'account'
+              },
+              eventName: 'navigation-product-to-link-account',
+              icon: 'coronita:mobile',
+              type: 'operation'
+            },
+
+            dissociatePhone: {
+              label: 'cells-operations-dissociate-cell-phone',
+              eventName: 'navigation-product-to-unlink-account',
+              eventDetail: {
+                productId: this.productId,
+                continue: 'account'
+              },
+              id: 'dissociatePhone',
+              icon: 'coronita:mobiledisconnected',
+              type: 'operation'
+            }
+          });
+
+          var getFeaturedOperations = function(account) {
+            var data;
+            if (this.localCurrency !== currency.currency) {
+              data = [
+                operations.editAlias
+              ];
+            } else {
+              data = [
+                operations.transfer,
+                operations.billpay,
+                operations.withdraw,
+                operations.buyAire,
+                operations.editAlias
+              ];
+            }
+            return data;
+          };
+
+          var getFullOperations = function(account) {
+            var specificOperations = [];
+            var commonOperations = [
+              operations.transfer,
+              operations.billpay,
+              operations.withdraw,
+              operations.buyAire,
+              operations.payCard
+            ];
+            if (this._isSPEIAccount(account)) {
+              specificOperations = [
+                operations.editAlias,
+                operations.dissociatePhone
+              ];
+            } else {
+              specificOperations = [
+                operations.editAlias,
+                operations.linkPhone
+              ];
+            }
+            return this._getFullResponse([commonOperations, specificOperations]);
+          };
+
+          return {
+            featured: getFeaturedOperations.bind(this)(product),
+            full: getFullOperations.bind(this)(product)
+          };
+        },
+
+        _getCardOperations: function(product) {
+          var featuredOperations;
+          var fullOperations;
+
+          var currency = this._getCurrency(product) || {};
+
+          //configure here your operations
+          var operations = Object.assign(this._getCommonOperations(product), {
+            transfer: {
+              label: 'cells-operations-transfer',
+              id: 'transfer',
+              eventDetail: {
+                productId: this.productId,
+                continue: 'card'
+              },
+              eventName: 'navigation-product-to-transfer',
+              icon: 'coronita:transfer',
+              disabled: this._checkCardStatus(product, 'transfer'),
+              type: 'operation'
+            },
+            paycard: {
+              label: 'cells-operations-lpay-credit-card',
+              id: 'cardPay',
+              eventDetail: {
+                productId: this.productId,
+                continue: 'card'
+              },
+              eventName: 'navigation-product-to-credit-card-payment',
+              icon: 'coronita:creditcard',
+              disabled: this._checkCardStatus(product, 'cardPay'),
+              type: 'operation'
+            }
+          });
+
+          var getFeaturedOperations = function() {
+            var data;
+            if (this.localCurrency !== currency.currency) {
+              data = [
+                operations.editAlias
+              ];
+            } else {
+              data = [
+                operations.transfer,
+                operations.paycard,
+                operations.editAlias
+              ];
+            }
+            return data;
+          };
+
+          var getFullOperations = function() {
+            return this._getFullResponse([
+              [
+                operations.transfer,
+                operations.paycard
+              ],
+              [
+                operations.editAlias
+              ]
+            ]);
+          };
+
+          return {
+            featured: getFeaturedOperations.bind(this)(),
+            full: getFullOperations.bind(this)()
+          };
+        },
+
+        _getDepositOperations: function() {
+          var featuredOperations;
+          var fullOperations;
+
+          //configure here your operations
+          var operations = Object.assign(this._getCommonOperations(), {});
+
+          var getFeaturedOperations = function() {
+            return [
+              operations.editAlias
+            ];
+          };
+
+          var getFullOperations = function() {
+            return this._getFullResponse([
+              [],
+              []
+            ]);
+          };
+
+          return {
+            featured: getFeaturedOperations.bind(this)(),
+            full: getFullOperations.bind(this)()
+          };
+        },
+
+        _getFundOperations: function() {
+          var featuredOperations;
+          var fullOperations;
+
+          //configure here your operations
+          var operations = Object.assign(this._getCommonOperations(), {});
+
+          var getFeaturedOperations = function() {
+            return [
+              operations.editAlias
+            ];
+          };
+
+          var getFullOperations = function() {
+            return this._getFullResponse([
+              [], []
+            ]);
+          };
+
+          return {
+            featured: getFeaturedOperations.bind(this)(),
+            full: getFullOperations.bind(this)()
+          };
+        },
+
+        _getLoanOperations: function() {
+          var featuredOperations;
+          var fullOperations;
+
+          //configure here your operations
+          var operations = Object.assign(this._getCommonOperations(), {});
+
+          var getFeaturedOperations = function() {
+            return [
+              operations.editAlias
+            ];
+          };
+
+          var getFullOperations = function() {
+            return this._getFullResponse([
+              [],
+              []
+            ]);
+          };
+
+          return {
+            featured: getFeaturedOperations.bind(this)(),
+            full: getFullOperations.bind(this)()
+          };
+        },
+
+        _checkCardStatus: function(card, operationType) {
+          if (card && this.productType === 'card') {
+            var status = card.overdraft ? 'OVERDRAFT' : card.status.id;
+            switch (status) {
+              case 'BLOCKED':
+                return true;
+              case 'CANCELED':
+                return true;
+              case 'OVERDRAFT':
+              case 'INOPERATIVE':
+                return !!(operationType === 'transfer' || operationType === 'billPay');
+            }
+          }
+          return false;
+        }
+      });
+    }());
+  </script>
+</dom-module>

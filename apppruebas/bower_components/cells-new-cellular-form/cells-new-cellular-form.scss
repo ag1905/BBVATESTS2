@@ -1,0 +1,187 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  --cells-st-button: {
+    padding: 0;
+  }
+  @apply --cells-new-cellular-form;
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+
+.cellular-form__wrapper {
+  text-align: center;
+  width: 100%;
+  padding: 2rem 1.875rem 0rem;
+  cells-molecule-input {
+    width: 100%;
+    margin-bottom: 1.25rem;
+    --cells-molecule-input-field-min-height: rem(60px);
+    --cells-molecule-input-button-color: var(--bbva-300, #D3D3D3);
+    --cells-st-button-text-color-transparent: var(--bbva-300, #D3D3D3);
+  }
+  cells-checkbox-button {
+    width: 100%;
+    outline: none;
+    padding: 0;
+    --cells-checkbox-button-checkbox-size: rem(50px);
+    --cells-checkbox-button-icon-size: rem(26px);
+    --cells-checkbox-button-label: unquote("{
+      margin-top: 0;
+    }");
+    @apply --cells-new-cellular-checkbox-button;
+  }
+  span {
+    font-size: rem(14px);
+    &.error {
+      color: var(--bbva-light-red);
+      font-size: rem(14px);
+      text-align: left;
+      margin: 0px 0px 20px 0px;
+    }
+    @apply --cells-new-cellular-paragraph;
+  }
+  #saveCheck {
+    width: 100%;
+  }
+  .check-text {
+    line-height: 1.43;
+    width: 100%;
+    height: rem(20px);
+    margin: 0rem 2.5rem 0rem 0rem;
+    margin-right: rem(40px);
+    text-align: left;
+    &__subtitle {
+      color: var(--bbva-500);
+      height: rem(100px);
+      max-height: rem(156px);
+    }
+  }
+  .cellular-form__info {
+    color: var(--bbva-500);
+    font-style: italic;
+  }
+
+
+  cells-st-button.link {
+    --cells-st-button-text-color-link: var( --bbva-600, #121212);
+    button {
+      font-weight: 400;
+      text-align: left;
+    }
+    @apply --cells-new-cellular-st-button;
+  }
+
+  cells-checkbox-button.cellular-form-autocomplete__check {
+    font-size: 1rem;
+    color: var( --bbva-600, #121212);
+    --cells-checkbox-button-checkbox-background-color: #ffffff;
+  }
+  .cellular-form-autocomplete__wrapper {
+    max-height: 10.175rem;
+    overflow: scroll;
+
+    cells-checkbox-button {
+      max-width: rem(20px);
+    }
+    button {
+      padding: 0;
+    }
+  }
+  .cellular-form-autocomplete {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    min-width: 16.25rem;
+    max-width: 75%;
+    margin: 0rem 1rem 0rem 2.125rem;
+    border-bottom: 1px solid var(--bbva-200, #e9e9e9);
+    @apply --cells-new-cellular-autocomplete-content;
+  }
+  .selector__wrapper{
+    margin-bottom: 1.25rem;
+    .fake-selector{
+      align-items: center;
+      background-color: var(--cells-credentials-form-fake-selector-bg-color, var(--bbva-100, #F4F4F4));
+      height: rem(60px);
+      border: 0;
+      padding: 0;
+      margin-bottom: rem(10px);
+      display: flex;
+      width: 100%;
+      &:focus {
+        @apply(--cells-credentials-form-fake-selector-focus);
+      }
+      @apply(--cells-credentials-form-fake-selector);
+
+      .modal-icon{
+        width: rem(40px);
+        height: rem(40px);
+        margin-right: rem(27px);
+        color: var(--cells-credentials-form-fake-selector-modal-icon-color, var(--bbva-medium-blue, #237aba));
+        @apply(--cells-credentials-form-fake-selector-modal-icon);
+      }
+
+      .header-texts {
+        width: 100%;
+        @apply(--layout-vertical);
+      }
+
+      .label {
+        margin-bottom: rem(5px);
+        font-size: rem(16px);
+        line-height: 0.75rem;
+        padding-left: rem(20px);
+        font-family: var(--cells-fontDefault, sans-serif);
+        color: var(--cells-credentials-form-fake-selector-label-color, var(--bbva-400, #BDBDBD));
+        text-align: left;
+        &.selected {
+          margin-bottom: rem(5px);
+          font-size: rem(12px);
+        }
+        @apply(--cells-credentials-form-fake-selector-label);
+      }
+
+      .placeholder {
+        width: 100%;
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 200;
+        line-height: 1rem;
+        text-align: left;
+        padding-left: rem(20px);
+        color: var(--cells-credentials-form-fake-selector-placeholder-color, var(---bbva-400, #BDBDBD));
+
+        &.selected {
+          font-size: rem(14px);
+          color: var(--cells-credentials-form-fake-selector-placeholder-selected-icon-color, var(--bbva-600, #121212));
+        }
+        @apply(--cells-credentials-form-fake-selector-placeholder);
+      }
+    }
+  }
+}
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+button:active { @apply --cells-global-active; }

@@ -1,0 +1,17 @@
+{
+  "cells-new-recipient-review-card": "Tarjeta BBVA",
+  "cells-new-recipient-review-account": "Número de Cuenta",
+  "cells-new-recipient-review-libreton_account": "Número de Cuenta",
+  "cells-new-recipient-review-saving_account": "Número de Cuenta",
+  "cells-new-recipient-review-check_account": "Número de Cuenta",
+  "cells-new-recipient-review-clabe": "CLABE",
+  "cells-new-recipient-review-name": "Nombre del beneficiario",
+  "cells-new-recipient-review-bank": "Banco/Entidad",
+  "cells-new-recipient-review-save-to frequent": "Guardar como frecuente",
+  "cells-new-recipient-review-contact": "Alias del contacto",
+  "cells-new-recipient-review-product": "Alias de producto (Opcional)",
+  "cells-new-recipient-review-notification-message-info": "Hemos identificado la cuenta, pero faltan algunos de los datos",
+  "cells-new-recipient-review-notification-message-success": "¡Tenemos los datos!",
+  "cells-new-recipient-review-notification-message-not-found": "No hemos identificado la cuenta, hay que colocar los datos manualmente.",
+  "cells-new-recipient-review-product-type": "Tipo de producto"
+}

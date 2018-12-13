@@ -1,0 +1,103 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../global-products-lists-behavior/global-products-lists-behavior.html" />
+<link rel="import" href="../cells-dm-global-apis-accounts/cells-dm-global-apis-accounts.html">
+<link rel="import" href="../cells-products-behavior/cells-accounts-transforms-behavior.html">
+
+<!--
+`<glomo-products-dm-cl-payments>` description.
+
+Example:
+
+```html
+<glomo-products-dm-cl-payments></glomo-products-dm-cl-payments>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --glomo-products-dm-cl-payments  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-products-dm-cl-payments">
+  <template>
+    <cells-dm-global-apis-accounts id="globalAccounts"
+      host="[[host]]"
+      accounts="{{accounts}}"
+      accounts-api-version="[[accountsApiVersion]]"
+      api-aggregator-api-version="[[apiAggregatorApiVersion]]"></cells-dm-global-apis-accounts>
+  </template>
+  <script>
+    (function() {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-products-dm-cl-payments',
+
+        behaviors: [
+          CellsBehaviors.i18nBehavior,
+          CellsBehaviors.GlobalProductsListsBehavior,
+          CellsBehaviors.AccountsTransforms
+        ],
+
+        properties: {
+          /**
+          * Accounts
+          * @type {Array}
+          */
+          accounts: {
+            type: Array
+          },
+          /**
+          * Products
+          * @type {Array}
+          */
+          products: {
+            type: Array,
+            computed: 'setProducts(accounts)',
+            notify: true
+          },
+          /**
+          * Product label
+          * @type {String}
+          */
+          productsListLabel: {
+            type: String,
+            value: 'cells-step-product-selector-my-accounts',
+            notify: true
+          },
+          /**
+          * Accounts API version
+          * @type {String}
+          */
+          accountsApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+          * Api agreggator API version
+          * @type {String}
+          */
+          apiAggregatorApiVersion: {
+            type: String,
+            value: '0'
+          }
+        },
+
+        getProducts: function() {
+          this.$.globalAccounts.getFullAccounts();
+        },
+
+        setProducts: function(accounts) {
+          return this._parseAccounts(accounts);
+        }
+      });
+    }());
+  </script>
+</dom-module>

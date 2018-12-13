@@ -1,0 +1,37 @@
+# cells-cvv-card
+
+Component that shows a back cover image of a card and its cvv.  
+
+Mandatory parameters:  
+
+* **cvv**: value of the cvv.
+* **backCover**: url/path of the back cover image.
+
+Optional parameters:  
+
+* **width**: Width of the image.
+* **height**: Height of the image.
+* **alt**: Alternative text of the image.
+* **defaultBackCover**: Image shown if the backCover is not available.  
+
+Example:
+```html
+<cells-cvv-card cvv="123" back-cover="https://openapi.bbva.com/ccds/covers?default_image=true&v=4&country=mx&app_id=com.bbva.wallet_mx&pg=DX&bin=481515&type=455545&width=404&height=256&back=true"></cells-cvv-card>
+```
+
+Example with dimensions:
+```html
+<cells-cvv-card cvv="088" back-cover="https://openapi.bbva.com/ccds/covers?default_image=true&v=4&country=mx&app_id=com.bbva.wallet_mx&pg=DY&bin=481516&type=0011&width=404&height=256&back=true" width="220"></cells-cvv-card>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-cvv-card-scope      | scope description | default value  |
+| --cells-cvv-card  | empty mixin     | {}             |
+| --cells-cvv-card-wrapper  | Mixin for the wrapper that contents the image     | {}             |
+| --cells-cvv-card-img  | Mixin for the image     | {}             |
+| --cells-cvv-card-cvv  | Mixin for the span that shows the cvv     | {}             |

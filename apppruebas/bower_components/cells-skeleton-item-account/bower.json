@@ -1,0 +1,25 @@
+{
+  "name": "cells-skeleton-item-account",
+  "version": "1.0.1",
+  "description": "Your component description",
+  "keywords": [],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.0"
+  },
+  "devDependencies": {
+    "cells-icons": "ssh://git@globaldevtools.bbva.com:7999/ct/cells-icons.git#^1.0.0",
+    "cells-sass": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-sass.git#^1.0.3",
+    "cells-demo-mobile": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-demo-mobile.git#^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "theme-base": "ssh://git@globaldevtools.bbva.com:7999/ct/theme-base.git#^3.0.5",
+    "web-component-tester": "^3.0.0",
+    "glomo-ui-theme": "ssh://git@globaldevtools.bbva.com:7999/tp/glomo-ui-theme.git#^3.0.0"
+  },
+  "main": [
+    "cells-skeleton-item-account.html"
+  ],
+  "resolutions": {
+    "theme-base": "^3.0.5"
+  }
+}

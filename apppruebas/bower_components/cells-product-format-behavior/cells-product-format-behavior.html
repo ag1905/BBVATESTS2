@@ -1,0 +1,101 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+  'use strict';
+
+  /**
+   * # CellsProductFormatBehavior
+   *
+   * Behavior of format products by type and locale
+   *
+   * Example:
+   * ```html
+   * <link rel="import" href="../cells-product-format-behavior/cells-product-format-behavior.html">
+   * ```
+   *
+   * ```js
+   * behaviors: [
+   *   CellsBehaviors.CellsProductFormatBehavior
+   * ]
+   * ```
+   *
+   * @polymerBehavior CellsBehaviors.CellsProductFormatBehavior
+   * @demo demo/index.html
+   */
+
+  window.CellsBehaviors = window.CellsBehaviors || {};
+  window.CellsBehaviors.CellsProductFormatBehavior = {
+    properties: {
+      /**
+       * @desc  Locale to format product
+       * @type  {String}
+       */
+      locale: String,
+      /**
+       * @desc  Masks
+       * @type  {Object}
+       */
+      masks: {
+        type: Object,
+        value: {
+          MXN: {
+            account: 'XXXX XXXX XXXX XXXX XXXX XXXX',
+            deposit: 'XXXX XXXX XXXX XXXX XXXX XXXX',
+            loan: 'XXXX XXXX XXXX XXXX XXXX XXXX',
+            card: 'XXXX XXXX XXXX XXXX',
+            clabe: 'XXXX XXXX XXXX XXXXXX',
+            phone: 'XX XXXX XXXX'
+          },
+          PEN: {
+            account: 'XXXX-XXXX-XXXXXXXXXX',
+            interbankaccountcode: 'XXX-XXX-XXXXXXXXXXXX-XX',
+            remittanceaccount: 'XXX-X-XXX-XX-XXXXXXXXXX'
+          }
+        }
+      }
+    },
+
+    /**
+    * Checked and format product by type and locale
+    * this._formatProduct('1234567890', 'account')
+    */
+    _formatProduct: function(value, type, locale) {
+      type = type && type.toLowerCase();
+      locale = locale || this.locale || 'MXN';
+      var mask = this.masks[locale] && this.masks[locale][type];
+
+      if (mask) {
+        return this._applyMask(value, mask);
+      }
+
+      return value;
+    },
+    /**
+    * Generate product formated
+    * this._applyMask('1234567890', 'XXXXXXX-XXXXX')
+    */
+    _applyMask: function(value, mask) {
+      var res = [];
+      var pos = 0;
+      value = value.split('');
+      var valueLength = value.length;
+
+      if (mask && value && valueLength) {
+        mask.split('').forEach(function(char) {
+          if (pos >= valueLength) {
+            return;
+          }
+
+          if (char === 'X') {
+            res.push(value[pos]);
+            pos++;
+          } else {
+            res.push(char);
+          }
+        });
+      }
+
+      return res.join('');
+    }
+  };
+</script>

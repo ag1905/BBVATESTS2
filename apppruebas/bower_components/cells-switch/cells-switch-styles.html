@@ -1,0 +1,89 @@
+<dom-module id="cells-switch-styles"><template><style>
+:host {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+          align-items: center;
+  font-family: var(--cells-fontDefault, sans-serif);
+  --knob-size: var(--cells-switch-knob-size, 22);
+  --switch-width: var(--cells-switch-width, 32);
+  @apply --cells-switch; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+:host(:empty) > label {
+  display: none; }
+
+:host([with-icons]) {
+  --cells-switch-knob-size: 36;
+  --cells-switch-width: 72; }
+
+label {
+  margin: 0 0.5rem;
+  @apply --cells-switch-label; }
+
+.switcher {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  cursor: pointer;
+  height: calc(var(--knob-size) * 1px);
+  width: calc(var(--switch-width) * 1px);
+  position: relative;
+  border-radius: 13px;
+  border: 1px solid transparent;
+  background-color: var(--cells-switch-switcher-bg-color, #072146);
+  @apply --cells-switch-switcher; }
+
+.item {
+  width: 50%;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  @apply --cells-switch-items; }
+  .item cells-atom-icon {
+    -webkit-justify-content: center;
+            justify-content: center;
+    @apply --cells-switch-icons; }
+
+.checked {
+  color: var(--cells-switch-checked-color, #fff);
+  @apply --cells-switch-checked; }
+  .checked cells-atom-icon {
+    @apply --cells-switch-checked-icon; }
+
+.unchecked {
+  color: var(--cells-switch-unchecked-color, #fff);
+  @apply --cells-switch-unchecked; }
+  .unchecked cells-atom-icon {
+    @apply --cells-switch-unchecked-icon; }
+
+.knob {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  width: calc(var(--knob-size) * 1px);
+  height: calc(var(--knob-size) * 1px);
+  transition: -webkit-transform 200ms ease-in-out;
+  transition: transform 200ms ease-in-out;
+  transition: transform 200ms ease-in-out, -webkit-transform 200ms ease-in-out;
+  color: var(--cells-switch-knob-color, #fff);
+  background-color: var(--cells-switch-knob-bg-color, #D3D3D3);
+  @apply --cells-switch-knob; }
+  .knob.on {
+    -webkit-transform: translateX(calc((var(--switch-width) - var(--knob-size)) * 1px));
+            transform: translateX(calc((var(--switch-width) - var(--knob-size)) * 1px));
+    background-color: var(--cells-switch-knob-checked-bg-color, #49A5E6);
+    @apply --cells-switch-knob-checked; }
+  .knob cells-atom-icon {
+    @apply --cells-switch-knob-icon; }
+
+</style></template></dom-module>

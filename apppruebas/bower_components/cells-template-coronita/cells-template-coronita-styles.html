@@ -1,0 +1,184 @@
+<dom-module id="cells-template-coronita-styles">
+  <template>
+    <style>
+      :host {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        overflow: hidden;
+        --cells-paper-scroll-header-container: {
+          display: -webkit-flex;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-flex-direction: column;
+          -ms-flex-direction: column;
+          flex-direction: column;
+        }
+        --app__footer-height: 50px;
+        @apply(--cells-template-coronita);
+      }
+
+      :host([state="active"]) {
+        z-index: 1;
+        @apply(--cells-template-coronita-state-active);
+      }
+
+      .app-container,
+      .app__section {
+        height: 100%;
+        @apply(--cells-template-coronita-containersection);
+      }
+
+      .app__section {
+        overflow: hidden;
+        position: relative;
+        z-index: var(--app__section-zindex, 0);
+        background-color: var(--app__section-bg, #fff);
+        @apply(--cells-template-coronita-section);
+      }
+
+      .app__header {
+        z-index: var(--app__header-zindex, 0);
+        position: relative;
+        @apply(--cells-template-coronita-header);
+      }
+
+      .app__header.visibleHeader {
+        transform: translateY(0px);
+        animation-name: showHeader;
+        animation-duration: 0.3s;
+      }
+
+      @keyframes showHeader {
+        0% {
+          transform: translateY(-100%);
+        }
+        
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      .app__header.invisibleHeader {
+        transform: translateY(-100%);
+        animation-name: hideHeader;
+        animation-duration: 0.3s;
+      }
+
+      @keyframes hideHeader {
+        0% {
+          transform: translateY(0);
+        }
+       
+        100% {
+          transform: translateY(-100%);
+        }
+      }
+      
+
+      :host[relative-main] .app__main {
+        position: relative;
+        @apply(--cells-template-coronita-relative-main);
+      }
+
+      .app__main {
+        padding-top: var(--app__main-padding-top, 0);
+        padding-bottom: var(--app__main-padding-bottom, 0);
+        width: 100%;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        @apply(--cells-template-coronita-main);
+      }
+
+      :host([has-footer]) .app__footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: var(--app__footer-height);
+        @apply(--cells-template-paper-drawer-panel-footer);
+      }
+
+      :host([has-footer]) .app__footer.invisibleFooter{
+        transform: translateY(65px);
+        animation-name: hideFooter;
+        animation-duration: 0.3s;
+      }
+
+      @keyframes hideFooter {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(100%);
+          display: none;
+        }
+      }
+
+      :host([has-footer]) .app__footer.visibleFooter{
+        animation-name: showFooter;
+        animation-duration: 0.3s;
+      }
+
+      @keyframes showFooter {
+        0% {
+          transform: translateY(100%);
+        }
+        
+        100% {
+          transform: translateY(0);
+        }
+        
+      }
+
+      cells-paper-scroll-header-panel ::content #mainContainer {
+        -webkit-backface-visibility: hidden;
+        -webkit-perspective: 1000;
+        backface-visibility: hidden;
+        perspective: 1000;
+        overflow-y: initial;
+        @apply(--cells-template-coronita-header-maincontainer);
+      }
+
+      :host(.footer-fixed) ::content #mainContainer {
+        padding-bottom: var(--app__footer-height);
+      }
+
+      :host([floating-header]) #app__header {
+        height: 0;
+        color: white;
+      }
+
+      :host(.overflow-initial)::content #mainContainer {
+        -webkit-overflow-scrolling: auto;
+        @apply(--cells-template-coronita-maincontainer);
+      }
+
+      .app__complementary {
+        height: 100%;
+        width: var(--app__complementary-width, 100%);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        z-index: var(--app__complementary-zindex, 0);
+        @apply(--cells-template-coronita-complementary);
+      }
+
+      .app__overlay {
+        z-index: var(--app__overlay-zindex, 0);
+        @apply(--cells-template-coronita-overlay);
+      }
+
+      .app__transactional {
+        z-index: var(--app__transactional-zindex, 0);
+        position: absolute;
+        bottom: 0;
+        @apply(--cells-template-coronita-transactional);
+      }
+    </style>
+  </template>
+</dom-module>

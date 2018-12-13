@@ -1,0 +1,32 @@
+{
+  "name": "glomo-opx-payments-dm",
+  "version": "1.18.0",
+  "description": "DataManager to handle operative 'bill payments' in GloMo project.",
+  "keywords": [
+    "dm",
+    "data",
+    "manager",
+    "glomo",
+    "payment services",
+    "global API",
+    "bill payments",
+    "operative",
+    "opx"
+  ],
+  "main": [
+    "glomo-opx-payments-dm.html"
+  ],
+  "dependencies": {
+    "cells-dm-global-apis-payments": "~2.0.0",
+    "cells-step-behavior": "~3.2.0",
+    "polymer": "Polymer/polymer#^1.7.0"
+  },
+  "devDependencies": {
+    "cells-demo-dm-helper": "^0.2.1",
+    "cells-demo-helper": "^1.3.5",
+    "cells-product-item-list": "^1.0.1",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "test-fixture": "polymerelements/test-fixture#^1.0.0",
+    "web-component-tester": "^3.0.0"
+  }
+}

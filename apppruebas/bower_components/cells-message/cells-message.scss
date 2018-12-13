@@ -1,0 +1,97 @@
+@import "bower_components/cells-sass/main";
+
+:host,
+:host ::content {
+  color: var(--cells-message-color, #121212);
+  @apply(--cells-message);
+}
+
+:host ::content time,
+.top-subtitle {
+  color: var(--cells-message-subtitle-color, #797F85);
+  font-style: italic;
+  @apply(--cells-message-top-subtitle);
+}
+
+:host ::content h2,
+.title {
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: bold;
+  @apply(--cells-message-title);
+}
+
+:host ::content h3,
+.subtitle {
+  font-size: 20px;
+  line-height: 20px;
+  @apply(--cells-message-subtitle);
+}
+
+:host ::content p,
+.content-text {
+  @apply(--cells-message-content-text);
+}
+
+:host ::content ul,
+.list {
+  padding: 0px;
+  @apply(--cells-message-content-list);
+  & li{
+    position: relative;
+    display: block;
+    padding: .4em;
+    *padding: .4em;
+    margin: .5em 0 .5em 1em;
+    @apply(--cells-message-decimal-list-li);
+  }
+
+  & li:before{
+    content: "";
+    position: absolute;
+    left: -1em;
+    top: 4px;
+    background: linear-gradient(39deg, #D3D3D3 13px, transparent 14px);
+    height: 1.2em;
+    width: 0.4em;
+    line-height: 2em;
+    text-align: center;
+    font-weight: bold;
+    @apply(--cells-message-decimal-list-li-before);
+  }
+}
+
+:host ::content ol,
+.decimal {
+    list-style-type: none;   
+    margin: 0;
+    margin-left: 2.5em;
+    padding: 0;
+    counter-reset: li-counter;
+	@apply(--cells-message-decimal);
+
+  & li{
+    position: relative;
+    padding-left: 0.5em;
+    min-height: 3em;
+    @apply(--cells-message-decimal-li);
+  }
+
+  & li:before{
+    position: absolute;
+    top: 0;
+    left: -2.33em;
+    width: 1.9em;
+    height: 1.9em;
+     
+    line-height: 1.6;
+    text-align: center;
+    background: linear-gradient( 135deg, #F4F4F4 22px, transparent 20px );
+    content: counter(li-counter);
+    counter-increment: li-counter;
+    @apply(--cells-message-decimal-li-before);
+  }
+}
+
+
+

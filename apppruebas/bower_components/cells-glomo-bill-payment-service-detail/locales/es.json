@@ -1,0 +1,20 @@
+{
+  "cells-glomo-bill-payment-service-detail_calculate-amount": "Calcular importe",
+  "cells-glomo-bill-payment-service-detail_continue": "Continuar",
+  "cells-glomo-bill-payment-service-detail_apply-changes": "Aplicar cambios",
+  "cells-glomo-bill-payment-service-detail_choose-another-service": "Elegir otro servicio",
+  "cells-glomo-bill-payment-service-detail_reference": "Referencia",
+  "cells-glomo-bill-payment-service-detail_amount": "Importe",
+  "cells-glomo-bill-payment-service-detail_select-reactive-amount": "Para reactivar",
+  "cells-glomo-bill-payment-service-detail_select-total-amount": "Deuda total",
+  "cells-glomo-bill-payment-service-detail_select-other-amount": "Otro monto",
+  "cells-glomo-bill-payment-service-detail-close": "Cerrar",
+  "cells-glomo-bill-payment-service-detail_agreement-number": "Nº Convenio",
+  "cells-glomo-bill-payment-service-detail_reference-number": "Referencia",
+  "cells-glomo-bill-payment-service-detail_save-service": "Guardar servicio",
+  "cells-glomo-bill-payment-service-detail_optional-alias": "Alias (Opcional)",
+  "cells-glomo-bill-payment-service-detail_modal-title": "Datos del servicio",
+  "cells-glomo-bill-payment-service-detail_modal-button-primary": "Entendido",
+  "cells-glomo-bill-payment-service-detail_maturity-date": "Fecha de vencimiento:"
+
+}

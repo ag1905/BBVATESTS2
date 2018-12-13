@@ -1,0 +1,78 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	
+	@apply(--cells-atom-message);
+}
+
+	:host([type="success"]) {
+		background-color: var(--cells-atom-message-success-bg-color, --cells-GM6_colour);
+		color: var(--cells-atom-message-success-color, --cells-GM2_colour);
+		
+		@apply(--cells-atom-message-success);
+	}
+
+	:host([type="error"]) {
+		background-color: var(--cells-atom-message-error-bg-color, --cells-RM6_colour);
+		color: var(--cells-atom-message-error-color, --cells-RM2_colour);
+		
+		@apply(--cells-atom-message-error);
+	}
+
+	:host([type="warning"]) {
+		background-color: var(--cells-atom-message-warning-bg-color, --cells-YM3_colour);
+		color: var(--cells-atom-message-warning-color, --cells-KM3_colour);
+		
+		@apply(--cells-atom-message-warning);
+	}
+
+	:host([type="info"]) {
+		background-color: var(--cells-atom-message-info-bg-color, --cells-YM5_colour);
+		color: var(--cells-atom-message-info-color, --cells-B1_colour);
+		
+		@apply(--cells-atom-message-info);
+	}
+
+.image {
+	&__fullscreen{
+		width: 100vw;
+		height: 100vh;
+
+		@apply(--cells-atom-message-image__fullscreen);
+	}
+
+	@apply(--cells-atom-message-image);
+}
+
+.message {
+	&__text{
+		@apply(--cells-atom-message__message--text);
+	}
+	&__icon{
+		@apply(--cells-atom-message__message--icon);
+	}
+	&__link{
+		text-decoration: none;
+		cursor: pointer;
+		color: var(--cells-atom-message__message--link-color, --cells-KM3_colour);
+		
+		@apply(--cells-atom-message__message--link);
+	}
+	&__link:hover{
+		@apply(--cells-atom-message__message--link-hover);
+	}
+
+	&__link:visited{
+		@apply(--cells-atom-message__message--link-visited);
+	}
+	&__link:active{
+		@apply(--cells-atom-message__message--link-active);
+	}
+
+	@apply(--cells-atom-message__message);
+}

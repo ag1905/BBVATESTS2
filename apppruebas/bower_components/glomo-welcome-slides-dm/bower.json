@@ -1,0 +1,31 @@
+{
+  "name": "glomo-welcome-slides-dm",
+  "version": "0.3.2",
+  "description": "DM to return the slider information",
+  "keywords": [
+    "dm",
+    "data",
+    "manager"
+  ],
+  "composer": {
+    "description": "DM for welcome pages slider",
+    "type": "DM",
+    "platforms": "android, ios, desktop",
+    "family": "cells-catalog-bbvaapis-family",
+    "name": "glomo-welcome-slides-dm",
+    "preview": "DM_cells.svg"
+  },
+  "main": [
+    "glomo-welcome-slides-dm.html"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.9.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+    "test-fixture": "polymerelements/test-fixture#^1.0.0",
+    "cells-service-caller-form": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-service-caller-form.git#^1.0.0",
+    "cells-models-catalog": "ssh://git@globaldevtools.bbva.com:7999/cm/cells-models-catalog.git#^0.8.0"
+  }
+}

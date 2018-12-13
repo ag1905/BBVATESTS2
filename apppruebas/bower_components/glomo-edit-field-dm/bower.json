@@ -1,0 +1,28 @@
+{
+  "name": "glomo-edit-field-dm",
+  "version": "3.3.0",
+  "description": "Datamanager to edit field",
+  "keywords": [
+    "dm",
+    "data",
+    "manager"
+  ],
+  "main": [
+    "glomo-edit-field-dm.html"
+  ],
+  "dependencies": {
+    "cells-dm-global-apis-accounts": "~8.4.0",
+    "cells-dm-global-apis-cards": "~1.7.0",
+    "cells-dm-global-apis-deposits": "~1.3.2",
+    "cells-dm-global-apis-investment-funds": "~1.2.4",
+    "cells-dm-global-apis-loans": "~2.1.3",
+    "polymer": "Polymer/polymer#^1.9.1"
+  },
+  "devDependencies": {
+    "cells-demo-dm-helper": "^0.2.1",
+    "cells-demo-helper": "^1.3.5",
+    "iron-component-page": "PolymerElements/iron-component-page",
+    "test-fixture": "polymerelements/test-fixture#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0"
+  }
+}

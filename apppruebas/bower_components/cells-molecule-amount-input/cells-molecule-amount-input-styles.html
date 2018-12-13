@@ -1,0 +1,119 @@
+<dom-module id="cells-molecule-amount-input-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  display: block;
+  position: relative;
+  background-color: var(--cells-molecule-amount-input-background-color, --bbva-100);
+  @apply (--cells-molecule-amount-input); }
+
+:host([disabled]), :host([readonly]) {
+  background-color: rgba(255, 255, 255, 0.4);
+  @apply (--cells-molecule-amount-input-disabled); }
+  :host([disabled]) input,
+  :host([disabled]) .text-field, :host([readonly]) input,
+  :host([readonly]) .text-field {
+    color: var(--bbva-300);
+    @apply (--cells-molecule-amount-input-disabled-text-field); }
+    :host([disabled]) input.has-content ~ .text-field__label,
+    :host([disabled]) .text-field.has-content ~ .text-field__label, :host([readonly]) input.has-content ~ .text-field__label,
+    :host([readonly]) .text-field.has-content ~ .text-field__label {
+      color: var(--bbva-300); }
+  :host([disabled]) .text-field__label, :host([readonly]) .text-field__label {
+    color: var(--bbva-300);
+    @apply (--cells-molecule-amount-input-disabled-text-field__label); }
+
+:host([with-icon]) {
+  padding-right: 3.75rem;
+  @apply (--cells-molecule-amount-input-with-icon); }
+  :host([with-icon]) .text-field__input {
+    padding-right: 0;
+    @apply (--cells-molecule-amount-input-with-icon-input); }
+  :host([with-icon]):not(.has-content) {
+    padding-right: 0; }
+
+:host([invalid]) {
+  border-bottom: 1px solid var(--cells-molecule-amount-input-invalid-border-bottom, --bbva-red);
+  @apply (--cells-molecule-amount-input-invalid); }
+  :host([invalid]) input {
+    color: var(--cells-molecule-amount-input-invalid-input-color, --bbva-red);
+    @apply (--cells-molecule-amount-input-invalid-input); }
+
+.text-field {
+  position: relative;
+  display: block;
+  height: 3.125rem;
+  @apply (--cells-molecule-amount-input-text-field); }
+  .text-field__label, .text-field__icon {
+    z-index: 1;
+    transition: all 200ms; }
+  .text-field__label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 1.125rem 1.25rem;
+    color: var(--cells-molecule-amount-input-placeholder-color, --bbva-500);
+    white-space: nowrap;
+    line-height: 1;
+    width: 100%;
+    transition: all 200ms;
+    opacity: 0.5;
+    @apply (--cells-molecule-amount-input-label); }
+  .text-field__icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 3.75rem;
+    height: 3.125rem;
+    padding: 0 1.0625rem;
+    text-align: center;
+    cursor: pointer;
+    @apply (--cells-molecule-amount-input-icon); }
+    .text-field__icon[hidden] {
+      display: none; }
+  .text-field .content-input {
+    display: inline-block; }
+  .text-field__input {
+    color: var(--cells-molecule-amount-input-input-color, --bbva-600);
+    width: 100%;
+    height: 100%;
+    padding: 1.875rem 1.1875rem 0 0;
+    line-height: 1.5;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    background: transparent;
+    @apply (--cells-molecule-amount-input-input); }
+    .text-field__input:-webkit-autofill {
+      box-shadow: 0 0 0px 1000px var(--cells-molecule-amount-input-background, --bbva-100) inset; }
+    .text-field__input.has-content {
+      padding: 1.5rem 1.5rem 0 0;
+      @apply (--cells-molecule-amount-input-has-content); }
+    .text-field__input.has-content ~ .text-field__label {
+      color: var(--cells-molecule-amount-input-disabled-color, --bbva-500);
+      opacity: .5;
+      font-size: 0.75rem;
+      -webkit-transform: translateY(-9px);
+              transform: translateY(-9px);
+      padding-bottom: 0;
+      @apply (--cells-molecule-amount-input-floated-label); }
+
+.currency-label {
+  display: inline-block;
+  @apply (--cells-molecule-amount-input-currency-label); }
+  .currency-label[hidden] {
+    display: none; }
+  .currency-label .currency-label--left {
+    margin-left: 1.25rem;
+    @apply (--cells-molecule-amount-input-currency-label-left); }
+  .currency-label .currency-label--right {
+    margin-left: 1.25rem;
+    @apply (--cells-molecule-amount-input-currency-label-right); }
+
+</style></template></dom-module>

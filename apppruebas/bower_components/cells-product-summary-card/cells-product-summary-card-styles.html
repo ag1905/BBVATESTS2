@@ -1,0 +1,79 @@
+<dom-module id="cells-product-summary-card-styles"><template><style>
+:host {
+  font-family: var(--cells-fontDefault, "sans-serif");
+  background-color: transparent;
+  display: block;
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  --cells-product-summary-bottom-summary: { -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; };
+  --cells-product-summary-additional-items-list-item: { padding-bottom: 10px; };
+  --cells-product-summary-progress-bar-left-color: var(--bbva-light-blue, #5bbeff); }
+  :host .card-product--negative-value {
+    --cells-product-summary-progress-bar-left-color: var(--bbva-coral, #f35e61); }
+  :host .noAdditionalInfo {
+    margin-top: 1.875rem;
+    @apply (--cells-product-summary-card-additional-info);
+    @apply (--cells-product-summary-card); }
+    :host .noAdditionalInfo .data {
+      border-top: none;
+      margin: 0;
+      padding: 0;
+      @apply (--cells-product-summary-card-additional-info-data); }
+    :host .noAdditionalInfo .data__row {
+      margin: 0;
+      padding-bottom: 10px;
+      @apply (--cells-product-summary-card-additional-info-data-row); }
+  :host .data {
+    margin: 1rem 0 0 0;
+    padding: 2rem 0 0 0;
+    border-top: 1px solid var(--bbva-200, #e9e9e9);
+    font-size: .8125rem;
+    @apply (--cells-product-summary-loan-product-fees); }
+    :host .data__header {
+      margin: 0 0 1.25rem 0;
+      @apply (--cells-product-summary-loan-product-fees-header); }
+    :host .data__row {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-justify-content: space-between;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      margin-bottom: 1.875rem;
+      @apply (--cells-product-summary-loan-product-fees-row); }
+      :host .data__row cells-atom-icon {
+        color: var(--bbva-medium-blue, #237ABA); }
+      :host .data__row cells-atom-amount {
+        display: block;
+        margin-bottom: 0.625rem; }
+      :host .data__row--new-block {
+        border-top: 1px solid var(--bbva-200, #e9e9e9);
+        padding-top: 1.875rem; }
+    :host .data .desc {
+      display: block;
+      margin-bottom: 0.625rem;
+      color: var(--bbva-500, #666666);
+      @apply (--cells-product-summary-loan-product-desc); }
+      :host .data .desc--title {
+        margin-bottom: 0; }
+    :host .data .info {
+      font-style: italic;
+      color: var(--bbva-400, #BDBDBD);
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center; }
+      :host .data .info cells-atom-icon {
+        color: var(--bbva-light-blue, #5bbeff);
+        margin-right: 0.6875rem; }
+    :host .data .date {
+      font-style: italic;
+      color: var(--bbva-dark-gold, #b79e5e);
+      @apply (--cells-product-summary-loan-product-date); }
+
+</style></template></dom-module>

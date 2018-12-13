@@ -1,0 +1,116 @@
+<dom-module id="glomo-help-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --glomo-help; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+.help {
+  @apply --glomo-help-list; }
+  .help__header {
+    margin: 2.5rem 0 1.875rem 0;
+    text-align: center; }
+  .help__content {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0;
+    overflow: scroll; }
+    .help__content.without-footer {
+      padding-bottom: 10rem; }
+      .help__content.without-footer strong {
+        color: var(--bbva-medium-blue, #237ABA);
+        @apply --glomo-help-content-whitout-footer-strong; }
+        .help__content.without-footer strong a {
+          color: var(--bbva-medium-blue, #237ABA);
+          text-decoration: none;
+          @apply --glomo-help-content-whitout-footer-strong-a; }
+    .help__content--message {
+      margin: 1.875rem 1.875rem 1.25rem 1.875rem;
+      min-height: 3.75rem;
+      @apply --glomo-help-content-message; }
+    .help__content--list {
+      list-style: none;
+      text-align: left;
+      padding: 0;
+      margin: 0;
+      @apply --glomo-help-content-list; }
+      .help__content--list li {
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-justify-content: left;
+            -ms-flex-pack: left;
+                justify-content: left;
+        -webkit-align-items: center;
+            -ms-flex-align: center;
+                align-items: center;
+        margin: 1.25rem 1.25rem 1.25rem 3.125rem;
+        @apply --glomo-help-content-list-li; }
+        .help__content--list li span.bullet {
+          display: block;
+          width: 7px;
+          height: 5px;
+          background-color: transparent;
+          overflow: hidden;
+          margin-right: 0.75rem; }
+          .help__content--list li span.bullet::before {
+            content: '';
+            display: block;
+            left: 1px;
+            position: relative;
+            width: 7px;
+            height: 5px;
+            background-color: var(--bbva-300, #D3D3D3);
+            -webkit-transform: skewX(-20deg);
+            transform: skewX(-20deg); }
+
+.help__content--footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background-color: white;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+  text-align: center;
+  @apply --glomo-help-content-footer; }
+  .help__content--footer cells-st-button {
+    margin: 1.25rem 0 0.625rem; }
+
+cells-st-button {
+  margin: 2.25rem 0 1.875rem 0;
+  height: 3.125rem; }
+  cells-st-button a {
+    color: white;
+    text-decoration: none; }
+
+cells-icon-message {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 7.125rem;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: var(--bbva-100, #f4f4f4);
+  color: var(--bbva-medium-blue, #237ABA); }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+button:active {
+  @apply --cells-global-active; }
+
+</style></template></dom-module>

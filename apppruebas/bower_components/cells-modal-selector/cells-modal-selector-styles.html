@@ -1,0 +1,78 @@
+<dom-module id="cells-modal-selector-styles"><template><style>
+:host {
+  --cells-middle-modal-md-content-padding: 1.25em 0em 1.875em;
+  --cells-middle-modal-md-overlay-background-color: var(--bbva-core-blue, #004481);
+  --cells-middle-modal-md-overlay-opacity: 0.9;
+  @apply --cells-modal-selector; }
+
+.cells-modal-selector-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0.35rem 2.5rem;
+  min-height: 2.5rem;
+  @apply --cells-modal-selector-content; }
+  .cells-modal-selector-content:hover {
+    outline: 0;
+    @apply --cells-modal-selector-content-label-hover; }
+    .cells-modal-selector-content:hover cells-atom-icon {
+      display: block; }
+  .cells-modal-selector-content.selected {
+    background-color: var(--cells-modal-selector-label-focus-color, var(--bbva-core-blue, #004481));
+    color: var(--bbva-white, #FFF);
+    @apply --cells-modal-selector-content-label-selected; }
+    .cells-modal-selector-content.selected cells-atom-icon {
+      display: block; }
+  .cells-modal-selector-content cells-atom-icon {
+    display: none;
+    position: absolute;
+    top: 50%;
+    right: 2rem;
+    margin-top: -.8125rem;
+    color: var(--bbva-white);
+    line-height: 0;
+    @apply --cells-modal-selector-icon; }
+
+.cells-modal-selector-img-label {
+  margin-right: 1.25rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  -o-object-fit: contain;
+     object-fit: contain;
+  font-size: var(--cells-text-size-11); }
+
+.cells-modal-selector-label {
+  -webkit-font-smoothing: antialiased;
+  font-size: 1rem;
+  line-height: 1.25;
+  display: block;
+  overflow: hidden;
+  @apply --cells-fontDefaultNormal;
+  @apply --cells-modal-selector-label; }
+
+.cells-modal-selector-img {
+  -webkit-font-smoothing: antialiased;
+  display: block;
+  overflow: hidden;
+  text-indent: -99999px;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  height: 2.625rem;
+  @apply --cells-modal-selector-img; }
+  .cells-modal-selector-img:hover {
+    background-color: var(--cells-modal-selector-img-hover-background-color, var(--bbva-100, #004481)) !important;
+    @apply --cells-modal-selector-img-hover; }
+  .cells-modal-selector-img label {
+    height: 2.625rem;
+    display: block; }
+
+.list {
+  padding: 0;
+  @apply --cells-modal-selector-list; }
+
+.check-icon {
+  width: 26px;
+  height: 26px;
+  @apply --cells-modal-selector-check-icon; }
+
+</style></template></dom-module>

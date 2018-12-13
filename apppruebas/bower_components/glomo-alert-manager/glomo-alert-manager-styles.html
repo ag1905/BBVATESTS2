@@ -1,0 +1,32 @@
+<dom-module id="glomo-alert-manager-styles"><template><style>
+:host {
+  --cells-alert-box-content-container: { padding: 0 10px; font-size: var(--cells-text-size-14, .875rem); line-height: 1.43; @apply(--glomo-alert-manager-content-container); };
+  --cells-alert-box-button-container: { margin-top: 0; @apply(--glomo-alert-manager-button-container); };
+  --cells-bottom-modal-body: { padding: 0 30px; @apply(--glomo-alert-manager-modal-body); };
+  --cells-btn--secondary: { background: var(--bbva-medium-blue, #237ABA); @apply(--glomo-alert-manager-button-secondary); };
+  @apply (--glomo-alert-manager); }
+  :host cells-alert-box {
+    @apply (--glomo-alert-manager-alert-box); }
+    :host cells-alert-box.full-height-error {
+      --cells-alert-box-content-container-text: { margin-bottom: 0; };
+      --cells-bottom-modal-full-height-header-wrapper: { background-color: var(--bbva-navy, #072146); color: var(--bbva-white, #fff); };
+      --cells-bottom-modal-btn-close-color: var(--bbva-white, #fff); }
+    :host cells-alert-box.info cells-atom-icon {
+      --cells-atom-icon-size: 24px;
+      color: var(--bbva-light-blue, #5BBEFF);
+      @apply (--glomo-alert-manager-alert-box-icon); }
+  :host h2 {
+    font-size: 1rem;
+    font-weight: normal;
+    margin: 0;
+    @apply (--glomo-alert-manager-title); }
+  :host .spacing {
+    margin-bottom: 20px; }
+  :host .strong {
+    font-weight: bold;
+    @apply (--glomo-alert-manager-strong); }
+
+:host([hidden]) {
+  display: none; }
+
+</style></template></dom-module>

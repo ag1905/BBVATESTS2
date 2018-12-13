@@ -1,0 +1,11 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  @apply(--cells-apng-canvas);
+}
+
+canvas {
+  width: var(--cells-apng-canvas__canvas_width, 100%);
+  height: var(--cells-apng-canvas__canvas_height, auto);
+  @apply(--cells-apng-canvas__canvas);
+}

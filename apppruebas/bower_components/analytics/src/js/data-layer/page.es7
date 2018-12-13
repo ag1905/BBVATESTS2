@@ -1,0 +1,36 @@
+import BgdmjsAnalyticsDataLayerPageActivity from './page/activity';
+import BgdmjsAnalyticsDataLayerPageInfo from './page/info';
+/**
+ * Almacena la información relacionada con la página y la actividad
+ * del usuario en dicha página.
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer
+ * @class     bgdmjs.analytics.dataLayer.Page
+ */
+export default class BgdmjsAnalyticsDataLayerPage
+{
+    /**
+     * Actividad en la página.
+     *
+     * @type {bgdmjs.analytics.dataLayer.page.Activity|null}
+     */
+    pageActivity = null;
+    /**
+     * Información de la página.
+     *
+     * @type {bgdmjs.analytics.dataLayer.page.Info|null}
+     */
+    pageInfo     = null;
+
+    /**
+     * Constructor de la clase.
+     *
+     * @constructor
+     */
+    constructor()
+    {
+        this.pageActivity = new BgdmjsAnalyticsDataLayerPageActivity();
+        this.pageInfo     = new BgdmjsAnalyticsDataLayerPageInfo();
+    }
+}

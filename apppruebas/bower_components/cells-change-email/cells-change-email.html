@@ -1,0 +1,94 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-molecule-input/cells-molecule-input.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="cells-change-email-styles.html">
+<!--
+Change email form of user
+
+Example:
+
+```html
+<cells-change-email></cells-change-email>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-change-email  | Mixin applied to :host     | {}  |
+| --cells-change-email-form-row | Empty mixin | {}  |
+| --cells-change-email-form | Empty mixin | {}  |
+| --cells-change-email-message  | Empty mixin | {}  |
+| --cells-change-email-notification | Empty mixin | {}  |
+| --cells-change-email-action-button  | Empty mixin | {}  |
+| --cells-change-email-actions  | Empty mixin | {}  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-change-email">
+  <template>
+    <style include="cells-change-email-styles cells-change-email-shared-styles"></style>
+    <div class="form">
+      <p class="form--label">{{t('cells-change-email-label')}}</p>
+      <div class="form__row">
+        <cells-molecule-input id="email"
+          label="{{t('cells-change-email-email')}}"
+          type="text"
+          value="{{email}}"
+          invalid="{{_invalidEmail}}"
+          icon="coronita:close"
+          icon-label="Clear field"
+          allowed-value='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+          auto-validate
+          required></cells-molecule-input>
+        <template is="dom-if" if="[[_errorMessage]]">
+          <cells-icon-message class="error-message inline"
+            type="error"
+            icon="[[errorIcon]]"
+            icon-size="[[errorIconSize]]"
+            message="[[_errorMessage]]"></cells-icon-message>
+        </template>
+      </div>
+      <div class="form__row">
+        <cells-molecule-input id="emailConfirm"
+          label="{{t('cells-change-email-confirm-email')}}"
+          type="text"
+          value="{{emailConfirm}}"
+          invalid="{{_invalidEmailConfirm}}"
+          icon="coronita:close"
+          icon-label="Clear field"
+          allowed-value='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+          auto-validate
+          required></cells-molecule-input>
+        <template is="dom-if" if="[[_errorMessageConfirm]]">
+          <cells-icon-message class="error-message inline"
+            type="error"
+            icon="[[errorIcon]]"
+            icon-size="[[errorIconSize]]"
+            message="[[_errorMessageConfirm]]"></cells-icon-message>
+        </template>
+      </div>
+    </div>
+    <cells-icon-message class="notification"
+      type="info"
+      icon="coronita:info"
+      message="{{t('cells-change-email-notification')}}"></cells-icon-message>
+    <div class="actions">
+      <cells-st-button class="secondary size-m" on-click="_notifyOnClickPrimary">
+        <button disabled$="[[!valid]]">[[t('cells-change-email-save')]]</button>
+      </cells-st-button>
+      <cells-st-button class="transparent" on-click="_notifyOnClickSecondary">
+        <button>[[t('cells-change-email-cancell')]]</button>
+      </cells-st-button>
+    </div>
+  </template>
+  <script src="cells-change-email.js"></script>
+</dom-module>

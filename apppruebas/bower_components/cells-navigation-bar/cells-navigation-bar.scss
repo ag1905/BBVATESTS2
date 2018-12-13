@@ -1,0 +1,108 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  height: var(--cells-navigation-bar-height, rem(50px));
+  background-color: var(--cells-navigation-bar-background-color, rgba(white, .95));
+  box-shadow: 0 0 3px 0 rgba(18,18,18, .10);
+  border-top: 1px solid #E9E9E9;
+  font-family: var(--cells-fontDefault, sans-serif);
+  position: relative;
+
+  @apply --cells-fontDefaultMedium;
+  @apply --cells-navigation-bar;
+}
+
+:host(.with-bump) {
+  box-shadow: none;
+  border-top: 0;
+
+  .list {
+    position: relative;
+    z-index: 5;
+    background-color: var(--cells-navigation-bar-with-bump-list-color, var(--bbva-white, #fff));
+    @apply --cells-navigation-bar-with-bump-list;
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 40px;
+    background-color: var(--cells-navigation-bar-background-color, rgba(white, .95));
+    border-top: 1px solid rgba(white, .90);
+    box-shadow: 0 0 3px 0 rgba(18,18,18, .20);
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    z-index: 2;
+    @apply --cells-navigation-bar-bump-before;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 3px 0 rgba(18,18,18, .20);
+    border-top: 1px solid #E9E9E9;
+    z-index: 1;
+    @apply --cells-navigation-bar-bump-after;
+  }
+  @apply --cells-navigation-bar-bump;
+}
+
+.list {
+  display: flex;
+  height: 100%;
+  font-size: rem(11px);
+  justify-content: center;
+  align-items: center;
+  @apply --cells-navigation-bar-list;
+
+  &__item {
+    flex: 1;
+    position: relative;
+    height: var(--cells-navigation-bar-height, 100%);
+    @apply --cells-navigation-bar-list-item;
+  }
+
+  &__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--cells-navigation-bar-link-color, #BDBDBD);
+    @apply --cells-navigation-bar-link;
+
+    .notification {
+      position: absolute;
+      top: 0;
+      margin-left: 12px;
+      margin-top: -4px;
+      color: var(--cells-navigation-bar-notification-color, white);
+      background-color: var(--cells-navigation-bar-bg-notification-color, #b92a45);
+      width: 12px;
+      height: 12px;
+      border-radius: 100%;
+      text-align: center;
+      @apply --cells-navigation-bar-notification;
+    }
+
+    .iron-selected &,
+    &:active,
+    &:focus {
+      color: var(--cells-navigation-bar-link-active-color, #004481);
+      @apply --cells-navigation-bar-link-active;
+    }
+  }
+
+  &__icon {
+    margin-bottom: rem(4px);
+    @apply --cells-navigation-bar-icon;
+  }
+}

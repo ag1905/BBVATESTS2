@@ -1,0 +1,279 @@
+@import "bower_components/cells-sass/main";
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, sans-serif);
+  position: relative;
+  box-sizing: border-box;
+
+  --icon-button-size: var(--cells-molecule-input-icon-button-size, rem(50px));
+  --icons-button-gutter: var(--cells-molecule-input-icons-button-gutter, rem(8px));
+
+  @apply --cells-molecule-input;
+}
+:host([hidden]), [hidden] {
+  display: none!important;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.field-icons-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: var(--cells-molecule-input-background-color, #F4F4F4);
+  border-radius: 1px;
+
+  :host([disabled]) & {
+    background-color: var(--cells-molecule-input-disabled-background-color, rgba(244, 244, 244, 0.4));
+    @apply --cells-molecule-input-disabled-wrapper;
+  }
+
+  :host([readonly]) & {
+     @apply --cells-molecule-input-readonly-wrapper;
+  }
+
+  :host([invalid]) & {
+    background-color: var(--cells-molecule-input-invalid-background-color, #F8D7DC);
+    @apply --cells-molecule-input-invalid-wrapper;
+  }
+
+  :host([has-content]) & {
+    @apply --cells-molecule-input-has-content-wrapper;
+  }
+
+  @apply --cells-molecule-input-wrapper;
+}
+
+.field {
+  position: relative;
+  display: block;
+  min-height: var(--cells-molecule-input-field-min-height, rem(50px));
+  pointer-events: none;
+  flex: 1 1 100%;
+
+  &__label {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    padding: rem(2px) rem(20px) 0;
+    display: flex;
+    align-items: center;
+    color: var(--cells-molecule-input-field-label-color, #BDBDBD);
+    white-space: nowrap;
+    font-size: rem(16px);
+    font-weight: 400;
+    line-height: 1;
+    width: 100%;
+    z-index: 1;
+    transition: all 200ms;
+
+    :host([has-content]) & {
+      font-size: rem(12px);
+      transform: translateY(rem(-12px));
+      @apply --cells-molecule-input-withcontent-field-label;
+    }
+
+    :host([disabled]) & {
+      color: var(--cells-molecule-input-disabled-field-label-color, #D3D3D3);
+      @apply --cells-molecule-input-disabled-field-label;
+    }
+
+    :host([readonly]) & {
+      @apply --cells-molecule-input-readonly-field-label;
+    }
+
+    :host([invalid]) & {
+      color: var(--cells-molecule-input-invalid-field-label-color, #666666);
+      @apply --cells-molecule-input-invalid-field-label;
+    }
+    @apply --cells-molecule-input-field-label;
+  }
+
+  &__input {
+    color: var(--cells-molecule-input-field-input-color, #121212);
+    width: 100%;
+    padding: 0 rem(20px);
+    line-height: 1.5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    background-color: transparent;
+    pointer-events: auto;
+
+    :host([has-content]) & {
+      top: auto;
+      padding-bottom: 6px;
+      height: auto;
+      @apply --cells-molecule-input-withcontent-field-input;
+    }
+
+    :host([disabled]) & {
+      color: var(--cells-molecule-input-disabled-field-input-color, #D3D3D3);
+      @apply --cells-molecule-input-disabled-field-input;
+    }
+
+    :host([readonly]) & {
+      @apply --cells-molecule-input-readonly-field-input;
+    }
+
+    :host([invalid]) & {
+      @apply --cells-molecule-input-invalid-field-input;
+    }
+
+    :host([icon]:not([disabled])) &,
+    :host([icon-extra]:not([disabled])) {
+      padding-right: 0;
+      @apply --cells-molecule-input-withicon-field-input;
+    }
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:active,
+    &:-webkit-autofill:focus {
+      box-shadow: 0 0 0px 1000px var(--cells-molecule-input-background-color, #F4F4F4) inset;
+      -webkit-text-fill-color: var(--cells-molecule-input-color, #FFFFFF) !important;
+      transition: background-color 5000s ease-in-out 0s;
+      @apply --cells-molecule-input-autofill;
+    }
+
+    &::-webkit-credentials-auto-fill-button {
+        visibility: hidden;
+        pointer-events: none;
+        position: absolute;
+        right: 0;
+    }
+    &:not(output):-moz-ui-invalid {
+        box-shadow: 0 0 0 0 transparent;
+    }
+    @apply --cells-molecule-input-field-input;
+  }
+  @apply --cells-molecule-input-field;
+}
+
+.icon {
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  display: flex;
+  overflow: hidden;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  transition: opacity 200ms 0s, visibility 0s 200ms, width 0s 200ms, height 0s 200ms;
+
+  --cells-st-button-text-color-transparent: var(--cells-molecule-input-button-color, #121212);
+  --cells-st-button-text-color-transparent-hover: var(--cells-molecule-input-button-hover-color, #2A86CA);
+  --cells-st-button-text-color-transparent-active: var(--cells-molecule-input-button-active-color, #1162A5);
+
+  button {
+    height: var(--icon-button-size);
+    width: var(--icon-button-size);
+
+    &:focus {
+      color: var(--cells-molecule-input-button-focus-color, #2A86CA);
+    }
+    @apply --cells-molecule-input-icon-button;
+  }
+
+  &.visible-always,
+  :host([focused]:not([disabled])) &.visible-focused,
+  :host([has-content]:not([disabled])) &.visible-content,
+  :host([invalid]) &.error-icon {
+    opacity: 1;
+    visibility: visible;
+    width: var(--icon-button-size);
+    height: var(--icon-button-size);
+    overflow: visible;
+    pointer-events: auto;
+    transition: opacity 200ms 0s, visibility 0s 0s, width 0s 0s, height 0s 0s;
+    @apply --cells-molecule-input-icon-visible;
+  }
+
+  :host([disabled]) &.visible-always{
+    pointer-events: none;
+    & iron-icon {
+      color: var(--cells-molecule-input-disabled-field-input-color, #D3D3D3);
+      @apply --cells-molecule-input-disabled-icon-visible-iron-icon;
+    }
+    @apply --cells-molecule-input-disabled-icon-visible;
+  }
+
+  :host([invalid]) &.error-icon {
+    color: var(--cells-molecule-input-invalid-error-icon-color, #f35e61);
+    @apply --cells-molecule-input-invalid-icon-error;
+  }
+
+  :host([icon][extra-icon]) & {
+    &.main-icon button,
+    &.main-icon.decorative  {
+      width: calc(var(--icon-button-size) - var(--icons-button-gutter));
+      padding-right: var(--icons-button-gutter);
+      @apply --cells-molecule-input-right-icon-button;
+    }
+    &.secondary-icon button,
+    &.secondary-icon.decorative {
+      width: calc(var(--icon-button-size) - var(--icons-button-gutter));
+      padding-left: var(--icons-button-gutter);
+      @apply --cells-molecule-input-left-icon-button;
+    }
+  }
+
+  :host([icon][extra-icon]:not([disabled])) &.visible-always,
+  :host([icon][extra-icon][focused]:not([disabled])) &.visible-focused,
+  :host([icon][extra-icon][has-content]:not([disabled])) &.visible-content {
+    width: calc(var(--icon-button-size) - var(--icons-button-gutter));
+    @apply --cells-molecule-input-both-icons-visible;
+  }
+
+  @apply --cells-molecule-input-icon;
+
+  .icon__text {
+    @include visuallyhidden;
+  }
+}
+
+.error-message-wrapper {
+  display: inline-flex;
+  align-items: center;
+  color: var(--cells-molecule-input-invalid-error-icon-color, #f35e61);
+  padding-top: rem(10px);
+
+  iron-icon {
+    flex-shrink: 0;
+    align-self: flex-start;
+    @apply --cells-molecule-input-error-message-wrapper-iron-icon;
+  }
+
+
+  @apply --cells-molecule-input-text-error-message-wrapper;
+}
+
+.error {
+  color: var(--cells-molecule-input-text-error-color, #121212);
+  font-weight: 400;
+  font-size: rem(12px);
+  display: block;
+  cursor: default;
+  margin-left: rem(10px);
+  @apply --cells-molecule-input-text-error;
+}
+
+/** [type=number] **/
+:host([type=number]) .field__input::-webkit-inner-spin-button,
+:host([type=number]) .field__input::-webkit-outer-spin-button {
+  display: none;
+  @apply --cells-molecule-input-number-spin-buttons;
+}
+:host([type=number]) .field__input {
+  -moz-appearance: textfield;
+}

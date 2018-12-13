@@ -1,0 +1,53 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-product-selector-modal-styles.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-bottom-modal/cells-bottom-modal.html">
+<link rel="import" href="../cells-product-selector/cells-product-selector.html">
+<link rel="import" href="../cells-products-behavior/cells-products-behavior.html">
+
+<!--
+`<cells-product-selector-modal>` This component wraps the cells-product-selector in a modal showing all products.
+
+Example:
+
+```html
+<cells-product-selector-modal
+  products="[[products]]"
+  list-title="My BBVA Accounts">
+</cells-product-selector-modal>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-product-selector-modal-scope      | scope description | default value  |
+| --cells-product-selector-modal  | empty mixin     | {}             |
+| --cells-product-selector-modal-body  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-product-selector-modal">
+  <template>
+    <style include="cells-product-selector-modal-styles cells-product-selector-modal-shared-styles"></style>
+    <cells-bottom-modal id="modal"
+      close-icon-id="[[closeIcon]]"
+      close-icon-size="[[closeIconSize]]"
+      full-height
+      opened="{{opened}}">
+      <h3 heading> [[t(modalTitle)]]</h3>
+      <cells-product-selector id="selector"
+        list-title="[[listTitle]]"
+        products="[[_products]]"
+        max-products="0"
+        visible-chars="[[visibleChars]]"
+        default-image="[[defaultImage]]"
+        status-icons="[[statusIcons]]"
+        local-currency="[[localCurrency]]">
+      </cells-product-selector>
+    </cells-bottom-modal>
+  </template>
+  <script src="cells-product-selector-modal.js"></script>
+</dom-module>

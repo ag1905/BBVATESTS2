@@ -1,0 +1,10 @@
+{
+  "cells-step-service-selector-view-all": "_View all",
+  "cells-step-service-selector-saved": "Saved",
+  "cells-step-service-selector-service-number": "_Service number",
+  "cells-step-service-selector-no-services": "_No results were found",
+  "cells-step-service-selector-no-stored-services": "_No stored services",
+  "cells-step-service-selector-service-search": "_Search service",
+  "cells-step-service-selector-service-agreement-search": "_Search agreement or service",
+  "cells-step-service-selector-service-reference": "_Reference"
+}

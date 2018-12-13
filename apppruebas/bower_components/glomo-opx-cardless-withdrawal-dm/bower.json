@@ -1,0 +1,34 @@
+{
+  "name": "glomo-opx-cardless-withdrawal-dm",
+  "version": "2.10.7",
+  "description": "DM used to  Carless Withdrawal operative",
+  "keywords": [
+    "dm",
+    "cardless",
+    "withdrawal"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.10.0",
+    "cells-step-behavior": "~3.2.5",
+    "cells-dm-global-apis-transfer": "~4.7.0",
+    "cells-i18n-behavior": "^10.1.0",
+    "cells-product-format-behavior": "~1.3.0",
+    "cells-params": "~2.0.0",
+    "cells-moment-import": "~10.0.0"
+  },
+  "devDependencies": {
+    "cells-demo-helper": "^9.0.0",
+    "cells-demo-dm-helper": "^9.0.0",
+    "cells-shadow-query-selector": "^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  },
+  "main": [
+    "glomo-opx-cardless-withdrawal-dm.html"
+  ]
+}

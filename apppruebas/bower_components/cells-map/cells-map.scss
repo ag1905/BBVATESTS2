@@ -1,0 +1,58 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  height: 100vh;
+
+  .mapBottom {
+    position: absolute;
+    bottom: rem(74px);
+    right: 0;
+    display: flex;
+    justify-content: flex-end;
+    display: flex;
+    @apply --cells-map-mapBottom;
+
+    & .right {
+      flex: 1;
+      display: flex;
+      flex-direction: row-reverse;
+
+      button {
+        min-width: rem(0px);
+        width: rem(66px);
+        height: rem(66px);
+        margin-right: rem(20px);
+        background: var(--cells-KMW_colour, #fff);
+        border: none;
+        padding: .5rem;
+        border-radius: 50%;
+        color:var(--bbva-coral, #2a86ca);
+        cursor: pointer;
+        @apply --cells-map-button;
+      }
+    }
+
+    &.withDetail {
+      bottom: rem(100px);
+      @apply --cells-map-withDetail;
+    }
+  }
+
+  .mapCenterMark {
+    position: absolute;
+    bottom: 54%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    display: flex;
+    color: var(--cells-dark-red, #F35E61);
+    @apply --cells-map-mapCenterMark;
+  }
+
+  @apply --cells-map;
+}

@@ -1,0 +1,11 @@
+{
+  "cells-product-summary-account-heading": "Account",
+  "cells-product-summary-account-available-current": "Available balance",
+  "cells-product-summary-account-asssociated-account-available-current": "Associated account available balance",
+  "cells-product-summary-account-available-posted": "Current balance",
+  "cells-product-summary-account-disposed-current": "Disposed balance",
+  "cells-product-summary-account-granted-credits": "Total limit",
+  "cells-product-summary-account-associated-mobile": "Associated mobile",
+  "cells-product-summary-account-simple-account": "Simple account",
+  "cells-product-summary-account-label-more-info": "Account detail"
+}

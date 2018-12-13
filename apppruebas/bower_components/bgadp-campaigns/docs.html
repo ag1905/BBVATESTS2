@@ -1,0 +1,145 @@
+<link rel="import" href="../polymer/polymer.html"/>
+
+<!--
+# bgadp-campaigns
+
+Cells *auto-generated* **data provider** for [BBVA GLOBAL API](https://bbva-apicatalog.appspot.com/#/global/apis/products/campaigns).
+
+Refer to [bgadp-sources/configuration](https://globaldevtools.bbva.com/bitbucket/projects/BBVACELLSAPI/repos/bgadp-sources/browse/configuration.md) for more info about how to use and configure this data provider.
+
+## Installation
+
+Include this data provider as dependency in your component:
+
+```bash
+$ bower install --save bgadp-campaigns
+```
+
+Then add it to your component HTML file:
+
+```html
+<link rel="import" href="../bgadp-campaigns/bgadp-campaigns.html"/>
+```
+
+## Sample of use
+
+```javascript
+let dataProvider = BGADPCampaigns.campaigns.campaign.get(config);
+dataProvider.generateRequest().then(
+  success => {
+    //on success
+  },
+  error => {
+    //on error
+  }
+);
+```
+## API
+
+### Properties
+
+| PROPERTY | Type | Description |
+|:--- |:---:|:--- |
+| host | String | Service host, including `protocol` & `port`, i.e.: `http://bbvalabs.com:8000` |
+| version | String | API endpoint version |
+| method | String | [HTTP Request Method](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html) |
+| headers | Object | [HTTP Request Headers](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields) |
+| params | Object | Query params to replace in URL or to be added |
+| body | Object | Payload to be sent into server |
+| requiresTsec | Boolean | Flags if `tsec` header should be added to request |
+| tsecHandler | Object | [Storage](https://html.spec.whatwg.org/multipage/webstorage.html#the-storage-interface) engine to store/retrieve the `tsec` header value |
+| cacheType | String | Type of cache, available are: `NONE`, `LOCAL`, `SESSION` or `MEMORY` |
+| cacheKey | String | Key to store into cache engine |
+| encodeCache | Boolean | Flags if cache must be codified/un-codified before/after its storage |
+| withCredentials | Boolean | Flags if request should be performed with any kind of [credentials](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials) |
+| timeout | Number | Time limit (in seconds) for performing the request |
+| simulate | Array | Array of responses to simulate |
+| signatureValue | String or Boolean | Temporal value for signature required XHR request |
+
+__Default values__
+
+- Default value for `version` is `0`.
+- Default value for `method` is already set, an coincides with class name.
+- Default `headers` are: `{Accept: 'application/json, text/plain, */*; q=0.01; Content-Type: 'application/json'}`.
+- Default value for `requiresTsec` is already set for every class.
+- Default value for `tsecHandler` is `window.sessionStorage`.
+- Default value for `cacheType` is `NONE`.
+- Default value for `withCredentials` is `false`.
+- Default value for `path` is already set and **can not be modified**.
+
+__Params behavior__
+
+`host`, `path` and `params` properties are use to calculate service complete `URL` endpoint.
+
+If resultant `URL` contains any bracketed param, i.e.: `accounts/v0/accouns/{account-id}/blocks`
+
+Then, `params` properties should contain `account-id` value, if not, `Error` will be throw.
+
+Any other `params` value that don't meets any bracketed param will be added as follows:
+
+- Path: `accounts/v0/accouns/{account-id}/blocks`
+- Params: `{'account-id': '2002', views: 'full'}`
+- `URL`: `accounts/v0/accouns/2002/blocks?views=full`
+
+### Methods
+
+Each `BGADP...` class has following **methods**:
+
+| METHOD | Description | Returns |
+|:--- |:--- |:---:|
+| generateRequest | Performs configure request. | `Promise` |
+| getLastResponse | Returns last response obtained from service | `Object` |
+| getLastRequest | Returns last request peformed | `Object` |
+| toString | Returns the string representation of the class | `String` |
+
+### Events
+
+Each `BGADP...` class fires following **events**:
+
+| EVENT | Description |
+|:--- |:--- |
+| signature-required | Fired if API requires a signature method |
+
+## Signature Process
+
+If API returns a *401* error, it may be caused because a signature method is required to perform request.
+
+In that case, `BGADP...` class will fire the event `signature-event`; then APP should resolve signature value input
+and set the temporal value `signatureValue` specifically created for ending the request. The request at this
+point is "paused".
+
+With the following snippet you can attach an event to the `BGADP...` class instance:
+
+```javascript
+//Within your data manager fetch method:
+myBGADPClass.on('signature-required', function(e) {
+  this.fire(e.type); //Use this event to start APP's signature process
+});
+```
+
+With the following snippet you can propagate signature value into the `BGADP...` class instance:
+
+```javascript
+//Observer for your data manager's signature property:
+_signatureObserver: function(signature) {
+  if (typeof signature === 'string' || typeof signature === 'boolean') {
+    myBGADPClass.signatureValue = signature;
+  }
+}
+```
+
+(Use user input as string to continue or "false" to cancel signature process)
+
+When `signatureValue` property is set, `BGADP...` class internal observer will resume the "paused" request adding
+any required request header.
+
+@hero DP_cells.svg
+-->
+<script>
+  (function() {
+    'use strict';
+    Polymer({
+      is: 'docs'
+    });
+  }());
+</script>

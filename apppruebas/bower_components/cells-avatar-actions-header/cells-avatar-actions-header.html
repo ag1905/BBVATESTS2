@@ -1,0 +1,104 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-molecule-header/cells-molecule-header.html">
+<link rel="import" href="../cells-contact-avatar/cells-contact-avatar.html">
+<link rel="import" href="../cells-skeleton-item/cells-skeleton-item.html">
+<link rel="import" href="../cells-operations-list/cells-operations-list.html">
+
+<link rel="import" href="cells-avatar-actions-header-styles.html">
+<!--
+`<cells-avatar-actions-header>` displays a header with avatar user and a list of options actived or disabled.
+
+Example:
+
+```html
+<cells-avatar-actions-header></cells-avatar-actions-header>
+```
+
+## Data model
+
+`operations` with option disabled` Array
+
+```json
+[{
+ label: 'Transfer',
+ id: 'transfer',
+ icon: 'coronita:transfer',
+ disabled: 'true'
+}]
+```
+
+`user` Object
+
+```json
+{
+  'firstName': 'Beatriz',
+  'lastName': 'Martín Finch',
+  'avatars': {
+    'url': 'assets/photo-woman.png'
+  }
+```
+
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                                  | Description       | Default              |
+|:-------------------------------------------------|:------------------|:--------------------:|
+| --cells-avatar-actions-header-scope              | scope description | default value        |
+| --cells-avatar-actions-header-height             | set global height | 333px                |
+| --cells-avatar-actions-header-afer-border-bottom | set border bottom | rem(80px) solid #fff |
+| --cells-avatar-actions-header                    | empty mixin       | {}                   |
+| --cells-avatar-actions-header-after              | empty mixin       | {}                   |
+| --cells-avatar-actions-header-header             | empty mixin       | {}                   |
+| --cells-avatar-actions-header-custom             | empty mixin       | {}                   |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-avatar-actions-header">
+  <template>
+    <style include="cells-avatar-actions-header-styles cells-avatar-actions-header-shared-styles"></style>
+    <section class="header">
+      <cells-molecule-header>
+      </cells-molecule-header>
+    </section>
+
+    <section class="custom">
+      <template is="dom-if" if="[[loaded]]">
+        <template is="dom-if" if="[[disableProfileButton]]">
+            <cells-contact-avatar
+              src="[[_userAvatarUrl]]"
+              alt="[[_userAvatarAltText]]">
+            </cells-contact-avatar>
+          </template>
+        <template is="dom-if" if="[[!disableProfileButton]]">
+            <cells-st-button class="transparent user-profile">
+              <button on-click="_goToProfile">
+                <cells-contact-avatar
+                  src="[[_userAvatarUrl]]"
+                  alt="[[_userAvatarAltText]]">
+                </cells-contact-avatar>
+            </button>
+          </cells-st-button>
+        </template>
+        <span>[[t(greetingKey)]] [[_userName]]</span>
+        <cells-operations-list 
+          class$="[[customClass]]"
+          operations="[[operations]]"
+          grid-columns="[[gridColumns]]"
+          limit="[[limit]]" 
+          icon-size="[[iconSize]]" 
+          on-operation-click="_navigateFromAction">
+        </cells-operations-list>
+      </template>
+      <template is="dom-if" if="[[!loaded]]">
+        <!-- Loading Zone -->
+        <cells-skeleton-item show-avatar show-bullets></cells-skeleton-item>
+      </template>
+    </section>
+    <content></content>
+  </template>
+  <script src="cells-avatar-actions-header.js"></script>
+</dom-module>

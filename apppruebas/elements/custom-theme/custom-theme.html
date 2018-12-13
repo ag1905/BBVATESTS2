@@ -1,0 +1,40 @@
+<!-- <style is="custom-style">
+   cells-molecule-card-cover-cvv {
+    --cells-fontDefaultMedium: {
+      display: none;
+    }
+  }
+</style> -->
+
+<dom-module id="cells-molecule-card-cover-cvv-shared-styles">
+  <template>
+    <style>
+      :host-context(.revolut) .card-alias,
+      :host-context(.revolut) .card__description {
+        display: none;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="cells-molecule-card-cover-shared-styles">
+  <template>
+    <style>
+      :host-context(.revolut) {
+
+        box-shadow: 0px 6px 18px 2px #00000045;
+      }
+    </style>
+  </template>
+</dom-module>
+<dom-module id="cells-key-values-shared-styles">
+  <template>
+    <style>
+      :host-context(.revolut) .key,
+      :host-context(.revolut) .value-amount {
+        color: #fff;
+        font-weight: 300;
+      }
+    </style>
+  </template>
+</dom-module>

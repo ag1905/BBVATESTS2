@@ -1,0 +1,149 @@
+<dom-module id="cells-skeleton-item-styles"><template><style>
+:host {
+  display: block;
+  @apply (--cells-skeleton-item); }
+
+:host([hidden]), [hidden] {
+  display: none; }
+
+.wrapper {
+  position: relative;
+  @apply (--cells-skeleton-item-wrapper); }
+
+.header,
+.title,
+.avatar,
+.content--top,
+.content--bottom {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  overflow: hidden; }
+
+.header,
+.title,
+.avatar {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 1.25rem; }
+
+.header {
+  @apply (--cells-skeleton-item-header); }
+
+.title {
+  @apply (--cells-skeleton-item-title); }
+
+.avatar {
+  padding-top: 1.25rem;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background-color: var(--cells-skeleton-item-avatar-background-color, var(--bbva-core-blue, #004481));
+  @apply (--cells-skeleton-item-avatar); }
+  .avatar--head {
+    border-radius: 50%;
+    margin: auto;
+    width: var(--cells-skeleton-item-avatar-head-width, 3.125rem);
+    height: var(--cells-skeleton-item-avatar-head-height, 3.125rem);
+    background-color: var(--cells-skeleton-item-avatar-head-background-color, var(--bbva-white, #fff));
+    @apply (--cells-skeleton-item-avatar-head); }
+
+.actions {
+  height: auto;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  background-color: var(--cells-skeleton-item-avatar-background-color, var(--bbva-core-blue, #004481));
+  margin: 40px 0 0 0;
+  @apply (--cells-skeleton-item-actions); }
+  .actions--box {
+    min-height: 4.6875rem;
+    margin: 0;
+    position: relative;
+    @apply (--cells-skeleton-item-actions-box); }
+    .actions--box--item {
+      width: 4.125rem;
+      height: 4.125rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      @apply (--cells-skeleton-item-actions-box-item); }
+      .actions--box--item:before {
+        content: ' ';
+        background: rgba(255, 255, 255, 0.3);
+        width: 1.8125rem;
+        height: 1.8125rem;
+        position: absolute;
+        border-radius: 50%;
+        top: 25%;
+        left: 29%;
+        -webkit-animation: reboteIn 2s 4;
+                animation: reboteIn 2s 4;
+        @apply (--cells-skeleton-item-actions-box-item-before); }
+
+@-webkit-keyframes reboteIn {
+  0% {
+    -webkit-transform: scale(0.3);
+            transform: scale(0.3);
+    opacity: 0; }
+  50% {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+    opacity: 1; }
+  70% {
+    -webkit-transform: scale(0.9);
+            transform: scale(0.9); } }
+
+@keyframes reboteIn {
+  0% {
+    -webkit-transform: scale(0.3);
+            transform: scale(0.3);
+    opacity: 0; }
+  50% {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+    opacity: 1; }
+  70% {
+    -webkit-transform: scale(0.9);
+            transform: scale(0.9); } }
+
+.box {
+  width: var(--cells-skeleton-item-box-width, 40%);
+  height: var(--cells-skeleton-item-box-height, 1.125rem);
+  background-color: var(--cells-skeleton-item-box-bg-color, var(--bbva-200, #E9E9E9));
+  margin: 0 -5px;
+  -ms-transform: skewX(160deg);
+  -webkit-transform: skewX(160deg);
+  transform: skewX(160deg);
+  @apply (--cells-skeleton-item-box); }
+  .box:first-child {
+    width: var(--cells-skeleton-item-box-width-first-child, 55%);
+    @apply (--cells-skeleton-item-box-first-child); }
+  .box--xs {
+    width: var(--cells-skeleton-item-box-xs-width, 20%);
+    height: var(--cells-skeleton-item-box-xs-height, 0.9375rem);
+    @apply (--cells-skeleton-item-box-xs); }
+    .box--xs:first-child {
+      width: 30%;
+      @apply (--cells-skeleton-item-box-xs-first-child); }
+
+.content {
+  @apply (--cells-skeleton-item-content); }
+  .content--top {
+    margin-bottom: 0.3125rem;
+    @apply (--cells-skeleton-item-content-top); }
+  .content--bottom {
+    @apply (--cells-skeleton-item-content-bottom); }
+    .content--bottom .box--xs {
+      width: var(--cells-skeleton-item-content-bottom-box-xs-width, 15%);
+      @apply (--cells-skeleton-item-content-bottom-box-xs); }
+
+</style></template></dom-module>

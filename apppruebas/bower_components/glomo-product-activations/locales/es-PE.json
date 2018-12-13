@@ -1,0 +1,12 @@
+{
+  "glomo-product-activations-card-ecommerce_activation": "Compras por Internet",
+  "glomo-product-activations-card-foreign_purchases_activation": "Compras en el exterior",
+  "glomo-product-activations-card-cashwithdrawal_activation": "Disposición de efectivo",
+  "glomo-product-activations-message": "<b>Tus recibos programados con cargo a tu tarjeta seguirán pagándose.</b>Cada vez que prendas o apagues tu tarjeta, te enviaremos un comprobante a tu correo electrónico.",
+  "glomo-product-activations-primary-button": "Aplicar",
+  "glomo-product-activations-secondary-button": "Cancelar",
+  "glomo-product-activations-partially": "<b>prendida parcialmente<b>",
+  "glomo-product-activations-off": "<b>apagada<b>",
+  "glomo-product-activations-on": "<b>prendida<b>",
+  "glomo-product-activations-card": "Tarjeta ${status}"
+}

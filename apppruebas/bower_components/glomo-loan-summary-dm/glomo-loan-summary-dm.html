@@ -1,0 +1,314 @@
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../cells-dm-global-apis-loans/cells-dm-global-apis-loans.html" />
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html" />
+<link rel="import" href="../cells-amount-behavior/cells-amount-behavior.html" />
+
+<!--
+# glomo-loan-summary-dm
+
+Loan product summary - DM
+
+Example:
+```html
+<glomo-loan-summary-dm></glomo-loan-summary-dm>
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="glomo-loan-summary-dm">
+  <template>
+    <cells-dm-global-apis-loans
+      id="dm"
+      host="[[host]]"
+      loan="{{_loan}}"
+      loans-api-version="[[loansApiVersion]]">
+    </cells-dm-global-apis-loans>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-loan-summary-dm',
+
+        behaviors: [
+          /* global CellsBehaviors */
+          CellsBehaviors.i18nBehavior,
+          CellsBehaviors.AmountBehavior
+        ],
+
+        properties: {
+          /**
+           * Chosen host to make requests to. Check providers.
+           * @type {String}
+           */
+          host: String,
+          /**
+           * Loan Id
+           * @type {String}
+           */
+          productId: String,
+          /**
+           * Loan
+           * @type {Object}
+           */
+          loan: {
+            type: Object,
+            computed: '_parseLoan(_loan)',
+            notify: true
+          },
+          /**
+           * Loan
+           * @type {Object}
+           * @private
+           */
+          _loan: Object,
+          /**
+           * More Info
+           * @type {Object}
+           */
+          moreInfo: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Short detail
+           * @type {Object}
+           */
+          short: {
+            type: Boolean,
+            value: true
+          },
+          /**
+           * API version
+           * @type {String}
+           */
+          loansApiVersion: {
+            type: String,
+            value: '0'
+          }
+        },
+
+        /**
+         * Reset
+         */
+        reset: function() {
+          this.short = true;
+          this.set('moreInfo', {});
+        },
+        /**
+         * Get product
+         */
+        getProduct: function() {
+          var params = {};
+
+          if (!this.short) {
+            params = { expand: 'related-contracts,participants,holds,commissions' };
+          }
+
+          this.$.dm.getLoan(this.productId, params);
+        },
+        /**
+         * Parse loan and checked short version
+         */
+        _parseLoan: function(loan) {
+          if (!this.short) {
+            this.set('moreInfo', this._generateMoreInfo(loan));
+          }
+
+          this.fire('loan-response-success', loan);
+          return loan;
+        },
+        /**
+         * Generate More info
+         */
+        _generateMoreInfo: function(loan) {
+          var currentInterset = this._findCurrentDebitInterest(loan);
+          var response = [
+            {
+              title: 'cells-product-more-info-general',
+              items: [
+                {
+                  key: 'cells-product-more-info-loan-type',
+                  value: loan.loanType && loan.loanType.name
+                },
+                {
+                  key: 'cells-product-more-info-description',
+                  value: loan.title && loan.title.name
+                },
+                {
+                  key: 'cells-product-more-info-loan-number',
+                  value: loan.number,
+                  label: true
+                },
+                {
+                  key: 'cells-product-more-info-contract-date',
+                  value: loan.contractingDate,
+                  isDate: true
+                },
+                {
+                  key: 'cells-product-more-info-loan-disposed-date',
+                  value: loan.openingDate,
+                  isDate: true
+                },
+                {
+                  key: 'cells-product-more-info-loan-capital',
+                  value: loan.amortisedAmount,
+                  isAmount: true
+                },
+                {
+                  key: 'cells-product-more-info-loan-number-fee-invoiced',
+                  value: loan.totalInstallmentsNumber && loan.totalInstallmentsNumber.amortised
+                },
+                {
+                  key: 'cells-product-more-info-loan-number-fee-pending',
+                  value: loan.totalInstallmentsNumber && loan.totalInstallmentsNumber.pending
+                }
+              ]
+            }
+          ];
+
+          if (currentInterset) {
+            response[0].items.push({
+              key: 'cells-product-more-info-loan-commission-current-debit-interest',
+              value: currentInterset.percentage + '%'
+            });
+          }
+
+          response[0].items.push({
+            key: 'cells-product-more-info-status-credit',
+            value: loan.status && loan.status.name
+          });
+
+          if (loan && loan.relatedContracts && loan.relatedContracts.length) {
+            response.push(this._generateRelatedContracts(loan.relatedContracts));
+          }
+
+          if (loan && loan.participants && loan.participants.length) {
+            response.push(this._generateParticipants(loan.participants));
+          }
+
+          response.push(this._generateConditions(loan));
+
+          return response;
+        },
+        /**
+         * Generate Conditions
+         */
+        _generateConditions: function(loan) {
+          var category = loan.loanType && loan.loanType.id && loan.loanType.id.toLowerCase().replace('_', '-');
+          var currency = loan.currencies.find(function(loanCurrency) {
+            return loanCurrency.isMajor;
+          });
+          var position;
+          var response = {
+            title: 'cells-product-more-info-conditions',
+            items: [
+              {
+                key: 'cells-product-more-info-category',
+                value: this.t('cells-product-more-info-loan-category-' + category)
+              },
+              {
+                key: 'cells-product-more-info-loan-expiration-date',
+                value: loan.maturityDate,
+                isDate: true
+              },
+              {
+                key: 'cells-product-more-info-loan-number-fees-total',
+                value: loan.totalInstallmentsNumber && loan.totalInstallmentsNumber.total
+              },
+              {
+                key: 'cells-product-more-info-loan-terms-frecuency',
+                value: loan.periods && loan.periods.reviewPeriod && loan.periods.reviewPeriod.name
+              }
+            ]
+          };
+          response.items = response.items.concat(this._generateCommissions(loan.commissions));
+
+          response.items.find(function(item, index) {
+            if (item.key === 'cells-product-more-info-loan-commission-initial-tae') {
+              position = index + 1;
+            }
+          });
+          response.items.splice(position || response.items.length, 0, {
+            key: 'cells-product-more-info-loan-currency',
+            value: this._capitalize(this.t('cells-amount-behavior-currency-' + currency && currency.currency))
+          });
+          return response;
+        },
+        /**
+         * Generate participants
+         */
+        _generateParticipants: function(participants) {
+          return {
+            title: 'cells-product-more-info-participants',
+            items: participants.map(function(participant) {
+              return {
+                key: 'cells-product-more-info-participant-' + participant.participantType.id.toLowerCase(),
+                value: participant.firstName + ' ' + participant.lastName
+              };
+            })
+          };
+        },
+        /**
+         * Generate related contracts
+         */
+        _generateRelatedContracts: function(relateds) {
+          return {
+            title: 'cells-product-more-info-related-contracts',
+            items: relateds.map(function(contract) {
+              return {
+                key: 'cells-product-more-info-related-contract-' + contract.product.id.toLowerCase(),
+                value: this._applyNumberMask(contract.number),
+                label: true,
+                payload: contract.number
+              };
+            }, this)
+          };
+        },
+        /**
+         * Generate commissions
+         */
+        _generateCommissions: function(commissions) {
+          var excludes = [ 'CURRENT_DEBIT_INTEREST' ];
+          return commissions && commissions.reduce(function(acc, commission) {
+            if (!excludes.includes(commission.commissionId)) {
+              acc.push({
+                key: 'cells-product-more-info-loan-commission-' + commission.commissionId.split('_').join('-').toLowerCase(),
+                value: commission.percentage + '%'
+              });
+            }
+
+            return acc;
+          }, []);
+        },
+        /**
+         * Find current debit intereset
+         */
+        _findCurrentDebitInterest: function(loan) {
+          return loan && loan.commissions.find(function(commission) {
+            return commission.commissionId === 'CURRENT_DEBIT_INTEREST';
+          });
+        },
+        /**
+         * Change * in mask for · in card number
+         */
+        _applyNumberMask: function(number) {
+          if (number.indexOf('*') !== -1) {
+            return number.replace('*', '• ');
+          } else {
+            return number;
+          }
+        },
+        /**
+         * Capitalize string
+         */
+        _capitalize: function(string) {
+          return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+      });
+    }());
+  </script>
+  </template>
+</dom-module>

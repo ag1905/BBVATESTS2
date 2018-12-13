@@ -1,0 +1,44 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  transform: translateZ(0);
+  @apply(--cells-left-swipe-action);
+}
+
+.swipe-underlay {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  background: var(--cells-left-swipe-action-underlay-background, #5BBEFF);
+
+  @apply(--cells-left-swipe-action-swipe-underlay);
+}
+
+.swipe-content {
+  width: 100%;
+
+  @apply(--cells-left-swipe-action-swipe-content);
+}
+
+.cubic-bezier {
+  transition: transform .5s cubic-bezier(.10, .70, .10, 1) .05s;
+
+  @apply(--cells-left-swipe-action-cubic-bezier);
+}
+
+.shadow {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+
+  @apply(--cells-left-swipe-action-shadow);
+}
+
+#content {
+  user-select: none;
+
+  @apply(--cells-left-swipe-action-content);
+}

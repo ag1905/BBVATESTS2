@@ -1,0 +1,32 @@
+{
+  "suites": [
+    "test"
+  ],
+  "expanded": true,
+  "plugins": {
+    "istanbul": {
+      "dir": "./coverage-reports",
+      "reporters": [
+        "text",
+        "text-summary",
+        "lcov",
+        "json"
+      ],
+      "include": [
+        "**/dist/*.js",
+        "**/src/*.js"
+      ],
+      "exclude": [
+        "**/bower_components/rxjs/dist/rx.lite.min.js"
+      ],
+      "thresholds": {
+        "global": {
+          "statements": 70,
+          "branches": 70,
+          "functions": 70,
+          "lines": 70
+        }
+      }
+    }
+  }
+}

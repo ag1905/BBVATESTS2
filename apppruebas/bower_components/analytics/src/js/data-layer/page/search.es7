@@ -1,0 +1,32 @@
+/**
+ * Información de la búsqueda realizada por el usuario.
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer.page
+ * @class     bgdmjs.analytics.dataLayer.page.Search
+ */
+export default class BgdmjsAnalyticsDataLayerPageSearch
+{
+    /**
+     * Número de resultados que devuelve una búsqueda en el buscador
+     * interno del sitio cuando un usuario realiza una búsqueda.
+     *
+     * @property onSiteSearchResults
+     * @type     {number}
+     */
+    onSiteSearchResults = 0;
+    /**
+     * Término buscado en el buscador del sitio.
+     *
+     * @property onSiteSearchTerm
+     * @type     {string}
+     */
+    onSiteSearchTerm    = '';
+    /**
+     * Nombre de la página `pageName` desde la que se realiza la búsqueda.
+     *
+     * @property originalPage
+     * @type     {string}
+     */
+    originalPage        = '';
+}

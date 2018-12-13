@@ -1,0 +1,7 @@
+:host {
+  @apply(--cells-molecule-card-cover-ccds-wrapper);
+}
+
+:host([hidden]), [hidden] {
+  display: none!important;
+}

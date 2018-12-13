@@ -1,0 +1,185 @@
+<dom-module id="cells-glomo-bill-payment-service-detail-styles"><template><style>
+:host {
+  font-family: var(--cells-fontDefault);
+  @apply (--cells-glomo-bill-payment-service-detail); }
+
+.reference-number {
+  font-size: var(--cells-glomo-bill-payment-service-detail-reference-number-font-size, var(--cells-text-size-14));
+  margin: 0 3.75rem 1.875rem 5.6rem;
+  color: var(--cells-glomo-bill-payment-service-detail-reference-number-color, var(--bbva-500));
+  @apply (--cells-glomo-bill-payment-service-detail-reference-number); }
+
+.amount-wrapper {
+  position: relative;
+  @apply (--cells-glomo-bill-payment-service-detail-amount-wrapper); }
+  .amount-wrapper > cells-atom-icon {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin: -12px 1.5rem 0 0;
+    color: var(--cells-glomo-bill-payment-service-detail-cells-molecule-amount-input-icon-color, var(--bbva-300));
+    z-index: 8;
+    cursor: pointer;
+    @apply (--cells-glomo-bill-payment-service-detail-amount-wrapper-icon); }
+
+.separator {
+  width: 40px;
+  height: 1px;
+  margin: 0 auto 1.875rem 5.6rem;
+  background-color: #e9e9e9;
+  @apply (--cells-glomo-bill-payment-service-detail-separator); }
+
+.amount-label {
+  font-size: var(--cells-glomo-bill-payment-service-detail-amount-label-font-size, var(--cells-text-size-14));
+  margin: 0 3.75rem 0.625rem 5.6rem;
+  color: var(--cells-glomo-bill-payment-service-detail-amount-label-color, var(--bbva-500));
+  @apply (--cells-glomo-bill-payment-service-detail-amount-label); }
+
+.amount {
+  display: block;
+  font-size: var(--cells-glomo-bill-payment-service-detail-amount-font-size, 1rem);
+  margin: 0 3.75rem 0 5.6rem;
+  color: var(--cells-glomo-bill-payment-service-detail-amount-color, var(--bbva-500));
+  @apply (--cells-glomo-bill-payment-service-detail-amount); }
+  .amount cells-atom-amount {
+    font-size: var(--cells-glomo-bill-payment-service-detail-amount-number-font-size, 3rem);
+    color: var(--cells-glomo-bill-payment-service-detail-amount-number-color, var(--bbva-core-blue)); }
+
+.date {
+  -webkit-align-items: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+  color: var(--cells-glomo-bill-payment-service-detail-date-color, var(--bbva-500));
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: var(--cells-glomo-bill-payment-service-detail-date-font-size, var(--cells-text-size-14));
+  margin: 0.625rem 3.75rem 0 5.6rem;
+  width: 100%;
+  @apply (--cells-glomo-bill-payment-service-detail-date); }
+
+cells-atom-date {
+  font-style: italic;
+  font-weight: 500;
+  margin-left: 5px;
+  --cells-atom-date-color: var(--bbva-dark-gold, #b79e5e);
+  @apply (--cells-glomo-bill-payment-service-detail-atom-date); }
+
+cells-molecule-amount-input {
+  padding: .16rem 0;
+  color: var(--cells-glomo-bill-payment-service-detail-amount-color, var(--bbva-500));
+  --cells-molecule-amount-input-input-color: var(--cells-glomo-bill-payment-service-detail-amount-color, var(--bbva-500));
+  --cells-molecule-amount-input-icon: { top: .16rem; right: 2.5rem; width: 3.125rem; height: 3.125rem; color: var(--cells-glomo-bill-payment-service-detail-cells-molecule-amount-input-icon-color, var(--bbva-300)); };
+  @apply (--cells-glomo-bill-payment-service-detail-cells-molecule-amount-input); }
+
+cells-molecule-icons-input, .amount-wrapper {
+  width: auto;
+  margin: 0.75rem 2rem;
+  @apply (--cells-glomo-bill-payment-service-detail-cells-molecule-amount-inputs); }
+
+cells-molecule-icons-input {
+  color: var(--cells-glomo-bill-payment-service-detail-cells-molecule-amount-input-icon-color, var(--bbva-300));
+  --cells-molecule-icons-input-secondary-input: { border:none; background:none; };
+  --cells-molecule-icons-input-third-icon-secondary-input: { width: 80%; };
+  @apply (--cells-glomo-bill-payment-service-detail-cells-molecule-amount-input-icon); }
+
+cells-avatar-item {
+  margin: 0.75rem 2rem 0.5rem 2rem;
+  --cells-avatar-item-list-secondary: { font-style: italic; };
+  --cells-avatar-item-list-info: { font-size: rem(14px); font-weight: 300; color: #fff; }; }
+
+cells-bottom-modal {
+  height: 100%;
+  --cells-bottom-modal-footer: { -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; box-shadow: none; }; }
+  cells-bottom-modal .imageInfo {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+  cells-bottom-modal .textInfo {
+    display: block;
+    text-align: center;
+    margin: 1.875rem 1.25rem;
+    background: var(--bbva-white-light-blue);
+    padding: 1.875rem 1.25rem;
+    color: var(--bbva-light-blue); }
+    cells-bottom-modal .textInfo p {
+      color: var(--bbva-600);
+      font-size: var(--cells-text-size-14); }
+
+.anotherAmount {
+  height: 0;
+  margin: 0 3rem;
+  overflow: hidden;
+  transition: all .35s;
+  @apply (--cells-glomo-bill-payment-service-detail-another-amount); }
+  .anotherAmount.collapsed {
+    height: 60px; }
+  .anotherAmount cells-molecule-amount-input {
+    margin: 0;
+    --cells-molecule-amount-input-icon: { top: .16rem; right: 0; width: 3.125rem; height: 3.125rem; color: var(--cells-glomo-bill-payment-service-detail-cells-molecule-amount-input-icon-color, var(--bbva-300)); }; }
+
+.alias {
+  height: 70px;
+  overflow: hidden;
+  transition: all 1s; }
+  .alias cells-molecule-icons-input {
+    width: 15rem; }
+  .alias--hidden {
+    height: 0; }
+
+.cells-glomo-bill-payment-service-detail__select-amount-area {
+  margin: var(--cells-glomo-bill-payment-service-detail-select-amount-area-margin, 2.5rem 3.375rem);
+  --cells-atom-radio-button-checked-color: var(--bbva-medium-blue);
+  --cells-atom-radio-button-before: { background: var(--bbva-100); };
+  --cells-atom-radio-button-radio: { margin: 1.25rem 0; padding-left: 3rem; };
+  --cells-text-size-m: { font-size: 0.875rem; };
+  --cells-atom-amount: { font-weight: 700; };
+  @apply (--cells-glomo-bill-payment-service-detail-select-amount-area); }
+
+.cells-glomo-bill-payment-service-detail__service-heading {
+  margin: var(--cells-glomo-bill-payment-service-detail-service-heading-margin, 0);
+  position: relative;
+  @apply (--cells-glomo-bill-payment-service-detail-service-heading); }
+
+.cells-glomo-bill-payment-service-detail__save-service {
+  margin: 2.375rem auto 3rem 5rem;
+  @apply (--cells-glomo-bill-payment-service-detail-save-service); }
+
+.cells-glomo-bill-payment-service-detail__button-area {
+  margin: 1.5rem auto 0 auto;
+  width: var(--cells-glomo-bill-payment-service-detail-button-area-width, 15rem);
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  @apply (--cells-glomo-bill-payment-service-detail-button-area); }
+  .cells-glomo-bill-payment-service-detail__button-area button {
+    margin: var(--cells-glomo-bill-payment-service-detail-button-area-button-margin, 0 0 0.75rem 0);
+    text-transform: none;
+    @apply (--cells-glomo-bill-payment-service-detail-button); }
+
+cells-atom-radio-button[hidden] {
+  display: none; }
+
+.inline {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+  .inline span {
+    margin: 0 1rem 0 0; }
+
+</style></template></dom-module>

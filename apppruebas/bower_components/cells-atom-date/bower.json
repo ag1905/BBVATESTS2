@@ -1,0 +1,58 @@
+{
+  "name": "cells-atom-date",
+  "version": "10.1.5",
+  "description": "Displays a date in a specific format",
+  "keywords": [
+    "date",
+    "format",
+    "momentjs"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "cells-moment-import": "^10.0.0"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "cells-coronita-theme": "^11.0.0",
+    "cells-molecule-input": "^11.0.0",
+    "coronita-icons": "^10.0.0",
+    "cells-demo-helper": "^10.0.0",
+    "cells-select": "^11.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "^1.0.0"
+  },
+  "main": [
+    "cells-atom-date.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0",
+    "iron-input": "^2.0.0",
+    "cells-i18n-behavior": "^10.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9.0",
+        "cells-moment-import": "^10.0.0"
+      },
+      "devDependencies": {
+        "cells-sass": "^2.0.0",
+        "cells-coronita-theme": "^11.0.0",
+        "cells-molecule-input": "^11.0.0",
+        "coronita-icons": "^10.0.0",
+        "cells-demo-helper": "^10.0.0",
+        "cells-select": "^10.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "webcomponentsjs": "^0.7"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7",
+        "iron-input": "^2.0.0",
+        "cells-i18n-behavior": "^10.0.0"
+      }
+    }
+  }
+}

@@ -1,0 +1,116 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+
+  cells-transactions-list {
+    --cells-molecule-transaction-list-item: unquote('{
+      background: transparent;
+    }');
+  }
+
+  @apply --cells-step-transactions;
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+button:active { @apply --cells-global-active; }
+
+section {
+  display: flex;
+  flex-direction: column;
+  background: var(--bbva-100, #f4f4f4);
+  @apply --cells-step-transactions-section;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.75rem;
+  cursor: pointer;
+
+  h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--bbva-medium-blue, #2a86ca);
+    @apply --cells-step-transactions-title;
+  }
+
+  .balances {
+    margin: .625rem 0 0 0;
+    color: var(--bbva-500,#717171);
+    font-size: .875rem;
+    font-style: italic;
+    @apply --cells-step-transactions-balances;
+  }
+
+  .icon {
+    color: var(--bbva-medium-blue, #2a86ca);
+    transition: transform .35s ease-in-out;
+    @apply --cells-step-transactions-icon;
+
+    &.opened {
+      transform: rotate(-180deg);
+      @apply --cells-step-transactions-icon-opened;
+    }
+  }
+
+  @apply --cells-step-transactions-header;
+}
+
+cells-transactions-list {
+  padding: 0 0 2rem 0;
+
+  --cells-transactions-list-group-list: unquote('{
+    background: transparent;
+  }');
+
+  @apply --cells-step-transactions-list;
+}
+
+cells-atom-message {
+  padding: 2rem;
+  margin: 1.75rem;
+  background: var(--bbva-white-red, #f8d7dc);
+
+  --cells-atom-message__message--icon: unquote('{
+    color: var(--bbva-light-red, #e77d8e);
+    margin-bottom: 1.25rem;
+  }');
+
+  --cells-atom-message__message--text: unquote('{
+    margin-bottom: 1.75rem;
+    line-height: 1.43;
+    font-size: .875rem;
+    text-align: center;
+  }');
+
+  --cells-atom-message__message--link: unquote('{
+    color: var(--bbva-medium-blue, #2a86ca);
+    font-size: .875rem;
+    font-weight: bold;
+    line-height: 1.43;
+  }');
+
+  @apply --cells-step-transactions-notification;
+}

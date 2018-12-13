@@ -1,0 +1,292 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-params/cells-params.html">
+
+<!--
+# glomo-access-manager
+
+Data manager description.
+
+Example:
+```html
+<glomo-access-manager></glomo-access-manager>
+```
+
+## Url to Canonical Data Model (CDM) used for glomo-access-manager
+
+https://descinet.bbva.es/stash/projects/CAT/repos/cells-models-catalog/browse/lib/models/
+
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="glomo-access-manager">
+  <template>
+    <cells-params id="params"></cells-params>
+  </template>
+  <script>
+    /* global Promise */
+    (function() {
+      'use strict';
+
+      var SESSION_EXPIRED = 'sessionExpired';
+      var SESSION_STORAGE = 'session';
+      var LOCAL_STORAGE = 'local';
+
+      Polymer({
+
+        is: 'glomo-access-manager',
+
+        properties: {
+          /**
+           * User logged
+           * @type {Object}
+           */
+          user: {
+            type: Object
+          },
+          /**
+           * User cached in localStorage
+           * @type {Object}
+           */
+          userCached: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Login Credentials
+           * @type {Object}
+           */
+          loginCredentials: {
+            type: Object,
+            notify: true,
+            observer: '_loginCredentialsChanged'
+          },
+          /**
+           * Is logged user
+           * @type {Object}
+           */
+          isLogged: {
+            type: Boolean,
+            notify: true
+          }
+        },
+
+        /**
+        * Get saved params
+        */
+        attached: function() {
+          Polymer.RenderStatus.afterNextRender(this, function() {
+            this._onAttached();
+          });
+        },
+
+        /**
+        Executed when the component is attached
+        **/
+        _onAttached: function() {
+          var localData = this.$.params.localData;
+          var sessionData = this.$.params.sessionData;
+
+          this.set('isLogged', sessionData.isLogged);
+          this._checkSessionExpired();
+
+          if (localData.reminded) {
+            this._setUserCached(localData.userInfo);
+          } else {
+            this.dispatchEvent(new CustomEvent('user-no-cached', {
+              detail: true,
+              bubbles: true,
+              composed: true
+            }));
+          }
+        },
+
+        _checkSessionExpired: function() {
+          var sessionData = this.$.params.sessionData || {};
+          if (sessionData.sessionExpired) {
+            this.dispatchEvent(new CustomEvent('open-session-expired-message', {
+              detail: 'SESSION-EXPIRED',
+              bubbles: true,
+              composed: true
+            }));
+          }
+        },
+
+        /**
+        * Set user cached of userInfo localstorage
+        */
+        _setUserCached: function(userInfo) {
+          this.set('userCached', userInfo);
+        },
+        /**
+        * Register device and set params in localstorage
+        */
+        registerDevice: function(data) {
+          var user = this.user || {};
+          var userInfo;
+
+          if (data && data.customerId && data.firstName) {
+            user.customerId = data.customerId;
+            user.firstName = data.firstName;
+            this.set('user', user);
+          }
+
+          this.$.params.setData('reminded', true, LOCAL_STORAGE);
+          userInfo = {
+            userId: user.customerId,
+            username: user.firstName,
+            firstName: user.firstName
+          };
+          this.$.params.setData('userInfo', userInfo, LOCAL_STORAGE);
+          this.set('userInfo', userInfo);
+          this.$.params.setData('isLogged', true, 'session');
+          this.set('isLogged', true);
+          this.dispatchEvent(new CustomEvent('device-registered', {
+            detail: true,
+            bubbles: true,
+            composed: true
+          }));
+        },
+        /**
+        * Unregister device and remove params in localstorage
+        */
+        unregistedDevice: function() {
+          this.cleanUserInfo();
+          this.dispatchEvent(new CustomEvent('device-unregistered', {
+            detail: false,
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+        * Event executed when the logout is successful
+        **/
+        logoutSuccess: function() {
+          this.$.params.setData('closedOffersInSession', [], SESSION_STORAGE);
+        },
+
+        /**
+        * Clear localstorage
+        */
+        cleanUserInfo: function() {
+          this.$.params.setData('reminded', false);
+          this.$.params.setData('userInfo', {});
+          this.$.params.setData('isLogged', false, SESSION_STORAGE);
+        },
+        /**
+        * Checked register device and reminded param
+        */
+        checkForRegisterDevice: function(user) {
+          var localData = this.$.params.localData;
+          if (localData.reminded && user) {
+            this.set('user', user);
+          } else if (!localData.reminded) {
+            // Delay to show modal
+            this.async(function() {
+              this.dispatchEvent(new CustomEvent('device-unregistered-message', {
+                bubbles: true,
+                composed: true
+              }));
+            }, 2000);
+          }
+        },
+
+        /**
+        * Sets the session Expired to true in session
+        **/
+        setSessionExpiredState: function(detail) {
+          this.$.params.setData(SESSION_EXPIRED, true, SESSION_STORAGE);
+        },
+
+        /**
+        * Session expired is set to false
+        **/
+        cleanSessionExpiredState: function() {
+          this.$.params.setData(SESSION_EXPIRED, false, SESSION_STORAGE);
+        },
+
+        /**
+        Check if is the first time user go to ATM's and branches locator
+        **/
+        checkFirstTimeAtmLocator: function() {
+          var localData = this.$.params.localData;
+          var eventName = localData.atmVisited ? 'atm-locator-not-first-time' : 'atm-locator-first-time';
+          this.dispatchEvent(new CustomEvent(eventName, {
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+        Sets in local store that the user have seen the Locator welcome
+        **/
+        setFirstTimeAtmLocator: function() {
+          this.$.params.setData('atmVisited', true);
+          this.dispatchEvent(new CustomEvent('atm-locator-not-first-time', {
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+        * Returns offers that were closed
+        **/
+        getClosedOffers: function() {
+          var closedOffersLocal = (this.$.params.localData || {}).closedOffers || {};
+          var closedOffersSession = (this.$.params.sessionData || {}).closedOffersInSession || [];
+
+          var customerOffers = closedOffersLocal[this._getUserId()] || {};
+
+          closedOffersSession.forEach(function(item) {
+            customerOffers[item] = 999;
+          });
+
+          this.dispatchEvent(new CustomEvent('campaigns-closed-offers', {
+            detail: customerOffers,
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+        * Set a offer as closed
+        **/
+        setOfferAsClosed: function(offer) {
+          this._setOfferAsClosedLocal(offer);
+          this._setOfferAsClosedSession(offer);
+        },
+
+        /**
+        * Set a offer as closed in local storage
+        **/
+        _setOfferAsClosedLocal: function(offer) {
+          var userId = this._getUserId();
+          var closedOffers = this.$.params.localData.closedOffers || {};
+          var userOffers = closedOffers[userId] || {};
+          var count = userOffers[offer.offerId] || 0;
+          userOffers[offer.offerId] = count + 1;
+          closedOffers[userId] = userOffers;
+          this.$.params.setData('closedOffers', closedOffers, LOCAL_STORAGE);
+        },
+
+        /**
+        * Set a offer as closed in session storage
+        **/
+        _setOfferAsClosedSession: function(offer) {
+          var closedOffersInSession = this.$.params.sessionData.closedOffersInSession || [];
+          closedOffersInSession.push(offer.offerId);
+          this.$.params.setData('closedOffersInSession', closedOffersInSession, SESSION_STORAGE);
+        },
+
+        /**
+        * Returns the userId
+        **/
+        _getUserId: function() {
+          return (this.userCached || {}).userId || this.user.customerId;
+        }
+      });
+    }());
+  </script>
+</dom-module>

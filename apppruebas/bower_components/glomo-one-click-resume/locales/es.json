@@ -1,0 +1,12 @@
+{
+  "glomo-one-click-resume-title": "Importe y plazo",
+  "glomo-one-click-resume-change-button": "Modificar oferta",
+  "glomo-one-click-resume-label-amount": "Importe solicitado",
+  "glomo-one-click-resume-payment-month-amount": "Pago mensual",
+  "glomo-one-click-resume-taxes-month": "Tasa de interés mensual sin IVA",
+  "glomo-one-click-resume-term": "Plazo",
+  "glomo-one-click-resume-months": "meses",
+  "glomo-one-click-resume-notification-taxes": "Comisión del ${fee}% por disposición de efectivo sin IVA informativo",
+  "glomo-one-click-resume-month-tax": "Tasa de interés mensual sin IVA",
+  "glomo-one-click-resume-insurance-info": "Costo del seguro"
+}

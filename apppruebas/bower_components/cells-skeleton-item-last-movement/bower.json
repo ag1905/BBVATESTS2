@@ -1,0 +1,20 @@
+{
+  "name": "cells-skeleton-item-last-movement",
+  "version": "1.0.2",
+  "description": "Skeleton item from last movements",
+  "keywords": [],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.0"
+  },
+  "devDependencies": {
+    "cells-sass": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-sass.git#^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+    "cells-theme-base": "ssh://git@globaldevtools.bbva.com:7999/ct/cells-theme-base.git#^4.0.12",
+    "cells-glomo-theme": "ssh://git@globaldevtools.bbva.com:7999/tp/cells-glomo-theme.git#^5.0.0"
+  },
+  "main": [
+    "cells-skeleton-item-last-movement.html"
+  ]
+}

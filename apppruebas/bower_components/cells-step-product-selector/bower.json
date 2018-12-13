@@ -1,0 +1,39 @@
+{
+  "name": "cells-step-product-selector",
+  "version": "4.9.12",
+  "description": "Step product selector of payment operations",
+  "keywords": [
+    "i18n"
+  ],
+  "ignore": [
+    "**/*."
+  ],
+  "dependencies": {
+    "cells-atom-icon": "~9.0.0",
+    "cells-i18n-behavior": "~3.1.0",
+    "cells-product-item": "~10.1.0",
+    "cells-product-selector": "~2.5.0",
+    "cells-products-behavior": "~4.7.0",
+    "cells-step-behavior": "~3.3.0",
+    "cells-step": "~3.1.0",
+    "global-products-lists-behavior": "~0.1.0",
+    "polymer": "Polymer/polymer#^1.7.0"
+  },
+  "devDependencies": {
+    "cells-coronita-theme": "9 - 10",
+    "cells-demo-helper": "9 - 10",
+    "cells-glomo-theme": "~5.5.0",
+    "cells-sass": "^2.0.0",
+    "cells-shadow-query-selector": "^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "coronita-icons": "^10.1.0"
+  },
+  "main": [
+    "cells-step-product-selector.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  }
+}

@@ -1,0 +1,105 @@
+<script>
+  (function(w) {
+    'use strict';
+    w.CellsBehaviors = window.CellsBehaviors || {};
+    w.CellsBehaviors.GlobalProductsListsBehavior = {
+      properties: {
+        productsType: {
+          type: Object,
+          value: function() {
+            return {
+              'CREDIT_CARD': {
+                order: 2,
+                header: {
+                  title: 'cells-global-dashboard-card-description-credit',
+                  fallback: 'Tarjeta de crédito'
+                },
+                availableBalance: {
+                  currentBalances: {
+                    title: 'cells-global-dashboard-available',
+                    fallback: 'Disponible'
+                  },
+                  pendingBalances: {},
+                  postedBalances: {}
+                },
+                grantedCredits: {
+                  title: 'cells-global-dashboard-disposed',
+                  fallback: 'Dispuesto'
+                }
+              },
+              'DEBIT_CARD': {
+                order: 1,
+                header: {
+                  title: 'cells-global-dashboard-card-description-debit',
+                  fallback: 'Tarjeta de débito'
+                },
+                availableBalance: {
+                  currentBalances: {
+                    title: 'cells-global-dashboard-available',
+                    fallback: 'Disponible'
+                  },
+                  pendingBalances: {},
+                  postedBalances: {}
+                }
+              },
+              'CARDS': {
+                order: 0,
+                header: {
+                  title: 'cells-global-dashboard-cards-header',
+                  fallback: 'Tarjetas'
+                },
+                availableBalance: {
+                  currentBalances: {
+                    title: 'cells-global-dashboard-available',
+                    fallback: 'Disponible'
+                  },
+                  pendingBalances: {},
+                  postedBalances: {}
+                }
+              }
+            };
+          }
+        }
+      },
+      _findFirst: function(vector, criteria) {
+        var result;
+        if (Array.isArray(vector)) {
+          result = vector.find(function(item) {
+            return item[criteria.field] === criteria.value;
+          });
+        }
+        return result;
+      },
+
+      _obtainPrimaryAmount: function(product, productObject, currencyType, key, typeCardName) {
+        productObject[key] = {};
+        var productCurrentAvailableBalanceMajor = this._findFirst(
+          product.availableBalance.currentBalances, {
+            field: 'currency',
+            value: currencyType
+          }
+        );
+        productObject[key].amount = productCurrentAvailableBalanceMajor && productCurrentAvailableBalanceMajor.amount;
+        productObject[key].currency = currencyType;
+        productObject[key].label = this._getIsOperative(product) ?
+          this.doTranslation(
+            this.productsType[typeCardName].availableBalance.currentBalances.title,
+            this.productsType[typeCardName].availableBalance.currentBalances.fallback
+          ) :
+          '';
+      },
+
+      _obtainCurrencyMajor: function(product) {
+        var result = this._findFirst(product.currencies, {
+          field: 'isMajor',
+          value: true
+        });
+        return (result) ? result.currency : this.localCurrency;
+      },
+
+      _getIsOperative: function(card) {
+        return card.status.id === 'OPERATIVE';
+      }
+    };
+  }(window));
+</script>

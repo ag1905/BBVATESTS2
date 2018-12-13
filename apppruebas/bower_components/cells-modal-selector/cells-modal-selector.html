@@ -1,0 +1,93 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-middle-modal/cells-middle-modal.html"/>
+<link rel="import" href="cells-modal-selector-styles.html">
+<link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
+
+
+<!--
+# cells-modal-selector
+
+This component shows a list of options in a full screen view. It accepts texts and images, but only one of them per row.
+Each row is an object and it contains at least two required properties: "id" and "name".
+If the row shows an image then is needed to include another property called "image" with the image path.
+
+
+This an example of text row object with the minimum data:
+```json
+  {
+    id: '002',
+    name: 'Bankia'
+  }
+```
+
+This an example of image row object with the minimum data:
+```json
+  {
+    id: '001',
+    name: 'BBVA Bancomer',
+    image: 'https://www.bancomer.com/fbin/logo_bancomer_tablet_opt_tcm1344-607500.png'
+  }
+```
+
+This is an example of instantiation:
+```html
+ <cells-modal-selector id="el"
+    opened="{{opened}}"
+    items="[[listObjs]]"
+    item-selected="{{itemSelected}}"
+    icon="coronita:unfold">
+  </cells-modal-selector>
+```
+Where "opened" is a boolean that indicates if the selector is opened. Items is the list of rows and item-selected is the current item selected.
+
+"icon" property is used to show the check icon when a row is selected.
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                                             | Description                       | Default                     |
+|:------------------------------------------------------------|:----------------------------------|:----------------------------|
+| --cells-modal-selector                                      | empty mixin                       | {}                          |
+| --cells-modal-selector-content                              | empty mixin                       | {}                          |
+| --cells-modal-selector-content-label-hover                  | empty mixin                       | {}                          |
+| --cells-modal-selector-content-label-selected               | empty mixin                       | {}                          |
+| --cells-modal-selector-icon                                 | empty mixin                       | {}                          |
+| --cells-modal-selector-label                                | empty mixin                       | {}                          |
+| --cells-modal-selector-img-hover-background-color           | background color                  | --bbva-core-blue (#004481)  |
+| --cells-modal-selector-img-hover                            | empty mixin                       | {}                          |
+| --cells-modal-selector-img                                  | empty mixin                       | {}                          |
+| --cells-modal-selector-list                                 | empty mixin                       | {}                          |
+| --cells-modal-selector-check-icon                           | empty mixin                       | {}                          |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-modal-selector">
+  <template>
+    <style include="cells-modal-selector-styles cells-modal-selector-shared-styles"></style>
+    <iron-a11y-keys keys="enter" target="[[target]]" on-keys-pressed="_onEnter"></iron-a11y-keys>
+    <iron-a11y-keys target="[[target]]" keys="up" on-keys-pressed="_selectPreviousItem"></iron-a11y-keys>
+    <iron-a11y-keys target="[[target]]" keys="down" on-keys-pressed="_selectNextItem"></iron-a11y-keys>
+    <cells-middle-modal id='modal' open="{{opened}}" close-on-click>
+      <div class="cells-modal-selector-container">
+        <ul id="itemList" class="list">
+          <template is="dom-repeat" id="itemListIterator" items="{{items}}">
+              <li id="[[item.id]]" tabindex="0"
+                class$="{{_hasImage(item.image)}} [[_checkedSelected(selected, index)]] list-item cells-modal-selector-content"
+                style$="{{_getImage(item.image)}}"
+                on-click="onSelectItem">
+                  <template is="dom-if" if="{{item.labelImg}}">
+                    <img class="cells-modal-selector-img-label" src="{{item.labelImg.src}}" alt="{{item.labelImg.alt}}">
+                  </template>
+                  <label class="cells-modal-selector-label" id="[[item.id]]">[[t(item.name)]]</label>
+                  <cells-atom-icon icon="coronita:checkmark" class="check-icon"></cells-atom-icon>
+              </li>
+          </template>
+        </ul>
+      </div>
+    </cells-middle-modal>
+  </template>
+  <script src="cells-modal-selector.js"></script>
+</dom-module>

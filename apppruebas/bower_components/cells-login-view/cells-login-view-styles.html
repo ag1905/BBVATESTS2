@@ -1,0 +1,205 @@
+<dom-module id="cells-login-view-styles"><template><style>
+:host {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  overflow: hidden;
+  background-color: var(--cells-login-view-background-color, var(--bbva-core-blue, #004481));
+  --image-height: var(--cells-login-view-login-image-height, 40vh);
+  --cells-molecule-input-has-content-wrapper: { border-bottom: 1px solid var(--bbva-white, #ffffff); };
+  --cells-molecule-input-text-error-message-wrapper: { color: var(--bbva-light-coral, #f79698); margin-bottom: rem(10px); };
+  --cells-molecule-input-text-error-message-wrapper_-_margin-bottom: 0.625rem;
+  --cells-molecule-input-text-error: { color: var(--bbva-white, #ffffff); font-size: var(--cells-text-size-14); };
+  --cells-st-button-secondary-disabled: { background-color: rgba(233, 233, 233, .5); opacity: .8; };
+  @apply --cells-login-view; }
+
+:host([hidden]),
+[hidden] {
+  display: none !important; }
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit; }
+
+.login-view,
+.spinner-view {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  @apply --cells-login-view-views; }
+
+/*
+  Login View
+*/
+.login-view {
+  @apply --cells-login-view-login-view; }
+  .login-view .header {
+    height: var(--image-height);
+    position: relative;
+    @apply --cells-login-view-login-header; }
+    .login-view .header:before {
+      display: block;
+      content: "";
+      height: 50px;
+      width: 50px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background-color: var(--bbva-dark-teal, #02A5A5);
+      z-index: 1;
+      transition: -webkit-transform .3s;
+      transition: transform .3s;
+      transition: transform .3s, -webkit-transform .3s;
+      will-change: transform;
+      @apply --cells-login-view-login-header-before; }
+    .login-view .header-bg {
+      display: block;
+      height: 100%;
+      image-rendering: -webkit-optimize-contrast;
+      object-fit: cover;
+      object-position: 50% 0;
+      transition: opacity 300ms cubic-bezier(0.39, 0.58, 0.57, 1), -webkit-transform 200ms cubic-bezier(0.39, 0.58, 0.57, 1);
+      transition: transform 200ms cubic-bezier(0.39, 0.58, 0.57, 1), opacity 300ms cubic-bezier(0.39, 0.58, 0.57, 1);
+      transition: transform 200ms cubic-bezier(0.39, 0.58, 0.57, 1), opacity 300ms cubic-bezier(0.39, 0.58, 0.57, 1), -webkit-transform 200ms cubic-bezier(0.39, 0.58, 0.57, 1);
+      opacity: 1;
+      width: 100%;
+      will-change: transform;
+      @apply --cells-login-view-login-header-bg; }
+  .login-view .form {
+    bottom: 0;
+    left: 0;
+    padding: 2rem 2.5rem 0.625rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+    -webkit-transform: translateY(var(--image-height));
+            transform: translateY(var(--image-height));
+    transition: -webkit-transform 200ms cubic-bezier(0.39, 0.58, 0.57, 1);
+    transition: transform 200ms cubic-bezier(0.39, 0.58, 0.57, 1);
+    transition: transform 200ms cubic-bezier(0.39, 0.58, 0.57, 1), -webkit-transform 200ms cubic-bezier(0.39, 0.58, 0.57, 1);
+    will-change: transform;
+    @apply --cells-login-view-login-form;
+    --cells-molecule-input-invalid-field-label: { color: var(--bbva-white, #fff); };
+    --cells-molecule-input-wrapper: { border-bottom: 1px solid var(--bbva-medium-blue, #237ABA); };
+    --cells-molecule-input-invalid-wrapper: { background-color: var(--bbva-light-coral, #ffffff); border-bottom: 1px solid var(--bbva-white, #ffffff); };
+    --cells-credentials-form-fake-selector: { border-bottom: 1px solid var(--bbva-white, #237ABA); };
+    --cells-credentials-form-fake-selector-placeholder: { color: var(--bbva-white); };
+    --cells-credentials-form-fake-selector-label-selected-color: var(--bbva-white, #ffffff);
+    --cells-credentials-form-fake-selector-bg-color: var(--bbva-core-blue, #004481);
+    --cells-molecule-input-invalid-field-label_-_color: var(--bbva-white, #ffffff);
+    --cells-molecule-input-background-color: var(--cells-login-view-login-form-input-background-color, var(--bbva-core-blue, #004481));
+    --cells-molecule-input-field-label-color: var(--cells-login-view-login-form-input-label-color, var(--bbva-white, #fff));
+    --cells-molecule-input-field-label: { color: var(--bbva-white, #fff); opacity: 1; font-size: var(--cells-text-size-16, 1rem); @apply --cells-fontDefaultLight; @apply --cells-login-view-login-form-input-label; };
+    --cells-molecule-input-field-input-color: var(--cells-login-view-login-form-input-text-color, var(--bbva-white, #fff));
+    --cells-molecule-input-button-color: var(--cells-login-view-login-form-input-icon-color, var(--bbva-white, #fff));
+    --cells-molecule-input-button-hover-color: var(--cells-login-view-login-form-input-icon-hover-color, var(--bbva-white, #fff));
+    --cells-molecule-input-button-active-color: var(--cells-login-view-login-form-input-icon-active-color, var(--bbva-white, #fff));
+    --cells-molecule-input-button-focus-color: var(--cells-login-view-login-form-input-icon-focus-color, var(--bbva-white, #fff));
+    --cells-st-button-bg-color-secondary-disabled: var(--cells-login-view-login-form-submit-disabled-bg-color, var(--bbva-teal, #2dcccd));
+    --cells-st-button-secondary: { border-radius: 2px; min-height: 3.125rem; @apply --cells-login-view-login-form-submit; };
+    --cells-st-button-text-color-transparent: var(--cells-login-view-login-form-link-color, var(--bbva-white, #fff));
+    --cells-st-button-text-color-transparent-hover: var(--cells-login-view-login-form-link-hover-color, var(--bbva-white, #fff));
+    --cells-st-button-text-color-transparent-active: var(--cells-login-view-login-form-link-active-color, var(--bbva-white, #fff));
+    --cells-credentials-form-user: { color: var(--cells-login-view-login-form-user-color, var(--bbva-white, #fff)); @apply --cells-login-view-login-form-user; };
+    --cells-credentials-form-extra-actions: {; -webkit-flex-direction: column-reverse;; -ms-flex-direction: column-reverse;; flex-direction: column-reverse; @apply --cells-login-view-login-form-extra-actions; };
+    --cells-credentials-form-forgotten-pwd: { margin-bottom: 20px; @apply --cells-login-view-login-form-forgotten-pwd; };
+    --cells-credentials-form-actions-buttons: { font-weight: 700; @apply --cells-login-view-login-form-links; };
+    --cells-credentials-form-register: { color: var(--cells-login-view-login-form-register-color, var(--bbva-white, #fff)); position: absolute; bottom: calc(0px + 40vh); left: 50%; -webkit-transform: translateX(-50%) translateY(0); transform: translateX(-50%) translateY(0); width: 100%; transition: opacity 333ms 300ms, -webkit-transform 300ms 300ms; transition: opacity 333ms 300ms, transform 300ms 300ms; transition: opacity 333ms 300ms, transform 300ms 300ms, -webkit-transform 300ms 300ms; @apply --cells-login-view-login-form-register-text; };
+    --cells-credentials-form-submit: { margin: 0; @apply --cells-login-view-login-form-submit; };
+    --cells-credentials-form-submit: { margin: 0; @apply --cells-login-view-login-form-submit; }; }
+  .login-view.non-move-up.maximized {
+    @apply --cells-login-view-login-nonmoveup-maximized; }
+    .login-view.non-move-up.maximized .header {
+      @apply --cells-login-view-login-nonmoveup-maximized-header; }
+      .login-view.non-move-up.maximized .header:before {
+        -webkit-transform: translateX(-100%);
+                transform: translateX(-100%);
+        @apply --cells-login-view-login-nonmoveup-maximized-header-before; }
+      .login-view.non-move-up.maximized .header .header-bg {
+        opacity: 0;
+        @apply --cells-login-view-login-nonmoveup-maximized-header-bg; }
+  .login-view.move-up {
+    @apply --cells-login-view-login-moveup; }
+    .login-view.move-up .form {
+      background-color: var(--cells-login-view-background-color, var(--bbva-core-blue, #004481));
+      background-image: var(--cells-login-view-background-image, url("http://bbva-files.s3.amazonaws.com/cells/assets/glomo/images/access/fractal-bbva-core-blue.svg"));
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: top;
+      --cells-credentials-form-extra-actions: {; -webkit-flex-direction: column-reverse;; -ms-flex-direction: column-reverse;; flex-direction: column-reverse; @apply --cells-login-view-login-form-extra-actions; };
+      @apply --cells-login-view-login-moveup-form; }
+    .login-view.move-up.maximized {
+      @apply --cells-login-view-login-moveup-maximized; }
+      .login-view.move-up.maximized .header {
+        @apply --cells-login-view-login-moveup-maximized-header; }
+        .login-view.move-up.maximized .header:before {
+          -webkit-transform: translateX(-100%);
+                  transform: translateX(-100%);
+          @apply --cells-login-view-login-moveup-maximized-header-before; }
+        .login-view.move-up.maximized .header .header-bg {
+          opacity: 0;
+          -webkit-transform: translateY(-1rem);
+                  transform: translateY(-1rem);
+          @apply --cells-login-view-login-moveup-maximized-header-bg; }
+      .login-view.move-up.maximized .form {
+        -webkit-transform: translateY(0);
+                transform: translateY(0);
+        --cells-credentials-form-form: { -webkit-transform: translateY(2.5rem); transform: translateY(2.5rem); transition: -webkit-transform 210ms cubic-bezier(0.39, 0.58, 0.57, 1); transition: transform 210ms cubic-bezier(0.39, 0.58, 0.57, 1); transition: transform 210ms cubic-bezier(0.39, 0.58, 0.57, 1), -webkit-transform 210ms cubic-bezier(0.39, 0.58, 0.57, 1); will-change: transform; @apply --cells-login-view-login-moveup-maximized-form-form; };
+        --cells-credentials-form-register: { opacity: 0; -webkit-transform: translateX(-50%) translateY(10px); transform: translateX(-50%) translateY(10px); @apply --cells-login-view-login-moveup-maximized-form-register; };
+        --cells-credentials-form-extra-actions: {; -webkit-flex-direction: column-reverse;; -ms-flex-direction: column-reverse;; flex-direction: column-reverse; @apply --cells-login-view-login-form-extra-actions; };
+        @apply --cells-login-view-login-moveup-maximized-form; }
+      .login-view.move-up.maximized.is-logged {
+        @apply --cells-login-view-login-moveup-maximized-islogged; }
+        .login-view.move-up.maximized.is-logged .form {
+          --cells-credentials-form-extra-actions: {; -webkit-flex-direction: column-reverse;; -ms-flex-direction: column-reverse;; flex-direction: column-reverse; @apply --cells-login-view-login-form-extra-actions; };
+          --cells-credentials-form-form: { @apply --cells-login-view-login-moveup-maximized-islogged-form; -webkit-transform: translateY(2.25rem); transform: translateY(2.25rem); transition: -webkit-transform 200ms cubic-bezier(0.39, 0.58, 0.57, 1); transition: transform 200ms cubic-bezier(0.39, 0.58, 0.57, 1); transition: transform 200ms cubic-bezier(0.39, 0.58, 0.57, 1), -webkit-transform 200ms cubic-bezier(0.39, 0.58, 0.57, 1); will-change: transform; };
+          @apply --cells-login-view-login-moveup-maximized-islogged-form-form; }
+  .login-view.small-thumb {
+    --image-height: var(--cells-login-view-login-image-height-small, 27vh); }
+    .login-view.small-thumb .header .header-bg {
+      object-position: inherit; }
+    .login-view.small-thumb .form {
+      --cells-credentials-form-extra-actions: {; -webkit-flex-direction: column-reverse;; -ms-flex-direction: column-reverse;; flex-direction: column-reverse; @apply --cells-login-view-login-form-extra-actions; };
+      --cells-credentials-form-register: { color: var(--cells-login-view-login-form-register-color, var(--bbva-white, #fff)); position: absolute; bottom: calc(0px + 27vh); left: 50%; -webkit-transform: translateX(-50%) translateY(0); transform: translateX(-50%) translateY(0); width: 100%; transition: opacity 333ms 300ms, -webkit-transform 300ms 300ms; transition: opacity 333ms 300ms, transform 300ms 300ms; transition: opacity 333ms 300ms, transform 300ms 300ms, -webkit-transform 300ms 300ms; }; }
+
+.spinner-view {
+  --cells-molecule-spinner-ring-content-color: var(--cells-login-view-spinner-ring-content-color, rgba(255, 255, 255, 0.2));
+  --cells-molecule-spinner-ring-border-width--finished: 2px;
+  @apply --cells-login-view-spinner; }
+  .spinner-view .spinner {
+    min-height: 14rem;
+    position: absolute;
+    top: 300px;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+    width: 100%;
+    @apply --cells-login-view-spinner-spinner; }
+    .spinner-view .spinner[process] {
+      top: 0;
+      -webkit-transform: inherit;
+              transform: inherit;
+      --cells-molecule-spinner-wrapper: { height: 100%; };
+      @apply --cells-login-view-spinner-spinner; }
+
+</style></template></dom-module>

@@ -1,0 +1,32 @@
+/**
+ * Información del evento recibido en una campaña.
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer.internalCampaign
+ * @class     bgdmjs.analytics.dataLayer.internalCampaign.EventInfo
+ */
+export default class InternalCampaignEventInfo
+{
+    /**
+     * Evento que recoge los clicks que los usuarios realizan en
+     * las campañas internas.
+     *
+     * @property eventName
+     * @type     {string}
+     */
+    eventName      = 'IntCmpClick';
+    /**
+     * Recoge los datos de la campaña interna sobre la
+     * que el usuario ha hecho click.
+     *
+     * Se pondrá el valor para que sea igual a los datos de la campaña
+     * interna sobre la que el usuario ha hecho click.
+     *
+     * Dichos datos serán concatenados y constituirán el ID único de la
+     * campaña (ej: centro:banner home:25:contrata tu cuenta:cuenta blue:123:100$).
+     *
+     * @property siteActionName
+     * @type     {string}
+     */
+    siteActionName = '';
+}

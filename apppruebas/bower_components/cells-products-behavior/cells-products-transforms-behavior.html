@@ -1,0 +1,20 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./cells-products-behavior.html">
+<link rel="import" href="./cells-cards-transforms-behavior.html">
+<link rel="import" href="./cells-accounts-transforms-behavior.html">
+
+<script>
+  /**
+   * Groups products (such as Cards or Accounts) common transforms
+   * @polymerBehavior CellsBehaviors.ProductsTransforms
+   */
+  (function(w) {
+    'use strict';
+    w.CellsBehaviors = window.CellsBehaviors || {};
+    w.CellsBehaviors.ProductsTransforms = [
+      CellsBehaviors.ProductsBehavior,
+      CellsBehaviors.AccountsTransforms,
+      CellsBehaviors.CardsTransforms
+    ];
+  }(window));
+</script>

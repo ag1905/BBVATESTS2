@@ -1,0 +1,76 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../cells-product-summary/cells-product-summary.html"/>
+<link rel="import" href="../global-products-lists-behavior/global-products-lists-behavior.html"/>
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href="cells-product-summary-account-styles.html"/>
+
+<!--
+Wrapper of cells-product-summary that understands the account the Canonical Data Model (CMD). That account is binded into cells-product-summary, which displays it.
+
+Example:
+
+```html
+<cells-product-summary-account 
+  account="[[account]]"
+  loading="[[loading]]"
+  posted-balances-as-second-main-item=true
+  local-currency="MXN"
+></cells-product-summary-account>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-product-summary-account  | empty mixin     | {}             |
+| --cells-product-summary-account-footer     | Mixin applied to footer  | {}  |
+| --cells-product-summary-account-footer-inline      | Mixin applied to inline list of items  | {}  |
+| --cells-product-summary-account-footer-inline-key  | Mixin applied to the key of elements inside of inline list  | {}  |
+| --cells-product-summary-account-footer-inline-value-container  | Mixin applied to the value container of elements  | {} |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-product-summary-account">
+  <template>
+    <style include="cells-product-summary-account-styles cells-product-summary-account-shared-styles"></style>
+
+    <cells-product-summary id="productSummary"
+      loading=[[loading]]
+      icon-size="24"
+      icon-code="[[_iconCode]]"
+      heading="[[_heading]]"
+      masked-heading="[[_maskedHeading]]"
+      main-items="[[_mainItems]]"
+      progress-value="[[_progressValue]]"
+      progress-max="[[_progressMax]]"
+      optional-items="[[_optionalItems]]"
+      label-more-info="cells-product-summary-account-label-more-info">
+      <div class="footer" slot="footer">
+        <template is="dom-repeat" items="[[_additionalItems]]">
+          <div class="inline">
+            <span class="key">[[t(item.key)]]</span>
+            <div class="value-container">
+              <div class="simpleValue" hidden="[[item.localCurrency]]" >
+                <cells-atom-icon hidden="[[!item.showIcon]]" icon="coronita:link" class="icon-size-16"></cells-atom-icon>
+                <span class="value">[[item.value]]</span>
+              </div>  
+              <div class="amountValue" hidden="[[!item.localCurrency]]" >
+                <cells-atom-amount
+                  amount="[[item.value]]"
+                  currency-code="[[item.localCurrency]]"
+                  local-currency="[[localCurrency]]">
+                </cells-atom-amount>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </cells-product-summary>
+
+  </template>
+  <script src="cells-product-summary-account.js"></script>
+</dom-module>

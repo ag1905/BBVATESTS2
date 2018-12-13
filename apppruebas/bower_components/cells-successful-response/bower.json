@@ -1,0 +1,40 @@
+{
+  "name": "cells-successful-response",
+  "version": "5.14.1",
+  "description": "Shows a page with a success message from the service",
+  "keywords": [
+    "i18n",
+    "modal",
+    "response"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.0",
+    "cells-i18n-behavior": "~10.0.0",
+    "cells-atom-button": "^4.1.0",
+    "cells-atom-icon": "^10.0.3",
+    "cells-atom-date": "2.3.1",
+    "cells-atom-amount": "~8.1.1",
+    "cells-contact-avatar": "~10.0.0",
+    "cells-from-to": "~10.0.0",
+    "cells-molecule-mask": "^10.0.0",
+    "cells-operations-list": "~10.0.0",
+    "cells-icon-message": "~10.0.0"
+  },
+  "devDependencies": {
+    "coronita-icons": "^2.0.0",
+    "cells-demo-helper": "^10.0.0",
+    "cells-sass": "^2.0.1",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "cells-coronita-theme": "^10.0.0",
+    "web-component-tester": "^4.0.0",
+    "cells-glomo-theme": "^10.0.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^0.7",
+    "iron-icon": "^2.0.0"
+  },
+  "main": [
+    "cells-successful-response.html"
+  ]
+}

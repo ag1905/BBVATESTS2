@@ -1,0 +1,51 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="cells-skeleton-custom-styles.html">
+
+<!--
+`<cells-skeleton-custom>` Provides a custom skeleton. HTML structure is fixed from the call element, using the `item-mask` attr for the element that you like to paint.
+
+If you need some special skeleton item, you only create and add to custom skeleton.
+
+Example:
+
+```html
+<cells-skeleton-custom>
+  <cells-skeleton-item></cells-skeleton-item>
+</cells-skeleton-custom>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+### Custom Properties
+
+| Custom Property                    | Selector                         | CSS Property     | Value        |
+| ---------------------------------- | -------------------------------- | ---------------- | ------------ |
+| --cells-skeleton-custom-color-mask | :host ::slotted() [item-mask]    | background-color | --bbva-200   |
+| --cells-skeleton-custom-color-bg   | .skeleton-content .animate-layer | background-color | --bbva-white |
+
+### @apply
+
+| Mixins                                | Selector                         | Value |
+| ------------------------------------- | -------------------------------- | ----- |
+| --cells-skeleton-custom               | :host                            | {}    |
+| --cells-skeleton-custom-item-mask     | :host ::slotted() [item-mask]    | {}    |
+| --cells-skeleton-custom-content       | .skeleton-content                | {}    |
+| --cells-skeleton-custom-animate-layer | .skeleton-content .animate-layer | {}    |
+| --cells-skeleton-custom-content-unbox | .skeleton-content.unbox          | {}    |
+
+@hero cells-skeleton-custom.png
+@demo demo/index.html
+-->
+<dom-module id="cells-skeleton-custom">
+  <template>
+    <style include="cells-skeleton-custom-styles cells-skeleton-custom-shared-styles"></style>
+    <div class$="skeleton-content [[_checkedHideBoxShadow(hideBoxShadow)]]">
+      <slot></slot>
+      <div id="animateLayer" class$="animate-layer [[hideElement]]"></div>
+    </div>
+  </template>
+  <script src="cells-skeleton-custom.js"></script>
+</dom-module>

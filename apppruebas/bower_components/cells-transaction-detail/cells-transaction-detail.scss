@@ -1,0 +1,287 @@
+@import "bower_components/cells-sass/main";
+
+$basePadding: 10px;
+
+:host {
+  font-family: var(--cells-fontDefault);
+  cells-key-values {
+    --cells-key-values-value: unquote("{
+      display: block;
+    }");
+  }
+
+  @apply(--cells-transaction-detail);
+}
+
+.lighting-text {
+  color: var(--bbva-white);
+
+  @apply(--cells-transaction-detail-lighting-text);
+}
+
+.dark-text {
+  color: var(--bbva-navy);
+
+  @apply(--cells-transaction-detail-dark-text);
+}
+
+.content {
+  padding: rem(50px) rem(30px);
+  @apply(--cells-product-more-info-content);
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 180px;
+  position: relative;
+  background-color: var(--bbva-teal, #2dcccd);
+
+  &.purchase, 
+  &.purchase_comercial_purchase {
+    background-color: var(--bbva-light-red, #e77d8e);
+  }
+  
+  &.cash_withdrawal, 
+  &.cash_withdrawal_atm_operation, 
+  &.uncategorized_fixed_term_deposit {
+    background-color: var(--bbva-medium-blue, #237ABA);
+  }
+  
+  &.credit_card_installment, 
+  &.uncategorized_credit_card_payment {
+    background-color: var(--bbva-light-blue, #5BBEFF);
+  }
+
+  &[class^="transfer_"], 
+  &.uncategorized_service_payment, 
+  &.uncategorized_mobile {
+    background: var(--bbva-core-blue, #004481);
+  }
+
+  &.refund {
+    background-color: #e6d5a5;
+  }
+
+  iron-image {
+    position: relative;
+    padding: 25px 0;
+    display: block;
+    height: auto;
+    max-width: 100%;
+  }
+
+  .wrapper {
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    @apply(--layout-horizontal);
+    @apply(--layout-end);
+    @apply(--layout-justified);
+
+    p {
+      margin: 0 0 rem(10px) rem(20px);
+      color: white;
+      font-size: rem(14px);
+      @apply(--cells-fontDefaultBold);
+
+      @apply(--cells-transaction-detail-header-wrapper-p);
+    }
+
+    @apply(--cells-transaction-detail-header-wrapper);
+  }
+
+  @apply(--cells-transaction-detail-header);
+}
+
+
+main {
+  text-align: center;
+  padding: 50px 0;
+  background-color: var(--bbva-100, #F4F4F4);
+  width: 100%;
+  height: auto;
+  @apply(--layout-vertical);
+  @apply(--layout-center-justified);
+
+  .transaction {
+    &-description {
+      margin-bottom: rem($basePadding*2);
+
+      @apply(--cells-transaction-detail-transaction-description);
+    }
+
+    &-title {
+      color: var(--bbva-600);
+      margin: 0;
+      font-size: rem(18px);
+      font-weight: normal;
+      line-height: rem(24px);
+
+      @apply(--cells-transaction-detail-transaction-title);
+    }
+
+    &-status {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      .status {
+        color: var(--bbva-500, #666);
+        font-size: rem(14px);
+        font-style: italic;
+        @apply(--cells-transaction-detail-transaction-status-text);
+      }
+
+      button {
+        margin: 0 0 0 .35rem;
+        background: transparent;
+        padding: 0;
+        outline: none;
+        border: 0;
+        color: var(--bbva-medium-blue, #237ABA);
+        cursor: pointer;
+        @apply(--cells-transaction-detail-transaction-status-icon);
+      }
+
+      @apply(--cells-transaction-detail-transaction-status);
+    }
+  }
+
+  .main-amount {
+    margin: 0 auto;
+
+    @apply(--cells-transaction-detail-main-amount);
+  }
+
+  .transaction-points-info {
+    font-size: 14px;
+    @apply(--cells-fontDefaultLight);
+  }
+
+  time {
+    font-size: rem(14px);
+    margin-top: rem($basePadding*3);
+    @apply(--cells-fontDefaultLight);
+
+    .date + .time {
+      margin-left: 8px;
+    }
+
+    @apply(--cells-transaction-detail-time);
+  }
+
+  @apply(--cells-transaction-detail-main);
+}
+
+section {
+  color: var(--bbva-500);
+  text-align: left;
+  padding-top: rem(30px);
+  &.main-operations {
+    padding-top: 0;
+
+    @apply(--cells-transaction-detail-section-main-operations);
+  }
+
+  &.transaction-info {
+    background-color: var(--bbva-white, #FFF);
+    padding: rem(20px) 1.875rem;
+    
+    .transaction-info__group + .transaction-info__group {
+      margin-top: rem(20px);
+      padding-top: rem(20px);
+      border-top: 1px solid var(--bbva-200, #E9E9E9);
+      @apply (--cells-transaction-detail-section-transaction-info-group);
+    }
+
+    .transaction-info__item {
+      @apply(--cells-fontDefaultLight);
+      color: var(--bbva-600);
+      font-size: rem(13px);
+      padding: rem(14px) rem(10px);
+
+      @apply(--cells-transaction-detail-section-transaction-info-item);
+    }
+
+    .transaction-info__subheader {
+      @apply (--cells-transaction-detail-section-transaction-info-subheader);
+    }
+
+    @apply(--cells-transaction-detail-section-transaction-info);  
+  }
+  @apply(--cells-transaction-detail-section);
+}
+
+
+cells-molecule-group-transactions-list {
+   ::shadow {
+    .transaction-group__date {
+      padding: rem($basePadding*3);
+      padding-bottom: 0;
+      @apply(--date);
+      color: var(--bbva-500, #666);
+
+      @apply(--cells-transaction-detail-transaction-group-date);
+    }
+  }
+}
+
+cells-atom-subheader {
+  padding: 0 rem(30px);
+
+   ::content h2 {
+    @apply(--cells-fontDefaultMedium);
+    color: var(--bbva-medium-blue);
+
+    @apply(--cells-transaction-detail-subheader-h2);
+  }
+}
+
+cells-molecule-transaction-list-item {
+  @apply(--layout-center);
+  padding: rem($basePadding*2) rem($basePadding*3);
+
+   ::shadow {
+    .transaction-name {
+      font-size: 18px;
+      color: var(--bbva-600);
+
+      @apply(--cells-transaction-detail-transaction-name);
+    }
+    .associated-prod {
+      @apply(--iban);
+      color: var(--bbva-600);
+
+      @apply(--cells-transaction-detail-associated-prod);
+    }
+  }
+}
+
+cells-skeleton-item {
+  &+cells-skeleton-item {
+    margin: 2rem 0 0 0;
+    @apply(--cells-product-more-info-skeleton-skeleton);
+  }
+
+  @apply(--cells-product-more-info-skeleton);
+}
+
+.notification {
+  margin: 0.625rem 0 2.5rem 0;
+  @apply(--cells-product-more-info-notification);
+}
+
+:host([modal]) {
+  margin: 0 ($basePadding * -2);
+
+  @apply(--cells-transaction-detail-modal);
+}

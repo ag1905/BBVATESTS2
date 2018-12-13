@@ -1,0 +1,15 @@
+{
+  "glomo-transfers-overcome": "__Overcome the__ ",
+  "glomo-transfers-past-overcome": "__Overcome the__ ",
+  "cells-cardless-withdrawal-operation-number": "__Nro. de operación: __",
+  "cells-cardless-withdrawal-receiver-number": "Nro. de beneficiario: ",
+  "glomo-cardless-withdrawal-for-me-info-message": "_Puedes cobrar el dinero en cualquier cajero o Agente Express a nivel nacional con la clave proporcionada vía SMS._",
+  "glomo-cardless-withdrawal-receiver-info-message": "_El beneficiario puede cobrar el dinero a partir de 10 minutos de confirmada la operación en cualquier cajero o Agente Express a nivel nacional con la clave proporcionada vía SMS._",
+  "glomo-cardless-withdrawal-receiver-recordatory-message": "_Recuerda que debe hacerlo antes del_",
+  "glomo-cardless-withdrawal-for-me-recordatory-message": "_Recuerda que debes hacerlo antes del_",
+  "glomo-transfers-status-pending": "Pending",
+  "glomo-transfers-status-sent": "Sent",
+  "glomo-transfers-status-expired": "Expired",
+  "glomo-transfers-status-block-fraud": "Block by fraud",
+  "glomo-transfers-status-block-max-attempt": "Block by max attempt"
+}

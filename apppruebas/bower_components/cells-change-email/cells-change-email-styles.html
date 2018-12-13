@@ -1,0 +1,68 @@
+<dom-module id="cells-change-email-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  padding: 1rem 1.875rem;
+  @apply --cells-change-email; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+cells-molecule-input {
+  --cells-molecule-input-wrapper: { height: 3.75rem; };
+  --cells-molecule-input-invalid-background-color: var(--bbva-100, #F4F4F4); }
+
+.form {
+  @apply --cells-change-email-form; }
+  .form__row {
+    margin: 0 0 1.25rem 0;
+    @apply --cells-change-email-form-row; }
+  .form--label {
+    color: var(--bbva-600, "#121212");
+    font-size: .875rem; }
+
+.error-message {
+  margin: .625rem 0 0 0;
+  --cells-icon-message-icon-error: { color: var(--bbva-dark-red, #b92a45); };
+  --cells-icon-message-inline-error: { color: var(--bbva-dark-red, #b92a45); };
+  @apply --cells-change-email-message; }
+
+.notification {
+  margin: 0 0 3rem 0;
+  @apply --cells-change-email-notification; }
+
+.actions {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  @apply --cells-change-email-actions; }
+  .actions cells-st-button {
+    @apply --cells-change-email-action-button; }
+    .actions cells-st-button + cells-st-button {
+      margin: 1.25rem 0 0 0; }
+
+</style></template></dom-module>

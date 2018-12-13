@@ -1,0 +1,298 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-dm-global-apis-transfer/cells-dm-global-apis-transfer.html">
+<link rel="import" href="../cells-global-apis-behaviors/cells-global-apis-behaviors.html" />
+<link rel="import" href="../cells-product-format-behavior/cells-product-format-behavior.html" />
+<link rel="import" href="../cells-moment-import/cells-moment-import.html">
+
+<!--
+`<glomo-transfers-mx-dm>` description.
+
+Example:
+
+```html
+<glomo-transfers-mx-dm></glomo-transfers-mx-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-transfers-mx-dm">
+  <template>
+    <cells-dm-global-apis-transfer id="dm"
+      host="[[host]]"
+      transfer-api-version="[[transferApiVersion]]"
+      on-set-mobile-transfers="_parseTransfers"
+      on-set-more-mobile-transfers="_parseMoreTransfers"
+      pagination="{{pagination}}"
+      native="[[native]]">
+    </cells-dm-global-apis-transfer>
+  </template>
+  <script>
+    (function() {
+      /*global moment*/
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-transfers-mx-dm',
+
+        behaviors: [
+          CellsBehaviors.CellsGlobalApisHandleRequest,
+          CellsBehaviors.i18nBehavior,
+          CellsBehaviors.CellsProductFormatBehavior
+        ],
+
+        properties: {
+          /**
+           * Host
+           */
+          host: String,
+          /**
+           * API Version
+           */
+          transferApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * Types of mobile transfer
+           */
+          types: {
+            type: Array,
+            value: function() {
+              return ['PENDING', 'EXPIRED', 'REJECTED'];
+            }
+          },
+          selected: {
+            type: Number,
+            observer: '_checkedList'
+          },
+          /**
+           * Pending mobile transfers
+           */
+          pending: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Expired mobile transfers
+           */
+          expired: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Rejected mobile transfers
+           */
+          rejected: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * All mobile transfers type
+           */
+          mobileTransfersParsed: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * State Pending
+           */
+          statePending: {
+            type: Boolean,
+            notify: true,
+            observer: '_checkedState'
+          },
+          /**
+           * State Expired
+           */
+          stateExpired: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * State Rejected
+           */
+          stateRejected: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * Pagination of last request
+           */
+          pagination: Object,
+          /**
+           * Paginations list of requests
+           */
+          paginations: {
+            type: Object,
+            value: {}
+          },
+          /**
+           * Show spinner in ui
+           */
+          loading: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * Code to share in detail transaction
+           */
+          code: String,
+          /**
+           * Native request
+           */
+          native: {
+            type: Boolean,
+            value: false
+          }
+        },
+
+        /**
+         * Reset
+         */
+        reset: function() {
+          this.selected = undefined;
+          this.loading = false;
+          this.statePending = false;
+          this.stateExpired = false;
+          this.stateRejected = false;
+          this.set('paginations', {});
+        },
+        /**
+         * Checked if has items in type selected and generate request if not has
+         */
+        _checkedList: function(selected) {
+          var type;
+          var state;
+
+          if (Number.isInteger(selected)) {
+            type = this.types[selected].toLowerCase();
+            state = 'state' + this.capitalize(type);
+
+            if (!this[type] || this[state]) {
+              this[state] = false;
+              this.$.dm.getMobileTransfers({'status.id': this.types[selected]});
+            }
+          }
+        },
+        /**
+         * Fetch pending
+         */
+        _checkedState: function(state) {
+          if (state && Number.isInteger(this.selected)) {
+            this.dispatchEvent(new CustomEvent('fetch-data', {
+              bubbles: true,
+              composed: true,
+              detail: true
+            }));
+            this._checkedList(0);
+          }
+        },
+        /**
+         * Get more expireds
+         */
+        getMoreTransfers: function() {
+          var pagination = this.paginations[this.selected];
+
+          if (pagination && pagination.page <= pagination.totalPages && !this.loading) {
+            var params = {'status.id': this.types[this.selected] + '&paginationKey=' + this._getPaginationKey(pagination.links.next)};
+
+            this.loading = true;
+            this.$.dm.getMobileTransfers(params, true);
+          }
+        },
+        /**
+         * Updated params after end request
+         */
+        _updateParams: function() {
+          this.loading = false;
+          this.paginations[this.selected] = this.pagination;
+          this.statePending = false;
+        },
+        /**
+         * Parse transfers and update params
+         */
+        _parseTransfers: function(payload) {
+          this._updateParams();
+          if (Number.isInteger(this.selected)) {
+            this.set(this.types[this.selected].toLowerCase(), this._generateTransfers(payload));
+          } else {
+            this.set('mobileTransfersParsed', this._generateTransfers(payload));
+          }
+        },
+        /**
+         * Parse more transfers and update params
+         */
+        _parseMoreTransfers: function(payload) {
+          this._updateParams();
+          this.dispatchEvent(new CustomEvent('set-more-transfers', {
+            bubbles: true,
+            composed: true,
+            detail: this._generateTransfers(payload)
+          }));
+        },
+        /**
+         * Generate transfers data model
+         */
+        _generateTransfers: function(response) {
+          var parseResponse = [];
+
+          parseResponse = response && response.detail.map(function(transfer, i) {
+            transfer.id = transfer.mobileTransferId;
+            transfer.main = transfer.receiver ? transfer.receiver.alias || transfer.receiver.holder.holderName : this.t('glomo-forme-header-title');
+            transfer.secondary = transfer.receiver ? this._formatProduct(transfer.receiver.mobile.replace('+', ''), 'phone') : '';
+            transfer.tertiary = this._setTertiaryMessage(transfer.status.id, transfer.date);
+            transfer.operationDate = transfer.date;
+            transfer.localAmount = transfer.sentMoney.find(function(amount) {
+              return amount.isMajor;
+            });
+          }.bind(this));
+
+
+          return response.detail || [];
+        },
+        /**
+         * Set tertiary message in parsing transfer
+         */
+        _setTertiaryMessage: function(status, date) {
+          var message = '';
+          if (status === 'EXPIRED') {
+            message = this.t('glomo-transfers-past-overcome');
+          } else if (status === 'PENDING') {
+            message = this.t('glomo-transfers-overcome');
+          } else {
+            return message;
+          }
+          return message + moment(date).format('DD MMMM YYYY');
+        },
+        /**
+         * Get mobile transfer detail
+         */
+        getMobileTransfer: function() {
+          if (this.mobileTransferId) {
+            this.dispatchEvent(new CustomEvent('open-control-veil', {
+              bubbles: true,
+              composed: true
+            }));
+            this.$.dm.getMobileTransfer();
+          }
+        },
+
+        /**
+         * Update params when mobile transfer is deleted
+         */
+        _onDeleteMobileTransfer: function(e) {
+          this._updateParams();
+          this.statePending = true;
+          this.stateExpired = true;
+          this.stateRejected = true;
+        },
+
+        capitalize: function(string) {
+          return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+      });
+    }());
+  </script>
+</dom-module>

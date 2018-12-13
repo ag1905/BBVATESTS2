@@ -1,0 +1,52 @@
+<dom-module id="glomo-legal-notice-styles"><template><style>
+:host {
+  min-height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault);
+  @apply (--glomo-legal-notice); }
+
+.legalTermsContent {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 0 1.25rem;
+  @apply (--glomo-legal-notice-legalTerms); }
+  .legalTermsContent button {
+    width: 40%;
+    margin: 2rem auto;
+    box-sizing: border-box;
+    display: block;
+    @apply (--glomo-legal-notice-button); }
+  .legalTermsContent .message h2 {
+    line-height: 24px;
+    font-weight: bold;
+    font-weight: 400;
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    @apply (--glomo-legal-notice-message-h2); }
+  .legalTermsContent .message p {
+    font-weight: 300;
+    color: var(--bbva-600, #121212);
+    @apply (--glomo-legal-notice-message-p); }
+  .legalTermsContent .legalTermsSpinner {
+    margin-top: calc((100vh - 40px) / 2);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    will-change: opacity;
+    opacity: 0;
+    transition: opacity 200ms;
+    @apply (--glomo-legal-notice-legalTermsSpinner); }
+
+</style></template></dom-module>

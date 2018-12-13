@@ -1,0 +1,61 @@
+<dom-module id="cells-step-concept-styles"><template><style>
+:host {
+  display: block;
+  --cells-st-button-transparent: {
+    color: #666666;
+  }
+  @apply (--cells-step-concept); }
+
+:host(:not([active])) {
+  pointer-events: none; }
+
+.full {
+  padding: 0 2rem;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  @apply (--cells-step-concept-full); }
+
+.filled p {
+  width: 100%;
+  font-size: 1.125rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  @apply (--cells-step-concept-filled-p); }
+
+cells-molecule-input[has-content] {
+  height: 58px;
+  border-bottom: 2px solid var(--bbva-500, #666); }
+
+cells-molecule-input.secondary--input {
+  margin-bottom: 1.25rem;
+  box-sizing: border-box;
+  height: 59px;
+  border-bottom: 1px solid var(--bbva-500, #666);
+  --cells-molecule-input-wrapper: {
+    height: 100%;
+  }
+}
+
+cells-molecule-input[has-content] {
+  height: 58px;
+  border-bottom: 2px solid var(--bbva-500, #666); }
+
+.secondary--input:last-of-type {
+  margin-bottom: 3.125rem;
+  @apply (--cells-step-concept-secondary-input); }
+
+.btn--primary {
+  width: 9rem;
+  display: block;
+  margin: auto auto 3.125rem;
+  @apply (--cells-step-concept-btn-primary); }
+
+</style></template></dom-module>

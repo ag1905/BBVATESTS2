@@ -1,0 +1,137 @@
+<dom-module id="cells-molecule-card-cover-cvv-styles"><template><style>
+:host {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-family: var(--cells-fontDefault);
+  @apply (--cells-molecule-card-cover-cvv); }
+
+.card-alias {
+  font-size: var(--cells-text-size-18);
+  margin-bottom: 12px;
+  text-align: center;
+  word-wrap: break-word;
+  @apply (--cells-fontDefaultMedium); }
+
+.card-status {
+  color: var(--bbva-500, #666); }
+  .card-status.activate cells-icon-message {
+    --cells-icon-message-color: var(--bbva-core-blue, #004481); }
+  .card-status.locked cells-icon-message, .card-status.canceled cells-icon-message, .card-status.overdraft cells-icon-message {
+    --cells-icon-message-color: var(--bbva-dark-coral, #d44b50); }
+  .card-status.off cells-icon-message {
+    --cells-icon-message-color: var(--bbva-500, #666); }
+  .card-status__header {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .card-status__link {
+    font-size: 14px;
+    text-align: center; }
+    .card-status__link span.link {
+      color: #237aba;
+      font-weight: bold; }
+  .card-status__text {
+    text-align: center;
+    font-size: var(--cells-text-size-14, 54.6875rem*rem/px);
+    margin: 22px 0 20px 0;
+    width: 300px; }
+  .card-status cells-icon-message {
+    --cells-icon-message-inline: { display: block; text-align: center; font-style: italic; };
+    --cells-icon-message-message: { font-weight: 500; }; }
+
+.card {
+  width: 270px;
+  height: 170px;
+  margin: 0 auto;
+  transition: -webkit-transform 0.7s;
+  transition: transform 0.7s;
+  transition: transform 0.7s, -webkit-transform 0.7s;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  @apply (--cells-molecule-card-cover-cvv-card); }
+  .card--front, .card--back {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    display: block;
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+    @apply (--cells-molecule-card-cover-cvv-card-front-back); }
+  .card--front {
+    color: var(--bbva-white, #fff); }
+    .card--front__number, .card--front__name, .card--front__date {
+      position: absolute; }
+    .card--front__number {
+      top: 6.0625rem;
+      left: 1.9375rem;
+      letter-spacing: 1.5px;
+      font-size: var(--cells-text-size-16); }
+    .card--front__name {
+      top: 8.75rem;
+      left: 1.9375rem;
+      font-size: var(--cells-text-size-11); }
+    .card--front__date {
+      top: 7.5rem;
+      left: 9.375rem;
+      font-size: var(--cells-text-size-11); }
+    .card--front.off:before {
+      width: 100%;
+      height: 100%;
+      content: '';
+      z-index: 1;
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.6); }
+  .card--back {
+    color: var(--bbva-600, #000);
+    -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+    @apply (--cells-molecule-card-cover-cvv-card-back); }
+  .card__description {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    width: 270px;
+    margin: 0 auto 0.9375rem;
+    @apply (--cells-molecule-card-cover-cvv-card-description); }
+    .card__description cells-st-button .btn {
+      min-width: 4rem;
+      padding: 5px 0; }
+    .card__description.noCvv {
+      -webkit-justify-content: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      @apply (--cells-molecule-card-cover-cvv-card-description-no-cvv); }
+
+.card-container {
+  -webkit-perspective: 500px;
+          perspective: 500px;
+  @apply (--cells-molecule-card-cover-cvv-card-container); }
+  .card-container.back .card {
+    -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+    @apply (--cells-molecule-card-cover-cvv-card-container-back); }
+
+cells-cvv-card,
+cells-molecule-card-cover {
+  width: 100%;
+  @apply (--cells-molecule-card-cover-cvv-card-components); }
+
+cells-cvv-card {
+  --cells-cvv-card-cvv: { font-size: .7rem; @apply(--cells-molecule-card-cover-cvv-card-code); }  ; }
+
+</style></template></dom-module>

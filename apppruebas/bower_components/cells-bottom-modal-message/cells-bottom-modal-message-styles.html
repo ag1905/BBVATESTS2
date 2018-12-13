@@ -1,0 +1,23 @@
+<dom-module id="cells-bottom-modal-message-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  position: fixed;
+  bottom: 0;
+  @apply (--cells-bottom-modal-message); }
+
+.modal {
+  --cells-bottom-modal-body-padding: 30px;
+  --cells-bottom-modal-header-wrapper: { min-height: 0; };
+  --cells-bottom-modal-full-height-body: { display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-flex-direction: row; -ms-flex-direction: row; flex-direction: row; };
+  --cells-bottom-modal-body: { max-width: 80%; font-size: 14px; margin: 0 auto; };
+  --cells-atom-message__message--text: { font-weight: 300; };
+  @apply (--cells-bottom-modal-message-modal); }
+
+</style></template></dom-module>

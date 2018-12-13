@@ -1,0 +1,53 @@
+<link rel="import" href="../cells-product-summary/cells-product-summary.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-product-summary-deposit-styles.html">
+
+<!--
+`<cells-product-summary-deposit>` description.
+
+`<cells-product-summary-deposit>` is a molecule component to display a "primary value" with its "label value" (value can be an amount, a masked number, a string, a number or an Array of all of them). Optionally, can added "secondary value", a "type" (if we want to represent a masked number, property "type" will be "masked"), or a "local currency".
+
+Example:
+```html
+<cells-product-summary-deposit
+  product="{'alias': 'Young deposit', 'title': {'id': 'YOUNG_DEPOSIT', 'name': 'Young deposit'}, .....}">
+</cells-product-summary-deposit>
+
+```
+
+## Properties
+
+| Name | Description | Default |
+|:---------------|:------------|:--------------|
+| product (Object) | Deposit Product Type Object Value to display
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-product-summary-deposit-scope      | scope description | default value  |
+| --cells-product-summary-deposit  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-product-summary-deposit">
+  <template>
+    <style include="cells-product-summary-deposit-styles cells-product-summary-deposit-shared-styles"></style>
+
+    <cells-product-summary
+      heading="[[_heading]]"
+      main-items="[[_mainItems]]"
+      masked-heading="[[_maskedHeading]]"
+      loading="[[loading]]"
+      label-more-info="cells-product-summary-more-info-deposit">
+    </cells-product-summary>
+
+    <content></content>
+  </template>
+  <script src="../moment/min/moment.min.js"></script>
+  <script src="../moment/locale/es.js"></script>
+  <script src="cells-product-summary-deposit.js"></script>
+</dom-module>
+

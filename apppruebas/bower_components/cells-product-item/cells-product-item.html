@@ -1,0 +1,168 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-heading/cells-heading.html">
+<link rel="import" href="../cells-molecule-card-cover-ccds-wrapper/cells-molecule-card-cover-ccds-wrapper.html">
+<link rel="import" href="../cells-molecule-mask/cells-molecule-mask.html">
+<link rel="import" href="cells-product-item-styles.html">
+<!--
+`<cells-product-item>` is a component to display a bank product (typically a card or account) with an optional image and description and up to two amounts in a concrete currency and optional label.
+
+The component has two sets of hooks in which you can insert your own HTML (`<slot>` tag).
+If your product has a name, then you have 3 hooks: one next to product name (slot='icons') devised for icons, one at the right of the image (slot='text-right-image') and one below all the content (slot='text-below-image').
+If name is not set then you have a hook (slot='description') to display something above the mask number product.
+
+__Examples:__
+
+```
+<cells-product-item
+  name="My Account"
+  img-src="url/to/my/image.png"
+  show-img-overlay
+  img-overlay-icon="coronita:block"
+  description='{"value": "ES04425233523", "masked": true}'
+  primary-amount='{"label": "Available", "amount": 288, "currency": "EUR"}'
+  secondary-amount='{"amount": 100, "currency": "USD"}'
+  local-currency="EUR">
+</cells-product-item>
+
+<cells-product-item
+  primary-amount='{"label": "Available", "amount": 288, "currency": "USD"}'
+  description='{"value": "987654321", "masked": "true", "content": "Lorem ipsum"}'
+  local-currency="USD">
+  <span class="description">Simple account</span>
+</cells-product-item>
+
+<cells-product-item>
+  <cells-atom-icon class="icons mobile icon-size-20" icon="coronita:mobile-26"></cells-atom-icon>
+</cells-product-item>
+```
+
+## Accessibility
+
+The title will receive a role=heading attribute and an aria-level=2 attribute by default. You can set a different aria-level using heading-level attribute and passing a number to it. In case you don't want that text to behave as a heading, pass a 0 value to heading-level in order to entirely remove role and aria-level.
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html).
+In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                                   | Description                                                                       | Default   |
+|:--------------------------------------------------|:----------------------------------------------------------------------------------| :---------|
+| --cells-product-item                              | Empty mixin for the whole component                                               | {}        |
+| --cells-product-item-color                        | Main color for texts in the component                                             | #121212   |
+| --cells-product-item-background-color             | Background color for the component                                                | #FFF      |
+| --cells-product-item-description-value-font-size  | Font size of description value                                                    | rem(12px) |
+| --cells-product-item-overlay-icon                 | Empty mixin for cells-molecule-card-cover icon                                    | {}        |
+| --cells-product-item-overlay-layer                | Empty mixin for cells-molecule-card-cover layer                                   | {}        |
+| --cells-product-item-active-background-color      | Background color for the component in active state                                | #f4f4f4   |
+| --cells-product-item-active                       | Empty mixin for component active state                                            | {}        |
+| --cells-product-item-item-info                    | Empty mixin for .item__info                                                       | {}        |
+| --cells-product-item-title-color                  | Text color for component title                                                    | #2A86CA   |
+| --cells-product-item-item-title                   | Empty mixin for .item__title                                                      | {}        |
+| --cells-product-item-disabled-text-color          | Text color for title, description value and amounts when component has class .frozen or .blocked | #D3D3D3  |
+| --cells-product-item-item-name-state              | Empty mixin for .item__name when component has class .frozen or .blocked          | {}        |
+| --cells-product-item-item-name                    | Empty mixin for .item__name                                                       | {}        |
+| --cells-product-item-item-label                   | Empty mixin for .item__label                                                      | {}        |
+| --cells-product-item-item-additional              | Empty mixin for .item__additional                                                 | {}        |
+| --cells-product-item-item-image                   | Empty mixin for .item__image                                                      | {}        |
+| --cells-product-item-item-data                    | Empty mixin for .item__data                                                       | {}        |
+| --cells-product-item-item-number                  | Empty mixin for .item__number                                                     | {}        |
+| --cells-product-item-description-value-state      | Empty mixin for cells-molecule-mask when component has class .frozen or .blocked  | {}        |
+| --cells-product-item-description-value            | Empty mixin for cells-molecule-mask                                               | {}        |
+| --cells-product-item-item-quantities              | Empty mixin for .item__quantities                                                 | {}        |
+| --cells-product-item-amount                       | Empty mixin for `.item__primary-amount` and `.item__secondary-amount`             | {}        |
+| --cells-product-item-item-primary-amount          | Empty mixin for .item__primary-amount                                             | {}        |
+| --cells-product-item-item-secondary-amount        | Empty mixin for .item__secondary-amount                                           | {}        |
+| --cells-product-item-amount-state                 | Empty mixin for item amounts when component has class .frozen or .blocked         | {}        |
+| --cells-product-item-amount-amount                | Empty mixin for amounts                                                           | {}        |
+| --cells-product-item-amount-label-color           | Color for amount labels                                                           | #BDBDBD   |
+| --cells-product-item-amount-label-state           | Empty mixin for amount labels when component has class .frozen or .blocked        | {}        |
+| --cells-product-item-amount-label                 | Empty mixin for component labels                                                  | {}        |
+| --cells-product-item-title-icon-color             | Content icon color                                                                | inherit   |
+| --cells-product-item-item                         | Empty mixin for .item                                                             | {}        |
+
+@demo demo/index.html
+@hero cells-product-item.png
+-->
+<dom-module id="cells-product-item">
+  <template>
+    <style include="cells-product-item-styles cells-product-item-shared-styles"></style>
+
+    <div class="item">
+      <div class="item__info">
+
+        <template is="dom-if" if="[[name]]">
+          <div class="item__title">
+            <cells-heading class="item__name" level="[[headingLevel]]">
+              <span class="item__label">[[name]]</span>
+              <div>
+                <slot name="icons"></slot>
+              </div>
+            </cells-heading>
+            <div class="item__additional">
+              <template is="dom-if" if="[[imgSrc]]">
+                <div class="item__image">
+                  <cells-molecule-card-cover-ccds-wrapper image-src="[[imgSrc]]"
+                    icon="[[imgOverlayIcon]]"
+                    icon-size="[[imgOverlayIconSize]]"
+                    width="[[imgWidth]]"
+                    alt="[[imgAlt]]"
+                    height="[[imgHeight]]"
+                    show-overlay="[[showImgOverlay]]"
+                    status="[[status]]"
+                    default-image="[[defaultImage]]">
+                  </cells-molecule-card-cover-ccds-wrapper>
+                </div>
+              </template>
+
+              <div class="item__data">
+                <cells-molecule-mask value="[[description.value]]" masked="[[description.masked]]" mask-chars="&bull;" visible-chars="[[visibleChars]]"><span hidden="[[!description.content]]">[[description.content]]</span></cells-molecule-mask>
+                <div>
+                  <slot name="text-right-image"></slot>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <slot name="text-below-image"></slot>
+          </div>
+        </template>
+
+        <template is="dom-if" if="[[!name]]">
+          <div class="item__number">
+            <div>
+              <slot name="description"></slot>
+            </div>
+            <cells-molecule-mask value="[[description.value]]" masked="[[description.masked]]" mask-chars="&bull;" visible-chars="[[visibleChars]]"></cells-molecule-mask>
+          </div>
+        </template>
+      </div>
+
+      <div class="item__quantities">
+        <template is="dom-if" if="[[primaryAmount]]">
+          <div class="item__primary-amount">
+            <cells-atom-amount scale="[[scale]]" abbreviations="[[abbreviations]]" amount="[[primaryAmount.amount]]" currency-code="[[primaryAmount.currency]]"
+              local-currency="[[localCurrency]]" class="amount-large" decimals-hidden="[[decimalsHidden]]"></cells-atom-amount>
+            <span class="amount-label">[[primaryAmount.label]]</span>
+          </div>
+        </template>
+
+        <template is="dom-if" if="[[secondaryAmount]]">
+          <div class="item__secondary-amount">
+            <cells-atom-amount scale="[[scale]]" abbreviations="[[abbreviations]]" amount="[[secondaryAmount.amount]]" currency-code="[[secondaryAmount.currency]]"
+              local-currency="[[localCurrency]]" class="amount-medium" decimals-hidden="[[decimalsHidden]]"></cells-atom-amount>
+            <span class="amount-label">[[secondaryAmount.label]]</span>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <slot></slot>
+  </template>
+  <script src="cells-product-item.js"></script>
+</dom-module>

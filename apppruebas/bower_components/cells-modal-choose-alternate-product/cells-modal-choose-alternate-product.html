@@ -1,0 +1,64 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../cells-alert-box/cells-alert-box.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-product-selector/cells-product-selector.html">
+<link rel="import" href="cells-modal-choose-alternate-product-styles.html">
+<!--
+Modal displaying information such as an icon, a title, information text, an optional list of options and a group of buttons triggering specific options.
+
+Example:
+
+```html
+<cells-modal-choose-alternate-product></cells-modal-choose-alternate-product>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-modal-choose-alternate-product  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-modal-choose-alternate-product">
+  <template>
+    <style include="cells-modal-choose-alternate-product-styles cells-modal-choose-alternate-product-shared-styles"></style>
+    <cells-alert-box
+      full-height="[[fullHeight]]"
+      opened="[[opened]]"
+      hero-image="[[initData.icon]]"
+      title="[[t(initData.headerTitle)]]"
+      accept-button="[[acceptButtonCaption]]"
+      cancel-button="[[cancelButtonCaption]]">
+      <p inner-h-t-m-l="[[t(initData.title)]]"></p>
+      <p inner-h-t-m-l="[[t(initData.subtitle)]]"></p>
+      <div class="options">
+      <template is="dom-repeat" items="[[initData.groups]]" as="item">
+        <paper-card elevation="0" class$="{{_getDisableClass(item.disabled)}}" on-tap="_getCardStatus">
+          <template is="dom-if" if="[[item.elements.length]]">
+            <h3>[[t(item.title)]]</h3>
+          </template>
+          <template is="dom-if" if="[[!item.elements.length]]">
+            <h3 id$="[[_setIdFromEvent(item.eventOut)]]" data-event$="[[item.eventOut]]" on-tap="_sendEvent">[[t(item.title)]]</h3>
+          </template>
+          <template is="dom-if" if="[[item.subtitle]]">
+            <span>[[t(item.subtitle)]]</span>
+          </template>
+          <template is="dom-if" if="[[item.elements.length]]">
+            <cells-product-selector
+              id="selector"
+              max-products=0
+              products="[[item.elements]]">
+          </cells-product-selector>
+          </template>
+        </paper-card>
+      </template>
+      </div>
+    </cells-alert-box>
+  </template>
+  <script src="cells-modal-choose-alternate-product.js"></script>
+</dom-module>

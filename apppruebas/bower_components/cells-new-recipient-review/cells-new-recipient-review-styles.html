@@ -1,0 +1,84 @@
+<dom-module id="cells-new-recipient-review-styles"><template><style>
+:host {
+  @apply (--cells-new-recipient-review); }
+
+.form {
+  @apply (--cells-new-recipient-review-form); }
+  .form__group, .form .separate, .form .selectable {
+    margin: 0 0 1.875rem 0;
+    @apply (--cells-new-recipient-review-form-group); }
+
+.separate {
+  border: 1px solid var(--bbva-200, #e9e9e9);
+  @apply (--cells-new-recipient-review-separate); }
+
+cells-icon-message {
+  margin: 0 0 1.25rem 0;
+  @apply (--cells-new-recipient-review-icon-message); }
+
+cells-checkbox-button, cells-molecule-input {
+  margin: 0 0 1.25rem 0;
+  @apply (--cells-new-recipient-review-checkbox-button-molecule-input); }
+
+cells-molecule-input {
+  --cells-molecule-input-button-color: var(--bbva-300, #d3d3d3);
+  --cells-molecule-input-disabled-field-input-color: var(--bbva-600, #121212);
+  --cells-molecule-input-disabled-background-color: var(--bbva-white, #FFFFFF);
+  --cells-molecule-input-wrapper: { padding: .35rem 0; };
+  @apply (--cells-new-recipient-review-cells-molecule-input); }
+  cells-molecule-input.icon-visible {
+    --cells-molecule-input-button-color: var(--bbva-medium-blue, #2A86CA);
+    --cells-molecule-input-icon: { opacity: 1; visibility: visible; width: 3.125rem; height: 3.125rem; overflow: visible; pointer-events: auto; };
+    @apply (--cells-new-recipient-review-icon-visible); }
+
+.fake-selector {
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: var(--cells-credentials-form-fake-selector-bg-color, var(--bbva-100, #F4F4F4));
+  height: 3.75rem;
+  border: 0;
+  padding: 0;
+  margin-bottom: 0.625rem;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  @apply (--cells-credentials-form-fake-selector); }
+  .fake-selector:focus {
+    @apply (--cells-credentials-form-fake-selector-focus); }
+  .fake-selector .modal-icon {
+    width: 40px;
+    height: 40px;
+    padding: .4375rem;
+    color: var(--bbva-medium-blue, #2A86CA);
+    @apply (--cells-credentials-form-fake-selector-modal-icon); }
+  .fake-selector .header-texts {
+    width: 100%;
+    @apply (--layout-vertical); }
+  .fake-selector .label {
+    margin-bottom: 0.3125rem;
+    font-size: 0.75rem;
+    line-height: 0.75rem;
+    padding-left: 1.25rem;
+    color: var(--bbva-300, #d3d3d3);
+    text-align: left;
+    @apply (--cells-credentials-form-fake-selector-label); }
+    .fake-selector .label.selected {
+      margin-bottom: 0.3125rem;
+      font-size: 0.75rem;
+      color: var(--cells-credentials-form-fake-selector-label-selected-color, var(--bbva-400, #BDBDBD)); }
+  .fake-selector .placeholder {
+    width: 100%;
+    margin: 0;
+    font-size: var(--cells-text-size-14);
+    font-weight: 200;
+    line-height: 1rem;
+    text-align: left;
+    padding-left: 1.25rem;
+    color: var(--cells-credentials-form-fake-selector-placeholder-color, var(---bbva-400, #BDBDBD));
+    @apply (--cells-credentials-form-fake-selector-placeholder); }
+    .fake-selector .placeholder.selected {
+      color: var(--cells-credentials-form-fake-selector-placeholder-selected-icon-color, var(--bbva-600, #121212)); }
+
+</style></template></dom-module>

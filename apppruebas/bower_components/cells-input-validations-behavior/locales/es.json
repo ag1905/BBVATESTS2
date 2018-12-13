@@ -1,0 +1,5 @@
+{
+  "cells-rut-error-message": "tienes errores en el RUT",
+  "cells-mx-phone-error-message": "tienes errores en mx-phone",
+  "cells-ciUruguay-error-message": "Cedula incorrecta, favor verifique."
+}

@@ -1,0 +1,58 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  font-family: var(--cells-fontDefault, sans-serif);
+  --cells-full-screen-slider_canvas-width: var(--cells-welcome-slider_canvas-width, auto);
+  --cells-full-screen-slider_canvas-height: var(--cells-welcome-slider_canvas-height, 36vh);
+  @apply --cells-welcome-slider;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+.actions {
+  display: flex;
+  padding: 0 rem(30px);
+  @apply --cells-welcome-slider_actions;
+
+  &__btn {
+    margin-right: .625rem;
+    min-width: auto;
+    @apply --cells-fontDefaultBold;
+    @apply --cells-welcome-slider_actions__btn;
+
+    &:last-child { margin-right: 0; }
+    &:only-of-type {
+      max-width: 50%;
+      margin: auto;
+    }
+  }
+}
+
+.btn--transparent {
+  @apply --cells-fontDefaultBold;
+}
+
+.footer {
+  padding: 4vh 0;
+  @apply --cells-welcome-slider_footer;
+
+  &__btn {
+    vertical-align: bottom;
+    @apply --cells-fontDefaultBold;
+    @apply --cells-welcome-slider_footer__btn;
+  }
+}
+
+.legal-notice, .register-text {
+  font-size: rem(13px);
+  margin: 0 0 rem(8px);
+  @apply --cells-fontDefault;
+  @apply --cells-welcome-slider_legal-notice;
+}
+

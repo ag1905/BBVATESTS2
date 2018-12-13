@@ -1,0 +1,53 @@
+{
+  "name": "cells-notification-list",
+  "version": "1.0.5",
+  "description": "notification list",
+  "keywords": [
+    "i18n",
+    "web-component"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "cells-atom-amount": "10.0.0",
+    "cells-i18n-behavior": "9 - 10"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "cells-demo-helper": "9 - 10",
+    "cells-shadow-query-selector": "^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "cells-coronita-theme": "9 - 10",
+    "coronita-icons": "9 - 10"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9",
+        "cells-atom-amount": "10.0.0",
+        "cells-i18n-behavior": "^9.0.0"
+      },
+      "devDependencies": {
+        "cells-sass": "^2.0.0",
+        "cells-demo-helper": "^9.0.0",
+        "cells-shadow-query-selector": "^1.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+        "cells-coronita-theme": "^9.0.0",
+        "coronita-icons": "^9.0.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  },
+  "main": [
+    "cells-notification-list.html"
+  ]
+}

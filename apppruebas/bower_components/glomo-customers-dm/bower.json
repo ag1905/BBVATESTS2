@@ -1,0 +1,29 @@
+{
+  "name": "glomo-customers-dm",
+  "version": "1.5.1",
+  "description": "GloMo DM for GLOBAL API /customers",
+  "keywords": [
+    "dm"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "cells-dm-global-apis-customers": "~1.5.0",
+    "cells-product-format-behavior": "~1.3.0"
+  },
+  "devDependencies": {
+    "cells-demo-helper": "9 - 10",
+    "cells-demo-dm-helper": "9 - 10",
+    "cells-shadow-query-selector": "^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+
+  "main": [
+    "glomo-customers-dm.html"
+  ]
+}

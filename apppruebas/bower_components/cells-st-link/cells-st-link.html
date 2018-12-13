@@ -1,0 +1,39 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-st-link-styles.html">
+<!--
+`cells-st-link` is a styling wrapper for native link/anchor elements. It should receive an `a` tag as content.
+
+You can use the normal link attributes in the `a` tag, as `href`, `target`...
+
+```html
+<cells-st-link>
+  <a href="#">My link</a>
+</cells-st-link>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property               | Description                       | Default         |
+|:------------------------------|:----------------------------------|:---------------:|
+| --cells-st-link-host          | Empty mixin for component         | {}              |
+| --cells-st-link-color         | Default text color for link       | #2A86CA         |
+| --cells-st-link               | Empty mixin for link              | {}              |
+| --cells-st-link-color-hover   | Default text color on `:hover`    | #2A86CA         |
+| --cells-st-link-hover         | Empty mixin for link on `:hover`  | {}              |
+| --cells-st-link-focus         | Empty mixin for link on `:focus`  | {}              |
+| --cells-st-link-color-active  | Default text color on `:active`   | #1162A5         |
+| --cells-st-link-active        | Empty mixin for link on `:active` | {}              |
+
+
+@demo demo/index.html
+@hero cells-st-link.png
+-->
+<dom-module id="cells-st-link">
+  <template>
+    <style include="cells-st-link-styles cells-st-link-shared-styles"></style>
+    <content></content>
+  </template>
+  <script src="cells-st-link.js"></script>
+</dom-module>

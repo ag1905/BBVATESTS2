@@ -1,0 +1,11 @@
+{
+  "cells-change-email-label": "__Write your new email__",
+  "cells-change-email-email": "Email",
+  "cells-change-email-confirm-email": "Confirm your email",
+  "cells-change-email-save": "Save",
+  "cells-change-email-cancell": "Cancell",
+  "cells-change-email-notification": "__Al guardar recibirás un correo de notificación en tu nuevo correo electrónico y en el antiguo.__",
+  "cells-change-email-not-same": "__Los correos electrónicos no coinciden__",
+  "cells-change-email-error-email-format": "__El formato de correo electrónico es invalido__",
+  "cells-change-email-same-current-email": "__Correo electrónico ya utilizado. Introduce un nuevo.__"
+}

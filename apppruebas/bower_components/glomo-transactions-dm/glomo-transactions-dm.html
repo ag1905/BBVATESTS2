@@ -1,0 +1,861 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../cells-dm-global-apis-accounts/cells-dm-global-apis-accounts.html"/>
+<link rel="import" href="../cells-dm-global-apis-cards/cells-dm-global-apis-cards.html"/>
+<link rel="import" href="../cells-dm-global-apis-deposits/cells-dm-global-apis-deposits.html"/>
+<link rel="import" href="../cells-product-format-behavior/cells-product-format-behavior.html"/>
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-moment-import/cells-moment-import.html">
+<link rel="import" href="../cells-moment-import/cells-moment-locale-es-import.html">
+
+<!--
+# glomo-transactions-dm
+
+Transactions product Dm
+
+Example:
+```html
+<glomo-transactions-dm id="dm"
+  host="https://urlToApi/example"
+  product-type="[[productType]]"
+  product-id="[[productId]]"
+  transactions="{{response}}"></glomo-transactions-dm>
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="glomo-transactions-dm">
+  <template>
+    <cells-dm-global-apis-accounts id="accountDm"
+      host="[[host]]"
+      account-id="[[productId]]"
+      hold-id="[[transactionId]]"
+      transactions="{{_transactions}}"
+      transaction-detail="{{_transactionDetail}}"
+      transaction-id="[[transactionId]]"
+      holds="{{_holds}}"
+      hold="{{_hold}}"
+      holds-balances="{{holdsBalances}}"
+      pagination="{{pagination}}"
+      accounts-api-version="[[accountsApiVersion]]"
+      required-token="[[requiredToken]]"></cells-dm-global-apis-accounts>
+    <cells-dm-global-apis-cards id="cardDm"
+      host="[[host]]"
+      card-id="[[productId]]"
+      transactions="{{_transactions}}"
+      transaction-id="[[transactionId]]"
+      transaction-detail="{{_transactionDetail}}"
+      pagination="{{pagination}}"
+      cards-api-version="[[cardsApiVersion]]"
+      required-token="[[requiredToken]]"></cells-dm-global-apis-cards>
+    <cells-dm-global-apis-deposits id="depositDm"
+      host="[[host]]"
+      deposit-id="[[productId]]"
+      transactions="{{_transactions}}"
+      transaction-id="[[transactionId]]"
+      transaction-detail="{{_transactionDetail}}"
+      pagination="{{pagination}}"
+      deposits-api-version="[[depositsApiVersion]]"
+      required-token="[[requiredToken]]"></cells-dm-global-apis-deposits>
+  </template>
+  <script>
+  (function() {
+    /* global moment */
+    'use strict';
+
+    Polymer({
+
+      is: 'glomo-transactions-dm',
+
+      behaviors: [
+        CellsBehaviors.i18nBehavior,
+        CellsBehaviors.CellsProductFormatBehavior
+      ],
+
+      properties: {
+        /**
+         * Host
+         */
+        host: String,
+        /**
+         * Started component
+         */
+        started: Boolean,
+        /**
+         * Transactions list
+         */
+        transactionDetailDataModel: {
+          type: Object,
+          value: {
+            purchase: [
+              {
+                model: [
+                  {
+                    key: 'cells-transaction-detail-related-card',
+                    field: 'contract.number'
+                  },
+                  {
+                    key: 'cells-transaction-detail-applied-points',
+                    field: 'detail.points.applied'
+                  },
+                  {
+                    key: 'cells-transaction-detail-equivalence-points',
+                    field: 'detail.points.monetaryEquivalence'
+                  },
+                  {
+                    key: 'cells-transaction-detail-origin-amount',
+                    field: 'localAmount',
+                    formatFunction: '_formatAmount'
+                  },
+                  {
+                    key: 'cells-transaction-detail-total-amount',
+                    field: 'detail.points.totalAmount',
+                    formatFunction: '_formatAmount'
+                  },
+                  {
+                    key: 'cells-transaction-detail-generated-points',
+                    field: 'detail.points.obtained'
+                  },
+                  {
+                    key: 'cells-transaction-detail-posted-date',
+                    field: 'operationDate',
+                    formatFunction: '_formatDate'
+                  },
+                  {
+                    key: 'cells-transaction-detail-folio',
+                    field: 'detail.authorizationNumber'
+                  },
+                  {
+                    key: 'cells-transaction-detail-store-name',
+                    field: 'detail.store.name'
+                  },
+                  {
+                    key: 'cells-transaction-detail-store-rfc',
+                    field: 'detail.store.id'
+                  },
+                  {
+                    key: 'cells-transaction-detail-store-category',
+                    field: 'detail.store.category.name'
+                  },
+                  {
+                    key: 'cells-transaction-detail-payment-channel',
+                    field: 'detail.paymentChannel.name'
+                  },
+                  {
+                    key: 'cells-transaction-detail-store-terminal',
+                    field: 'detail.store.terminal'
+                  }
+                ]
+              }
+            ],
+            refund: [
+              {
+                model: [
+                  {
+                    key: 'cells-transaction-detail-related-card',
+                    field: 'contract.number'
+                  },
+                  {
+                    key: 'cells-transaction-detail-origin-amount',
+                    field: 'localAmount',
+                    formatFunction: '_formatAmount'
+                  },
+                  {
+                    key: 'cells-transaction-detail-concept',
+                    field: 'concept'
+                  },
+                  {
+                    key: 'cells-transaction-detail-generated-points',
+                    field: 'detail.points.obtained'
+                  },
+                  {
+                    key: 'cells-transaction-detail-posted-date',
+                    field: 'operationDate',
+                    formatFunction: '_formatDate'
+                  },
+                  {
+                    key: 'cells-transaction-detail-accounted-date',
+                    field: 'accountedDate',
+                    formatFunction: '_formatDate'
+                  },
+                  {
+                    key: 'cells-transaction-detail-folio',
+                    field: 'detail.authorizationNumber'
+                  },
+                  {
+                    key: 'cells-transaction-detail-store-name',
+                    field: 'detail.store.name'
+                  }
+                ]
+              }
+            ],
+            'credit_card_installment': [
+              {
+                model: [
+                  {
+                    key: 'cells-transaction-detail-related-card',
+                    field: 'contract.number'
+                  },
+                  {
+                    key: 'cells-transaction-detail-origin-amount',
+                    field: 'localAmount',
+                    formatFunction: '_formatAmount'
+                  },
+                  {
+                    key: 'cells-transaction-detail-posted-date',
+                    field: 'operationDate',
+                    formatFunction: '_formatDate'
+                  },
+                  {
+                    key: 'cells-transaction-detail-folio',
+                    field: 'detail.authorizationNumber'
+                  },
+                  {
+                    key: 'cells-transaction-detail-payment-channel',
+                    field: 'detail.originType'
+                  },
+                  {
+                    key: 'cells-transaction-detail-store-category',
+                    field: 'detail.branch.id'
+                  }
+                ]
+              }
+            ],
+            'cash_withdrawal': [
+              {
+                model: [
+                  {
+                    key: 'cells-transaction-detail-related-card',
+                    field: 'contract.number'
+                  },
+                  {
+                    key: 'cells-transaction-detail-origin-amount',
+                    field: 'localAmount',
+                    formatFunction: '_formatAmount'
+                  },
+                  {
+                    key: 'cells-transaction-detail-atm-number',
+                    field: 'detail.atm.id'
+                  },
+                  {
+                    key: 'cells-transaction-detail-posted-date',
+                    field: 'operationDate',
+                    formatFunction: '_formatDate'
+                  },
+                  {
+                    key: 'cells-transaction-detail-folio',
+                    field: 'detail.authorizationNumber'
+                  }
+                ]
+              }
+            ],
+            'transfer_debit': [
+              {
+                model: [
+                  {
+                    key: 'cells-transaction-detail-related-card',
+                    field: 'contract.number'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-sender-name',
+                    field: ['detail.sender.firstName', 'detail.sender.lastName'],
+                    formatFunction: '_formatFieldsArray'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-sender-bank',
+                    field: 'Bancomer',
+                    formatFunction: '_formatLiteral'
+                  }
+                ]
+              },
+              {
+                model: [
+                  {
+                    key: 'cells-transaction-detail-transfer-receiver-name',
+                    field: ['detail.receiver.firstName', 'detail.receiver.lastName'],
+                    formatFunction: '_formatFieldsArray'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-debit-receiver-contract',
+                    field: 'detail.receiver.contract.contractNumber'
+                  },
+                  {
+                    key: 'cells-transaction-detail-origin-amount',
+                    field: 'localAmount',
+                    formatFunction: '_formatAmount'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-description',
+                    field: 'detail.transferDescription'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-receiver-bank',
+                    field: 'detail.receiver.contract.bank.name'
+                  }
+                ]
+              },
+              {
+                model: [
+                  {
+                    key: 'cells-transaction-detail-status',
+                    field: 'status.name',
+                    formatFunction: '_formatInterpolation'
+                  },
+                  {
+                    key: 'cells-transaction-detail-posted-date',
+                    field: 'operationDate',
+                    formatFunction: '_formatDate'
+                  },
+                  {
+                    key: 'cells-transaction-detail-accounted-date',
+                    field: 'accountedDate',
+                    formatFunction: '_formatDate'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-reference',
+                    field: 'additionalInformation.reference'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-tracking-reference',
+                    field: 'detail.customExternalReference.value'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-folio',
+                    field: 'detail.authorizationNumber'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-url-status',
+                    field: 'detail.customExternalReference.trackingInformation.href'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-channel',
+                    field: 'detail.paymentChannel.name'
+                  }
+                ]
+              }
+            ],
+            'transfer_credit': [
+              {
+                model: [
+                  {
+                    key: 'cells-transaction-detail-transfer-receiver-name',
+                    field: ['detail.receiver.firstName', 'detail.receiver.lastName'],
+                    formatFunction: '_formatFieldsArray'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-credit-receiver-account',
+                    field: 'contract.number'
+                  },
+                  {
+                    key: 'cells-transaction-detail-origin-amount',
+                    field: 'localAmount',
+                    formatFunction: '_formatAmount'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-receiver-bank',
+                    field: 'BBVA BANCOMER',
+                    formatFunction: '_formatLiteral'
+                  },
+                  {
+                    key: 'cells-transaction-detail-posted-date',
+                    field: 'operationDate',
+                    formatFunction: '_formatDate'
+                  }
+                ]
+              }, {
+                model: [
+                  {
+                    key: 'cells-transaction-detail-transfer-sender-name',
+                    field: ['detail.sender.firstName', 'detail.sender.lastName'],
+                    formatFunction: '_formatFieldsArray'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-description',
+                    field: 'detail.transferDescription'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-sender-contract',
+                    field: 'detail.sender.contract.number'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-sender-bank',
+                    field: 'detail.sender.contract.bank.name'
+                  }
+                ]
+              }, {
+                model: [
+                  {
+                    key: 'cells-transaction-detail-transfer-reference',
+                    field: 'additionalInformation.reference'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-tracking-reference',
+                    field: 'detail.customExternalReference.value'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-folio',
+                    field: 'detail.authorizationNumber'
+                  },
+                  {
+                    key: 'cells-transaction-detail-transfer-url-status',
+                    field: 'detail.customExternalReference.trackingInformation.href'
+                  }
+                ]
+              }
+            ],
+            uncategorized: [
+              {
+                model: [
+                  {
+                    key: 'cells-transaction-detail-related-card',
+                    field: 'contract.number'
+                  },
+                  {
+                    key: 'cells-transaction-detail-origin-amount',
+                    field: 'localAmount',
+                    formatFunction: '_formatAmount'
+                  },
+                  {
+                    key: 'cells-transaction-detail-type',
+                    field: 'moneyFlow.id',
+                    formatFunction: '_formatInterpolation'
+                  },
+                  {
+                    key: 'cells-transaction-detail-status',
+                    field: 'status.name'
+                  },
+                  {
+                    key: 'cells-transaction-detail-concept',
+                    field: 'concept'
+                  },
+                  {
+                    key: 'cells-transaction-detail-posted-date',
+                    field: 'operationDate',
+                    formatFunction: '_formatDate'
+                  },
+                  {
+                    key: 'cells-transaction-detail-accounted-date',
+                    field: 'accountedDate',
+                    formatFunction: '_formatDate'
+                  },
+                  {
+                    key: 'cells-transaction-detail-folio',
+                    field: 'id'
+                  },
+                  {
+                    key: 'cells-transaction-detail-payment-channel',
+                    field: 'detail.paymentChannel.name'
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        /**
+         * Transactions list
+         */
+        transactions: {
+          type: Array,
+          computed: '_parseTransactions(_transactions)',
+          notify: true
+        },
+        /**
+         * Transaction detail object
+         */
+        transactionDetail: {
+          type: Object,
+          computed: '_parseTransactionDetail(_transactionDetail)',
+          notify: true
+        },
+        /**
+         * Pendings list
+         */
+        pendings: {
+          type: Array,
+          notify: true
+        },
+        /**
+         * Transactions list
+         */
+        _transactions: Array,
+        /**
+         * Transaction Id
+         */
+        transactionId: String,
+        /**
+         * Transactions detail
+         */
+        _transactionDetail: Object,
+        /**
+         * Holds
+         */
+        holds: {
+          type: Array,
+          computed: '_parseHolds(_holds)',
+          notify: true
+        },
+        /**
+         * Hold
+         */
+        hold: {
+          type: Object,
+          computed: '_parseHold(_hold)',
+          notify: true
+        },
+        /**
+         * Hold balance
+         */
+        holdsBalances: {
+          type: Object,
+          notify: true
+        },
+        /**
+         * Flag on get hols in init method
+         */
+        enableHolds: Boolean,
+        /**
+         * Holds
+         */
+        _holds: Array,
+        /**
+         * Hold
+         */
+        _hold: Object,
+        /**
+         * Product type
+         */
+        productType: String,
+        /**
+         * Product Id
+         */
+        productId: String,
+        /**
+         * Loading
+         */
+        loading: {
+          type: Boolean,
+          notify: true
+        },
+        /**
+         * Pagination
+         */
+        pagination: Object,
+        /**
+         * Add transactions type
+         */
+        addTransactionsType: Boolean,
+        /**
+         * Locale to format number product transaction
+         */
+        locale: String,
+        /**
+         * Format date
+         */
+        formatDate: {
+          type: String,
+          value: 'DD MMMM, YYYY HH:mm'
+        },
+        /**
+         * Local currency
+         */
+        localCurrency: {
+          type: String,
+          value: 'MXN'
+        },
+        /**
+        * Accounts API version
+        */
+        accountsApiVersion: {
+          type: String,
+          value: '0'
+        },
+        /**
+        * Cards API version
+        */
+        cardsApiVersion: {
+          type: String,
+          value: '0'
+        },
+        /**
+        * Deposits API version
+        */
+        depositsApiVersion: {
+          type: String,
+          value: '0'
+        },
+        /**
+        * requiredToken, 'jwt' or 'tsec' or empty
+        */
+        requiredToken: {
+          type: String,
+          value: 'tsec'
+        }
+      },
+
+      init: function() {
+        if (!this.started) {
+          this.getTransactions();
+
+          if (this.enableHolds) {
+            this.getHoldsWithBalance();
+          }
+
+          this.set('started', true);
+        }
+
+        // Reset product detail scroll
+        this.fire('template-cached');
+      },
+
+      /**
+       * Reset
+       */
+      reset: function() {
+        this.started = false;
+        this.loading = false;
+        this.set('_transactions', null);
+      },
+      /**
+       * Get transactions by product type
+       */
+      getTransactions: function() {
+        if (this.productId && this.productType && this.$[this.productType + 'Dm']) {
+          this.$[this.productType + 'Dm'].getTransactions();
+        }
+      },
+      /**
+       * Get transactions by product type
+       */
+      getMoreTransactions: function() {
+        var enablePagination = this.pagination && this.pagination.page <= this.pagination.totalPages && this.pagination.links && this.pagination.links.next;
+        if (this.productType && this.$[this.productType + 'Dm'] && !this.loading && enablePagination) {
+          this.loading = true;
+          this.$[this.productType + 'Dm'].getMoreTransactions();
+        }
+      },
+      /**
+       * Get transaction detail
+       */
+      getTransactionDetail: function() {
+        if (this.productType && this.$[this.productType + 'Dm'] && !this.loading) {
+          this.loading = true;
+          this.$[this.productType + 'Dm'].getTransactionDetail();
+        }
+      },
+      /**
+       * Get holds with balance
+       */
+      getHoldsWithBalance: function() {
+        this.getHolds();
+        this.getHoldsBalance();
+      },
+      /**
+       * Get holds balances
+       */
+      getHoldsBalance: function() {
+        this.$.accountDm.getAccountHoldsBalances();
+      },
+      /**
+       * Get holds
+       */
+      getHolds: function() {
+        if (this.productId) {
+          this.$.accountDm.getAccountHolds();
+        }
+      },
+      /**
+       * Get hold
+       */
+      getHold: function() {
+        if (this.productId && this.transactionId) {
+          this.$.accountDm.getAccountHold();
+        }
+      },
+      /**
+       * Parse transactions
+       */
+      _parseTransactions: function(transactions) {
+        if (Array.isArray(transactions)) {
+          var types = {
+            pending: [],
+            settled: [],
+            other: []
+          };
+          var res = transactions.map(function(transaction) {
+            transaction.additionalInformation = [];
+            if (this.addTransactionsType) {
+              transaction.additionalInformation.push({
+                value: transaction.transactionType.name,
+                type: 'text'
+              });
+            }
+
+            (types[transaction.status.id.toLowerCase()] || types.other).push(transaction);
+          }.bind(this));
+
+          this.loading = false;
+          this.set('pendings', types.pending);
+          this.fire('set-transactions', types.settled);
+          return types.settled;
+        }
+      },
+      /**
+       * Parse transactions detail
+       */
+      _parseTransactionDetail: function(transaction) {
+        if (transaction && transaction.transactionType) {
+          var type = transaction.transactionType.id.toLowerCase();
+          this.loading = false;
+
+          if (transaction.contract) {
+            var cardNumber = this._formatProduct(transaction.contract.number, 'card');
+            transaction.contract.number = '•' + cardNumber.slice(-6);
+          }
+          transaction = this._generateTransaction(transaction, type);
+          this.fire('set-transaction-detail', transaction);
+          return transaction;
+        }
+      },
+
+      /**
+       * Generate transaction
+       */
+      _generateTransaction: function(transaction, type) {
+        var model = this.transactionDetailDataModel[type];
+        var status = transaction.status && transaction.status.id.toLowerCase();
+        var response = {
+          label: {
+            style: type !== 'refund' ? 'lighting-text' : 'dark-text',
+            value: 'cells-transaction-detail-' + type + '-label',
+          },
+          title: this.capitalize(transaction.concept),
+          amount: transaction.localAmount,
+          date: moment(transaction.operationDate).format('DD MMMM, YYYY  HH:mm') + 'h',
+          data: this._generateData(model, transaction),
+          type: type
+        };
+
+        if (status) {
+          response.status = {
+            icon: 'coronita:info',
+            value: 'cells-transaction-detail-status-' + status
+          };
+        }
+
+        if (transaction.detail && transaction.detail.points) {
+          response.points = this._getPoints(transaction.detail.points);
+        }
+
+        return Object.assign(transaction, {
+          data: response
+        });
+      },
+
+      _getPoints: function(points) {
+        return {
+          label: 'cells-transaction-detail-buy-only-with-points',
+          amount: points.monetaryEquivalence && points.monetaryEquivalence.amount
+        };
+      },
+
+      _generateData: function(models, transaction) {
+        var response = [];
+        models.forEach(function(model) {
+          response.push(this._generateModel(model.model, transaction));
+        }.bind(this));
+
+        return response;
+      },
+
+      _generateModel: function(model, data) {
+        return model.reduce(function(acc, modelItem) {
+          var parsed = {
+            key: modelItem.key
+          };
+          var formatFunction = this[modelItem.formatFunction || '_formatDefault'].bind(this);
+
+          formatFunction(modelItem, data, parsed);
+
+          if (parsed.value) {
+            acc.push(parsed);
+          }
+
+          return acc;
+        }.bind(this), []);
+      },
+
+      _formatDefault: function(modelItem, data, parsed) {
+        parsed.value = this.get(modelItem.field, data);
+      },
+
+      _formatDate: function(modelItem, data, parsed) {
+        let value = this.get(modelItem.field, data);
+        parsed.value = moment(value).format(this.formatDate) + 'h';
+      },
+
+      _formatInterpolation: function(modelItem, data, parsed) {
+        let value = this.get(modelItem.field, data).toLowerCase();
+        parsed.value = this.t(modelItem.key + '-' + value);
+      },
+
+      _formatFieldsArray: function(modelItem, data, parsed) {
+        parsed.value = modelItem.field.map(field => this.get(field, data)).join(' ');
+      },
+
+      _formatAmount: function(modelItem, data, parsed) {
+        let value = this.get(modelItem.field, data);
+        if (value) {
+          parsed.value = {
+            amount: value.amount,
+            currencyCode: value.currency
+          };
+        }
+        parsed.localCurrency = this.localCurrency;
+      },
+
+      _formatLiteral: function(modelItem, data, parsed) {
+        parsed.value = modelItem.field;
+      },
+
+      capitalize: function(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+      },
+
+      /**
+       * Parse holds
+       */
+      _parseHolds: function(holds) {
+        holds = holds && holds.reduce(function(acc, hold, index, origin) {
+          hold.concept = hold.holdType && hold.holdType.name;
+          hold.operationDate = hold.registrationDate;
+          hold.localAmount = hold.currentAmount;
+          hold.additionalInformation = [
+            {
+              key: 'cells-molecule-transaction-list-item-number',
+              value: hold.id,
+              type: 'text'
+            },
+            {
+              key: 'cells-molecule-transaction-list-item-date',
+              value: hold.registrationDate,
+              type: 'date'
+            }
+          ];
+
+          acc.push(hold);
+          return acc;
+        }, []);
+
+        this.fire('set-holds', holds);
+        return holds;
+      },
+      /**
+       * Parse hold
+       */
+      _parseHold: function(hold) {
+        return hold;
+      }
+    });
+  }());
+  </script>
+</dom-module>

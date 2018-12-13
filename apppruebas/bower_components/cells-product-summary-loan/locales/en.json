@@ -1,0 +1,14 @@
+{
+  "cells-product-summary-loan-loan": "Loan",
+  "cells-product-summary-loan-mortgage": "Mortgage",
+  "cells-product-summary-loan-initial-amount": "Initial",
+  "cells-product-summary-loan-pending-amount": "Pending",
+  "cells-product-summary-loan-next-installment-date": "Loan Next Installment Date",
+  "cells-product-summary-more-info-loan": "Loan Detail",
+  "cells-product-summary-loan-fee": "Loan Fee",
+  "cells-product-summary-loan-of": "of",
+  "cells-product-summary-loan-maturity-date": "Maturity Date",
+  "cells-product-summary-loan-current-fee": "Current Fee",
+  "cells-product-summary-loan-annual-fixed-rate": "Annual Fixed Rate",
+  "cells-product-summary-loan-current-installment": "Current Installment"
+}

@@ -1,0 +1,239 @@
+<dom-module id="cells-molecule-input-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, sans-serif);
+  position: relative;
+  box-sizing: border-box;
+  --icon-button-size: var(--cells-molecule-input-icon-button-size, 3.125rem);
+  --icons-button-gutter: var(--cells-molecule-input-icons-button-gutter, 0.5rem);
+  @apply --cells-molecule-input; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+.field-icons-wrapper {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
+  background-color: var(--cells-molecule-input-background-color, #F4F4F4);
+  border-radius: 1px;
+  @apply --cells-molecule-input-wrapper; }
+  :host([disabled]) .field-icons-wrapper {
+    background-color: var(--cells-molecule-input-disabled-background-color, rgba(244, 244, 244, 0.4));
+    @apply --cells-molecule-input-disabled-wrapper; }
+  :host([readonly]) .field-icons-wrapper {
+    @apply --cells-molecule-input-readonly-wrapper; }
+  :host([invalid]) .field-icons-wrapper {
+    background-color: var(--cells-molecule-input-invalid-background-color, #F8D7DC);
+    @apply --cells-molecule-input-invalid-wrapper; }
+  :host([has-content]) .field-icons-wrapper {
+    @apply --cells-molecule-input-has-content-wrapper; }
+
+.field {
+  position: relative;
+  display: block;
+  min-height: var(--cells-molecule-input-field-min-height, 3.125rem);
+  pointer-events: none;
+  -webkit-flex: 1 1 100%;
+      -ms-flex: 1 1 100%;
+          flex: 1 1 100%;
+  @apply --cells-molecule-input-field; }
+  .field__label {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0.125rem 1.25rem 0;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    color: var(--cells-molecule-input-field-label-color, #BDBDBD);
+    white-space: nowrap;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1;
+    width: 100%;
+    z-index: 1;
+    transition: all 200ms;
+    @apply --cells-molecule-input-field-label; }
+    :host([has-content]) .field__label {
+      font-size: 0.75rem;
+      -webkit-transform: translateY(-0.75rem);
+              transform: translateY(-0.75rem);
+      @apply --cells-molecule-input-withcontent-field-label; }
+    :host([disabled]) .field__label {
+      color: var(--cells-molecule-input-disabled-field-label-color, #D3D3D3);
+      @apply --cells-molecule-input-disabled-field-label; }
+    :host([readonly]) .field__label {
+      @apply --cells-molecule-input-readonly-field-label; }
+    :host([invalid]) .field__label {
+      color: var(--cells-molecule-input-invalid-field-label-color, #666666);
+      @apply --cells-molecule-input-invalid-field-label; }
+  .field__input {
+    color: var(--cells-molecule-input-field-input-color, #121212);
+    width: 100%;
+    padding: 0 1.25rem;
+    line-height: 1.5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    background-color: transparent;
+    pointer-events: auto;
+    @apply --cells-molecule-input-field-input; }
+    :host([has-content]) .field__input {
+      top: auto;
+      padding-bottom: 6px;
+      height: auto;
+      @apply --cells-molecule-input-withcontent-field-input; }
+    :host([disabled]) .field__input {
+      color: var(--cells-molecule-input-disabled-field-input-color, #D3D3D3);
+      @apply --cells-molecule-input-disabled-field-input; }
+    :host([readonly]) .field__input {
+      @apply --cells-molecule-input-readonly-field-input; }
+    :host([invalid]) .field__input {
+      @apply --cells-molecule-input-invalid-field-input; }
+    :host([icon]:not([disabled])) .field__input,
+    .field__input :host([icon-extra]:not([disabled])) {
+      padding-right: 0;
+      @apply --cells-molecule-input-withicon-field-input; }
+    .field__input:-webkit-autofill, .field__input:-webkit-autofill:hover, .field__input:-webkit-autofill:active, .field__input:-webkit-autofill:focus {
+      box-shadow: 0 0 0px 1000px var(--cells-molecule-input-background-color, #F4F4F4) inset;
+      -webkit-text-fill-color: var(--cells-molecule-input-color, #FFFFFF) !important;
+      transition: background-color 5000s ease-in-out 0s;
+      @apply --cells-molecule-input-autofill; }
+    .field__input::-webkit-credentials-auto-fill-button {
+      visibility: hidden;
+      pointer-events: none;
+      position: absolute;
+      right: 0; }
+    .field__input:not(output):-moz-ui-invalid {
+      box-shadow: 0 0 0 0 transparent; }
+
+.icon {
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+          flex-shrink: 0;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  pointer-events: none;
+  transition: opacity 200ms 0s, visibility 0s 200ms, width 0s 200ms, height 0s 200ms;
+  --cells-st-button-text-color-transparent: var(--cells-molecule-input-button-color, #121212);
+  --cells-st-button-text-color-transparent-hover: var(--cells-molecule-input-button-hover-color, #2A86CA);
+  --cells-st-button-text-color-transparent-active: var(--cells-molecule-input-button-active-color, #1162A5);
+  @apply --cells-molecule-input-icon; }
+  .icon button {
+    height: var(--icon-button-size);
+    width: var(--icon-button-size);
+    @apply --cells-molecule-input-icon-button; }
+    .icon button:focus {
+      color: var(--cells-molecule-input-button-focus-color, #2A86CA); }
+  .icon.visible-always,
+  :host([focused]:not([disabled])) .icon.visible-focused,
+  :host([has-content]:not([disabled])) .icon.visible-content,
+  :host([invalid]) .icon.error-icon {
+    opacity: 1;
+    visibility: visible;
+    width: var(--icon-button-size);
+    height: var(--icon-button-size);
+    overflow: visible;
+    pointer-events: auto;
+    transition: opacity 200ms 0s, visibility 0s 0s, width 0s 0s, height 0s 0s;
+    @apply --cells-molecule-input-icon-visible; }
+  :host([disabled]) .icon.visible-always {
+    pointer-events: none;
+    @apply --cells-molecule-input-disabled-icon-visible; }
+    :host([disabled]) .icon.visible-always iron-icon {
+      color: var(--cells-molecule-input-disabled-field-input-color, #D3D3D3);
+      @apply --cells-molecule-input-disabled-icon-visible-iron-icon; }
+  :host([invalid]) .icon.error-icon {
+    color: var(--cells-molecule-input-invalid-error-icon-color, #f35e61);
+    @apply --cells-molecule-input-invalid-icon-error; }
+  :host([icon][extra-icon]) .icon.main-icon button, :host([icon][extra-icon]) .icon.main-icon.decorative {
+    width: calc(var(--icon-button-size) - var(--icons-button-gutter));
+    padding-right: var(--icons-button-gutter);
+    @apply --cells-molecule-input-right-icon-button; }
+  :host([icon][extra-icon]) .icon.secondary-icon button, :host([icon][extra-icon]) .icon.secondary-icon.decorative {
+    width: calc(var(--icon-button-size) - var(--icons-button-gutter));
+    padding-left: var(--icons-button-gutter);
+    @apply --cells-molecule-input-left-icon-button; }
+  :host([icon][extra-icon]:not([disabled])) .icon.visible-always,
+  :host([icon][extra-icon][focused]:not([disabled])) .icon.visible-focused,
+  :host([icon][extra-icon][has-content]:not([disabled])) .icon.visible-content {
+    width: calc(var(--icon-button-size) - var(--icons-button-gutter));
+    @apply --cells-molecule-input-both-icons-visible; }
+  .icon .icon__text {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px; }
+
+.error-message-wrapper {
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: var(--cells-molecule-input-invalid-error-icon-color, #f35e61);
+  padding-top: 0.625rem;
+  @apply --cells-molecule-input-text-error-message-wrapper; }
+  .error-message-wrapper iron-icon {
+    -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+            flex-shrink: 0;
+    -webkit-align-self: flex-start;
+        -ms-flex-item-align: start;
+            align-self: flex-start;
+    @apply --cells-molecule-input-error-message-wrapper-iron-icon; }
+
+.error {
+  color: var(--cells-molecule-input-text-error-color, #121212);
+  font-weight: 400;
+  font-size: 0.75rem;
+  display: block;
+  cursor: default;
+  margin-left: 0.625rem;
+  @apply --cells-molecule-input-text-error; }
+
+/** [type=number] **/
+:host([type=number]) .field__input::-webkit-inner-spin-button,
+:host([type=number]) .field__input::-webkit-outer-spin-button {
+  display: none;
+  @apply --cells-molecule-input-number-spin-buttons; }
+
+:host([type=number]) .field__input {
+  -moz-appearance: textfield; }
+
+</style></template></dom-module>

@@ -1,0 +1,8 @@
+{
+  "cells-oc-banner-welcome": "Bienvenido a ",
+  "cells-oc-banner-iwant": "¡Me interesa!",
+  "cells-oc-banner-one-day-left": "Queda 1 día",
+  "cells-oc-banner-several-days-left": "Quedan ${days} dias",
+  "cells-oc-banner-valid-until": "Válido hasta",
+  "cells-oc-banner-last-day": "Último día"
+}

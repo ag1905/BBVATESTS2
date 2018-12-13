@@ -1,0 +1,40 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  ::content cells-step .filled ::content cells-atom-amount {
+    height: rem(36px);
+
+    @apply(--cells-step-enter-amount-number);
+  }
+
+  cells-enter-limited-amount {
+    margin-left: rem(30px);
+    margin-right: rem(30px);
+  }
+
+  cells-molecule-input[has-content] {
+    border-bottom: 1px solid var(--bbva-500, #666);
+  }
+  cells-atom-icon {
+    color: var(--bbva-500, #666);
+  }
+
+  @apply(--cells-step-enter-amount);
+}
+
+:host(:not([active])) {
+  pointer-events: none;
+  cells-enter-limited-amount {
+    --cells-enter-limited-amount__txt: unquote("{
+      color: #BDBDBD;
+    }");
+  }
+
+  .switch-container {
+    display: none;
+  }
+}
+
+:host(:not([decorated])) {
+  --cells-step-after-position: relative;
+}

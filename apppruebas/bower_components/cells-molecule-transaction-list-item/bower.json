@@ -1,0 +1,53 @@
+{
+  "name": "cells-molecule-transaction-list-item",
+  "version": "10.0.5",
+  "description": "shows an item from a list with a transaction detail.",
+  "keywords": [
+    "i18n",
+    "transaction",
+    "list item"
+  ],
+  "dependencies": {
+    "cells-atom-amount": "9 - 10",
+    "cells-atom-date": "9 - 10",
+    "cells-i18n-behavior": "9 - 10",
+    "cells-molecule-mask": "9 - 10",
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "main": [
+    "cells-molecule-transaction-list-item.html"
+  ],
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "cells-coronita-theme": "9 - 10",
+    "webcomponentsjs": "^1.0.0",
+    "cells-demo-helper": "9 - 10"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "cells-atom-amount": "^9.0.0",
+        "cells-atom-date": "^9.0.0",
+        "cells-i18n-behavior": "^9.0.0",
+        "cells-molecule-mask": "^9.0.0",
+        "polymer": "Polymer/polymer#^1.9.0"
+      },
+      "devDependencies": {
+        "cells-sass": "^2.0.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "cells-coronita-theme": "^9.0.0",
+        "webcomponentsjs": "^0.7",
+        "cells-demo-helper": "^9.0.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

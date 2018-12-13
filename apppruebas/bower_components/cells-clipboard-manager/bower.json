@@ -1,0 +1,22 @@
+{
+  "name": "cells-clipboard-manager",
+  "version": "1.0.3",
+  "description": "Your component description",
+  "keywords": [],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.0"
+  },
+  "devDependencies": {
+    "cells-glomo-theme": "^5.3.0",
+    "cells-sass": "^2.0.0",
+    "cells-demo-helper": "^1.0.0",
+    "cells-shadow-query-selector": "^1.0.0",
+    "coronita-icons": "^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0"
+  },
+  "main": [
+    "cells-clipboard-manager.html"
+  ]
+}

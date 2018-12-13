@@ -1,0 +1,150 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-step/cells-step.html">
+<link rel="import" href="../cells-step-behavior/cells-step-behavior.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href="../cells-atom-date/cells-atom-date.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="cells-step-enter-amount-credit-card-styles.html">
+
+<!--
+# cells-step-enter-amount-credit-card
+
+Enters an amount in a step proccess of credit card payment.
+
+Example:
+```html
+<cells-step-enter-amount-credit-card></cells-step-enter-amount-credit-card>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-step-enter-amount-credit-card  | empty mixin  | {}             |
+| --cells-step-enter-amount-credit-card-number  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-not-active-list-item-icon | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-not-active-list-item  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-not-active-alert  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-not-active-alert-info | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-not-active-list | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-not-active-other-amount-icon  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-not-active-other-amount | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-not-active  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-separator | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-list-intro-li | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-list-intro  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-list-amounts  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-list-item-button-active | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-list-item-button-disabled | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-list-item-button  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-list-item-selecteable | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-list-item-label | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-list-item-amount  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-list-item-icon  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-list-item | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-alert-error | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-alert-info-icon | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-alert-info  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-alert | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-list  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-other-amount-active | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-other-amount-icon | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-other-amount  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-button  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-date  | empty mixin | {}  |
+| --cells-step-enter-amount-credit-card-message | empty mixin | {}  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-step-enter-amount-credit-card">
+  <template>
+    <style include="cells-step-enter-amount-credit-card-styles cells-step-enter-amount-credit-card-shared-styles"></style>
+    <cells-step id="stepContainer"
+      active="[[active]]"
+      title="[[title]]"
+      current-step="[[currentStep]]"
+      max-steps="[[maxSteps]]"
+      collapsed="{{collapsed}}"
+      fixed="{{fixed}}"
+      change-label="[[changeLabel]]"
+      previous="[[previous]]"
+      next="[[next]]"
+      scrolled="[[scrolled]]"
+      decorated="[[decorated]]">
+      <div class="filled">
+        <span class="filled__label">[[t(selected.key)]]</span>
+        <cells-atom-amount
+          class="amount-huge filled__amount"
+          amount="[[selected.amount.amount]]"
+          currency-code="[[selected.amount.currency]]"
+          local-currency="[[localCurrency]]"
+          language="[[language]]"></cells-atom-amount>
+      </div>
+      <div class="full">
+        <ul class="list list__intro">
+          <li>
+            <span>[[t(paymentMethod.totalDebtAmount.key)]]</span>
+            <cells-atom-amount
+              amount="[[paymentMethod.totalDebtAmount.amount.amount]]"
+              currency-code="[[paymentMethod.totalDebtAmount.amount.currency]]"
+              local-currency="[[localCurrency]]"></cells-atom-amount>
+          </li>
+          <li>
+            <span>[[t('cells-step-enter-amount-credit-card-date-limit')]]</span>
+            <cells-atom-date class="date" date="[[paymentMethod.date]]" format="[[formatDate]]"></cells-atom-date>
+          </li>
+        </ul>
+        <div class="separator"></div>
+        <!-- <template is="dom-if" if="[[notification]]"> -->
+          <cells-icon-message
+            hidden="[[!showNotification]]"
+            type="error"
+            icon-label="Important message"
+            icon="coronita:alert"
+            message="{{t('cells-step-enter-amount-credit-card-message-max-limit')}}"></cells-icon-message>
+        <!-- </template> -->
+        <ul class$="list list__amounts [[_checkedNotification(notification)]]">
+          <template is="dom-repeat" items="[[paymentMethod.amounts]]">
+            <li class="list__item">
+              <div class="list__item-selectable">
+                <button on-click="_notifyAmountSelected" disabled$="[[_checkedDisabled(item.amount.amount, maxLimit)]]">
+                  <span class="list__item--label">[[t(item.key)]]</span>
+                  <cells-atom-amount class="list__item--amount amount-large"
+                    amount="[[item.amount.amount]]"
+                    currency-code="[[item.amount.currency]]"
+                    local-currency="[[localCurrency]]"></cells-atom-amount>
+                  <template is="dom-if" if="[[_checkedMinPayment(item, maxLimit)]]">
+                    <div class="list__alert list__alert--info">
+                      <cells-atom-icon class="icon-size-20"
+                        icon="coronita:info"></cells-atom-icon>
+                      <span>[[t('cells-step-enter-amount-credit-card-generate-fee')]]</span>
+                    </div>
+                  </template>
+                  <template is="dom-if" if="[[_checkedMaxLimit(item.amount.amount, maxLimit)]]">
+                    <div class="list__alert list__alert--error">
+                      <cells-atom-icon class="icon-size-20"
+                        icon="coronita:alert"></cells-atom-icon>
+                      <span>[[t('cells-step-enter-amount-credit-card-amount-max-limit')]]</span>
+                    </div>
+                  </template>
+                </button>
+                <cells-atom-icon class="list__item--icon icon-size-18"
+                  icon="coronita:help" on-click="_notifyAmountHelp"></cells-atom-icon>
+              </div>
+            </li>
+          </template>
+        </ul>
+        <button class="other-amount" on-click="_notifyOtherAmount">
+          <cells-atom-icon icon="coronita:expand" class="icon-size-40"></cells-atom-icon>
+          <span>[[t('cells-step-enter-amount-credit-card-other-amount')]]</span>
+        </button>
+      </div>
+    </cells-step>
+  </template>
+  <script src="cells-step-enter-amount-credit-card.js"></script>
+</dom-module>

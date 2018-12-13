@@ -1,0 +1,14 @@
+{
+  "uy-login-error-authentication-error": "Servicio no disponible, por favor intente más tarde.",
+  "uy-login-error-unauthorized": "Acceso no permitido, comuníquese con el Banco al (2)1929.",
+  "uy-login-error-user-not-exists": "Alguno de los datos ingresados no es correcto. Por favor inténtelo nuevamente y si el problema se mantiene, comuníquese con el Banco al (2)1929.",
+  "uy-login-error-invalid-password": "Alguno de los datos ingresados no es correcto. Por favor inténtelo nuevamente y si el problema se mantiene, comuníquese con el Banco al (2)1929.",
+  "uy-login-error-user-blocked": "Su acceso se encuentra bloqueado, comuníquese con el Banco para conocer el procedimiento de desbloqueo.",
+  "uy-login-error-expired-password": "Su contraseña se encuentra vencida y deberá cambiarla.",
+  "uy-login-error-one-time-password": "Su contraseña se encuentra vencida y deberá cambiarla.",
+  "uy-login-error-duplicated-password": "La password es igual que la anterior.",
+  "uy-login-error-password-equal-user": "La password es igual que el username.",
+  "uy-login-error-new-password-missing": "No se ha encontrado la password nueva en la petición.",
+  "uy-login-error-password-confirmation-missing": "No se ha encontrado la confirmación de la password nueva en la petición.",
+  "uy-login-error-generic": "Servicio no disponible, por favor intente más tarde."
+}

@@ -1,0 +1,348 @@
+<link rel="import" href="../cells-dm-global-apis-contacts/cells-dm-global-apis-contacts.html" />
+<link rel="import" href="../cells-global-apis-behaviors/cells-global-apis-behaviors.html" />
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html" />
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`<glomo-contacts-dm>` description.
+
+Example:
+
+```html
+<glomo-contacts-dm></glomo-contacts-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-contacts-dm">
+  <template>
+    <cells-dm-global-apis-contacts id="globalApi" 
+      host="[[host]]"
+      saved-contacts="{{savedContacts}}"
+      required-token="[[requiredToken]]">
+    </cells-dm-global-apis-contacts>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'glomo-contacts-dm',
+
+        behaviors: [
+          CellsBehaviors.i18nBehavior
+        ],
+
+        properties: {
+
+          /**
+           * Host
+           */
+          host: String,
+
+          /**
+           * savedContacts
+           */
+          savedContacts: {
+            type: Array,
+            notify: true,
+            observer: '_onContactsChanged'
+          },
+
+          /**
+           * Refreshed Saved contact
+           */
+          refreshedSavedContacts: {
+            type: Array,
+            notify: true
+          },
+
+          /*
+           * Loading contacts with pagination
+           */
+          loadingContacts: {
+            type: Boolean,
+            notify: true
+          },
+
+          /*
+           * Get more contacts on bottom scroll
+           */
+          moreContacts: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+           * Only contacts with cellular
+           */
+          cellularContactsList: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * requiredToken, 'jwt' or 'tsec'
+           */
+          requiredToken: {
+            type: String,
+            value: 'tsec'
+          }
+        },
+
+        listeners: {
+          'saved-contact-successful': '_savedContacts',
+          'contact-deleted': '_notifyContactDeleted',
+          'contact-patched': '_notifyContactPathed',
+          'error-on-delete-contact': '_notifyServiceErrors',
+          'error-on-patched-contact': '_notifyServiceErrors'
+        },
+
+        /**
+         * Clear accounts
+         */
+        reset: function() {
+          this.set('savedContacts', null);
+        },
+
+        /**
+         * Fetch accounts
+         */
+        fetch: function() {
+          this.moreContacts = false;
+          this.$.globalApi.getContacts();
+        },
+
+        fetchContactInformation: function() {
+          this.moreContacts = false;
+          this.$.globalApi.getContacts({ expand: 'contacts-information' });
+        },
+
+        /**
+         * Save contact
+         */
+        saveContact: function(contact) {
+          this.$.globalApi.saveContact(contact);
+        },
+
+        checkContactsData: function(active) {
+          if (active && active.value) {
+            if (!this.savedContacts) {
+              return this.newCellular ? this.fetchContactInformation() : this.fetch();
+            } else {
+              this.set('refreshedSavedContacts', this._parseContacts(this.savedContacts));
+            }
+          }
+        },
+
+        _onContactsChanged: function(savedContacts) {
+          if (savedContacts) {
+            var parseContacts = this._parseContacts(savedContacts);
+          }
+
+          // manage get more contacts bottom scroll
+          if (this.moreContacts) {
+            this.moreContacts = false;
+            this.fire('set-more-contacts', savedContacts); // update avatar item searchet sort contact list
+            this.set('savedContacts', this.savedContacts.concat(savedContacts));
+          } else if (this.newCellular) {
+
+            // generate both list to new cellular page and new cellular form component
+            if (parseContacts) {
+              this._generateFullContactsList(parseContacts);
+              this._generateCellularContactsList(parseContacts);
+            }
+          } else {
+            this.set('refreshedSavedContacts', parseContacts);
+          }
+        },
+
+        /**
+         * Get more pages contacts service
+         */
+        getMoreContacts: function() {
+          if (this.pagination) {
+            this._generatePagination(this.pagination);
+            if (this.page <= this.totalPages && this.nextKey && !this.loadingContacts) {
+              this.fire('get-more-data', true); // set spinner status
+              this.set('loadingContacts', true);
+              this.moreContacts = true;
+              this.$.globalApi.getContacts({ expand: 'products' + '&paginationKey=' + this.nextKey });
+            }
+          }
+        },
+
+        /**
+         * Parse contacts to data model
+         */
+        _parseContacts: function(response) {
+          var contacts = [];
+          response = response && response.length ? response : [];
+          response.forEach(function(contact) {
+            var productFavorite = (contact.products && contact.products.length) ? this.getFavoriteProduct(contact.products) : null;
+            var _contact = {
+              id: contact.contactId,
+              alias: contact.alias,
+              options: [
+                {
+                  key: 'delete-contact',
+                  icon: 'coronita:trash',
+                  type: 'delete'
+                }
+              ]
+            };
+
+            if (contact.person) {
+              Object.assign(_contact, {
+                avatar: contact.person && contact.person.avatar && contact.person.avatar.url,
+                main: contact.person.firstName + ' ' + contact.person.lastName + ' ' + contact.person.surname
+              });
+            }
+
+            if (productFavorite) {
+              Object.assign(_contact, {
+                secondary: productFavorite.number,
+                bank: {
+                  info: productFavorite.bank && productFavorite.bank.name,
+                  id: productFavorite.bank && productFavorite.bank.id
+                },
+                numberType: productFavorite.numberType
+              });
+            }
+
+            if (contact.contactsInformation) {
+              var cellularInfo = this._getCellularInfo(contact.contactsInformation);
+              Object.assign(_contact, {
+                contactsInformation: contact.contactsInformation,
+                secondary: cellularInfo.cellular,
+                provider: cellularInfo.provider,
+                bank: {
+                  info: cellularInfo.provider,
+                  id: cellularInfo.id
+                }
+              });
+            }
+
+            contacts.push(_contact);
+          }, this);
+
+          return contacts;
+        },
+
+        /**
+         * Obtain cellular number and cellular provider name
+         */
+        _getCellularInfo: function(contactsInformation) {
+          var contactInfo = {};
+          contactsInformation.map(function(contact) {
+            if (contact.contactType.id === 'MOBILE_NUMBER') {
+              contactInfo = {
+                cellular: contact.value,
+                id: contact.contactType && contact.contactType.mobileCompany && contact.contactType.mobileCompany.id,
+                provider: contact.contactType && contact.contactType.mobileCompany && contact.contactType.mobileCompany.name
+              };
+            }
+          });
+          return contactInfo;
+        },
+
+        getFavoriteProduct: function(products) {
+          return products.find(function(product) {
+            return product.favourite;
+          });
+        },
+
+        _generateFullContactsList: function(contacts) {
+          this.set('refreshedSavedContacts', contacts);
+        },
+
+        /**
+         * Generate list onñy with contact that have mobile number
+         */
+        _generateCellularContactsList: function(contacts) {
+          this.set('cellularContactsList', contacts && contacts.map(function(contact) {
+            if (contact && contact.contactsInformation) {
+              contact.contactsInformation = contact.contactsInformation.filter(function(contactInformation) {
+                return contactInformation.contactType.id === 'MOBILE_NUMBER';
+              });
+            }
+            return contact;
+          }));
+        },
+
+        _savedContacts: function() {
+          this.dispatchEvent(new CustomEvent('close-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+         * Send contact to delete to DM
+         */
+        deleteContact: function(contactToDelete) {
+          this.$.globalApi.deleteContact(contactToDelete);
+        },
+
+        /**
+         * Notify service delete contact
+         */
+        _notifyContactDeleted: function(payload) {
+          this._updateContactsList(payload.detail);
+          this.dispatchEvent(new CustomEvent('success-contact-deleted', {
+            detail: payload.detail,
+            bubbles: true,
+            composed: true
+          }));
+          this.dispatchEvent(new CustomEvent('success-contact-deleted-message', {
+            detail: 'success-delete-contact-message',
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        _updateContactsList: function(contact) {
+          this.set('savedContacts', this.savedContacts.filter(function(item) {
+            return contact.id !== item.contactId;
+          }));
+        },
+        /**
+         * Notify service update contact
+         */
+        _notifyContactPatched: function(payload) {
+          this.dispatchEvent(new CustomEvent('contact-patched', {
+            detail: payload.detail,
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+         * Notify service delete contact error
+         */
+        _notifyServiceDeleteError: function() {
+          this.dispatchEvent(new CustomEvent('error-on-delete-contact', {
+            detail: 'payload-detail',
+            bubbles: true,
+            composed: true
+          }));
+          this.dispatchEvent(new CustomEvent('error-on-delete-contact-message', {
+            detail: 'error-on-delete-contact-message',
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+         * Notify service update contact error
+         */
+        _notifyServicePathcError: function() {
+          this.dispatchEvent(new CustomEvent('error-on-patched-contact', {
+            detail: 'error-on-patched-contact-message',
+            bubbles: true,
+            composed: true
+          }));
+        }
+      });
+    }());
+  </script>
+</dom-module>

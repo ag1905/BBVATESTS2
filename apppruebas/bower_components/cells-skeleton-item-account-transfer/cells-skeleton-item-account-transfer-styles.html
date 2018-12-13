@@ -1,0 +1,42 @@
+<dom-module id="cells-skeleton-item-account-transfer-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  @apply (--cells-skeleton-item-account-transfer); }
+
+.item__wrapper {
+  width: 100%;
+  padding: 0.75rem 1.875rem 0.5rem;
+  box-sizing: border-box; }
+  .item__wrapper .item__content--top,
+  .item__wrapper .item__content--bottom {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    overflow: hidden; }
+  .item__wrapper .item__content--bottom {
+    padding-bottom: 1.25rem; }
+  .item__wrapper .item__content--top {
+    margin-bottom: 0.3125rem; }
+  .item__wrapper .item-mask {
+    width: 40%;
+    height: 1.125rem;
+    background-color: var(--bbva-200); }
+    .item__wrapper .item-mask.item-mask:first-child {
+      width: 55%; }
+    .item__wrapper .item-mask.item-mask--xs {
+      width: 20%;
+      height: 0.9375rem; }
+      .item__wrapper .item-mask.item-mask--xs:first-child {
+        width: 20%; }
+
+</style></template></dom-module>

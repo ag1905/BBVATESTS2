@@ -1,0 +1,30 @@
+{
+  "name": "cells-atom-button",
+  "version": "9.0.3",
+  "description": "It is a reusable atomic element, extended from button native tag.",
+  "keywords": [
+    "a11y",
+    "button",
+    "atom"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.9.0"
+  },
+  "devDependencies": {
+    "cells-atom-icon": "^9.0.0",
+    "banking-icons": "^9.0.0",
+    "cells-sass": "~1.0.15",
+    "cells-theme-base": "^9.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#~1.1.4",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.2.5",
+    "cells-coronita-theme": "^9.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "main": [
+    "cells-atom-button.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  }
+}

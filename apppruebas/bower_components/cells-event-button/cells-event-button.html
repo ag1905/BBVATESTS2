@@ -1,0 +1,47 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html"/>
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html"/>
+<link rel="import" href="cells-event-button-styles.html">
+<!--
+`<cells-event-button>` Button that dispatch event.
+
+Example:
+
+```html
+<cells-event-button></cells-event-button>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                    | Description                        | Default     |
+|:-----------------------------------|:-----------------------------------|:------------|
+| --cells-event-button               | Mixin applied to :host             | {}          |
+| --cells-fontDefault                | Mixin applied to :host font-family | sans-serif  |
+| --cells-event-button-button;       | Mixin applied to :host             | {}          |
+| --cells-event-button-wrapper;      | Mixin applied to :host             | {}          |
+| --cells-event-button-wrapper-text; | Mixin applied to :host             | {}          |
+| --cells-event-button-wrapper-icon; | Mixin applied to :host             | {}          |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-event-button">
+  <template>
+    <style include="cells-event-button-styles cells-event-button-shared-styles"></style>
+    <cells-st-button class$="full [[btnClass]]">
+      <button on-click="_dispatchEvent">
+        <span class="btn-wrapper">
+          <span class="btn-wrapper__text">[[t(label)]]</span>
+          <cells-atom-icon class$="btn-wrapper__icon icon-size-[[iconSize]]" icon="[[iconButton]]"></cells-atom-icon>
+        </span>
+      </button>
+    </cells-st-button>
+  </template>
+  <script src="cells-event-button.js"></script>
+</dom-module>

@@ -1,0 +1,31 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-folding-cube-spinner-styles.html">
+
+<!--
+`<cells-folding-cube-spinner>` is the Web Component version of the folding cube animation from [Spinkit spinners](http://tobiasahlin.com/spinkit/).
+
+Example:
+
+```html
+<cells-folding-cube-spinner></cells-folding-cube-spinner>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-folding-cube-spinner-color      | spinner color | #333  |
+| --cells-folding-cube-spinner-size      | spinner size (width and height) | 40px  |
+| --cells-folding-cube-spinner            | empty mixin applied to the tag itself     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-folding-cube-spinner">
+  <template>
+    <style include="cells-folding-cube-spinner-styles cells-folding-cube-spinner-shared-styles"></style>
+    <div class="sk-cube1 sk-cube"></div><div class="sk-cube-2 sk-cube"></div><div class="sk-cube-4 sk-cube"></div><div class="sk-cube-3 sk-cube"></div>
+  </template>
+  <script src="cells-folding-cube-spinner.js"></script>
+</dom-module>

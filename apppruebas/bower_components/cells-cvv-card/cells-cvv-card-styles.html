@@ -1,0 +1,32 @@
+<dom-module id="cells-cvv-card-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  position: relative;
+  @apply (--cells-cvv-card); }
+
+.wrapper {
+  @apply (--cells-cvv-card-wrapper); }
+
+iron-image {
+  --iron-image-width: 100%;
+  --iron-image-height: auto;
+  @apply (--cells-cvv-card-img); }
+
+.cvv {
+  position: absolute;
+  top: 40.5%;
+  left: 64.5%;
+  font-size: 1rem;
+  @apply (--cells-cvv-card-cvv); }
+
+</style></template></dom-module>

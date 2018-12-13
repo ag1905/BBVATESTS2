@@ -1,0 +1,351 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  background-color: var(--cells-successful-response-bg-color, var(--bbva-white, #fff));
+  display: block;
+  height: 100%;
+  padding: 0;
+  font-family: var( --cells-fontDefault);
+  @apply --cells-successful-response;
+
+  .info {
+    text-align: center;
+    padding: 3.125rem 3.125rem 3.75rem 3.125rem;
+    background-color: var(--cells-successful-response-info-bg-color, var(--bbva-green,#48AE64));
+    color: var(--cells-successful-response-info-color, var(--bbva-white, #fff));
+    @apply --cells-fontDefaultBold;
+    font-size: var(--cells-text-size-20);
+
+    .image-div {
+      display: block;
+      margin: auto;
+      img {
+        max-width: 100%;
+        @apply --cells-successful-response-img;
+      }
+      @apply --cells-successful-response-image-div;
+    }
+
+    .title {
+      margin-bottom: rem(10px);
+      @apply --cells-successful-response-title;
+    }
+    .subtitle {
+      font-size: var(--cells-text-size-14);
+      cells-atom-date {
+        display: inline-block;
+      }
+      @apply --cells-fontDefaultNormal;
+      @apply --cells-successful-response-subtitle;
+    }
+
+    &.success {
+      background-color: var(--cells-successful-response-info-success-bg-color, var(--bbva-green, #48AE64));
+      @apply --cells-successful-response-info-success;
+    }
+    &.warning {
+      background-color: var(--cells-successful-response-info-warning-bg-color, var(--bbva-yellow, #F8CD51));
+      @apply --cells-successful-response-info-warning;
+    }
+    &.error {
+      background-color: var(--cells-successful-response-info-error-bg-color, var(--bbva-red, #DA3851));
+      @apply --cells-successful-response-info-error;
+    }
+    &.white {
+      background-color: var(--cells-successful-response-info-white-bg-color ,var(--bbva-white, #fff));
+      color: var(--cells-successful-response-info-white-color, var(--bbva-600, #121212));
+
+      cells-atom-date {
+        color: var(--bbva-600, #121212);
+        @apply --cells-successful-response-info-white-date;
+      }
+
+      cells-atom-amount {
+        --cells-atom-amount: {
+          color: var(--bbva-600, #121212);
+        }
+        @apply --cells-successful-response-info-white-date;
+      }
+      @apply --cells-successful-response-info-white;
+    }
+    @apply --cells-successful-response-info;
+  }
+
+  .fees-container {
+    margin-top: 10px;
+  .fees {
+    margin: 5px 0 0;
+    font-size: var(--cells-text-size-14);
+    @apply --cells-fontDefaultNormalItalic;
+    @apply --cells-successful-response-info-fees;
+    }
+    .feesAmount {
+      margin: 0;
+      padding: 0px;
+      font-size: var(--cells-text-size-14);
+      --cells-atom-amount-currency_-_font-size: unquote("14px");
+      @apply --cells-successful-response-info-fees-amount;
+    }
+    @apply --cells-successful-response-info-fees-container;
+  }
+
+  .actions {
+    width: 12.4rem;
+    margin: 0 auto;
+    padding: 1rem 0 0 0;
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    z-index: 3;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+    @apply --cells-successful-response-actions;
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      @apply --cells-successful-response-actions-buttons;
+    }
+  }
+
+  button {
+    padding: 1rem 2.56rem;
+    @apply --cells-successful-response-button;
+
+    --cells-btn--tertiary: unquote("{
+      color: var(--cells-successful-response-button-color, #2a86ca);
+      font-weight: 700;
+    }");
+  }
+
+  button[hidden] {
+    display: none;
+  }
+}
+
+.moreInfo {
+  position: relative;
+  padding-bottom: 7.375rem;
+  background-color: var(--cells-successful-response-more-info-bg-color, var(--bbva-white, #fff));
+  .message {
+    width: 300px;
+    margin: 0 auto;
+    padding: rem(10px) 0 rem(30px);
+    --cells-icon-message-icon: unquote('{
+      margin: 0 0 10px;
+    }');
+    @apply --cells-successful-response-more-info-message;
+  }
+  @apply --cells-successful-response-more-info;
+}
+
+.otherInfo, .additional-info {
+  position: relative;
+  margin: 0;
+  padding: 7rem 2rem 1rem;
+  list-style: none;
+  text-align: center;
+
+  li {
+    line-height: 1.375rem;
+    font-size: var(--cells-text-size-14);
+    .info-key-icon {
+      color: var(--cells-successful-response-otherInfo-item-key-icon-color, var(--bbva-green, #48ae64));
+      margin-right: 5px;
+    }
+    .key {
+      display: block;
+      color: var(--cells-successful-response-otherInfo-item-inline-key-color, var(--bbva-500, #666));
+      @apply --cells-successful-response-otherInfo-item-key;
+    }
+    &.inline {
+      .key {
+        display: inline;
+        @apply --cells-successful-response-otherInfo-item-inline-key;
+      }
+      .feesAmount {
+        color: var(--cells-successful-response-otherInfo-item-inline-fees-amount-color, var(--bbva-500, #666));
+        @apply --cells-successful-response-otherInfo-item-inline-fees-amount;
+      }
+      @apply --cells-successful-response-otherInfo-item-inline;
+    }
+    &.separator {
+      .key:after {
+        content: ':';
+        @apply --cells-successful-response-otherInfo-separator-key-after;
+      }
+      @apply --cells-successful-response-otherInfo-separator;
+    }
+
+    &.spacing {
+      margin-bottom: 2rem;
+      @apply --cells-successful-response-otherInfo-spacing;
+    }
+    &.ellipsis {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    &.secondary {
+      color: var(--bbva-500, #666);
+      @apply --cells-successful-response-otherInfo-secondary;
+    } // font styles
+    &.cursive {
+      @apply --cells-fontDefaultNormalItalic;
+    }
+    &.bold {
+      .value {
+        @apply --cells-fontDefaultBold;
+      }
+    } // font sizes
+    &.md {
+      .value {
+        font-size: var(--cells-text-size-16);
+      }
+    }
+    &.lg {
+      .value {
+        font-size: var(--cells-text-size-18);
+      }
+    }
+
+    cells-atom-amount {
+      font-size: var(--cells-text-size-14, .875rem);
+      padding: 0px;
+    }
+
+    @apply --cells-successful-response-otherInfo-item;
+  }
+
+  @apply --cells-successful-response-otherInfo;
+}
+
+.amount-description {
+  margin: 10px 0 0;
+  font-size: var(--cells-text-size-14);
+  font-style: italic;
+  font-weight: 300;
+  @apply --cells-successful-response-amount-description;
+}
+
+.additional-info {
+  padding: rem(30px) 0;
+   @apply --cells-successful-response-additional-info;
+}
+
+.codes {
+  position: relative;
+  margin-top: rem(10px);
+  padding: rem(40px) rem(35px);
+  font-weight: 500;
+  color: var(--cells-successful-response-codes-color, var(--bbva-white, #fff));
+  background-color: var(--cells-successful-response-codes-bg-color, var(--bbva-navy, #072146));
+  text-align: center;
+  .code-title {
+    padding: 10px 0;
+    @apply --cells-successful-response-code-title;
+  }
+  ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    width: 100%;
+    @apply --cells-successful-response-codes-list;
+    li.code-box {
+      border-radius: 1px;
+      letter-spacing: 10px;
+      padding: rem(16px) 0 rem(16px) rem(10px);
+      display: inline-block;
+      background-color: var(--cells-successful-response-codes-item-bg-color, var(--bbva-white, #fff));
+      color: var(--cells-successful-response-codes-item-color, var(--bbva-white-core-blue, #1464A5));
+      @apply --cells-successful-response-codes-item;
+    }
+  }
+  @apply --cells-successful-response-codes;
+}
+
+.header-additional-info {
+  list-style: none;
+  padding: 0;
+  margin: rem(40px) auto;
+
+  &__row {
+      margin: rem(10px) auto;
+      display: flex;
+      justify-content: space-between;
+      font-size: var(--cells-text-size-14, 14px);
+      font-weight: 300;
+
+      cells-atom-amount {
+          padding: 0;
+      }
+
+      &.cursive {
+          @apply --cells-fontDefaultNormalItalic;
+      }
+
+      @apply --cells-header-additional-info-row;
+  }
+
+  --cells-molecule-mask: unquote('{
+  color: var(--bbva-white, #fff)
+}');
+
+  @apply --cells-header-additional-info;
+}
+
+cells-atom-amount {
+  padding: 30px 0;
+  &.amount-huge {
+    padding-top: rem(16px);
+  }
+  --cells-atom-amount: {
+    color: var(--bbva-white, #fff)
+  }
+}
+cells-contact-avatar {
+  position: absolute;
+  left: calc(50% - 30px);
+  top: -2rem;
+  background-color: var(--bbva-100, #f4f4f4);
+  padding: 0.625rem;
+  border-radius: 50%;
+  & ~ .otherInfo {
+    padding-top: 3rem;
+    @apply --cells-successful-response-contact-avatar-other-info;
+  }
+
+  &[type="card"] {
+    width: 100px;
+    border-radius: 50px;
+    left: calc(50% - 50px);
+    padding: .625rem 1.25rem;
+
+    --cells-contact-avatar-image: unquote('{
+      width: 60px;
+      border-radius: 0;
+    }');
+  }
+
+  @apply --cells-successful-response-contact-avatar;
+}
+
+cells-from-to {
+  margin: 0;
+  text-align: left;
+  position: absolute;
+  top: rem(-32px);
+  width: 100%;
+  padding: 0 2rem;
+  @apply --cells-successful-response-from-to;
+}
+
+cells-operations-list {
+  margin: 0 auto;
+  @apply --cells-successful-response-operations-list;
+}
+
+cells-molecule-mask {
+  display: flex;
+  justify-content: center;
+  @apply --cells-successful-response-molecule-mask;
+}

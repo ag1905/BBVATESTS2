@@ -1,0 +1,116 @@
+@import "bower_components/cells-sass/main";
+
+@include reset(dd, dl, h3);
+
+:host {
+  display: block;
+  text-align: left;
+  background-color: var(--cells-product-more-info-bg-color, var(--bbva-100, #F4F4F4));
+  font-family: var( --cells-fontDefault);
+  @apply --cells-product-more-info;
+}
+
+.content {
+  padding: rem(30px) rem(30px);
+  @apply --cells-product-more-info-content;
+}
+
+.info-list {
+  .info-list-dd-info {
+    display: flex;
+    color: var(--cells-product-more-info-dt-color, var(--bbva-500));
+    font-style: italic;
+    font-size: var(--cells-text-size-14);
+    margin: rem(10px) 0 rem(30px);
+    @apply --cells-fontDefaultLight;
+    p {
+      @apply --cells-product-more-info-list-dd-info-text;
+    }
+    cells-atom-icon {
+      width: rem(30px);
+      margin-right: rem(10px);
+      color: var(--cells-product-more-info-list-dd-info-icon-color, var(--bbva-light-blue, #5BBEFF));
+      @apply --cells-product-more-info-list-dd-info-icon;
+    }
+    @apply --cells-product-more-info-list-dd-info;
+  }
+  @apply --cells-product-more-info-list;
+}
+
+cells-atom-amount {
+  color: var(--cells-product-more-info-amount-color, var(--bbva-600));
+  @apply --cells-product-more-info-amount;
+}
+
+cells-atom-date {
+  --cells-atom-date-color: var(--cells-product-more-info-date-color, var(--bbva-600, #121212));
+  @apply --cells-product-more-info-date;
+}
+
+cells-st-button {
+  margin-left: auto;
+
+  --cells-st-button: unquote('{
+    min-width: auto;
+    padding: 0;
+    font-weight: 500;
+  }');
+
+  --cells-st-button-xs-min-height: auto;
+
+  button:focus {
+    outline: none;
+    padding: 0px;
+    @apply --cells-product-more-info-button-label-focus;
+  }
+
+  @apply --cells-product-more-info-button-label;
+}
+
+.section-title {
+  padding: 0 0 rem(30px) 0;
+  @apply --small-heading;
+  @apply --tertiary-heading;
+  color: var(--cells-product-more-info-section-title-color, var(--bbva-500));
+  @apply --cells-product-more-info-section-title;
+}
+
+dl {
+  font-size: var(--cells-text-size-14);
+  margin: 0 0 rem(50px) 0;
+  @apply --cells-product-more-info-dl;
+}
+
+dt {
+  @apply --cells-fontDefaultLight;
+  color: var(--cells-product-more-info-dt-color, var(--bbva-500));
+
+  @apply --cells-product-more-info-dt;
+}
+
+dd {
+  @apply --cells-fontDefaultNormal;
+  margin: rem(5px) 0 rem(20px);
+  display: flex;
+  align-items: center;
+  color: var(--cells-product-more-info-dd-color, var(--bbva-600));
+  font-size: var(--cells-text-size-16);
+  &.with-info {
+    margin-bottom: rem(5px);
+  }
+  span.cursive {
+    font-style: italic;
+  }
+  @apply --cells-product-more-info-dd;
+}
+
+
+
+cells-skeleton-item {
+  & + cells-skeleton-item {
+    margin: 2rem 0 0 0;
+    @apply --cells-product-more-info-skeleton-skeleton;
+  }
+
+  @apply --cells-product-more-info-skeleton;
+}

@@ -1,0 +1,45 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-switch-item;
+}
+
+.item {
+  width: 100%;
+  background-color: var(--cells-switch-item-background, var(--bbva-core-blue,#004481));
+  padding: rem(30px);
+  @apply --cells-switch-item-item;
+  &__title {
+    font-size: rem(16px);
+    letter-spacing: 2px;
+    color: var(--cells-switch-item-title-color, #ffffff);
+    @apply --cells-switch-item-item__title;
+  }
+  &__icon {
+    margin-left: 10px;
+    color: var(--cells-switch-item-icon-color, #5bbeff);
+    @apply --cells-switch-item-item__icon;
+  }
+  &__switch {
+    float: right;
+    @apply --cells-switch-item-item__switch;
+  }
+  &__label {
+    color: var(--cells-switch-item-icon-color, #5bbeff);
+    font-size: rem(14px);
+    font-weight: bold;
+    margin: rem(20px) 0 0;
+    @apply --cells-switch-item-item__label;
+  }
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}

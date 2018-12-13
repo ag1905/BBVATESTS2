@@ -1,0 +1,117 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-product-selector-styles.html">
+
+<link rel="import" href="../cells-atom-subheader/cells-atom-subheader.html">
+<link rel="import" href="../cells-molecule-skeleton/cells-molecule-skeleton.html">
+<link rel="import" href="../cells-skeleton-custom/cells-skeleton-custom.html">
+<link rel="import" href="../cells-skeleton-item-account-transfer/cells-skeleton-item-account-transfer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-product-item/cells-product-item.html">
+<link rel="import" href="../cells-atom-message/cells-atom-message.html">
+
+<!--
+`<cells-product-selector>` Shows a list of products from which one can be selected.
+
+Example:
+
+```html
+<cells-product-selector></cells-product-selector>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-product-selector-scope      | scope description | default value  |
+| --cells-product-selector  | empty mixin | {} |
+| --cells-product-selector-subheader  | empty mixin for subheader | {} |
+| --cells-product-selector-item  | empty mixin for list item | {} |
+| --cells-product-skeleton-item-bg  | empty mixin for background skeleton item | {} |
+| --cells-product-skeleton-content-bg  | empty mixin for background skeleton content| {} |
+| --cells-product-selector-container  | empty mixin for skeleton container styles | {} |
+| --cells-product-selector-subheader-inactive  | empty mixin for inactive subheader | {} |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-product-selector">
+  <template>
+    <style include="cells-product-selector-styles cells-product-selector-shared-styles">
+    </style>
+    <cells-atom-subheader>
+      <span class="heading">[[t(productsListTitle)]]</span>
+      <template is="dom-if" if="[[_showMore]]">
+        <a  href="#" on-click="_viewAllProducts" id="viewMore">[[t(productsViewAllTitle)]]</a>
+      </template>
+    </cells-atom-subheader>
+
+    <!-- No products -->
+    <template is="dom-if" if="[[_hasZeroProducts]]">
+      <cells-atom-message
+        class="left-icon"
+        type="info"
+        icon="coronita:info"
+        icon-size="24"
+        message="[[message]]">
+        <content></content>
+      </cells-atom-message>
+    </template>
+
+      <!-- Have products -->
+      <template is="dom-if" if="[[!_hideSkeleton]]">
+        <div class="skeleton-container" id="skeletonContainer">
+          <cells-skeleton-custom hide-box-shadow="true" hide-animation-landscape="true">
+            <cells-skeleton-item-account-transfer></cells-skeleton-item-account-transfer>
+            <cells-skeleton-item-account-transfer></cells-skeleton-item-account-transfer>
+            <cells-skeleton-item-account-transfer></cells-skeleton-item-account-transfer>
+          </cells-skeleton-custom>
+        </div>
+      </template>
+
+      <template is="dom-if" if="[[_hideSkeleton]]">
+        <template is="dom-repeat" items="[[_products]]" as="product">
+          <cells-product-item
+            product="[[product]]"
+            name="[[product.name]]"
+            description="[[product.description]]"
+            primary-amount="[[product.primaryAmount]]"
+            secondary-amount="[[product.secondaryAmount]]"
+            local-currency="[[localCurrency]]"
+            img-src="[[product.imgSrc]]"
+            img-overlay-icon="[[_setProductOverlayIcon(product)]]"
+            data-id$="[[product.id]]"
+            data-index$="[[index]]"
+            on-tap="_onProductItemTap"
+            visible-chars="[[visibleChars]]"
+            default-image="[[defaultImage]]"
+            class$="[[_toLowerCase(product.status)]] [[_checkedDisabled(product.disabled)]]"
+            status="[[product.status]]">
+            <template is="dom-if" if="[[product.icon]]">
+              <cells-atom-icon slot="icons" class="icons icon-size-18" icon="[[product.icon]]"></cells-atom-icon>
+              <template is="dom-if" if="[[product.status]]">
+                <div slot="description" class="description">
+                  <span class="status">[[product.status.value]]</span>
+                </div>
+              </template>
+            </template>
+
+            <template is="dom-if" if="[[product.status]]">
+              <div slot="text-right-image" class$="text-right-image status [[product.status]]">[[t(product.statusdescription)]]</div>
+            </template>
+
+            <template is="dom-if" if="[[product.simpleNumber]]">
+              <div slot="description" class="description">
+                <span class="amount">[[product.simpleNumber]]</span>
+              </div>
+            </template>
+
+            <template is="dom-if" if="[[product.hasTextMessage]]">
+              <div class="text-error"><cells-atom-icon class="icons icon-size-18" icon="[[textIcon]]"></cells-atom-icon>[[t(errorMessage)]]</div>
+            </template>
+          </cells-product-item>
+      </template>
+    </template>
+  </template>
+  <script src="cells-product-selector.js"></script>
+</dom-module>

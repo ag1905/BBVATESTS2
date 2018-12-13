@@ -1,0 +1,10 @@
+{
+  "cells-step-service-selector-view-all": "Ver todos",
+  "cells-step-service-selector-saved": "Guardados",
+  "cells-step-service-selector-service-number": "Nº de convenio",
+  "cells-step-service-selector-no-services": "No se ha obtenido ningún resultado",
+  "cells-step-service-selector-no-stored-services": "No hay servicios guardados",
+  "cells-step-service-selector-service-search": "Buscar servicio",
+  "cells-step-service-selector-service-agreement-search": "Nº de convenio o servicio",
+  "cells-step-service-selector-service-reference": "Referencia"
+}

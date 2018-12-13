@@ -1,0 +1,126 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --glomo-help;
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.help {
+  &__header {
+    margin: rem(40px) 0 rem(30px) 0;
+    text-align: center;
+  }
+  &__content {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0;
+    overflow: scroll;
+    &.without-footer {
+      padding-bottom: 10rem;
+      strong {
+        a {
+          color: var(--bbva-medium-blue, #237ABA);
+          text-decoration: none;
+          @apply --glomo-help-content-whitout-footer-strong-a;
+        }
+        color: var(--bbva-medium-blue, #237ABA);
+        @apply --glomo-help-content-whitout-footer-strong;
+      }
+    }
+    &--message {
+      margin:  rem(30px) rem(30px) rem(20px) rem(30px);
+      min-height: rem(60px);
+      @apply --glomo-help-content-message;
+    }
+    &--list {
+      list-style: none;
+      text-align: left;
+      padding: 0;
+      margin: 0;
+      li {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        margin: rem(20px) rem(20px) rem(20px) rem(50px);
+        span.bullet {
+          display: block;
+          width: 7px;
+          height: 5px;
+          background-color: transparent;
+          overflow: hidden;
+          margin-right: rem(12px);
+          &::before {
+            content: '';
+            display: block;
+            left: 1px;
+            position: relative;
+            width: 7px;
+            height: 5px;
+            background-color: var(--bbva-300, #D3D3D3);
+            -webkit-transform: skewX(-20deg);
+            transform: skewX(-20deg);
+          }
+        }
+        @apply --glomo-help-content-list-li;
+      }
+      @apply --glomo-help-content-list;
+    }
+  }
+  @apply --glomo-help-list;
+}
+
+.help__content--footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background-color: white;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+  text-align: center;
+  cells-st-button {
+    margin: rem(20px) 0 rem(10px);
+  }
+  @apply --glomo-help-content-footer;
+}
+
+cells-st-button {
+  margin: rem(36px) 0 rem(30px) 0;
+  height: rem(50px);
+  a {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+cells-icon-message {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: rem(114px);
+  justify-content: center;
+  background-color: var(--bbva-100, #f4f4f4);
+  color:  var(--bbva-medium-blue, #237ABA);
+}
+
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+button:active { @apply --cells-global-active; }

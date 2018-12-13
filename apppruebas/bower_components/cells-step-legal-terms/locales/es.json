@@ -1,0 +1,17 @@
+{
+  "cells-step-legal-accepted": "Aceptadas",
+  "cells-step-legal-additional-info-amount": "Pago único del seguro del préstamo <strong>${totalAmount}</strong>",
+  "cells-step-legal-conditions": "El pago de tu préstamo se efectuará mediante transferencias mensuales con un cago a tu cuenta <strong>${product}</strong> por un monto de <strong>${amount}</strong>",
+  "cells-step-legal-info": "Al continuar confirmas que has leído los términos y condiciones del contrato.",
+  "cells-step-legal-terms-additional-info-first-check-text": "Autorizo la <strong>consulta de mi historial</strong> en Buró de Crédito.",
+  "cells-step-legal-terms-additional-info-second-check-text": "Acepto los <strong>términos y condiciones de contratación</strong> del préstamo.",
+  "cells-step-legal-terms-additional-info-third-check-text": "Estoy de acuerdo con la <strong>cobertura del seguro</strong> del préstamo a contratar.",
+  "cells-step-legal-terms-btn-primary": "Continuar",
+  "cells-step-legal-terms-change": "Cambiar",
+  "cells-step-legal-terms-check-text": "He leído y acepto los <strong>términos, condiciones y restricciones.</strong>",
+  "cells-step-legal-terms-concept": "Concepto (opcional)",
+  "cells-step-legal-terms-continue": "Continuar",
+  "cells-step-legal-terms-reference": "Referencia",
+  "cells-step-legal-terms-title": "TÉRMINOS Y CONDICIONES"
+}
+

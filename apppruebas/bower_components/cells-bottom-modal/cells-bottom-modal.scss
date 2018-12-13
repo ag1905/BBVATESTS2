@@ -1,0 +1,194 @@
+@import "bower_components/cells-sass/mixins";
+
+@mixin visible-body {
+  max-height: none;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+:host {
+  width: 100%;
+  max-width: 100% !important;
+  max-height: 100%;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  transition: max-height 240ms;
+  transform: translateZ(0);
+  contain: content;
+  @apply --cells-bottom-modal;
+}
+
+:host([hidden]),
+[hidden] {
+  display: none !important;
+}
+
+:host(.full-height) {
+  height: 100%;
+  max-height: 100% !important;
+  bottom: 0;
+  top: initial !important;
+
+  .header {
+    @apply --cells-bottom-modal-full-height-header-wrapper;
+  }
+  .body {
+    height: 100%;
+    @include visible-body;
+    @apply --cells-bottom-modal-full-height-body;
+  }
+  .footer {
+    @apply --cells-bottom-modal-full-height-footer;
+  }
+
+  @apply --cells-bottom-modal-full-height;
+}
+
+:host(.modal--dark) {
+  color: var(--cells-bottom-modal-light-fg-color, #fff);
+
+  .btn-close {
+    color: var(--cells-bottom-modal-light-fg-color, #fff);
+  }
+  .content {
+    background: var(--cells-bottom-modal-dark-bg-color, rgba(0,0,0,.9));
+  }
+}
+
+:host([expand]) {
+  .body {
+    max-height: 100%;
+    @include visible-body;
+    @apply --cells-bottom-modal-expand-body;
+  }
+  @apply --cells-bottom-modal-expand;
+}
+
+.btn--transparent {
+  background: none;
+  border: 0;
+  padding: 0;
+  overflow: visible;
+  min-height: 0;
+  line-height: 0;
+
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+  @apply --cells-bottom-modal-btn-transparent;
+}
+
+.btn-close {
+  position: absolute;
+  top: 0; bottom: 0;
+  margin: auto;
+  width: rem(40px);
+  height: rem(40px);
+  left: rem(6px);
+  color: var(--cells-bottom-modal-btn-close-color, rgba(130,130,130,.7));
+  @apply --cells-bottom-modal-btn-close;
+}
+
+.heading {
+  flex: 1;
+  margin: 0;
+  @apply --cells-bottom-modal-heading-wrapper;
+}
+
+.heading ::slotted(*) {
+  font-weight: normal;
+  font-size: rem(18px);
+}
+
+.heading ::slotted(*:not(:empty)) {
+  overflow: hidden;
+  text-align: center;
+  max-width: 75%;
+  margin: auto;
+  line-height: 1;
+  padding: rem(23px) 0;
+  @include ellipsis;
+  @apply --cells-bottom-modal-heading;
+}
+
+.content {
+  transform: translateY(100%) translateZ(0);
+  transition-property: transform;
+  transition-duration: var(--cells-bottom-modal-transition-duration, 300ms);
+  -webkit-transition-duration: var(--cells-bottom-modal-transition-duration, 300ms);
+  transition-timing-function: var(--cells-bottom-modal-transition-timing-function, cubic-bezier(0.38, 0.1, 0.23, 0.86));
+  background: var(--cells-bottom-modal-light-bg-color, #fff);
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  overflow: hidden;
+  height: 100%;
+  @apply --cells-bottom-modal-content;
+}
+
+[visible] {
+  transform: translateY(0);
+  @apply --cells-bottom-modal-visible;
+}
+
+.header {
+  padding: var(--cells-bottom-modal-header-padding, var(--cells-bottom-modal-padding, 0 rem(20px)));
+}
+
+.body {
+  padding: var(--cells-bottom-modal-body-padding, var(--cells-bottom-modal-padding, 0 rem(20px)));
+}
+
+.footer {
+  padding: var(--cells-bottom-modal-footer-padding, var(--cells-bottom-modal-padding, 0 rem(20px)));
+}
+
+.footer ::slotted(*:not(:empty)) {
+  height: var(--cells-bottom-modal-footer-height, rem(70px));
+  display: flex;
+  align-items: center;
+}
+
+.header,
+.footer {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+}
+
+.header {
+  min-height: rem(50px);
+  max-height: rem(70px);
+  position: relative;
+  @apply --cells-bottom-modal-header-wrapper;
+
+  // the content has been scrolled
+  .has-shadow & {
+    box-shadow: var(--cells-bottom-modal-header-shadow, 0 1px 5px 0 rgba(0, 0, 0, .1));
+    @apply --cells-bottom-modal-header-wrapper-has-shadow;
+  }
+
+  // the user is dragging the content
+  .is-dragging & {
+    box-shadow: var(--cells-bottom-modal-header-shadow-dragging, 0 3px 3px 0 rgba(black,.07));
+    @apply --cells-bottom-modal-header-wrapper-is-dragging;
+  }
+}
+
+.body {
+  overflow: hidden;
+  max-height: 35vh;
+  @apply --cells-bottom-modal-body;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  box-shadow: var(--cells-bottom-modal-footer-shadow, 0 -1px 5px 0 rgba(0, 0, 0, .1));
+  @apply --cells-bottom-modal-footer;
+
+  .is-dragging & {
+    box-shadow: var(--cells-bottom-modal-footer-shadow-dragging, 0 -3px 3px 0 rgba(black,.07), 0 0 1px rgba(0,0,0,.2));
+    @apply --cells-bottom-modal-footer-is-dragging;
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "cells-product-selector-title": "No hay destinos",
+  "cells-product-selector-text": "Añade uno nuevo y guárdalo para próximas transferencias",
+  "cells-accounts-title": "cuenta de retiro",
+  "cells-cards-title": "tarjetas de retiro",
+  "cells-account-title": "cuenta de retiro",
+  "cells-card-title": "tarjeta de cargo",
+  "cells-products-title": "productos de cargo",
+  "cells-product-selector-error-message-credit-card-payment": "Saldo insuficiente para poder operar",
+  "cells-product-selector-error-message-amount-operation": "Saldo insuficiente para transferir"
+}

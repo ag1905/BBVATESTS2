@@ -1,0 +1,644 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../cells-step-behavior/cells-step-manager-behavior.html"/>
+<link rel="import" href="../cells-dm-global-apis-transfer/cells-dm-global-apis-transfer.html"/>
+
+<!--
+# glomo-opx-transfer-dm
+
+> CELLS Data Manager for GLOBAL APIS Transfer
+
+Provides *step-by-step* transfer operation resolution
+
+## Example:
+
+```html
+<glomo-opx-transfer-dm></glomo-opx-transfer-dm>
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="glomo-opx-transfer-dm">
+  <template>
+    <cells-dm-global-apis-transfer id="dm"
+      host="[[host]]"
+      transfer-api-version="[[transferApiVersion]]"
+      local-currency="[[transferCurrency]]"
+      transfer-result="{{_transfer}}"
+      simulation-result="{{fees}}"
+      summary-info="[[summaryInfo]]"
+      operations="[[operations]]"
+      add-fees="[[addFees]]"
+      required-token="[[requiredToken]]"></cells-dm-global-apis-transfer>
+  </template>
+  <script>
+    (function(Polymer, CellsBehaviors) {
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-opx-transfer-dm',
+
+        behaviors: [
+          CellsBehaviors.StepManagerBehavior
+        ],
+
+        properties: {
+          /**
+           * Started component
+           */
+          started: Boolean,
+          /**
+           * Host
+           */
+          host: String,
+          /**
+           * API Version
+           */
+          transferApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * Product Id
+           */
+          productId: String,
+          /**
+           * Product Id by default
+           */
+          defaultProductId: {
+            type: String,
+            notify: true
+          },
+          /**
+           * Available products.
+           */
+          products: {
+            type: Array,
+            observer: '_generateProducts'
+          },
+          /**
+           * ID of selected source.
+           */
+          selectedSource: {
+            type: Object,
+            observer: '_selectedSrcObserver'
+          },
+          /**
+           * ID of selected destination.
+           */
+          selectedDestination: {
+            type: Object,
+            observer: '_selectedDestinationObserver'
+          },
+          /**
+           * Amount to transfer.
+           */
+          amount: {
+            observer: '_amountChanged',
+            type: Number
+          },
+          /**
+           * Concept of the transfer (optional)
+           */
+          concept: Object,
+          /**
+           * Local currency
+           */
+          localCurrency: String,
+          /**
+           * Id's bank of internal bank
+           */
+          idBank: Array,
+
+          /* OUTPUT */
+          /**
+           * List of source products.
+           */
+          sourceList: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * List of destination products.
+           */
+          destinationList: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Source min
+           */
+          sourceMinLimit: {
+            type: Number,
+            notify: true
+          },
+          /**
+           * Source max
+           */
+          sourceMaxLimit: {
+            type: Number,
+            notify: true
+          },
+          /**
+           * Source currency
+           */
+          sourceCurrency: {
+            notify: true,
+            type: String,
+            observer: '_onSourceCurrencyChanged'
+          },
+
+          /**
+           * in which currency is executed the transfer
+           */
+          transferCurrency: {
+            type: String
+          },
+          /**
+           * Transfer result
+           */
+          _transfer: {
+            type: Object,
+            observer: '_manageTransferResult'
+          },
+          /**
+           * Transfer result
+           */
+          transfer: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Current operation fees.
+           */
+          fees: {
+            notify: true,
+            type: Object,
+            observer: '_setSimulated'
+          },
+          /**
+           * Transfer references obtained from server.
+           */
+          references: {
+            notify: true,
+            type: Object
+          },
+
+          /* PRIVATE */
+          /**
+           * Allowed spei accounts
+           */
+          speiEnabled: Boolean,
+          /**
+           * Add fees in amount
+           */
+          addFees: Boolean,
+          /**
+           * Transfer finished
+           */
+          finished: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * List of available currencies user can choose to make the transfer
+           */
+          availableTransferCurrencies: Array,
+          /**
+           * State account on fetch detail and dashboard
+           */
+          stateAccounts: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * Other info to show
+           */
+          summaryInfo: {
+            type: Array,
+            value: []
+          },
+          /**
+           * Operation list for the transfers summary
+           */
+          operations: {
+            type: Array,
+            value: []
+          },
+          /*
+           * Translation key for the message after the not enough balance message
+           */
+          notEnoughBalanceAfterKey: {
+            type: String,
+            value: 'cells-enter-limited-amount-available-balance-after',
+            notify: true
+          },
+          /**
+           * Type of Tokea is required, 'tsec' or 'jwt'
+           * @type {String}
+           */
+          requiredToken: {
+            type: String,
+            value: 'tsec'
+          }
+        },
+
+        observers: [
+          '_checkedSimulation(canExecute)'
+        ],
+
+        listeners: {
+          'register-step': 'registerStep',
+          'transfer-error': '_endLoading'
+        },
+
+        /**
+         * Init and manage cache products
+         */
+        init: function() {
+          if (!this.started) {
+            this._init();
+            this.started = true;
+          }
+
+          if (this.finished) {
+            this._init();
+            this.finished = false;
+          }
+
+          this.set('defaultProductId', this.productId);
+
+          this.notEnoughBalanceAfterKey = this.productId ? '' : 'cells-enter-limited-amount-available-balance-after';
+
+          this._fetchProducts();
+        },
+
+        /**
+         * Init services and step
+         */
+        _init: function() {
+          this.dispatchEvent(new CustomEvent('init-services', {
+            bubbles: true,
+            composed: true
+          }));
+          this.restart();
+        },
+
+        _generateProducts: function(products) {
+          this.set('destinationList', products);
+          this._fetchProducts();
+        },
+
+        _setEnoughFunds: function(source, amount) {
+          return source && source.length && source.map(function(product) {
+            var overcome = (this.localCurrency === product.primaryAmount.currency) && !this._hasEnoughFunds(product.primaryAmount.amount, amount);
+
+            return Object.assign({}, product, {
+              hasTextMessage: overcome,
+              disabled: overcome
+            });
+          }.bind(this)) || [];
+        },
+
+        _fetchProducts: function() {
+          this.set('sourceList', this._setEnoughFunds(this.products));
+          this.dispatchEvent(new CustomEvent('fetch-source', {
+            bubbles: true,
+            composed: true,
+            detail: this.sourceList || []
+          }));
+          this.dispatchEvent(new CustomEvent('fetch-destination', {
+            bubbles: true,
+            composed: true,
+            detail: this.destinationList || []
+          }));
+        },
+
+        /**
+         * Restart state steps
+         */
+        restart: function() {
+          this.resetManagerSteps();
+          this.currentStep = 1;
+
+          // Method of manager step behavior
+          this.initSteps();
+        },
+        /**
+         * Reset all, steps and content steps
+         */
+        resetAll: function() {
+          this.restart();
+          this.resetContent();
+          this.resetManagerSteps();
+          this.finished = true;
+        },
+        /**
+         * Reset content of steps
+         */
+        resetContent: function() {
+          //PUBLIC
+          this.selectedSource = null;
+          this.selectedDestination = null;
+          this.amount = '';
+          this.concept = null;
+          this.productId = null;
+          this.defaultProductId = null;
+          this.references = null;
+          this.fees = null;
+          this.sourceId = '';
+          this.sourceCurrency = '';
+
+          this.restart();
+          this.dispatchEvent(new CustomEvent('reset-scroll'));
+        },
+        /**
+         * Set default values in steps.
+         */
+        resetManagerSteps: function() {
+          this.lastActiveStep = null;
+          this.canExecute = false;
+          this.hasFinished = false;
+          this._lastResponse = null;
+        },
+        /**
+         * Manage result
+         */
+        _manageTransferResult: function(transfer) {
+          this.simulated = false;
+          transfer.buttons = {
+            primary: {
+              text: 'cells-successful-response-next',
+              action: 'go-to-next',
+              class: 'btn--primary btn--l'
+            },
+            secondary: {
+              text: 'cells-successful-response-new-operation',
+              action: 'new-operation',
+              class: 'btn--tertiary btn--l'
+            }
+          };
+
+          this.set('transfer', transfer);
+
+          if (this.selectedDestination && this.selectedDestination.save) {
+            this.dispatchEvent(new CustomEvent('save-contact', {
+              bubbles: true,
+              composed: true,
+              detail: this.selectedDestination
+            }));
+          } else {
+            this.dispatchEvent(new CustomEvent('close-control-veil'));
+            this.goToReview();
+          }
+        },
+        /**
+         * Go to review transfer on transfer successful and saved contact successful
+         * reset all after navigation
+         */
+        goToReview: function() {
+          this.stateAccounts = true;
+          this.dispatchEvent(new CustomEvent('transfer-successful', {
+            bubbles: true,
+            composed: true,
+            detail: {
+              page: 'transfer-review'
+            }
+          }));
+
+          this.async(function() {
+            this.resetAll();
+          }, 400);
+        },
+        /**
+         * Observer for property <em>selectedSrc</em>.
+         * only spei accounts have icon property
+         */
+        _selectedSrcObserver: function(source) {
+          if (source && !source.disabled) {
+            this.set('destinationList', this._setDestinationList(source, this.products));
+            this.dispatchEvent(new CustomEvent('fetch-destination', {
+              bubbles: true,
+              composed: true,
+              detail: this.destinationList || []
+            }));
+
+            this._checkSpeiAccount(source);
+            this._setLimits(source);
+
+            if (!this._hasEnoughFunds(this.sourceMaxLimit, this.amount)) {
+              this.dispatchEvent(new CustomEvent('show-modal-not-enough-funds'));
+            }
+
+            if (source.primaryAmount && source.primaryAmount.amount > 0) {
+              this._nextStep();
+            }
+
+            this._setAmountConfig();
+          }
+        },
+        /**
+         * Checked spei account selected
+         */
+        _checkSpeiAccount: function(account) {
+          if (!account.icon && !account.length && this.speiEnabled) {
+            this.dispatchEvent(new CustomEvent('open-modal-spei'));
+          }
+        },
+        /**
+         * Set limit amount
+         */
+        _setLimits: function(sourceProduct) {
+          if (sourceProduct && sourceProduct.primaryAmount) {
+            this.sourceMinLimit = sourceProduct.primaryAmount.amount;
+            this.sourceCurrency = sourceProduct.primaryAmount.currency;
+          }
+
+          //TODO: maxLimit should be in sourceProduct
+          this.sourceMaxLimit = this.sourceMinLimit + 10000;
+        },
+        /**
+         * Eliminates current selected source from sources and set resultant array as available destination.
+         */
+        _setDestinationList: function(selectedSource, sourceList) {
+          if (selectedSource && sourceList && sourceList.length) {
+            return sourceList.filter(function(account) {
+              return account.id !== selectedSource.id;
+            });
+          }
+        },
+        /**
+         * Observer executed when destination account changes
+         */
+        _selectedDestinationObserver: function(selectedDestination) {
+          this._setSourceList(selectedDestination);
+          this._setAmountConfig();
+        },
+        /**
+         * Observer for property <em>_selectedDest</em>.
+         */
+        _setSourceList: function(selectedDestination) {
+          if (selectedDestination && this.products && this.products.length) {
+            var sourceList = this.products.filter(function(product) {
+              return product.id !== selectedDestination.id;
+            });
+            this.set('sourceList', this._setEnoughFunds(sourceList, this.amount));
+            this.dispatchEvent(new CustomEvent('fetch-source', {
+              bubbles: true,
+              composed: true,
+              detail: this.sourceList
+            }));
+          }
+
+          this._nextStep();
+        },
+        /**
+         * Observer for <em>amount.amount</em> value.
+         * @param   amount {Number} Transfer amount.
+         */
+        _amountChanged: function(amount) {
+          var amountValue = (amount || {}).amount || amount;
+          if (amountValue) {
+            this.set('sourceList', this._setEnoughFunds(this.sourceList, amountValue));
+            this.dispatchEvent(new CustomEvent('fetch-source', {
+              bubbles: true,
+              composed: true,
+              detail: this.sourceList
+            }));
+            this._nextStep();
+          }
+        },
+        /**
+         * Observer for <em>concept</em>.
+         * @param   payload {String} Transfer concept
+         */
+        setConcept: function(data) {
+          this.set('concept', {
+            concept: ((data || {}).concept) || '',
+            reference: ((data || {}).reference) || null
+          });
+
+          this._nextStep();
+        },
+        /**
+         * Checked state properties to make a transfer
+         * No use params in this function, because reused this function in another observer `concept` property
+         */
+        _checkedSimulation: function(canExecute) {
+          if (canExecute) {
+            var type = this._getTransferType(this.selectedDestination);
+            this.$.dm['make' + type + 'TransferSimulation'](this.selectedSource, this.selectedDestination, this.amount, this.concept);
+          }
+        },
+        /**
+         * Checked state properties to make a transfer
+         */
+        doTransfer: function() {
+          var type = this._getTransferType(this.selectedDestination);
+          this.dispatchEvent(new CustomEvent('open-control-veil'));
+          this.$.dm['make' + type + 'Transfer'](this.selectedSource, this.selectedDestination, this.amount, this.concept);
+        },
+        /**
+         * Retry transfer, simulation or transfer
+         */
+        retryTransfer: function() {
+          this[this.simulated ? 'doTransfer' : '_checkedSimulation']();
+        },
+        /**
+         * Check if made simulation successful and set property
+         */
+        _setSimulated: function(fees) {
+          this.simulated = !!(fees && fees.id);
+        },
+        /*
+         * Return type if destination:
+         * interbank, internal or own
+         */
+        _getTransferType: function(destination) {
+          return (destination && !destination.bank) ? 'Own' : (this.idBank && this.idBank.includes(destination.bank && destination.bank.id)) ? 'Internal' : 'Interbank';
+        },
+        /**
+         * True if the account is CTS
+         */
+        isCTSAccount: function(account) {
+          return (account || {}).productType === 'SAVINGS_EXTENSION';
+        },
+        /**
+         * Check if the amount is over the max limit.
+         * @param amount {Number} Transfer amount
+         * @param maxLimit {Number} Account maximum limit
+         */
+        _hasEnoughFunds: function(maxLimit, amount) {
+          return !(maxLimit <= 0 || amount && maxLimit && amount > maxLimit);
+        },
+        /**
+         * Notify end loading request
+         */
+        _endLoading: function() {
+          this.dispatchEvent(new CustomEvent('close-control-veil'));
+        },
+        /**
+         * Send otp sign operation otp/key
+         */
+        signRequest: function(otp) {
+          this.$.dm.signRequest(otp);
+        },
+        /**
+         * Dispatchs the amount field config
+         */
+        _setAmountConfig: function() {
+          if (this.availableTransferCurrencies && (this.selectedSource || {}).primaryAmount && this.selectedDestination) {
+            var sourceCurrency = this.selectedSource.primaryAmount.currency;
+            var destinationCurrency = (this.selectedDestination.primaryAmount || {}).currency;
+            var switchCurrency = sourceCurrency;
+            var isCTSAccount = this.isCTSAccount(this.selectedSource);
+            var avoidValidation = false;
+            var selectedCurrency;
+
+            //Logic to display the switch
+            var isCurrencySwitchVisible = function(transferType, currencies, sourceC, destinationC) {
+              var visibleInternals = transferType === 'Internal';
+              var visibleOwns = (transferType === 'Own' && (sourceC !== destinationC && currencies.includes(sourceC) && currencies.includes(destinationC)));
+
+              return !isCTSAccount && (visibleInternals || visibleOwns);
+            };
+
+            //logic to calculate the input amount currency
+            var getCurrency = function(currencies, sourceC, destinationC) {
+              var currency = sourceC;
+
+              if (!currencies.includes(sourceC) && currencies.includes(destinationC)) {
+                currency = destinationC;
+              }
+              return currency;
+            };
+
+            selectedCurrency = getCurrency(this.availableTransferCurrencies, sourceCurrency, destinationCurrency);
+            this.transferCurrency = selectedCurrency;
+
+            if (!this.availableTransferCurrencies.includes(sourceCurrency)) {
+              this.dispatchEvent(new CustomEvent('reset-amount'));
+              this.dispatchEvent(new CustomEvent('open-amount-step'));
+            }
+            this.dispatchEvent(new CustomEvent('amount-config', {
+              detail: {
+                show: isCurrencySwitchVisible(this._getTransferType(this.selectedDestination), this.availableTransferCurrencies, sourceCurrency, destinationCurrency),
+                currency: selectedCurrency,
+                avoidValidation: avoidValidation || (sourceCurrency !== selectedCurrency)
+              },
+              bubbles: true,
+              cancelable: true
+            }));
+          }
+        },
+        /**
+         * Executed when sourceCurrency changes
+         */
+        _onSourceCurrencyChanged: function(value) {
+          this.transferCurrency = this.transferCurrency || value;
+        }
+      });
+    }(Polymer, CellsBehaviors));
+  </script>
+</dom-module>

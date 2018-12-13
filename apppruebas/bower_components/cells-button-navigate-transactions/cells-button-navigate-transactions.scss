@@ -1,0 +1,12 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault,var(--fontDefault));
+  --cells-btn--link: unquote("{
+    width: 100%;
+    padding: 40px 0;
+  }");
+
+  @apply(--cells-button-navigate-transactions);
+}

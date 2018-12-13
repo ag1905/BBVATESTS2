@@ -1,0 +1,36 @@
+{
+  "name": "cells-step-transactions",
+  "version": "1.1.0",
+  "description": "Step of transactions and balance",
+  "keywords": [
+    "i18n",
+    "web-component"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.10.0",
+    "cells-atom-amount": "9 - 10",
+    "cells-atom-icon": "^9.0.0",
+    "cells-atom-message": "~2.2.0",
+    "cells-transactions-list": "~7.3.0",
+    "cells-i18n-behavior": "^9.0.0",
+    "iron-collapse": "PolymerElements/iron-collapse#^2.0.0"
+  },
+  "devDependencies": {
+    "cells-coronita-theme": "^9.0.0",
+    "cells-demo-helper": "^9.0.0",
+    "cells-glomo-theme": "~5.4.20",
+    "cells-sass": "^2.0.0",
+    "cells-shadow-query-selector": "^1.0.0",
+    "coronita-icons": "^9.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  },
+  "main": [
+    "cells-step-transactions.html"
+  ]
+}

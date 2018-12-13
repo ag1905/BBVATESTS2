@@ -1,0 +1,60 @@
+{
+  "cells-global-dashboard-available": "Available",
+  "cells-global-dashboard-disposed": "Disposed",
+  "cells-global-dashboard-initial": "Initial",
+  "cells-global-dashboard-no-transactions": "No recent transactions",
+  "cells-global-dashboard-pending": "Pending",
+  "cells-global-dashboard-transactions-last-transactions": "Last transactions",
+  "cells-global-dashboard-view-all": "View all",
+
+  "cells-global-dashboard-status-blocked": "Blocked",
+  "cells-global-dashboard-status-dormant": "Dormant",
+  "cells-global-dashboard-status-frozen": "Frozen",
+  "cells-global-dashboard-status-expired-receipts": "Expired receipts",
+  "cells-global-dashboard-status-overdue_balances": "Overdue",
+
+  "cells-global-dashboard-status-description-blocked": "Your credit is blocked.",
+  "cells-global-dashboard-status-description-dormant": "Your account is dormant.",
+  "cells-global-dashboard-status-description-frozen": "Your credit is frozen.",
+  "cells-global-dashboard-status-description-expired-receipts": "Your credit has expired receipts.",
+  "cells-global-dashboard-status-description-overdue_balances": "Your credit has expired receipts.",
+
+  "cells-global-dashboard-comunication": "Comunícate al 01-800-122 6362 para más información.",
+
+  "cells-global-dashboard-account-description": "BBVA Account",
+  "cells-global-dashboard-accounts-credit-header": "Credit lines",
+  "cells-global-dashboard-accounts-header": "Accounts",
+  "cells-global-dashboard-accounts-header-balance-limit": "Limit",
+  "cells-global-dashboard-accounts-header-balance-quota": "Current quota",
+  "cells-global-dashboard-accounts-header-credit-line": "Credit line",
+  "cells-global-dashboard-accounts-with-currency-header": "Accounts in",
+  "cells-global-dashboard-accounts-credit-with-currency-header": "Credit accounts in",
+
+  "cells-global-dashboard-card-description-credit": "Credit Card",
+  "cells-global-dashboard-card-description-debit": "Debit Card",
+  "cells-global-dashboard-card-description-prepaid": "Prepaid Card",
+  "cells-global-dashboard-card-status-inoperative": "Inoperative",
+  "cells-global-dashboard-card-status-off": "Off",
+  "cells-global-dashboard-card-status-locked": "Blocked",
+  "cells-global-dashboard-card-status-activate": "Inoperative",
+  "cells-global-dashboard-cards-header": "Cards",
+  "cells-global-dashboard-cards-child-sticker": "Sticker",
+  "cells-global-dashboard-cards-child-aditional": "Aditional",
+
+  "cells-global-dashboard-deposit-description": "Deposit",
+  "cells-global-dashboard-deposits-header": "Deposits",
+  "cells-global-dashboard-deposits-with-currency-header": "Deposits in",
+  "cells-global-dashboard-desposit-description": "Time deposits BBVA",
+
+  "cells-global-dashboard-funds-fundPosition": "Value",
+  "cells-global-dashboard-funds-header": "Funds",
+  "cells-global-dashboard-funds-shares": "Shares",
+  "cells-global-dashboard-fund-description": "BBVA Fund",
+
+  "cells-global-dashboard-loan-blocked": "Blocked",
+  "cells-global-dashboard-loan-description": "BBVA Loan",
+  "cells-global-dashboard-loan-frozen": "Frozen",
+  "cells-global-dashboard-loans-header": "Loans",
+  "cells-global-atom-message-link": "Reload",
+  "cells-global-atom-message-text": "There was an error loading your products Try reloading it."
+}

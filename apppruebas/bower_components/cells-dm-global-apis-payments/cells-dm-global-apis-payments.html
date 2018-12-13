@@ -1,0 +1,372 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../bgadp-payments/bgadp-payments.html"/>
+<!--
+# cells-dm-global-apis-payments
+
+Data manager description.
+
+Example:
+```html
+<cells-dm-global-apis-payments></cells-dm-global-apis-payments>
+```
+
+## Url to Canonical Data Model (CDM) used for cells-dm-global-apis-payments
+
+https://descinet.bbva.es/stash/projects/CAT/repos/cells-models-catalog/browse/lib/models/
+
+```
+
+@demo demo/index.html
+-->
+<dom-module id="cells-dm-global-apis-payments">
+  <template></template>
+  <script>
+    (function() {
+      'use strict';
+
+      /*global BGADPPayments*/
+      /*eslint new-cap: 0*/
+      Polymer({
+
+        is: 'cells-dm-global-apis-payments',
+
+        properties: {
+          /**
+           * Chosen host to make requests to
+           * @type {String}
+           */
+          host: {
+            type: String
+          },
+          /**
+           * Local currency
+           * @type {String}
+           */
+          currency: {
+            type: String
+          },
+          /**
+           * Categories list
+           * @type {Array}
+           */
+          categories: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Services list
+           * @type {Array}
+           */
+          servicesList: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Stores services list
+           * @type {Array}
+           */
+          storedServicesList: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Bills list
+           * @type {Array}
+           */
+          bills: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Simulation response
+           * @type {Object}
+           */
+          simulationResponse: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Payment response
+           * @type {Object}
+           */
+          paymentResponse: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * API version
+           * @type {String}
+           */
+          paymentsApiVersion: {
+            type: String,
+            value: '0'
+          }
+        },
+
+        /**
+         * Request all services
+         */
+        getServices: function() {
+          var service = this._servicesService({
+            host: this.host,
+            params: {views: 'full'},
+            version: this.paymentsApiVersion,
+            requiresTsec: true
+          });
+
+          service.generateRequest().then(function() {
+            this.set('servicesList', this._parseResponse(service.getLastResponse()) || []);
+          }.bind(this));
+        },
+        /**
+         * Request all stored services
+         */
+        getStoredServices: function() {
+          var service = this._storedServicesService({
+            host: this.host,
+            params: {views: 'full'},
+            version: this.paymentsApiVersion,
+            requiresTsec: true
+          });
+
+          service.generateRequest().then(function() {
+            this.set('storedServicesList', this._parseResponse(service.getLastResponse()) || []);
+          }.bind(this));
+        },
+        /**
+         * Store save a new service
+         */
+        storeService: function(serviceId, params) {
+          var body = {
+            service: {
+              id: serviceId
+            }
+          };
+          var service = this._storedServicePostService({
+            host: this.host,
+            body: Object.assign(body, params),
+            version: this.paymentsApiVersion,
+            requiresTsec: true
+          });
+
+          service.generateRequest().then(
+            function() {
+              this.fire('service-stored', this._parseResponse(service.getLastResponse()));
+            }.bind(this),
+            function() {
+              this.fire('error-on-save-service', serviceId);
+            }.bind(this)
+          );
+        },
+        /**
+         * Delete store service
+         */
+        deleteStoredService: function(storedServiceId) {
+          var service = this._storedServiceDeleteService({
+            host: this.host,
+            params: {'stored-service-id': storedServiceId},
+            version: this.paymentsApiVersion,
+            requiresTsec: true
+          });
+
+          service.generateRequest().then(function() {
+            this.fire('stored-service-deleted', storedServiceId);
+          }.bind(this));
+        },
+        /**
+        * Update alias
+        */
+        patchStoredServiceAlias: function(alias) {
+          var service = this._storedServicePatchService({
+            host: this.host,
+            body: {alias: alias},
+            params: Object.assign({'stored-service-id': this.productId}),
+            version: this.paymentsApiVersion,
+            requiresTsec: true
+          });
+
+          return service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse());
+              this.fire('patch-alias', alias);
+              this.fire('patch-stored-service', response);
+            }.bind(this),
+            function(error) {
+              this.fire('error-on-patch-stored-service');
+            }.bind(this)
+          );
+        },
+        /**
+         * Request all categories
+         */
+        getCategories: function() {
+          var service = this._serviceTypesService({
+            host: this.host,
+            version: this.paymentsApiVersion,
+            requiresTsec: true
+          });
+
+          service.generateRequest().then(function() {
+            this.set('categories', this._parseResponse(service.getLastResponse()));
+          }.bind(this));
+        },
+        /**
+         * Request all bills
+         */
+        getBills: function(serviceId, billReferenceType, billNumber) {
+          var service = this._serviceBillsService({
+            host: this.host,
+            params: {
+              'service-id': serviceId,
+              'billReference.referenceType.id': billReferenceType,
+              'billReference.value': billNumber
+            },
+            version: this.paymentsApiVersion,
+            requiresTsec: true
+          });
+
+          service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse());
+              this.set('bills', response);
+              this.fire(!response ? 'service-bills-dm-error' : 'get-bills', response);
+            }.bind(this),
+            function() {
+              this.fire('service-bills-dm-error');
+            }.bind(this)
+          );
+        },
+        /**
+         * Make a Simulation
+         */
+        makeSimulation: function(service, billNumber, amount, productType, productId, concept) {
+          this._doPayment(service, billNumber, amount, productType, productId, concept, true);
+        },
+        /**
+         * Make a payment
+         */
+        makePayment: function(service, billNumber, amount, productType, productId, concept) {
+          this._doPayment(service, billNumber, amount, productType, productId, concept, false);
+        },
+        /**
+         * Do payment
+         */
+        _doPayment: function(serviceSelected, billNumber, amount, productType, productId, concept, simulating) {
+          var service = this._servicePaymentsService({
+            host: this.host,
+            body: this._generatePaymentBody(serviceSelected, billNumber, amount, productType, productId, concept),
+            params: {simulated: simulating},
+            version: this.paymentsApiVersion,
+            requiresTsec: true
+          });
+
+          service.generateRequest().then(
+            function() {
+              this.set(simulating ? 'simulationResponse' : 'paymentResponse', this._parseResponse(service.getLastResponse()));
+            }.bind(this),
+            function() {
+              this.fire('payment-error');
+            }.bind(this)
+          );
+        },
+        /**
+         * Generate body to do payment
+         */
+        _generatePaymentBody: function(service, billNumber, amount, productType, productId, concept) {
+          var paymentBody = {
+            service: {
+              id: service && service.id
+            },
+            bill: {
+              id: billNumber,
+              billAmount: {
+                amount: amount,
+                currency: this.currency
+              }
+            },
+            origin: {
+              contractId: productId,
+              product: {
+                id: productType
+              }
+            }
+          };
+
+          if (concept) {
+            paymentBody.description = concept;
+          }
+
+          return paymentBody;
+        },
+        /**
+         * Hadle error
+         */
+        _handleServiceError: function(err) {
+          this.fire('service-payments-dm-error', err);
+        },
+        /**
+         * Parse response
+         */
+        _parseResponse: function(response) {
+          return (response && response.data) || null;
+        },
+        /**
+         * Services list
+         * /payments/v0/services
+         */
+        _servicesService: function(params) {
+          return new BGADPPayments.payments.services.get(params);
+        },
+        /**
+         * Stored services service
+         * /payments/v0/stored-services
+         */
+        _storedServicesService: function(params) {
+          return new BGADPPayments.payments.storedServices.get(params);
+        },
+        /**
+         * Save a new store service
+         * /payments/v0/stored-services/{stored-service-id}
+         */
+        _storedServicePostService: function(params) {
+          return new BGADPPayments.payments.storedServices.post(params);
+        },
+        /**
+         * Delete a store service
+         * /payments/v0/stored-services/{stored-service-id}
+         */
+        _storedServiceDeleteService: function(params) {
+          return new BGADPPayments.payments.storedServices.storedService.delete(params);
+        },
+        /**
+         * Patch a store service
+         * /payments/v0/stored-services/{stored-service-id}
+         */
+        _storedServicePatchService: function(params) {
+          return new BGADPPayments.payments.storedServices.storedService.patch(params);
+        },
+        /**
+         * Service type list
+         * /payments/v0/service-types
+         */
+        _serviceTypesService: function(params) {
+          return new BGADPPayments.payments.serviceTypes.get(params);
+        },
+        /**
+         * Bills of service
+         * /payments/v0/services/{service-id}/bills
+         */
+        _serviceBillsService: function(params) {
+          return new BGADPPayments.payments.services.service.bills.get(params);
+        },
+        /**
+         * Do payment
+         * /payments/v0/service-payments
+         */
+        _servicePaymentsService: function(params) {
+          return new BGADPPayments.payments.servicePayments.post(params);
+        }
+      });
+    }());
+  </script>
+</dom-module>

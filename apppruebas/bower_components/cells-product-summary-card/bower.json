@@ -1,0 +1,45 @@
+{
+  "name": "cells-product-summary-card",
+  "version": "4.8.1",
+  "description": "<cells-product-summary-card> is a wrapper of cells-product-summary that understands the card the Canonical Data Model (CMD). That card is binded into cells-product-summary, which displays it.",
+  "keywords": [],
+  "ignore": [],
+  "dependencies": {
+    "cells-product-summary": "~10.1.0",
+    "cells-molecule-card-cover-cvv": "~3.1.0",
+    "cells-i18n-behavior": "~9.0.1",
+    "cells-st-button": "~9.0.1",
+    "cells-switch-item": "~0.2.0",
+    "polymer": "Polymer/polymer#1.10.0",
+    "cells-moment-import": "~10.0.0"
+  },
+  "devDependencies": {
+    "moment": "~2.12.0",
+    "cells-atom-icon": "^2.1.0",
+    "coronita-icons": "~2.0.0",
+    "cells-glomo-theme": "~5.4.0",
+    "cells-demo-helper": "~9.0.1",
+    "cells-sass": "ssh://git@globaldevtools.bbva.com:7999/cel/cells-sass.git#^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0"
+  },
+  "main": [
+    "cells-product-summary-card.html"
+  ],
+  "resolutions": {
+    "polymer": "^1.2.1",
+    "cells-i18n-behavior": "^3.3.0",
+    "cells-molecule-mask": "9 - 10",
+    "moment": "~2.17.1",
+    "cells-st-button": "^9.0.0",
+    "cells-atom-icon": "9 - 10",
+    "cells-molecule-card-cover": "9 - 10",
+    "cells-spinner-stripes": "9 - 10",
+    "cells-icon-message": "9 - 10",
+    "webcomponentsjs": "^v1.0.2",
+    "cells-key-values": "9 - 10",
+    "cells-atom-amount": "9 - 10",
+    "cells-amount-behavior": "9 - 10",
+    "cells-image-ccds-behavior": "9 - 10"
+  }
+}

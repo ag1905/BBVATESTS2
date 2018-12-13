@@ -1,0 +1,88 @@
+<dom-module id="cells-step-transactions-styles"><template><style>
+@charset "UTF-8";
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-step-transactions; }
+  :host cells-transactions-list {
+    --cells-molecule-transaction-list-item: { background: transparent; }; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+button:active {
+  @apply --cells-global-active; }
+
+section {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background: var(--bbva-100, #f4f4f4);
+  @apply --cells-step-transactions-section; }
+
+.header {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 1.75rem;
+  cursor: pointer;
+  @apply --cells-step-transactions-header; }
+  .header h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--bbva-medium-blue, #2a86ca);
+    @apply --cells-step-transactions-title; }
+  .header .balances {
+    margin: .625rem 0 0 0;
+    color: var(--bbva-500, #717171);
+    font-size: .875rem;
+    font-style: italic;
+    @apply --cells-step-transactions-balances; }
+  .header .icon {
+    color: var(--bbva-medium-blue, #2a86ca);
+    transition: -webkit-transform .35s ease-in-out;
+    transition: transform .35s ease-in-out;
+    transition: transform .35s ease-in-out, -webkit-transform .35s ease-in-out;
+    @apply --cells-step-transactions-icon; }
+    .header .icon.opened {
+      -webkit-transform: rotate(-180deg);
+              transform: rotate(-180deg);
+      @apply --cells-step-transactions-icon-opened; }
+
+cells-transactions-list  {
+  padding: 0 0 2rem 0;
+  --cells-transactions-list-group-list: { background: transparent; };
+  @apply --cells-step-transactions-list; }
+
+cells-atom-message {
+  padding: 2rem;
+  margin: 1.75rem;
+  background: var(--bbva-white-red, #f8d7dc);
+  --cells-atom-message__message--icon: { color: var(--bbva-light-red, #e77d8e); margin-bottom: 1.25rem; };
+  --cells-atom-message__message--text: { margin-bottom: 1.75rem; line-height: 1.43; font-size: .875rem; text-align: center; };
+  --cells-atom-message__message--link: { color: var(--bbva-medium-blue, #2a86ca); font-size: .875rem; font-weight: bold; line-height: 1.43; };
+  @apply --cells-step-transactions-notification; }
+
+</style></template></dom-module>

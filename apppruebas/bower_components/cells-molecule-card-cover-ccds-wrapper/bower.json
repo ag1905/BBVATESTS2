@@ -1,0 +1,32 @@
+{
+  "name": "cells-molecule-card-cover-ccds-wrapper",
+  "version": "9.0.1",
+  "description": "Wraps 'cells-molecule-card-cover' and sets its image source URL in the 'BBVA CCDS' way, taking screen pixel ratio into account",
+  "keywords": [
+    "cover",
+    "image",
+    "overlay",
+    "layer",
+    "icon",
+    "ratio"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "cells-image-ccds-behavior": "^9.0.0",
+    "cells-molecule-card-cover": "^9.0.0",
+    "polymer": "Polymer/polymer#^1.9.0"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.1.5",
+    "web-component-tester": "Polymer/web-component-tester#^5.0.0",
+    "cells-demo-helper": "^9.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "main": [
+    "cells-molecule-card-cover-ccds-wrapper.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  }
+}

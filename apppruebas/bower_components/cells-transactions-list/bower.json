@@ -1,0 +1,33 @@
+{
+  "name": "cells-transactions-list",
+  "version": "7.6.2",
+  "description": "A transactions list",
+  "keywords": [
+    "i18n",
+    "transactions",
+    "list"
+  ],
+  "main": [
+    "cells-transactions-list.html"
+  ],
+  "dependencies": {
+    "cells-avatar-item": "~1.1.0",
+    "cells-i18n-behavior": "^3.1.0",
+    "cells-molecule-group-transactions-list": "~9.2.0",
+    "cells-molecule-transaction-list-item": "~10.0.0",
+    "cells-skeleton-item": "~2.0.0",
+    "cells-st-button": "^10.0.8",
+    "cells-spinner-stripes": "~0.2.0",
+    "cells-swipes-behavior": "^1.0.0",
+    "polymer": "Polymer/polymer#1.10.0"
+  },
+  "devDependencies": {
+    "cells-demo-helper": "^1.0.11",
+    "cells-glomo-theme": "~5.3.0",
+    "cells-sass": "^2.0.0",
+    "coronita-icons": "~2.1.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  }
+}

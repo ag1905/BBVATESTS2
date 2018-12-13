@@ -1,0 +1,39 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`<cells-heading>` provides heading semantics and an easy way to customize and unify heading styles used across a website or application.
+
+__Example:__
+
+```html
+<cells-heading class="custom-class">Heading</cells-heading>
+```
+
+__Heading levels:__
+
+You can provide information about the heading level relative to the document by setting the `level` attribute with a numeric value from 1 to 6. By default the heading level (`aria-level`) is set to 2.
+If 0 is provided, the component won't be treated as a heading.
+
+```html
+<cells-heading level="1">Application heading</cells-heading>
+```
+
+## Styling
+
+`<cells-heading>` has no styles, custom CSS properties or available mixins. You can customize it
+by creating a style module with ID `cells-heading-shared-styles` where you can define the styles
+that will be applied to the tag using your own custom classes.
+
+@demo demo/index.html
+@hero cells-heading.png
+-->
+<dom-module id="cells-heading">
+  <template strip-whitespace>
+    <style include="cells-heading-shared-styles">
+      :host { display: block; }
+      :host([hidden]) { display: none; }
+    </style>
+    <content></content>
+  </template>
+  <script src="cells-heading.js"></script>
+</dom-module>

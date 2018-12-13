@@ -1,0 +1,62 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  font-family: var(--cells-fontDefault);
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  @apply(--cells-sign);
+}
+
+@include reset(h1, h2);
+
+  h1, h2 {
+    font-weight: normal;
+  }
+
+  .heading {
+  	background-image: url('http://bbva-files.s3.amazonaws.com/cells/assets/glomo/images/access/fractal-bbva-gold.svg');
+    background-position: bottom left;
+    background-size: cover;
+    max-height: 240px;
+    @apply(--cells-sign-heading);
+  }
+  .subheader {
+    display: flex;
+    @apply(--cells-sign-subheader);
+
+    &-img {
+      margin: rem(65px) auto rem(65px);
+      @apply(--cells-sign-subheader-img);
+    }
+  }
+
+  $padding: 8%;
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    width: calc(100% - #{$padding} * 2);
+    padding: 0 $padding;
+    @apply(--cells-sign-main);
+  }
+
+  .text {
+    font-weight: normal;
+    color: var(--cells-sign-text-color, #121212);
+    font-size: rem(13px);
+    line-height: rem(13px);
+    text-align: center;
+    margin: rem(40px) 0 rem(30px);
+    @apply(--cells-sign-text);
+  }
+
+  .sign-form {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    @apply(--cells-sign-form);
+  }

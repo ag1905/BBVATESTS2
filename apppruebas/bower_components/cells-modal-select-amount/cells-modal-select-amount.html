@@ -1,0 +1,71 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-amount-behavior/cells-amount-behavior.html">
+<link rel="import" href="../cells-bottom-modal/cells-bottom-modal.html">
+<link rel="import" href="../cells-molecule-amount-input/cells-molecule-amount-input.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="cells-modal-select-amount-styles.html">
+<!--
+Modal select amount
+
+Example:
+
+```html
+<cells-modal-select-amount></cells-modal-select-amount>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-modal-select-amount  | Mixin applied to :host     | {}  |
+| --cells-modal-select-amount-input | mixin | {} |
+| --cells-modal-select-amount-btn-primary | mixin | {} |
+| --cells-modal-select-amount-btn-transparent-active  | mixin | {} |
+| --cells-modal-select-amount-btn-transparent | mixin | {} |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-modal-select-amount">
+  <template>
+    <style include="cells-modal-select-amount-styles cells-modal-select-amount-shared-styles"></style>
+    <cells-bottom-modal
+      id="modal"
+      class="modal no-shadow"
+      full-height
+      no-cancel-on-outside-click
+      close-icon-id="[[closeIcon]]"
+      opened="{{opened}}">
+      <h1 heading slot="heading">[[t(title, 'Other amount')]]</h1>
+      <template is="dom-if" if="[[_checkedMax(max)]]">
+        <cells-icon-message id="message"
+          type="info"
+          icon="coronita:info"
+          icon-size="26"
+          message="[[_message]]"></cells-icon-message>
+      </template>
+      <cells-molecule-amount-input
+        id="amount"
+        class="modal-input secondary--input"
+        set-amount="[[setAmount]]"
+        amount="{{value}}"
+        name="[[name]]"
+        label="[[t('cells-modal-select-amount-amout', 'Import')]]"
+        currency-code="[[currencyCode]]"
+        local-currency="[[localCurrency]]"
+        language="[[language]]"
+        icon-size="[[iconSize]]"
+        icon-code="[[iconCode]]"
+        numeral-positive-only="[[numeralPositiveOnly]]">
+      </cells-molecule-amount-input>
+      <div buttons slot="buttons" class="buttons">
+        <cells-st-button id="execute" class="btn--primary btn--l">
+          <button on-click="continue" disabled="[[disabled]]">[[t('cells-modal-select-amount-continue','Continue')]]</button>
+        </cells-st-button>
+      </div>
+    </cells-bottom-modal>
+  </template>
+  <script src="cells-modal-select-amount.js"></script>
+</dom-module>

@@ -1,0 +1,89 @@
+<dom-module id="cells-change-avatar-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  background: var(--bbva-white, #fff);
+  height: 100%;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-change-avatar; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+.image {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-align-items: flex-end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  position: relative;
+  width: 100%;
+  overflow: hidden; }
+  .image-button {
+    position: absolute;
+    bottom: 2rem;
+    outline: none;
+    z-index: 3; }
+
+.input-file {
+  cursor: pointer;
+  outline: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  opacity: 0; }
+
+.container {
+  padding: 1.875rem;
+  @apply --cells-change-avatar-container; }
+
+.notification {
+  margin: 0 0 3rem 0;
+  @apply --cells-change-avatar-notification; }
+
+.actions {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  @apply --cells-change-avatar-actions; }
+  .actions cells-st-button {
+    @apply --cells-change-avatar-action-button; }
+    .actions cells-st-button + cells-st-button {
+      margin: 1.25rem 0 0 0; }
+
+cells-image-cropper {
+  display: block;
+  width: 100%;
+  @apply --cells-change-avatar-cropper; }
+
+</style></template></dom-module>

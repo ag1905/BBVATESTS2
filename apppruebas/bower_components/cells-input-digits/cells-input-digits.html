@@ -1,0 +1,73 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-molecule-input/cells-molecule-input.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="cells-input-digits-styles.html">
+
+<!--
+`<cells-input-digits>` is a digits-form composed by `<cells-molecule-input>` elements.
+
+Example with minimal configuration:
+
+```html
+<cells-input-digits
+  naming="cool" input-fields="5"></cells-input-digits>
+```
+
+Text of submit button differs:
+
+```html
+<cells-input-digits
+  naming="cool" input-fields="5" submit-text="Go"></cells-input-digits>
+```
+
+## Fix the responsiveness for wider screens:
+
+```html
+<cells-input-digits calculate-maxwidth naming="forWideScreen" input-fields="7">
+</cells-input-digits>
+```
+
+## Known issues
+
+  > When `calculateMaxwidth` is set to `true` and `<cells-input-digits>` is embbeded in the `<cells-bottom-modal>` content,
+  the `offsetWidth` of the body of the modal is 0,
+  so the `max-width` for the `<cells-input-digits>` is not calculated correctly and giving to the compoennt, a `max-width` of 0
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-input-digits  | empty mixin     | {}             |
+| --cells-input-digits-inputs  | empty mixin for rendered all inputs    | {}             |
+| --cells-input-digits-wider      | empty mixin for :host(.wider) | {}  |
+| --cells-input-digits-input      | empty mixin for each input | {}  |
+| --cells-input-digits-input-last      | empty mixin for the last input | {}  |
+| --cells-input-digits-input-disabled      | empty mixin for disabled inputs | {}  |
+| --cells-input-digits-input-disabled-last | empty mixin for the last disabled input | {}  |
+| --cells-input-digits-button | empty mixin for the submit button | {}  |
+| --cells-input-digits-button-color | background color for button  | #2A86CA |
+| --cells-input-digits-button-disabled-color | background color for disabled button  | #E9E9E9 |
+| --cells-input-digits-inputs-disabled-bg-color | background color for disabled inputs  | #fff |
+
+@demo demo/index.html
+@hero cells-input-digits.jpg
+-->
+<dom-module id="cells-input-digits">
+  <template>
+    <style include="cells-input-digits-styles cells-input-digits-shared-styles"></style>
+
+    <section>
+      <template is="dom-repeat" items="{{_fields}}">
+        <cells-molecule-input id$="input{{item.name}}" class="input-num" type="[[type]]" prevent-invalid-input allowed-pattern="^\d$"
+                              min="0" max="9" on-keydown="_checkKeyDown" on-input="_checkInputNum" disabled="{{disabled}}"></cells-molecule-input>
+      </template>
+    </section>
+    <cells-st-button>
+      <button id="submit" class="button-submit" disabled>[[t(submitText)]]</button>
+    </cells-st-button>
+  </template>
+  <script src="cells-input-digits.js"></script>
+</dom-module>

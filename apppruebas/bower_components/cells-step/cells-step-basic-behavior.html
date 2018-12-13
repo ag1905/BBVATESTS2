@@ -1,0 +1,144 @@
+<script>
+  (function(w) {
+    'use strict';
+    w.CellsBehaviors = w.CellsBehaviors || {};
+    w.CellsBehaviors.StepBasicBehavior = {
+      properties: {
+        /**
+         * Translation key for the optional info message above the step
+         */
+        infoMessageKey: {
+          type: String
+        },
+        /**
+         * Class style to toggle over child elements (on content:full)
+         */
+        classToToggle: {
+          type: String,
+          value: ''
+        },
+        /**
+         * Attribute to toggle over child elements (on content:full)
+         */
+        attributeToToggle: {
+          type: String,
+          value: ''
+        },
+        /**
+         * Removes the change button
+         */
+        disableChange: {
+          type: Boolean,
+          value: false
+        },
+        /**
+         * Hide header
+         */
+        hideHeader: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      listeners: {
+        'active-changed': '_onActiveChange',
+        'fixed-changed': '_onFixedChange',
+        'click': '_onChange'
+      },
+
+      /**
+       * Callback for click event on #changeBtn
+       * @private
+       */
+      _onChange: function(evt) {
+        //Check if there's a node in the event path that has the "full" class,
+        //which means the step is opened and we shouldn't toggle it
+
+        /* @NOTICE
+         * @see {@link https://dom.spec.whatwg.org/#dom-event-composedpath|composedPath}
+         *
+         * {event.path} doesn't exist in Firefox or Safari's WebKit implementation
+         * Do not tested out in Opera, IE or Edge.
+         * Google's Chrome WebKit implementation develops both property {path} and method {composedPath()}
+         * for any event.
+         *
+         * In order to extract the event path, here will tested:
+         *    if event.path exists, if not, if event.composedPath() can be called
+         * In case of fail, empty Array will be returned.
+         */
+        var path = evt.path !== undefined
+          ? evt.path
+          : evt.composedPath instanceof Function
+            ? evt.composedPath()
+            : [];
+
+        var avoid = path.some(function(node) {
+          return (node && node instanceof HTMLElement)
+            ? node.classList.contains('full')
+            : false;
+        });
+        if (!avoid && !this.disableChange && this.collapsed) {
+          this.fire('change-pressed');
+        }
+      },
+
+      /**
+       * Observer callback executed after every change on <em>CellsBehaviors.StepPropBehavior.properties.active</em>.
+       *
+       * @param   value {*} Payload
+       * @private
+       */
+      _onActiveChange: function(value) {
+        if (value && value instanceof Event && value.detail && value.detail.hasOwnProperty('value')) {
+          value = value.detail.value;
+        } else {
+          value = null;
+        }
+        var fullZone = this.querySelector('.full');
+        var children = (fullZone && fullZone.children) || [];
+        if (value !== undefined && value !== null && children.length) {
+          var max = children.length - 1;
+          for (var i = max, l = 0; l <= i; i--) {
+            var child = children[i];
+            if (this.classToToggle) {
+              child.classList[value ? 'add' : 'remove'](this.classToToggle);
+            } else if (this.attributeToToggle) {
+              if (child.set instanceof Function) {
+                child.set(this.attributeToToggle, value);
+              } else {
+                child[value ? 'setAttribute' : 'removeAttribute'](this.attributeToToggle, value);
+              }
+            }
+          }
+        }
+      },
+
+      /**
+       * Observer callback executed after every change on <em>CellsBehaviors.StepPropBehavior.properties.fixed</em>.
+       *
+       * @param   value {*} Payload
+       * @private
+       */
+      _onFixedChange: function(value) {
+        if (value && value instanceof Event && value.detail && value.detail.hasOwnProperty('value')) {
+          value = value.detail.value;
+        } else {
+          value = false;
+        }
+        this.set('disableChange', value);
+      },
+
+      /**
+       * Returns true when the info message is shown
+       */
+      _showInfoMessage: function(infoMessageKey, collapsed) {
+        return infoMessageKey && !collapsed;
+      }
+
+      /**
+       * Fired whenever change button is clicked
+       * @event 'change-pressed'
+       */
+    };
+  }(window));
+</script>

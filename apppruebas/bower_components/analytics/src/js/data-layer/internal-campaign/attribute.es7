@@ -1,0 +1,100 @@
+/**
+ * Atributos de cada campaña.
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer.internalCampaign
+ * @class     bgdmjs.analytics.dataLayer.internalCampaign.Attribute
+ */
+export default class BgdmjsAnalyticsDataLayerInternalCampaignAttribute
+{
+    /**
+     * Formato de la campaña.
+     * Valores posibles:
+     * - `carrusel`
+     * - `banner home`
+     * - `bocadillo`
+     * - `banner crm`
+     * - `ventana bloqueante`
+     * - `zona one click`
+     *
+     * @property campaignFormat
+     * @type     {string}
+     */
+    campaignFormat = '';
+    /**
+     * Nombre de la campaña.
+     *
+     * @property campaignName
+     * @type     {string}
+     */
+    campaignName   = '';
+    /**
+     * Código de Colectivo sin descripción, es decir,
+     * sólo almacenaría el código númerico del collectivo.
+     *
+     * @property collectiveCode
+     * @type     {string}
+     */
+    collectiveCode = '';
+    /**
+     * Zona de la página en la que está cargada la campaña.
+     * Valores posibles:
+     * - `superior izquierda`
+     * - `superior derecha`
+     * - `superior centro`
+     * - `centro`
+     * - `centro izquierda`
+     * - `centro derecha`
+     * - `inferior izquierda`
+     * - `inferior derecha`
+     * - `inferior centro`
+     *
+     * @property location
+     * @type     {string}
+     */
+    location       = '';
+    /**
+     * Nombre del producto ofrecido en la campaña. 
+     * Si el nombre de la campaña identifica de manera
+     * unívoca un producto, este valor será vacío.
+     *
+     * @property product
+     * @type     {string}
+     */
+    product        = '';
+    /**
+     * Código del producto ofrecido en la campaña. 
+     * Si el nombre de la campaña identifica de manera
+     * unívoca un producto, este valor será vacío.
+     *
+     * @property productCode
+     * @type     {string}
+     */
+    productCode    = '';
+    /**
+     * En caso de que la campaña muestre un valor, diferente para
+     * varios usuarios, se completará este campo con el valor del
+     * importe cantidad o monto incluyendo la moneda, en caso de
+     * ser necesario.
+     *
+     * Esta propiedad informará la cantidad más representativa de
+     * la campaña junto con la moneda.
+     *
+     * Por ejemplo, en la campaña de anticipo de nómina, cada usuario
+     * puede tener un anticipo diferente, por lo que se incluirá el
+     * tipo de moneda de la campaña. 
+     *
+     * En campañas de préstamos pueden
+     * ser ofrecidos importes diferentes a cada usuario, en este caso
+     * el valor de `quantity` será el monto del préstamo ofrecido.
+     *
+     * En hipotecas pueden ofrecerse condiciones de interés concretos
+     * (TAE + 1% por ejemplo) en este caso el calor será (1%).
+     *
+     * Valores de ejemplo: (654 €, 10.000 MXN, 1%...)
+     *
+     * @property quantity
+     * @type     {string}
+     */
+    quantity       = '';
+}

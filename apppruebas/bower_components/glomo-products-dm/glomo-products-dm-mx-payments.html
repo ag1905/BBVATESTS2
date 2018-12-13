@@ -1,0 +1,193 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../global-products-lists-behavior/global-products-lists-behavior.html" />
+<link rel="import" href="../cells-dm-global-apis-accounts/cells-dm-global-apis-accounts.html">
+<link rel="import" href="../cells-dm-global-apis-cards/cells-dm-global-apis-cards.html">
+<link rel="import" href="../cells-products-behavior/cells-products-transforms-behavior.html">
+
+<!--
+`<glomo-products-dm-mx-payments>` description.
+
+Example:
+
+```html
+<glomo-products-dm-mx-payments></glomo-products-dm-mx-payments>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --glomo-products-dm-mx-payments  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-products-dm-mx-payments">
+  <template>
+    <cells-dm-global-apis-accounts id="globalAccounts"
+      host="[[host]]"
+      accounts="{{accounts}}"
+      accounts-api-version="[[accountsApiVersion]]"
+      api-aggregator-api-version="[[apiAggregatorApiVersion]]"></cells-dm-global-apis-accounts>
+    <cells-dm-global-apis-cards id="globalCards"
+      host="[[host]]"
+      cards="{{cards}}"
+      cards-api-version="[[cardsApiVersion]]"></cells-dm-global-apis-cards>
+  </template>
+  <script>
+    (function() {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-products-dm-mx-payments',
+
+        behaviors: [
+          CellsBehaviors.i18nBehavior,
+          CellsBehaviors.ProductsTransforms,
+          CellsBehaviors.GlobalProductsListsBehavior
+        ],
+
+        properties: {
+
+          accounts: {
+            type: Array
+          },
+
+          cards: {
+            type: Array
+          },
+
+          products: {
+            type: Array,
+            computed: 'setProducts(accounts, cards)',
+            notify: true
+          },
+
+          typeCardName: {
+            type: String,
+            value: 'CREDIT_CARD'
+          },
+
+          productsListLabel: {
+            type: String,
+            notify: true
+          },
+
+          /**
+          * Accounts API version
+          * @type {String}
+          */
+          accountsApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+          * Cards API version
+          * @type {String}
+          */
+          cardsApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+          * Api agreggator API version
+          * @type {String}
+          */
+          apiAggregatorApiVersion: {
+            type: String,
+            value: '0'
+          }
+        },
+
+        getProducts: function() {
+          this.$.globalAccounts.getFullAccounts();
+          this.$.globalCards.getCards({expand: 'activations'});
+        },
+
+        setProducts: function(accounts, cards) {
+          var _accounts = (accounts || {}).items || [];
+          var response = this._parseAccounts(_accounts) || [];
+          var parsedCards = this._parseCards(cards);
+          this.set('productsListLabel', this._getLabel(_accounts, parsedCards));
+
+          if ((parsedCards || []).length) {
+            response = response.concat(parsedCards);
+          }
+
+          return response;
+        },
+
+        _formatAccounts: function(account, originalAccount, currency) {
+          var amount = this._getBalanceByCurrency(originalAccount.availableBalance.currentBalances, currency);
+          var overcome = amount.amount <= 0;
+          account.imgSrc = '';
+          account.primaryAmount = {
+            amount: amount.amount,
+            currency: amount.currency
+          };
+          account.hasTextMessage = overcome;
+          account.disabled = overcome;
+
+          var simpleNumber = this._getSimpleNumber(originalAccount);
+
+          if (simpleNumber) {
+            account.simpleNumber = simpleNumber;
+            account.description = null;
+          }
+
+          if (originalAccount.accountMobile) {
+            account.icon = 'glomo:mobile';
+          }
+
+          if (originalAccount.customizedFormats && originalAccount.customizedFormats.length) {
+            var isSpei = originalAccount.customizedFormats.find(function(customFormat) {
+              return customFormat.customizedFormatId === 'SPEI';
+            });
+
+            if (isSpei) {
+              account.icon = 'coronita:mobile';
+              account.isSpei = true;
+            }
+          }
+
+          if (!account.name) {
+            account.name = this._getProductName(originalAccount, 'cells-global-dashboard-account-description', 'Cuenta BBVA');
+          }
+
+          account.productType = 'ACCOUNTS';
+          account.contract = {
+            contractId: originalAccount.accountId,
+            number: originalAccount.number,
+            numberType: originalAccount.numberType,
+            contractType: {
+              id: 'ACCOUNT',
+              name: 'Accounts'
+            }
+          };
+        },
+
+        _getLabel: function(accounts, cards) {
+          var label;
+
+          if ((accounts || []).length && (cards || []).length) {
+            label = 'cells-step-product-selector-my-products';
+          } else if ((accounts || []).length) {
+            label = 'cells-step-product-selector-my-accounts';
+          } else {
+            label = 'cells-step-product-selector-my-cards';
+          }
+
+          return label;
+        },
+
+        _getIsOperative: function(card) {
+          return card.status.id === 'OPERATIVE';
+        }
+      });
+    }());
+  </script>
+</dom-module>

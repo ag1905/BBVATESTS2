@@ -1,0 +1,19 @@
+{
+  "name": "cells-image-overlay-ccds-wrapper",
+  "version": "1.0.0",
+  "description": "Wraps 'cells-image-overlay' and sets its image source URL in the 'BBVA CCDS' way (adding 'width' and 'height'). Request's with the double of the widht and height if your screen pixel ratio is >=2.",
+  "keywords": [],
+  "ignore": [],
+  "dependencies": {
+    "cells-image-ccds-behavior": "ssh://git@globaldevtools.bbva.com:7999/cbh/cells-image-ccds-behavior.git#^1.0.0",
+    "cells-image-overlay": "ssh://git@globaldevtools.bbva.com:7999/bgcm/cells-image-overlay.git#^1.0.0",
+    "polymer": "Polymer/polymer#^1.6.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.2.0"
+  },
+  "main": [
+    "cells-image-overlay-ccds-wrapper.html"
+  ]
+}

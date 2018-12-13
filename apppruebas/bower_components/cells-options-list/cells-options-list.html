@@ -1,0 +1,39 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-checkbox-button/cells-checkbox-button.html">
+<link rel="import" href="cells-options-list-styles.html">
+<!--
+`<cells-options-list>` description.
+
+Example:
+
+```html
+<cells-options-list></cells-options-list>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-options-list  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-options-list">
+  <template>
+    <style include="cells-options-list-styles cells-options-list-shared-styles"></style>
+    <slot></slot>
+    <!-- <p>[[t('cells-options-list-welcome', 'Welcome to')]] Cells</p> -->
+    <template is="dom-repeat" items="[[items]]">
+      <cells-checkbox-button class$="[[item.extraClass]]" icon-check="[[item.icon]]" checked="{{item.checked}}" on-tap="dispatchItemsChecked">[[t(item.key)]]</cells-checkbox-button>
+    </template>
+  </template>
+  <script src="cells-options-list.js"></script>
+</dom-module>

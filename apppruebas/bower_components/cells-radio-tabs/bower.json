@@ -1,0 +1,34 @@
+{
+  "name": "cells-radio-tabs",
+  "version": "9.0.1",
+  "description": "Display a list of navigation tabs.",
+  "keywords": [
+    "responsive",
+    "i18n",
+    "tabs",
+    "navigation"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.9.0",
+    "cells-i18n-behavior": "^9.0.0",
+    "iron-icon": "^1.0.0"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.0",
+    "cells-demo-helper": "^9.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "paper-input": "PolymerElements/paper-input#^1.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "cells-coronita-theme": "^9.0.0",
+    "coronita-icons": "^9.0.0",
+    "iron-pages": "^1.0.0"
+  },
+  "main": [
+    "cells-radio-tabs.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  }
+}

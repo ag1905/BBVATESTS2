@@ -1,0 +1,133 @@
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-molecule-mask/cells-molecule-mask.html">
+<link rel="import" href="../cells-toggle-button/cells-toggle-button.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-molecule-header-styles.html">
+
+<!--
+# cells-molecule-header
+
+`<cells-molecule-header>` is a componente to display a custom header. It includes three parts.
+Left part that could contain a toggle menu or a back arrow.
+Central part that could contain a custom title with greetings, masked number or nothing else.
+Right part that could contain a switch or a search button.
+
+Example:
+
+```html
+<cells-molecule-header bankNameAsTitle="true"
+  title="Custom title">
+  Application name
+</cells-molecule-header>
+
+<cells-molecule-header greetingAsTitle="true"
+  userInfo="{name='User name'}"
+  search="true">
+</cells-molecule-header>
+
+<cells-molecule-header product="{number: 23443234234, typeId: 'type', currencies: [{currency: 'USD', isMajor=true}, {currency: 'EUR', isMajor=true}]}"
+  userInfo="{name='User name'}"
+  showCurrencySwitch="true"
+  back="true"
+  backIcon="coronita:return-12">
+</cells-molecule-header>
+
+## Properties
+
+| Name | Description | Default |
+|:---------------|:------------|:--------------|
+| title (String) | Name of the custom title | '' |
+| product (Object) | Product data, It must contain 'number', 'typeId' and 'currencies' | {} |
+| greetingAsTitle (Boolean) | Show greeting text by default | true/false |
+| bankNameAsTitle (Boolean) | Show application name by default | true/false |
+| userInfo (Object) | User data info, It must contain 'name'| {} |
+| search (Boolean) | Show search button | true/false |
+| back (Boolean) | Show back button | true/false |
+| backIcon (String) | Back icon button | '' |
+| backAction (String) | Back action dispatch | '' |
+| backText (String) | Back text | '' |
+| showCurrencySwitch (String) | Show switch currency button | true/false |
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                      | Description                         | Default        |
+|:-------------------------------------|:------------------------------------| :--------------|
+| --cells-molecule-header           | Empty mixin for your own styles     | {}             |
+| --cells-molecule-header-title     | Empty mixin for the title           | {}             |
+| --cells-molecule-header-menu-icon | Empty mixin for the menu icon       | {}             |
+| --cells-molecule-header-back-icon | Empty mixin for the back icon       | {}             |
+| --cells-molecule-header-search-icon | Empty mixin for the search icon       | {}             |
+| --cells-molecule-header-dark      | Empty mixin for :host-context(.header--dark) | {}    |
+
+@demo demo/index.html
+@hero random-3.svg
+@composer
+@description Molecule Header
+@type UI
+@platforms android, ios, desktop
+@family cells-catalog-widgets-family
+-->
+<dom-module id="cells-molecule-header">
+  <template>
+    <style include="cells-molecule-header-styles cells-molecule-header-shared-styles"></style>
+
+    <div>
+      <template is="dom-if" if="[[!hideMenuButton]]">
+        <button class="menu-icon btn--transparent" on-click="_controlMenu" id="btnMenu">
+          <cells-atom-icon icon="[[menuIcon]]" class$="icon-size-[[leftIconSize]]" aria-label$="[[t('cells-molecule-header-open-menu-label', 'Open menu')]]"></cells-atom-icon>
+        </button>
+      </template>
+      <button class="back-icon btn--transparent" on-click="_goBack" id="btnBack">
+        <cells-atom-icon id="btnBackIcon" icon="[[backIcon]]" class$="icon-size-[[leftIconSize]]" aria-label$="[[t('cells-molecule-header-back-label', 'Back')]]"></cells-atom-icon>
+      </button>
+    </div>
+
+    <div>
+      <h1 id="title" class="title">
+        <template is="dom-if" if="[[greetingAsTitle]]">
+          <span>[[t(greetingKey)]] [[_userName]]</span>
+        </template>
+
+        <template is="dom-if" if="[[bankNameAsTitle]]">
+          <img id="logo" src="[[logoSrc]]" alt="BBVA" width="[[logoWidth]]">
+        </template>
+
+        <template is="dom-if" if="[[title]]">
+          <span class="header__title">[[t(title)]]</span>
+        </template>
+
+        <template is="dom-if" if="[[haveMaskedNumber]]">
+          <cells-molecule-mask
+              value="[[formattedNumber]]"
+              mask-chars="[[mask.separator]]"
+              visible-chars="[[mask.chars]]"
+              masked="[[mask.status]]">
+          </cells-molecule-mask>
+        </template>
+      </h1>
+    </div>
+
+    <div class="switch-container">
+      <button class="search-icon btn--transparent" on-click="_onSearch" id="btnSearch">
+        <cells-atom-icon icon="[[searchIcon]]" class$="icon-size-[[rightIconSize]]" aria-label$="[[t('cells-molecule-header-search-label', 'Search')]]"></cells-atom-icon>
+      </button>
+
+      <template is="dom-if" if="[[_ifShowCurrencySwitch(showCurrencySwitch)]]">
+        <div class="header__button-settings">
+          <cells-toggle-button
+            id="currencySwitch"
+            content-left="[[product.currencies.0.currency]]"
+            content-right="[[product.currencies.1.currency]]"
+            active="[[activeSwitch]]">
+          </cells-toggle-button>
+        </div>
+      </template>
+    </div>
+
+  </template>
+  <script src="cells-molecule-header.js"></script>
+</dom-module>

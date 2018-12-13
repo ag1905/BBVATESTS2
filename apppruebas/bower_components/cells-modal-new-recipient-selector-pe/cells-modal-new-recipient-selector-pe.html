@@ -1,0 +1,77 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-alert-box/cells-alert-box.html">
+<link rel="import" href="../cells-molecule-input/cells-molecule-input.html">
+<link rel="import" href="../cells-new-recipient-review-pe/cells-new-recipient-review-pe.html">
+<link rel="import" href="../cells-input-validations-behavior/cells-input-validations-behavior.html">
+<link rel="import" href="cells-modal-new-recipient-selector-pe-styles.html">
+
+<!--
+`<cells-modal-new-recipient-selector-pe>` description.
+
+Example:
+
+```html
+<cells-modal-new-recipient-selector-pe></cells-modal-new-recipient-selector-pe>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --cells-modal-new-recipient-selector-pe  | Mixin applied to :host     | {}  |
+| --cells-fontDefault  | Font family of :host    | sans-serif  |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-modal-new-recipient-selector-pe">
+  <template>
+    <style include="cells-modal-new-recipient-selector-pe-styles cells-modal-new-recipient-selector-pe-shared-styles"></style>
+    <cells-alert-box
+      id="modal"
+      full-height="true"
+      opened="{{opened}}"
+      title="[[t('cells-modal-new-recipient-selector-pe-title')]]"
+      accept-button="[[t(buttonLabels.accept)]]"
+      cancel-button="[[t(buttonLabels.cancel)]]"
+      primary-button-class="primary"
+      disable-primary-button="[[!continueNext]]"
+      on-accept="_validateSection"
+      on-cancel="_onCancel">
+        <section id="query" hidden$="[[!_checkedSection(selected, 0)]]">
+          <p>{{t('cells-modal-new-recipient-selector-pe-intro')}}</p>
+            <cells-molecule-input id="accountNumberInput"
+              value="{{_accountNumber}}"
+              allowed-value="[[_getPattern(accountNumberValidation.allowedValue)]]"
+              allowed-chars="[[accountNumberValidation.allowedChars]]"
+              bind-value="{{bindedValue}}"
+              type="[[accountNumberValidation.inputType]]"
+              class="secondary--input"
+              label="{{t('cells-modal-new-recipient-selector-pe-account-number')}}"
+              input-status-validate="[[accountNumberValidation.inputStatusValidate]]"
+              custom-pattern="[[accountNumberValidation.customPattern]]"
+              max-length="[[accountNumberValidation.maxLength]]"
+              icon="coronita:close"
+              error-message="[[t(error.message)]]"
+              error-message-icon="[[error.icon]]"
+              auto-validate="[[accountNumberValidation.autoValidate]]">
+          </cells-molecule-input>
+        </section>
+        <section id="review" hidden$="[[!_checkedSection(selected, 1)]]">
+          <cells-new-recipient-review-pe
+            notification="[[notification]]"
+            account-number="[[recipient.number]]"
+            beneficiary-name="[[recipient.name]]"
+            entity-name="[[recipient.bank.name]]"
+            ></cells-new-recipient-review-pe>
+        </section>
+    </cells-alert-box>
+  </template>
+  <script src="cells-modal-new-recipient-selector-pe.js"></script>
+</dom-module>

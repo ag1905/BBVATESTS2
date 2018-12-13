@@ -1,0 +1,108 @@
+<dom-module id="cells-molecule-amount-group-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-molecule-amount-group; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+.little {
+  width: 66px;
+  height: 66px;
+  padding: 28px 20px;
+  border-radius: 400px;
+  color: var(--cells-molecule-amount-group__link-color, var(--bbva-core-blue, #004481));
+  background-color: var(--cells-molecule-amount-group__bglink-color, var(--bbva-100, #f4f4f4));
+  @apply cells-molecule-amount-group-little-size; }
+
+.medium {
+  width: 92px;
+  height: 92px;
+  padding: 36px 33px;
+  border-radius: 400px;
+  color: var(--cells-molecule-amount-group__link-color, var(--bbva-core-blue, #004481));
+  background-color: var(--cells-molecule-amount-group__bglink-color, var(--bbva-100, #f4f4f4));
+  @apply cells-molecule-amount-group-medium-size; }
+
+.list {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  list-style: none;
+  width: 75%;
+  margin: 0 auto;
+  padding: 0;
+  @apply cells-molecule-amount-group-list; }
+  .list__item {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-align-content: center;
+        -ms-flex-line-pack: center;
+            align-content: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    text-align: center;
+    margin: 10px; }
+  .list .link {
+    color: var(--cells-molecule-amount-group__link-color, var(--bbva-core-blue, #004481));
+    background-color: var(--cells-molecule-amount-group__bglink-color, var(--bbva-100, #f4f4f4));
+    border: none;
+    font-size: 1.25rem;
+    padding: 0;
+    text-align: center;
+    @apply cells-molecule-amount-group-link; }
+    .list .link:hover, .list .link:active, .list .link:link {
+      color: #fff;
+      background-color: var(--cells-molecule-amount-group__link-color, var(--bbva-core-blue, #004481));
+      outline: none; }
+    .list .link[disabled] {
+      color: var(--cells-molecule-amount-group__bglink-color-disabled, var(--bbva-300, "#bdbdbd")); }
+      .list .link[disabled]:hover, .list .link[disabled]:active, .list .link[disabled]:link {
+        background-color: var(--cells-molecule-amount-group__bglink-color, var(--bbva-100, #f4f4f4)); }
+
+cells-icon-message {
+  margin: 1.875rem;
+  min-width: 10.3125rem;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  --cells-icon-message-background-color-warning: var(--bbva-white-red, #f8d7dc);
+  --cells-icon-message-icon-color-warning: var(--bbva-light-red, #e77d8e);
+  --cells-icon-message-color: var(--bbva-600, #121212); }
+  cells-icon-message span {
+    margin: 1.25rem 1.875rem; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+button:active {
+  @apply --cells-global-active; }
+
+</style></template></dom-module>

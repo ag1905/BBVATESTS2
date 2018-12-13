@@ -1,0 +1,35 @@
+import BgdmjsAnalyticsDataLayerPrivacyCategory from './privacy/category';
+/**
+ * Clasifica las categorías de acceso a los datos.
+ *
+ * @package   bgdmjs.analytics
+ * @namespace bgdmjs.analytics.dataLayer
+ * @class     bgdmjs.analytics.dataLayer.Privacy
+ */
+export default class BgdmjsAnalyticsDataLayerPrivacy
+{
+    /**
+     * Lista de categorías.
+     *
+     * @type {bgdmjs.analytics.dataLayer.privacy.Category[]}
+     */
+    accessCategories = [];
+
+    /**
+     * Agrega una categoría a la lista.
+     *
+     * @param {string}   name    Nombre de la categoría.
+     * @param {string[]} domains Dominios permitidos de la categoría.
+     */
+    addCategory(name, domains)
+    {
+        if (!Array.isArray(domains))
+        {
+            domains = [domains];
+        }
+        let _category          = new BgdmjsAnalyticsDataLayerPrivacyCategory();
+        _category.categoryName = name;
+        _category.domains      = domains;
+        this.accessCategories.push(_category);
+    }
+};

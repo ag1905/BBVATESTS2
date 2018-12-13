@@ -1,0 +1,61 @@
+<dom-module id="cells-skeleton-custom-styles"><template><style>
+:host {
+  @apply --cells-skeleton-custom; }
+
+:host ::slotted() [item-mask] {
+  overflow: hidden;
+  background-color: var(--cells-skeleton-custom-color-mask, var(--bbva-200, #E9E9E9));
+  margin: 0 -0.375rem;
+  -webkit-transform: skewX(160deg);
+          transform: skewX(160deg);
+  @apply --cells-skeleton-custom-item-mask; }
+
+.skeleton-content {
+  position: relative;
+  margin: 0.625rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  @apply --cells-skeleton-custom-content; }
+  .skeleton-content .animate-layer {
+    width: 160%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: -175%;
+    background-color: var(--cells-skeleton-custom-color-bg, var(--bbva-white, #FFFFFF));
+    opacity: 0.5;
+    -webkit-transform: skewX(160deg);
+            transform: skewX(160deg);
+    -webkit-animation: skAnimationLandscape 2s ease-in-out 0.5s infinite;
+            animation: skAnimationLandscape 2s ease-in-out 0.5s infinite;
+    @apply --cells-skeleton-custom-animate-layer; }
+  .skeleton-content .hide-element {
+    display: none; }
+  .skeleton-content.unbox {
+    margin: 0;
+    box-shadow: none;
+    @apply --cells-skeleton-custom-content-unbox; }
+
+@-webkit-keyframes skAnimationLandscape {
+  from {
+    right: -175%;
+    opacity: 0.5; }
+  70% {
+    right: -20%;
+    opacity: 0.5; }
+  100% {
+    right: -20%;
+    opacity: 0; } }
+
+@keyframes skAnimationLandscape {
+  from {
+    right: -175%;
+    opacity: 0.5; }
+  70% {
+    right: -20%;
+    opacity: 0.5; }
+  100% {
+    right: -20%;
+    opacity: 0; } }
+
+</style></template></dom-module>

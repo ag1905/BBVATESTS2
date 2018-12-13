@@ -1,0 +1,16 @@
+{
+  "cells-step-legal-accepted": "Accepted",
+  "cells-step-legal-additional-info-amount": "_Single payment of the loan insurance <span style='color: #000'><strong>${totalAmount}</strong></span>",
+  "cells-step-legal-conditions": "_The payment of your loan will be made by means of monthly transfers with fee to your account <span style='color: #000'><strong>${product}</strong></span> in an amount of <span style='color: #000'><strong>${amount}</strong></span>",
+  "cells-step-legal-info": "_By continuing to confirm, you have read the terms and conditions of the contract.",
+  "cells-step-legal-terms-additional-info-first-check-text": "_I authorize the <strong> query of my history </strong>",
+  "cells-step-legal-terms-additional-info-second-check-text": "_I accept the loan<strong> contract terms and conditions</strong>",
+  "cells-step-legal-terms-additional-info-third-check-text": "_I agree with <strong>the insurance</strong> at contract moment.",
+  "cells-step-legal-terms-btn-primary": "Continue",
+  "cells-step-legal-terms-change": "Change",
+  "cells-step-legal-terms-check-text": "_I have read and accept the <strong>terms, conditions and restrictions.</strong>",
+  "cells-step-legal-terms-concept": "Concept (optional)",
+  "cells-step-legal-terms-continue": "Continue",
+  "cells-step-legal-terms-reference": "Reference",
+  "cells-step-legal-terms-title": "LEGAL TERMS"
+}

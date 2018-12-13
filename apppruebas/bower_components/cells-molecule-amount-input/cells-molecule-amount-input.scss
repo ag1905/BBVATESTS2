@@ -1,0 +1,165 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  position: relative;
+  background-color: var(--cells-molecule-amount-input-background-color, --bbva-100);
+
+  @apply(--cells-molecule-amount-input);
+}
+
+:host([disabled]), :host([readonly]) {
+  background-color: rgba(255, 255, 255, 0.4);
+  input,
+  .text-field {
+    color: var(--bbva-300);
+    &.has-content~.text-field__label {
+      color: var(--bbva-300);
+    }
+
+    @apply(--cells-molecule-amount-input-disabled-text-field);
+  }
+  .text-field__label,  {
+    color: var(--bbva-300);
+
+    @apply(--cells-molecule-amount-input-disabled-text-field__label);
+  }
+
+  @apply(--cells-molecule-amount-input-disabled);
+}
+
+:host([with-icon]) {
+  padding-right: rem(60px);
+
+  .text-field__input {
+    padding-right: 0;
+
+    @apply(--cells-molecule-amount-input-with-icon-input);
+  }
+
+  &:not(.has-content) {
+    padding-right: 0;
+  }
+
+  @apply(--cells-molecule-amount-input-with-icon);
+}
+
+:host([invalid]) {
+  border-bottom: 1px solid var(--cells-molecule-amount-input-invalid-border-bottom, --bbva-red);
+
+  input {
+    color: var(--cells-molecule-amount-input-invalid-input-color, --bbva-red);
+
+    @apply(--cells-molecule-amount-input-invalid-input);
+  }
+
+  @apply(--cells-molecule-amount-input-invalid);
+}
+
+.text-field {
+  position: relative;
+  display: block;
+  height: rem(50px);
+
+  &__label,
+  &__icon {
+    z-index: 1;
+    transition: all 200ms;
+  }
+
+  &__label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: rem(18px) rem(20px);
+    color: var(--cells-molecule-amount-input-placeholder-color, --bbva-500);
+    white-space: nowrap;
+    line-height: 1;
+    width: 100%;
+    transition: all 200ms;
+    opacity: 0.5;
+
+    @apply(--cells-molecule-amount-input-label);
+  }
+
+  &__icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: rem(60px);
+    height: rem(50px);
+    padding: 0 rem(17px);
+    text-align: center;
+    cursor: pointer;
+
+    &[hidden] {
+      display: none;
+    }
+
+    @apply(--cells-molecule-amount-input-icon);
+  }
+
+
+  .content-input {
+    display: inline-block;
+  }
+
+  &__input {
+    color: var(--cells-molecule-amount-input-input-color, --bbva-600);
+    width: 100%;
+    height: 100%;
+    padding: rem(30px) rem(19px) 0 0;
+    line-height: 1.5;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    background: transparent;
+
+    &:-webkit-autofill {
+      box-shadow: 0 0 0px 1000px var(--cells-molecule-amount-input-background, --bbva-100) inset;
+    }
+
+    &.has-content {
+      padding: rem(24px) rem(24px) 0 0;
+
+      @apply(--cells-molecule-amount-input-has-content);
+    }
+
+    &.has-content~.text-field__label {
+      color: var(--cells-molecule-amount-input-disabled-color, --bbva-500);
+      opacity: .5;
+      font-size: rem(12px);
+      transform: translateY(-9px);
+      padding-bottom: 0;
+
+      @apply(--cells-molecule-amount-input-floated-label);
+    }
+
+    @apply(--cells-molecule-amount-input-input);
+  }
+
+  @apply(--cells-molecule-amount-input-text-field);
+}
+
+.currency-label {
+  display: inline-block;
+
+  &[hidden] {
+    display: none;
+  }
+
+  .currency-label--left {
+    margin-left: rem(20px);
+
+    @apply(--cells-molecule-amount-input-currency-label-left);
+  }
+
+  .currency-label--right {
+    margin-left: rem(20px);
+
+    @apply(--cells-molecule-amount-input-currency-label-right);
+  }
+
+  @apply(--cells-molecule-amount-input-currency-label);
+}
+

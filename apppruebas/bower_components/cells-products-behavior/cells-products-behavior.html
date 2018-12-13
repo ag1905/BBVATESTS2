@@ -1,0 +1,380 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+  /**
+   * Groups products (such as Cards or Accounts) common functionalities
+   * @polymerBehavior Polymer.ProductsBehavior
+   */
+  /*eslint wrap-iife: [2, "inside"]*/
+  (function(w) {
+    'use strict';
+    w.CellsBehaviors = window.CellsBehaviors || {};
+    w.CellsBehaviors.ProductsBehavior = {
+
+      properties: {
+
+        defaultCurrency: {
+          type: String,
+          value: 'EUR'
+        },
+
+        productTypes: {
+          type: Object,
+          value: {
+            fallback: {
+              group: 'account'
+            },
+            COMMON_ACCOUNT: {
+              group: 'account'
+            },
+            CREDIT_ACCOUNT: {
+              group: 'account',
+              isCredit: true
+            },
+            CREDIT_CURRENCY_ACCOUNT: {
+              group: 'account',
+              isCredit: true,
+              isForeignCurrency: true
+            },
+            CURRENCY_ACCOUNT: {
+              group: 'account',
+              isForeignCurrency: true
+            },
+            CREDIT_CARD: {
+              group: 'card',
+              isCredit: true
+            },
+            PREPAID_CARD: {
+              group: 'card'
+            },
+            DEBIT_CARD: {
+              group: 'card'
+            },
+            COMMON_DEPOSIT: {
+              group: 'deposit'
+            },
+            CURRENCY_DEPOSIT: {
+              group: 'deposit',
+              isForeignCurrency: true
+            },
+            SIMPLE: {
+              group: 'fund',
+              isCredit: false
+            },
+            COMPLEX: {
+              group: 'fund',
+              isCredit: false
+            },
+            FUND: {
+              group: 'fund',
+              isCredit: false
+            },
+            CONSUME_PERSONAL: {
+              group: 'loan'
+            },
+            CONSUME_PAYROLL: {
+              group: 'loan'
+            },
+            MORTGAGE: {
+              group: 'loan'
+            }
+          },
+          readOnly: true
+        },
+
+        imageTypes: {
+          type: Object,
+          value: {
+            FRONT_CARD: 'FRONT_CARD'
+          },
+          readOnly: true
+        }
+      },
+
+        /*
+        * Get currency major of product
+        */
+        _getCurrency: function(product) {
+          if ((product && product.currencies || []).length > 0) {
+            return product.currencies.find(function(currency) {
+              return currency.isMajor;
+            });
+          }
+        },
+
+      _formatProducts: function(products, additionalProductData) {
+        let formattedProducts = [];
+        products.forEach(product => {
+          let excluded = false;
+          if (this.statusExclusions) {
+            excluded = this.statusExclusions.find(status => {
+              return status === product.status.id;
+            });
+          }
+          if (this.currenciesExclusions && !excluded) {
+            excluded = this.currenciesExclusions.find(currency => {
+              return currency === this._getCurrency(product).currency;
+            });
+          }
+          if (!excluded) {
+            var type = this._getProductType(product);
+            var productGroup = this._getProductGroup(type).group;
+            var hasCustomizedFormats = product.customizedFormats && product.customizedFormats.length && product.customizedFormats[0];
+
+            var formattedProduct = {
+              name: product.alias || '',
+              id: product[productGroup + 'Id'],
+              imgSrc: this._getImageSrcForProduct(product),
+              currencies: product.currencies || [ product.currency ],
+              description: product.description || {
+                value: product.number,
+                masked: true
+              },
+              type: type,
+              group: productGroup,
+              icon: (hasCustomizedFormats && product.customizedFormats[0].customizedFormatId === 'SPEI') ? 'coronita:mobile-26' : ''
+            };
+
+            if (productGroup === 'card') {
+              if (product.activations) {
+                formattedProduct.activations = product.activations;
+              }
+              if (product.blocks) {
+                formattedProduct.blocks = product.blocks;
+              }
+              if (product.status) {
+                formattedProduct.status = product.status;
+              }
+            }
+
+            if (product.holds) {
+              formattedProduct.holds = product.holds;
+            }
+
+            if (typeof additionalProductData === 'function') {
+              additionalProductData.call(this, formattedProduct, product, this._getPrimaryCurrencyCode(product));
+            }
+            formattedProducts.push(formattedProduct);
+          }
+        });
+        return formattedProducts;
+      },
+
+      _getProductId: function(product) {
+        return product.accountId || product.cardId || product.depositId || product.fundId || product.loanId;
+      },
+
+      _getProductType: function(product) {
+        return product.accountType || product.cardType || product.depositType || product.loanType || (product.investmentFundType || (product.investmentFund && product.investmentFund.investmentFundType) || (product.fundId && {
+          id: 'FUND'
+        }));
+      },
+
+      _getProductGroup: function(type) {
+        return this.productTypes[type.id] || this.productTypes.fallback;
+      },
+
+      _getImageSrcForProduct: function(product) {
+        var imageOrImageArray = product.image || product.images;
+        var result;
+        var filteredArr;
+        if (Array.isArray(imageOrImageArray)) {
+          filteredArr = imageOrImageArray.filter(function(image) {
+            return image.id === this.imageTypes.FRONT_CARD;
+          }, this);
+          result = filteredArr.length > 0 ? filteredArr[0].url : '';
+        } else {
+          result = imageOrImageArray && imageOrImageArray.url; //protect against undefined
+        }
+        return result;
+      },
+
+      _getBalanceByCurrency: function(balances, currency) {
+        var balance;
+
+        balances.every(function(item) {
+          if (item.currency === currency) {
+            balance = item;
+          }
+
+          return !balance;
+        });
+
+        return balance;
+      },
+
+      _getPrimaryCurrencyCode: function(product, defaultCurrencyCode) {
+        var currencies = product.currencies || [];
+        var majorCurrencyCode;
+
+        if (currencies.length === 1) {
+          majorCurrencyCode = currencies[0].currency || currencies[0].id;
+        } else {
+          currencies.some(function(item) {
+            return item.isMajor && (majorCurrencyCode = item.currency);
+          });
+        }
+
+        return majorCurrencyCode || defaultCurrencyCode || this.defaultCurrency;
+      },
+
+      _getSecondPrimaryCurrency: function(product) {
+        return product.currencies.filter(function(currency) {
+          return currency.isMajor;
+        })[1].currency;
+      },
+
+      _getSecondaryCurrencyCode: function(product) {
+        var currencies = product.currencies || [];
+        var secondaryCurrencyCode;
+
+        if (currencies.length > 1) {
+          currencies.some(function(item) {
+            return !item.isMajor && (secondaryCurrencyCode = item.currency);
+          });
+        }
+
+        return secondaryCurrencyCode;
+      },
+
+      _getSimpleNumber: function(account) {
+        var simpleNumber = null;
+
+        if (!account.formats) {
+          return simpleNumber;
+        }
+
+        account.formats.every(function(item) {
+          if (item.numberType.id === 'SIMPLE_ACCOUNT') {
+            simpleNumber = item.number;
+          }
+
+          return !simpleNumber;
+        }, this);
+
+        return simpleNumber;
+      },
+
+      _isMultiCurrencyCard: function(card) {
+        return ((card.availableBalance.currentBalances.length > 1) && card.hasOwnProperty('currencies'));
+      },
+
+      _isMultiPrimaryCard: function(card) {
+        return card.currencies.every(function(currency) {
+          return currency.isMajor;
+        });
+      },
+
+      _getMultiPrimaryBalances: function(card) {
+        return card.currencies.filter(function(currency) {
+          return currency.isMajor;
+        });
+      },
+
+      _isCreditProduct: function(product) {
+        return this.productTypes[product.type.id].isCredit;
+      },
+
+      _isForeignCurrencyProduct: function(product) {
+        var type;
+        if (product.type) {
+          type = product.type.id;
+        } else if (product.accountType) {
+          type = product.accountType.id;
+        }
+
+        return this.productTypes[type].isForeignCurrency && !this.productTypes[type].isCredit;
+      },
+
+      _filterCreditProducts: function(products) {
+        return products.filter(this._isCreditProduct, this);
+      },
+
+      _filterProductsByCurrency: function(currency, products) {
+        return products.filter(function(p) {
+          return currency === this._getPrimaryCurrencyCode(p);
+        }, this);
+      },
+
+      _filterProductsByCurrencyAndCredits: function(currency, products) {
+        var productsFiltered = [];
+        var i;
+
+        for (i = 0; i < products.length; i++) {
+          if (!this.productTypes[products[i].type.id].isCredit) {
+            productsFiltered.push(products[i]);
+          }
+        }
+
+        return productsFiltered.filter(function(p) {
+          return currency === this._getPrimaryCurrencyCode(p);
+        }, this);
+      },
+
+      _getProductName: function(product, key, fallback) {
+        return (product.hasOwnProperty('title') && product.title.name) ||
+          this.doTranslation(key, fallback);
+      },
+
+      _getFormat: function(product, format) {
+        return product.formats.filter(function(elem) {
+          return elem.numberType.id === format;
+        });
+      },
+
+      _getLimit: function(product, limitId) {
+        return product.limits.filter(function(elem) {
+          return elem.limitId === limitId;
+        });
+      },
+
+      _getCreditAccountForLCRAccount: function(account, accounts) {
+        var creditAccount;
+
+        if (this.get('accountType.id', account) === 'COMMON_ACCOUNT' && account.relatedContracts) {
+          var contractId = null;
+          account.relatedContracts.every(function(relatedContract) {
+            if (this.get('relationType.id', relatedContract) === 'LINKED_WITH' &&
+              this.get('product.id', relatedContract) === 'ACCOUNTS') {
+              contractId = relatedContract.contractId;
+            }
+
+            return !contractId;
+          }, this);
+
+          if (contractId) {
+            accounts.every(function(acc) {
+              if (acc.accountId === contractId && this.get('accountType.id', acc) === 'CREDIT_ACCOUNT') {
+                creditAccount = acc;
+              }
+
+              return !creditAccount;
+            }, this);
+          }
+        }
+
+        return creditAccount;
+      },
+
+      _getAccountHolds: function(account, format) {
+        return account.holds.filter(function(elem) {
+          return elem.holdId === format;
+        });
+      },
+
+      _getHeldAmount: function(account, currency) {
+        var heldAmount;
+
+        account.totalHeldAmounts.every(function(item) {
+          if (item.currency === currency) {
+            heldAmount = item;
+          }
+
+          return !heldAmount;
+        });
+
+        return heldAmount;
+      }
+    };
+  })(window);
+</script>

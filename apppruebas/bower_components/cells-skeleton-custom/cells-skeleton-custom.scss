@@ -1,0 +1,63 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  @apply --cells-skeleton-custom;
+}
+
+:host ::slotted() {
+  [item-mask] {
+    overflow: hidden;
+    background-color: var(--cells-skeleton-custom-color-mask, var(--bbva-200, #E9E9E9));
+    margin: 0 rem(-6px);
+    transform: skewX(160deg);
+
+    @apply --cells-skeleton-custom-item-mask;
+  }
+}
+
+.skeleton-content {
+  position:relative;
+  margin: 0.625rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+
+  .animate-layer {
+    width: 160%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: -175%;
+    background-color: var(--cells-skeleton-custom-color-bg, var(--bbva-white, #FFFFFF));
+    opacity: 0.5;
+    transform: skewX(160deg);
+    animation: skAnimationLandscape 2s ease-in-out 0.5s infinite;
+    @apply --cells-skeleton-custom-animate-layer;
+  }
+
+  .hide-element {
+    display: none;
+  }
+
+  &.unbox {
+    margin: 0;
+    box-shadow: none;
+    @apply --cells-skeleton-custom-content-unbox;
+  }
+
+  @apply --cells-skeleton-custom-content;
+}
+
+@keyframes skAnimationLandscape {
+  from {
+    right: -175%;
+    opacity: 0.5;
+  }
+  70% {
+    right: -20%;
+    opacity: 0.5;
+  }
+  100% {
+    right: -20%;
+    opacity: 0;
+  }
+}

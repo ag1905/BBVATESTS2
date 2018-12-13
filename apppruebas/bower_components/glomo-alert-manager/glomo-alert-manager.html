@@ -1,0 +1,73 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="glomo-alert-manager-styles.html">
+
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-alert-box/cells-alert-box.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+
+<!--
+`<glomo-alert-manager>` is a modal alert box.
+
+Example:
+
+```html
+<glomo-alert-manager></glomo-alert-manager>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --glomo-alert-manager-scope      | scope description | default value  |
+| --glomo-alert-manager  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-alert-manager">
+  <template>
+    <style include="glomo-alert-manager-styles glomo-alert-manager-shared-styles"></style>
+    <cells-alert-box
+      id="modal"
+      class$="{{selectedConfig.className}}"
+      full-height="{{selectedConfig.openMaximized}}"
+      title="{{selectedConfig.title}}"
+      icon-only-full-height="{{selectedConfig.iconOnlyFullHeight}}"
+      hero-image="{{selectedConfig.heroImage}}"
+      accept-button="{{selectedConfig.acceptBtLabel}}"
+      cancel-button="{{selectedConfig.cancelBtLabel}}"
+      accept-button-info="{{selectedConfig.acceptBtInfo}}"
+      cancel-button-info="{{selectedConfig.cancelBtInfo}}"
+      message="[[selectedConfig.message]]"
+      subtitle="[[selectedConfig.subtitle]]"
+      on-accept="_onAccept"
+      on-cancel="_onCancel">
+        <template is="dom-if" if="[[_isListTemplate(selectedConfig)]]">
+          <ul>
+            <template is="dom-repeat" items="[[selectedConfig.template.values]]">
+              <li>
+                <cells-atom-icon icon="[[item.icon]]"></cells-atom-icon>
+                <p>[[t(item.text)]]</p>
+              </li>
+            </template>
+          </ul>
+        </template>
+
+        <template is="dom-if" if="[[_isParagraphsTemplate(selectedConfig)]]">
+          <template is="dom-repeat" items="[[selectedConfig.template.values]]">
+            <template is="dom-if" if="[[_isIcon(item)]]">
+              <p class$="[[item.class]]"><cells-atom-icon icon$="{{item.icon}}"></cells-atom-icon></p>
+            </template>
+            <template is="dom-if" if="[[_isTitle(item)]]">
+              <h2 class$="[[item.class]]">[[t(item.title)]]</h2>
+            </template>
+            <template is="dom-if" if="[[!_isIcon(item)]]">
+              <p class$="[[item.class]]" inner-h-t-m-l="[[t(item.text)]]"></p>
+            </template>
+          </template>
+        </template>
+    </cells-alert-box>
+  </template>
+  <script src="glomo-alert-manager.js"></script>
+</dom-module>

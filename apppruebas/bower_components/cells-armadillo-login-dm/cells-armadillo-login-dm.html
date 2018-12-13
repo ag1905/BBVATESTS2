@@ -1,0 +1,34 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../bgadp-armadillo-login/bgadp-armadillo-login.html">
+
+<!--
+# cells-armadillo-login-dm
+
+Data manager for bgadp-armadillo-login.
+
+This DM expects `host`, and an `user` object with `userId` and `password` properties.
+It fires events when either login or logout requests start and when they either finish successfully or badly.
+
+Calls to Cells Bridge ($core)'s logout method to perform logout.
+
+Example:
+```html
+<cells-armadillo-login-dm id="loginDm"
+  host="https://bbvalabs.com:8001"
+  user='{"userId": "777777779", "password": "GLOMO"}'>
+</cells-armadillo-login-dm>
+```
+
+@demo demo/index.html
+@hero DM_cells.svg
+@composer
+@description Data manager for cells-armadillo-login-dm.
+@type CC
+@platforms android, ios, desktop
+@family cells-catalog-bbvaapis-family
+-->
+<dom-module id="cells-armadillo-login-dm">
+  <template>
+  </template>
+  <script src="cells-armadillo-login-dm.js"></script>
+</dom-module>

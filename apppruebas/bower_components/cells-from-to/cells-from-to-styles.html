@@ -1,0 +1,111 @@
+<dom-module id="cells-from-to-styles"><template><style>
+:host {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-family: var(--cells-fontDefault, sans-serif);
+  box-sizing: border-box;
+  @apply --cells-from-to; }
+  :host .cells-from-to__list {
+    list-style-type: none;
+    background: var(--cells-from-to-list-bg, var(--bbva-100, #F4F4F4));
+    height: 4.125rem;
+    margin: 0;
+    padding: 0;
+    border-radius: 4.25rem;
+    overflow: hidden;
+    z-index: 1;
+    @apply --cells-from-to-list; }
+  :host .cells-from-to__list-item {
+    padding: 0.8125rem;
+    display: inline-block;
+    position: relative;
+    @apply --cells-from-to-list-item; }
+  :host .cells-from-to__list-item:nth-child(odd) {
+    padding-right: 1.1875rem;
+    @apply --cells-from-to-list-item-odd; }
+  :host .cells-from-to__list-item:nth-child(odd):after {
+    position: absolute;
+    background: var(--cells-from-to-list-item-odd-bg, var(--bbva-200, #E9E9E9));
+    display: block;
+    content: " ";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    -webkit-transform: skewX(-19deg);
+            transform: skewX(-19deg);
+    @apply --cells-from-to-list-item-odd-after; }
+  :host .cells-from-to__initial {
+    display: inline-block;
+    height: 2.5rem;
+    width: 2.5rem;
+    line-height: 2.5rem;
+    text-align: center;
+    background: var(--cells-from-to-inital-bg, var(--bbva-orage, #F7893B));
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    @apply --cells-from-to-initial; }
+    :host .cells-from-to__initial:before {
+      background: var(--cells-from-to-list-inital-before, var(--bbva-dark-orange, #d8732c));
+      opacity: 0.6;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 1.25rem;
+      height: 2.5rem;
+      display: block;
+      content: " ";
+      -webkit-transform: rotate(45deg);
+              transform: rotate(45deg);
+      -webkit-transform-origin: 0 50%;
+              transform-origin: 0 50%;
+      @apply --cells-from-to-initial-before; }
+  :host .cells-from-to__initial-content {
+    color: var(--cells-from-to-intial-content-color, var(--bbva-white, #fff));
+    font-size: 1.25rem;
+    position: relative;
+    @apply --cells-from-to-initial-content; }
+  :host .cells-from-to__info {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    width: 100%;
+    @apply --cells-from-to-info; }
+  :host .cells-from-to__info-item {
+    width: 47.5%;
+    @apply --cells-from-to-item; }
+  :host .cells-from-to__info-item:nth-child(even) {
+    padding: 0 0 0 2.5%;
+    @apply --cells-from-to-item-even; }
+  :host .cells-from-to__info-item:nth-child(odd) {
+    text-align: right;
+    padding: 0 2.5% 0 0;
+    @apply --cells-from-to-item-odd; }
+  :host .cells-from-to__info-name {
+    color: var(--cells-from-to-list-info-name-color, var(--bbva-600, #121212));
+    font-size: 0.875rem;
+    margin-top: 0.625rem;
+    margin-bottom: 0.1875rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    @apply --cells-fontDefaultMedium;
+    @apply --cells-from-to-info-name; }
+  :host cells-molecule-mask ::content .cells-molecule-mask__number {
+    font-size: 0.75rem;
+    @apply --cells-from-to-molecule-mask-number; }
+
+</style></template></dom-module>

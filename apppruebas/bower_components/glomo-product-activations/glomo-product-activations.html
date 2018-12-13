@@ -1,0 +1,90 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-switch-item/cells-switch-item.html">
+<link rel="import" href="../cells-switch/cells-switch.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="glomo-product-activations-styles.html">
+<!--
+`<glomo-product-activations>` description.
+
+Example:
+
+```html
+<glomo-product-activations></glomo-product-activations>
+```
+
+## Icons
+
+Since this component uses icons, it will need an [iconset](https://bbva.cellsjs.com/guides/best-practices/cells-icons.html) in your project as an [application level dependency](https://bbva.cellsjs.com/guides/advanced-guides/application-level-dependencies.html). In fact, this component uses an iconset in its demo.
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:---------------|
+| --glomo-product-activations  | Mixin applied to :host     | {}  |
+| --cells-fontDefault                                  | Font family of :host                      | sans-serif  |
+| --glomo-product-activations-header                   | Mixin applied to header                   | {} |
+| --glomo-product-activations-header                   | Mixin applied to header                   | {} |
+| --glomo-product-activations-header__switch           | Mixin applied to header switch            | {} |
+| --glomo-product-activations-header__switch-checked   | Mixin applied to header switch checked    | {} |
+| --glomo-product-activations-header__label            | Mixin applied to header label             | {} |
+| --glomo-product-activations-header__label            | Mixin applied to header label             | {} |
+| --glomo-product-activations-list-switch              | Mixin applied to list switch              | {} |
+| --glomo-product-activations-list-switch__item        | Mixin applied to list switch item         | {} |
+| --glomo-product-activations-switch-white             | Mixin applied to list switch              | {} |
+| --glomo-product-activations-switch-white-checked     | Mixin applied to list switch checked item | {} |
+| --glomo-product-activations-message                  | Mixin applied to message                  | {} |
+| --glomo-product-activations-buttons                  | Mixin applied to buttons                  | {} |
+| --glomo-product-activations-button-transparent       | Mixin applied to button transparent       | {} |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-product-activations">
+  <template>
+    <style include="glomo-product-activations-styles glomo-product-activations-shared-styles"></style>
+      <template is="dom-if" if="[[showHeader]]">
+        <div class="header">
+            <cells-switch id$="[[activations.main.id]]"
+              with-icons
+              icon-toggle="coronita:on"
+              checked="[[mainValue]]"
+              class="header__switch">
+            </cells-switch>
+            <label inner-h-t-m-l="[[mainLabel]]" class="header__label"></label>
+        </div>
+        <div class="list-switch">
+          <template is="dom-repeat" items="[[activations.list]]">
+            <div class="list-switch__item">
+              <cells-switch-item 
+                id$="[[item.id]]"
+                class="switch-white"
+                enabled="[[enabledSwitch]]"
+                icon-id="[[item.id]]"
+                checked="{{item.isActive}}"
+                title="[[t(item.name)]]">
+              </cells-switch-item>
+            </div>
+          </template>
+        </div>
+      </template>
+      <div class="message">
+        <cells-icon-message 
+          type="info"
+          icon="coronita:info"
+          inner-h-t-m-l="[[t('glomo-product-activations-message')]]">
+        </cells-icon-message>
+      </div>
+    <div class="buttons">
+      <cells-st-button class="primary">
+        <button disabled$="{{!enabledButton}}" on-click="_patchActivations">[[t('glomo-product-activations-primary-button')]]</button>
+      </cells-st-button>
+      <cells-st-button class="transparent">
+        <button on-click="_onSecodaryButtonClicked">[[t('glomo-product-activations-secondary-button')]]</button>
+      </cells-st-button>
+    </div>
+  </template>
+  <script src="glomo-product-activations.js"></script>
+</dom-module>

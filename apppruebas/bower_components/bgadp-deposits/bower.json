@@ -1,0 +1,30 @@
+{
+  "name": "bgadp-deposits",
+  "description": "BGADP Data provider 'bgadp-deposits' importer",
+  "version": "1.6.3",
+  "main": "bgadp-deposits.html",
+  "ignore": [
+    "**/.*"
+  ],
+  "keywords": [
+    "data",
+    "provider",
+    "dp",
+    "data provider",
+    "xhr",
+    "ajax",
+    "api",
+    "global api",
+    "bgadp-deposits"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2"
+  },
+  "resolutions": {
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  }
+}

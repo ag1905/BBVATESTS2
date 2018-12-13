@@ -1,0 +1,488 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-step-behavior/cells-step-manager-behavior.html" />
+<link rel="import" href="../cells-dm-global-apis-transfer/cells-dm-global-apis-transfer.html" />
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html" />
+
+<!--
+`<glomo-opx-creditcard-payment-dm>`
+  > DM used to manage Credit Card Payment operative
+
+Example:
+
+```html
+<glomo-opx-creditcard-payment-dm></glomo-opx-creditcard-payment-dm>
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="glomo-opx-creditcard-payment-dm">
+  <template>
+    <cells-dm-global-apis-transfer id="dm"
+      host="[[host]]"
+      transfer-api-version="[[transferApiVersion]]"
+      local-currency="[[localCurrency]]"
+      transfer-result="{{_transfer}}"
+      native="[[native]]">
+    </cells-dm-global-apis-transfer>
+  </template>
+  <script>
+    (function(Polymer, CellsBehaviors) {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-opx-creditcard-payment-dm',
+
+        behaviors: [
+          CellsBehaviors.i18nBehavior,
+          CellsBehaviors.StepManagerBehavior
+        ],
+
+        properties: {
+
+          /*------------------------ CONFIG ------------------------*/
+          /**
+           * Host
+           */
+          host: String,
+          /**
+           * API Version
+           */
+          transferApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * Native request
+           */
+          native: {
+            type: Boolean,
+            value: false
+          },
+          /*-------------------------- IN --------------------------*/
+          /**
+           * Started component
+           */
+          started: Boolean,
+          /**
+           * ID of selected destination. (step 1)
+           */
+          selectedDestination: {
+            type: String,
+            observer: '_selectedDestObserver'
+          },
+          /**
+           * Source. (step 2)
+           */
+          selectedSource: {
+            type: Object,
+            observer: '_selectedSrcObserver'
+          },
+          /**
+           * Payment amount. (step 3)
+           */
+          amount: {
+            type: Object,
+            observer: '_amountChanged'
+          },
+          /**
+           * Product Id (used when the process is started from product detail)
+           */
+          productId: String,
+          /**
+          * Product type
+          */
+          productType: String,
+          /**
+           * Products products
+           */
+          products: {
+            type: Object,
+            observer: '_generateProducts'
+          },
+          /**
+           * Max Limit
+           */
+          maxLimit: {
+            type: Number,
+            notify: true
+          },
+
+          /*-------------------------- OUT -------------------------*/
+          /**
+          * Account Id by default
+          */
+          defaultAccountId: {
+            type: String,
+            notify: true
+          },
+          /**
+          * Card Id by default
+          */
+          defaultCardId: {
+            type: String,
+            notify: true
+          },
+          /**
+           * Source products
+           */
+          source: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Destinatio products
+           */
+          destination: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Currency (local currency of the country)
+           */
+          currency: {
+            type: String,
+            notify: true
+          },
+          /**
+           * Service response
+           */
+          _transfer: Object,
+          /**
+           * Parse response
+           */
+          transfer: {
+            type: Object,
+            computed: '_onResponse(_transfer)',
+            notify: true
+          },
+          /**
+           * Transfer finished
+           */
+          finished: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * State account on fetch detail and dashboard
+           */
+          stateAccounts: {
+            type: Boolean,
+            notify: true
+          },
+          /**
+           * State cards on fetch detail and dashboard
+           */
+          stateCards: {
+            type: Boolean,
+            notify: true
+          }
+        },
+
+        listeners: {
+          'dm.transfer-error': '_closeControlVeil'
+        },
+
+        /**
+        * Init and manage cache products
+        */
+        init: function() {
+          if (!this.started) {
+            this._init();
+            this.started = true;
+          }
+
+          if (this.finished) {
+            this._cleanProducts();
+            this._init();
+            this.finished = false;
+          } else {
+            this._fetchProducts();
+          }
+
+          this['default' + (this.productType === 'account' ? 'Account' : 'Card') + 'Id'] = this.productId;
+        },
+
+        /**
+         * Init services and step
+         */
+        _init: function() {
+          this.dispatchEvent(new CustomEvent('init-services', {
+            bubbles: true,
+            composed: true
+          }));
+          this.restart();
+        },
+
+        _cleanProducts: function() {
+          this.set('products', {});
+          this.dispatchEvent(new CustomEvent('fetch-source', {
+            bubbles: true,
+            composed: true,
+            detail: []
+          }));
+          this.dispatchEvent(new CustomEvent('fetch-destination', {
+            bubbles: true,
+            composed: true,
+            detail: []
+          }));
+        },
+
+        _generateProducts: function(products) {
+          this.set('destination', products.cards);
+          this._fetchProducts();
+        },
+
+        _setEnoughFunds: function(source, amount) {
+          amount = amount && amount.amount || amount;
+          return source && source.length && source.map(function(product) {
+            var overcome = !this._hasEnoughFunds(product.primaryAmount.amount, amount);
+
+            return Object.assign({}, product, {
+              hasTextMessage: overcome,
+              disabled: overcome
+            });
+          }.bind(this)) || [];
+        },
+
+        _fetchProducts: function() {
+          var accounts = this.products && this.products.accounts || [];
+          this.set('source', this._setEnoughFunds(accounts));
+          this.dispatchEvent(new CustomEvent('fetch-source', {
+            bubbles: true,
+            composed: true,
+            detail: this.source || []
+          }));
+          this.dispatchEvent(new CustomEvent('fetch-destination', {
+            bubbles: true,
+            composed: true,
+            detail: this.destination || []
+          }));
+        },
+
+        /**
+         * Destination is selected (step 1)
+         */
+        _selectedDestObserver: function(destination) {
+          if (destination && !(this.selectedSource && this.selectedSource.disabled)) {
+            this.dispatchEvent(new CustomEvent('open-control-veil', {
+             bubbles: true,
+             composed: true
+            }));
+
+            this._nextStep();
+          }
+        },
+
+        /**
+         * Observer for property selectedSrc (step 2)
+         */
+        _selectedSrcObserver: function(product) {
+          if (product) {
+            this.maxLimit = product.primaryAmount.amount;
+            this.currency = product.primaryAmount.currency;
+
+            if (this.selectedDestination && !product.disabled) {
+              this._nextStep();
+            }
+          }
+        },
+
+        /**
+         * Amount is setted. (step 3)
+         */
+        _amountChanged: function(amount) {
+          if (amount) {
+            this.set('source', this._setEnoughFunds(this.source, amount.amount));
+            this.dispatchEvent(new CustomEvent('fetch-source', {
+              bubbles: true,
+              composed: true,
+              detail: this.source
+            }));
+
+            this._nextStep();
+          }
+        },
+
+        disableExecute: function() {
+          this.canExecute = false;
+        },
+
+        /**
+        * Restart state steps
+        */
+        restart: function() {
+          this.resetManagerSteps();
+          this.set('currentStep', 1);
+
+          // Method of manager step behavior
+          this.initSteps();
+        },
+
+        /**
+        * Reset all, steps and content steps
+        */
+        resetAll: function() {
+          this.restart();
+          this.resetContent();
+          this.finished = true;
+        },
+
+        /**
+        * Reset content of steps
+        */
+        resetContent: function() {
+          this.selectedSource = null;
+          this.selectedDestination = null;
+          this.amount = null;
+          this.productId = null;
+          this.defaultAccountId = null;
+          this.defaultCardId = null;
+          this.maxLimit = null;
+
+          this.restart();
+          this.dispatchEvent(new CustomEvent('reset-scroll'));
+        },
+
+        /**
+        * Set default values in steps.
+        */
+        resetManagerSteps: function() {
+          this.lastActiveStep = null;
+          this.canExecute = false;
+          this.hasFinished = false;
+          this._lastResponse = null;
+        },
+
+        /**
+         * Manage result
+         */
+        _onResponse: function(response) {
+          response.amountDescription = this.amount && this.t(this.amount.key);
+          response.topInfo = [{
+            class: 'bold spacing',
+            value: response.destination.product.name,
+            musk: {
+              chars: 5,
+              simbol: '•',
+              value: response.destination.number
+            }
+          }, {
+            key: 'cells-successful-response-withdrawal-account',
+            value: response.origin.product.name,
+            class: 'bold spacing',
+            musk: {
+              chars: 5,
+              simbol: '•',
+              value: response.origin.number
+            }
+          }];
+
+          response.buttons = {
+            primary: {
+              text: 'cells-successful-response-exit',
+              action: 'go-to-next',
+              class: 'btn--primary btn--l'
+            },
+            secondary: {
+              text: 'cells-successful-response-new-operation',
+              action: 'new-operation',
+              class: 'btn--tertiary btn--l'
+            }
+          };
+
+          response.origin = response.destination;
+
+          if (response.operations && response.operations.length) {
+            response.operations[0].disabled = true;
+          }
+
+          if (this.selectedDestination && this.selectedDestination.imgSrc) {
+            response.origin.avatar = {
+              type: 'card',
+              src: this.selectedDestination.imgSrc
+            };
+          }
+
+          delete response.fee;
+          delete response.destination;
+
+          this.stateAccounts = true;
+          this.stateCards = true;
+          this._closeControlVeil();
+          this.goToReview();
+          return response;
+        },
+
+        /**
+         * Throw event to close control veil
+         */
+        _closeControlVeil: function() {
+          this.dispatchEvent(new CustomEvent('close-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+        },
+
+        /**
+         * Go to review transfer on transfer successful and saved contact successful
+         * reset all after navigation
+         */
+        goToReview: function() {
+          this.dispatchEvent(new CustomEvent('transfer-successful', {
+            bubbles: true,
+            composed: true,
+            detail: {
+              page: 'credit-card-payment-review'
+            }
+          }));
+
+          this.async(function() {
+            this.resetAll();
+          }, 400);
+        },
+
+        /**
+         * Checked if has opened step and show confirm
+         */
+        checkedSteps: function() {
+          this._nextStep();
+        },
+
+        /**
+         * Credit card payment operation
+         */
+        doCreditCardPayment: function() {
+          var amount = this.amount && this.amount.amount && this.amount.amount.amount;
+          this.dispatchEvent(new CustomEvent('open-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+          this.$.dm.makeOwnTransfer(this.selectedSource, this.selectedDestination, amount, null);
+        },
+
+        /**
+        * Check if the amount is over the max limit.
+        * @param amount {Number} Transfer amount
+        * @param maxLimit {Number} Account maximum limit
+        */
+        _hasEnoughFunds: function(maxLimit, amount) {
+          return !(maxLimit <= 0 || amount && maxLimit && amount > maxLimit);
+        },
+
+        /**
+         * Send otp sign operation otp/key
+         */
+        signRequest: function(sign) {
+          this.dispatchEvent(new CustomEvent('open-control-veil', {
+            bubbles: true,
+            composed: true
+          }));
+          this.$.dm.signRequest(sign);
+        }
+      });
+    }(Polymer, CellsBehaviors));
+  </script>
+</dom-module>

@@ -1,0 +1,65 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+    display: block;
+    --cells-st-button-transparent: unquote("{
+    color: #666666;
+  }");
+    @apply (--cells-step-concept);
+}
+
+:host(:not([active])) {
+    pointer-events: none;
+}
+
+.full {
+    padding: 0 rem(32px);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    @apply (--cells-step-concept-full);
+}
+
+.filled p {
+    width: 100%;
+    font-size: rem(18px);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    @apply (--cells-step-concept-filled-p);
+}
+
+cells-molecule-input[has-content] {
+    height: 58px;
+    border-bottom: 2px solid var(--bbva-500, #666);
+}
+
+cells-molecule-input.secondary--input {
+    margin-bottom: 1.25rem;
+    box-sizing: border-box;
+    height: 59px;
+    border-bottom: 1px solid var(--bbva-500, #666);
+    --cells-molecule-input-wrapper: unquote("{
+      height: 100%;
+    }");
+}
+
+cells-molecule-input[has-content] {
+    height: 58px;
+    border-bottom: 2px solid var(--bbva-500, #666);
+}
+
+.secondary--input:last-of-type {
+    margin-bottom: rem(50px);
+    @apply (--cells-step-concept-secondary-input);
+}
+
+.btn--primary {
+    width: rem(144px);
+    display: block;
+    margin: auto auto rem(50px);
+
+    @apply (--cells-step-concept-btn-primary);
+}

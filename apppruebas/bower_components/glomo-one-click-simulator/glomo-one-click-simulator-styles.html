@@ -1,0 +1,200 @@
+<dom-module id="glomo-one-click-simulator-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  background-color: var(--bbva-medium-blue, #237ABA);
+  height: 100%;
+  @apply --glomo-one-click-simulator; }
+  :host p {
+    line-height: 25px;
+    font-weight: 200; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+header {
+  padding: 1.875rem 1.875rem 0;
+  text-align: center;
+  color: var(--bbva-white, #fff);
+  @apply --glomo-one-click-simulator-header; }
+  header p.title {
+    font-size: var(--cells-text-size-18);
+    margin-top: 1.875rem;
+    margin-bottom: 0;
+    @apply --glomo-one-click-simulator-header-title; }
+  header p.subTitle {
+    font-size: var(--cells-text-size-14);
+    font-style: italic;
+    margin-bottom: 1.25rem;
+    @apply --glomo-one-click-simulator-header-subtitle; }
+
+main {
+  @apply --glomo-one-click-simulator-main; }
+  main .simulator {
+    background-color: var(--bbva-medium-blue, #237ABA);
+    color: var(--bbva-white, #fff);
+    text-align: center;
+    padding: 1.875rem;
+    @apply --glomo-one-click-simulator-main-simulator; }
+    main .simulator .paragraph {
+      margin: 1.875rem 0 1.875rem;
+      font-size: var(--cells-text-size-14, 0.875rem);
+      @apply --glomo-one-click-simulator-main-paragraph; }
+  main .summary {
+    background-color: var(--bbva-white, #fff);
+    padding: 0 1.25rem;
+    text-align: center;
+    color: var(--bbva-500, #666);
+    @apply --glomo-one-click-simulator-main-summary; }
+    main .summary .monthly-payment {
+      padding: 1.875rem 0 0.9375rem;
+      color: var(--bbva-600, #121212);
+      @apply --glomo-one-click-simulator-main-monthly-payment; }
+      main .summary .monthly-payment.sticky {
+        position: fixed;
+        bottom: 0;
+        margin: 0;
+        padding: 1.875rem 0 0;
+        width: 100%;
+        background-color: white;
+        left: 0;
+        @apply --glomo-one-click-simulator-main-monthly-payment-sticky; }
+      main .summary .monthly-payment.label-footer {
+        @apply --glomo-one-click-simulator-main-monthly-payment-label-footer; }
+        main .summary .monthly-payment.label-footer p:first-of-type {
+          margin-bottom: .5rem; }
+        main .summary .monthly-payment.label-footer p:last-of-type {
+          margin-top: .5rem;
+          margin-bottom: 0; }
+    main .summary .separator {
+      width: 40px;
+      margin: 0 auto 1.875rem;
+      color: var(--bbva-200, #e9e9e9);
+      @apply --glomo-one-click-simulator-main-monthly-payment-separator; }
+    main .summary cells-atom-amount {
+      --cells-atom-amount-color: #666;
+      @apply --glomo-one-click-simulator-main-amount; }
+    main .summary strong {
+      color: var(--bbva-600, #121212);
+      @apply --glomo-one-click-simulator-main-strong; }
+    main .summary a {
+      text-decoration: none;
+      color: var(--bbva-medium-blue, #237ABA);
+      font-weight: bold;
+      @apply --glomo-one-click-simulator-main-a; }
+    main .summary p {
+      margin-top: 0;
+      font-size: var(--cells-text-size-14, 14px);
+      @apply --glomo-one-click-simulator-main-p; }
+    main .summary.ilc {
+      background-color: var(--bbva-medium-blue, #237ABA);
+      color: var(--bbva-white, #fff);
+      @apply --glomo-one-click-simulator-main-ilc; }
+      main .summary.ilc strong {
+        color: var(--bbva-white, #fff); }
+
+cells-atom-amount {
+  --cells-atom-amount-color: var(--bbva-white, #fff);
+  @apply --glomo-one-click-simulator-cells-atom-amount; }
+
+cells-molecule-amount-input {
+  height: 6.0625rem;
+  text-align: left;
+  color: var(--bbva-white, #fff);
+  background-color: var(--bbva-dark-medium-blue, #1464a5);
+  border-bottom: 2px solid var(--bbva-white, #fff);
+  --cells-molecule-amount-input-placeholder-color: var(--bbva-white, #fff);
+  --cells-molecule-amount-input-input-color: var(--bbva-white, #fff);
+  --cells-molecule-amount-input-label: { opacity: .9; };
+  --cells-molecule-amount-input-input: { position: absolute; height: 4.375rem; font-size: var(--cells-text-size-36, 2.25rem); };
+  --cells-molecule-amount-input-has-content: { padding: 1rem .5rem .5rem .5rem; @apply --glomo-one-click-simulator-test };
+  --cells-molecule-amount-input-floated-label: { padding-top: 1.875rem; opacity: .9; color: var(--bbva-white, #fff); font-size: 0.875rem; };
+  --cells-molecule-amount-input-currency-label: { position: relative; top: 3.125rem; font-size: var(--cells-text-size-22, 1.375rem); };
+  --cells-molecule-amount-input-icon: { top: 2.5rem; box-sizing: border-box; };
+  @apply --glomo-one-click-simulator-cells-molecule-amount-input; }
+  cells-molecule-amount-input.error {
+    background-color: var(--bbva-white-coral, #fddfdf);
+    color: var(--cells-icon-message-error--currency-color, #000000);
+    --cells-icon-message-icon-color: var(--bbva-white, #fff);
+    --cells-molecule-amount-input-input-color: #000000;
+    border-bottom: 2px solid var(--bbva-dark-red, #b92a45);
+    --cells-molecule-amount-input-floated-label: { padding-top: 1.875rem; opacity: .9; color: var(--bbva-500, #666666); font-size: 0.875rem; };
+    @apply --glomo-one-click-simulator-cells-molecule-amount-input-error; }
+
+cells-icon-message {
+  margin-top: 0.625rem;
+  width: 100%;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: var(--bbva-white, #fff);
+  --cells-icon-message-icon-color-info: var(--bbva-white, #fff);
+  @apply --glomo-one-click-simulator-cells-icon-message; }
+  cells-icon-message.message-info {
+    text-align: center;
+    color: var(--bbva-600, #121212);
+    background: #fff;
+    --cells-icon-message-icon-color-info: var(--bbva-light-blue, #5BBEFF);
+    @apply --glomo-one-click-simulator-cells-icon-message-info; }
+
+cells-input-slider {
+  --cells-input-slider-timeline-margin: 15px;
+  --cells-input-slider-height: var(--cells-input-slider-height, 0.3125rem);
+  --cells-input-slider-active-color: var(--bbva-white, #fff);
+  --cells-input-slider-container-color: #5A98C7;
+  --cells-input-slider-knob-bg-color: var(--bbva-yellow, #f8cd51);
+  --cells-input-slider-range-width: 90%;
+  --cells-input-slider-timeline-width: 100%;
+  --cells-paper-slider-height-container: 5px;
+  --cells-input-slider-label-title: { font-size: 14px; margin-bottom: 10px; };
+  --cells-input-slider-label-value: { margin-top: 0; };
+  --custom-cells-sidebar: { padding: 18px 0px; };
+  --cells-input-slider-padding: 0px;
+  @apply --glomo-one-click-simulator-cells-input-slider; }
+
+.submit-button {
+  margin: 15px 0;
+  @apply --glomo-one-click-simulator-submit-button; }
+
+.insuranceInfo {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 2.25rem 0 0 0;
+  @apply --glomo-one-click-simulator-insuranceInfo; }
+  .insuranceInfo cells-st-button {
+    --cells-st-button-text-color-link: var(--bbva-100, #fff);
+    @apply --glomo-one-click-simulator-button; }
+    .insuranceInfo cells-st-button button {
+      --cells-atom-amount-color: var(--bbva-100, #fff); }
+  .insuranceInfo p {
+    margin: 0; }
+  .insuranceInfo cells-atom-amount {
+    font-weight: 400;
+    @apply --glomo-one-click-simulator-insuranceInfo-cells-atom-amount; }
+  .insuranceInfo cells-atom-amount, .insuranceInfo cells-atom-icon {
+    color: var(--bbva-white, #fff);
+    @apply --glomo-one-click-simulator-insuranceInfo-label; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/**
+* Empty mixins to set outline for :focus and :active states.
+* These mixins are meant to be set in an application's theme.
+* --cells-global-focus, --cells-global-active
+*/
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+button:active {
+  @apply --cells-global-active; }
+
+</style></template></dom-module>

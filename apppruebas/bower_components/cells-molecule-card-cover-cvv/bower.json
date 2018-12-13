@@ -1,0 +1,37 @@
+{
+  "name": "cells-molecule-card-cover-cvv",
+  "version": "3.1.4",
+  "description": "Credit card with cvv, image and animation rotate.",
+  "keywords": [
+    "i18n",
+    "card",
+    "cvv",
+    "image"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "cells-cvv-card": "~1.1.0",
+    "cells-i18n-behavior": "~3.1.0",
+    "cells-icon-message": "~1.0.4",
+    "cells-molecule-card-cover": "~10.0.0",
+    "cells-st-button": "~1.0.0",
+    "cells-stripes-spinner-veil": "~1.1.0",
+    "cells-moment-import": "~10.0.0",
+    "polymer": "Polymer/polymer#^1.6.0"
+  },
+  "devDependencies": {
+    "cells-theme-base": "^4.0.12",
+    "cells-glomo-theme": "^5.3.0",
+    "iron-component-page": "PolymerElements/iron-component-page#~1.1.5",
+    "web-component-tester": "Polymer/web-component-tester#~4.3.1",
+    "cells-coronita-theme": "^1.0.2",
+    "cells-banking-theme": "^0.X.0",
+    "coronita-icons": "^2.0.0",
+    "banking-icons": "^1.0.0",
+    "cells-sass": "^2.0.0",
+    "cells-demo-helper": "^1.0.11"
+  },
+  "main": [
+    "cells-molecule-card-cover-cvv.html"
+  ]
+}

@@ -1,0 +1,148 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-dm-global-apis-mobiles/cells-dm-global-apis-mobiles.html">
+
+<!--
+`<glomo-mobiles-dm>` description.
+
+Example:
+
+```html
+<glomo-mobiles-dm></glomo-mobiles-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-mobiles-dm">
+  <template>
+    <cells-dm-global-apis-mobiles
+      id="dm"
+      host="[[host]]"
+      providers="{{_providers}}"
+      local-currency="[[localCurrency]]"
+      provider-amounts="{{_providerAmounts}}"
+      mobiles-api-version="[[mobilesApiVersion]]">
+    </cells-dm-global-apis-mobiles>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'glomo-mobiles-dm',
+        /**
+         * Chosen host to make requests to. Check providers.
+         * @type {String}
+         */
+        properties: {
+
+          host: String,
+          /**
+           * Providers
+           * @type Array
+           */
+          _providers: Array,
+          /**
+           * Providers array
+           * @type Array
+           */
+          providersFormatted: {
+            type: Array,
+            computed: '_parseProviders(_providers)',
+            notify: true
+          },
+          /**
+           * Provider
+           * @type Object
+           */
+          providerId: {
+            type: String,
+            observer: 'getProviderAmounts'
+          },
+          /**
+           * Provider amounts
+           * @type Object
+           */
+          _providerAmounts: Array,
+          /**
+           * Provider amount form object
+           * @type Array
+           */
+          providerAmountsFormatted: {
+            type: Array,
+            computed: '_parseProviderAmounts(_providerAmounts)',
+            notify: true
+          },
+          /**
+           * Local currency
+           * @type {String}
+           */
+          localCurrency: String,
+          /**
+           * Loading
+           * @type {Boolean}
+           */
+          loading: {
+            type: Boolean,
+            value: false
+          }
+        },
+
+        reset: function() {
+          this.loading = false;
+          this.providerId = null;
+          this.set('_providerAmounts', null);
+          this.set('_providers', null);
+        },
+
+        init: function() {
+          if (!this.loading) {
+            this.getProviders();
+          }
+        },
+
+        getProviders: function() {
+          this.$.dm.getProviders();
+        },
+
+        getProviderAmounts: function(providerId) {
+          if (providerId) {
+            this.$.dm.getProviderAmounts({
+              id: providerId
+            });
+          }
+        },
+        /**
+        * Parse providers response
+        */
+        _parseProviders: function(providers) {
+          if (providers) {
+            this.set('loading', true);
+            return providers.map(function(provider) {
+              return {
+                'id': provider.id,
+                'name': provider.name,
+                'labelImg': {
+                  'src': provider.logo.url,
+                  'alt': provider.logo.name
+                }
+              };
+            });
+          }
+        },
+        /**
+        * Parse provider amounts response
+        */
+        _parseProviderAmounts: function(providerAmounts) {
+          var configurations = providerAmounts && providerAmounts.topUpConfiguration.possibleAmounts;
+          if (configurations && configurations.length) {
+            this.set('loading', true);
+            return configurations.reduce(function(acc, configuration) {
+              acc.push(configuration.amount);
+              return acc;
+            }, []);
+          }
+        }
+      });
+    }());
+
+  </script>
+</dom-module>

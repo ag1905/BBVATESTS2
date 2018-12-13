@@ -1,0 +1,48 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-atom-button/cells-atom-button.html">
+<link rel="import" href="../cells-message/cells-message.html">
+<link rel="import" href="../cells-folding-cube-spinner/cells-folding-cube-spinner.html">
+<link rel="import" href="glomo-legal-notice-styles.html">
+<!--
+Legal notice with spinner and button to accept terms
+
+Example:
+
+```html
+<glomo-legal-notice></glomo-legal-notice>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                        | Description              | Default        |
+|:---------------------------------------|:-------------------------|:--------------:|
+| --glomo-legal-notice                   | empty mixin              | {}             |
+| --glomo-legal-notice-legalTerms        | mixin for global content | {}             |
+| --glomo-legal-notice-button            | mixin for button         | {}             |
+| --glomo-legal-notice-message-h2        | mixin for h2             | {}             |
+| --glomo-legal-notice-message-p         | mixin for text           | {}             |
+| --glomo-legal-notice-legalTermsSpinner | mixin for spinner        | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-legal-notice">
+  <template>
+    <style include="glomo-legal-notice-styles glomo-legal-notice-shared-styles"></style>
+    <div id="legalTermsSpinner" class="legalTermsSpinner" hidden$={{loaded}}>
+      <cells-folding-cube-spinner></cells-folding-cube-spinner>
+    </div>
+    <div id="legalTermsContent" class="legalTermsContent">
+      <template is="dom-if" if={{loaded}}>
+        <cells-message id="message" class="message" inner-h-t-m-l="{{legalNoticeContent}}">
+        </cells-message>
+        <button id="legalTermsAcceptButton" is="cells-atom-button" class="btn--secondary btn--l credentials-form__submit-btn" type="submit"
+          on-click="acceptLegalNotice">[[t('glomo-legal-notice-confirm')]]</button>
+      </template>
+    </div>
+    <content></content>
+  </template>
+  <script src="glomo-legal-notice.js"></script>
+</dom-module>

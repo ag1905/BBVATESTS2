@@ -1,0 +1,51 @@
+@import "bower_components/cells-sass/main";
+
+ //
+ // Default layout (key above value)
+ //
+.cells-key-values-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  @apply --cells-key-values-list;
+
+  --cells-key-values-value: unquote("{
+    display: flex;
+    justify-content: space-between;
+    @apply --cells-key-values-list-value;
+  }");
+
+  li:not(:first-of-type) {
+    margin-top: rem(20px);
+    @apply --cells-key-values-list-item-not-first-child;
+  }
+
+  //
+  // Inline layout <ul class="cells-key-values-list inline">
+  // <cells-key-values> items requires "inline" class.
+  //
+  &.inline {
+    --cells-key-values-value-font-size: rem(14px);
+    @apply --cells-key-values-list-inline;
+
+    li:not(:first-of-type) {
+      margin-top: rem(7px);
+      @apply --cells-key-values-list-inline-item-not-first-child;
+    }
+  }
+
+  //
+  // Stacked reversed layout <ul class="cells-key-values-list reversed">
+  // <cells-key-values> items requires "reversed" class.
+  //
+  &.reversed {
+    @apply --cells-key-values-list-reversed;
+
+    li:not(:first-of-type) {
+      margin-top: rem(18px);
+      @apply --cells-key-values-list-inline-reversed-not-first-child;
+    }
+  }
+
+  li li { margin-top: initial; }
+}

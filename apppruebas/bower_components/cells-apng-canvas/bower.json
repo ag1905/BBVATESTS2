@@ -1,0 +1,31 @@
+{
+  "name": "cells-apng-canvas",
+  "version": "1.0.7",
+  "description": "Renders an APNG image in a canvas using apng-canvas library.",
+  "keywords": [
+    "apng",
+    "canvas",
+    "animation",
+    "molecule"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "apng-canvas": "davidmz/apng-canvas#2.1.1",
+    "cells-ajax": "^1.2.12"
+  },
+  "devDependencies": {
+    "cells-sass": "^1.0.3",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "cells-demo-helper": "^1.3.7",
+    "cells-switch": "^1.2.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "main": [
+    "cells-apng-canvas.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^0.7"
+  }
+}

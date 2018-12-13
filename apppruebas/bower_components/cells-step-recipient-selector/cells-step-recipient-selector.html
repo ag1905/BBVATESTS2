@@ -1,0 +1,164 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../coronita-icons/coronita-icons.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="../cells-atom-subheader/cells-atom-subheader.html">
+<link rel="import" href="../cells-product-item/cells-product-item.html">
+<link rel="import" href="../cells-product-selector/cells-product-selector.html">
+<link rel="import" href="../cells-avatar-item-searcher-selector/cells-avatar-item-searcher-selector.html">
+<link rel="import" href="../cells-products-behavior/cells-products-behavior.html"/>
+<link rel="import" href="../global-products-lists-behavior/global-products-lists-behavior.html"/>
+<link rel="import" href="../cells-avatar-item/cells-avatar-item.html"/>
+<link rel="import" href="../cells-step/cells-step.html">
+<link rel="import" href="../cells-step-behavior/cells-step-behavior.html">
+<link rel="import" href="cells-step-recipient-selector-styles.html">
+
+<!--
+Component containing selector new recipient
+
+Example:
+
+```html
+<cells-step-recipient-selector></cells-step-recipient-selector>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-step-recipient-selector-scope      | scope description | default value  |
+| --cells-step-recipient-selector  | empty mixin     | {}             |
+| --cells-step-recipient-selector-recipient-active  | empty mixin     | {}             |
+| --cells-step-recipient-selector-recipient-icon-color  | icon color     | #fff             |
+| --cells-step-recipient-selector-recipient-icon  | empty mixin     | {}             |
+| --cells-step-recipient-selector-recipient-text | empty mixin     | {}             |
+| --cells-step-recipient-selector-recipient-wrapper-icon | empty mixin     | {}             |
+| --cells-step-recipient-selector-recipient-saved | empty mixin     | {}             |
+| --cells-step-recipient-selector-new | empty mixin     | {}             |
+| --cells-step-recipient-selector-no-recipients | empty mixin     | {}             |
+| --cells-step-recipient-selector-recipient-icon-not-active | empty mixin     | {}             |
+| --cells-step-recipient-selector-recipient-text-not-active | empty mixin     | {}             |
+| --cells-step-recipient-selector-recipient-wrapper-icon-not-active | empty mixin     | {}             |
+| --cells-step-recipient-selector-no-recipients-not-active | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-step-recipient-selector">
+  <template>
+    <style include="cells-step-recipient-selector-styles cells-step-recipient-selector-shared-styles"></style>
+    <cells-step id="stepContainer"
+      class-to-toggle="step-active"
+      active="[[active]]"
+      max-steps="[[maxSteps]]"
+      title="[[title]]"
+      current-step="[[currentStep]]"
+      collapsed="{{collapsed}}"
+      fixed="{{fixed}}"
+      change-label="[[changeLabel]]"
+      previous="[[previous]]"
+      next="[[next]]"
+      scrolled="[[scrolled]]"
+      decorated="[[decorated]]"
+      info-message-key="[[infoMessageKey]]">
+        <div class="filled">
+          <template is="dom-if" if="[[!saved]]">
+            <cells-avatar-item id="recipient"
+              avatar="[[recipientSelected.avatar]]"
+              main="[[t(recipientSelected.name)]]"
+              secondary="[[_generateAccountNumber(recipientSelected.number)]]"
+              info="[[recipientSelected.bank.name]]">
+            </cells-avatar-item>
+            <cells-icon-message
+              hidden$="[[!recipientSelected.saving]]"
+              type:"info"
+              class="inline"
+              icon="coronita:info"
+              icon-size="16"
+              message=[[t('cells-step-recipient-selector-registered-operation')]]>
+            </cells-icon-message>
+          </template>
+          <template is="dom-if" if="[[saved]]">
+            <cells-product-item id="item"
+              name="[[recipientSelected.name]]"
+              img-src="[[recipientSelected.imgSrc]]"
+              description="[[recipientSelected.description]]"
+              primary-amount="[[recipientSelected.primaryAmount]]"
+              secondary-amount="[[recipientSelected.secondaryAmount]]"
+              local-currency="[[localCurrency]]"
+              visible-chars="[[visibleChars]]">
+                <template is="dom-if" if="[[recipientSelected.icon]]]">
+                  <cells-atom-icon slot="icons" class="icons icon-size-18"
+                    icon="[[recipientSelected.icon]]"></cells-atom-icon>
+                </template>
+            </cells-product-item>
+          </template>
+        </div>
+
+        <div class="full">
+          <div class="recipient recipient--saved" hidden$="[[_showButton]]" on-click="onGetSavedRecipients">
+            <div class="recipient__wrapper-icon">
+              <cells-atom-icon icon="coronita:listview" class="icon-size-24"></cells-atom-icon>
+            </div>
+              <span>[[t('cells-step-recipient-selector-saved-recipients')]]</span>
+          </div>
+          <template is="dom-if" if="[[user]]">
+            <div class="recipient recipient--form-me" on-click="_onForMe">
+              <cells-avatar-item
+                main="[[t(labelForMe)]]"
+                secondary="[[user.secondary]]"
+                avatar="[[user.avatars.url]]">
+              </cells-avatar-item>
+            </div>
+          </template>
+          <div class="recipient recipient--new" on-click="onNewRecipient">
+            <cells-atom-icon icon="coronita:expand" class="icon-size-40"></cells-atom-icon>
+            <span>[[t(newRecipientLabelKey)]]</span>
+          </div>
+
+            <template is="dom-if" if="[[_showSavedContactsHeader(hideContactList, _showButton)]]">
+              <cells-atom-subheader>
+                <span class="heading">[[t('cells-avatar-item-searcher-selector-saved')]]</span>
+                <a on-click="onGetSavedRecipients" class="view-more" hidden$="[[!_checkedLengthRecipients(listItems)]]">{{t('cells-avatar-item-searcher-selector-view-all')}}</a>
+              </cells-atom-subheader>
+            </template>
+
+
+          <template is="dom-if" if="[[_showContactListFallback(hideNoRecipients, hideContactList)]]">
+            <div class="no-recipients" on-click="onNewRecipient">
+              <img alt="[[t('cells-step-recipient-selector-no-recipients')]]" src="images/spaceman.svg">
+              <p>[[t('cells-step-recipient-selector-no-recipients')]]</p>
+              <p>[[t('cells-step-recipient-selector-add-new-recipient')]]</p>
+            </div>
+          </template>
+
+          <template is="dom-if" if=[[!hideContactList]]>
+            <cells-avatar-item-searcher-selector
+              id="searcherSelector"
+              class="listItems"
+              list-items="[[listItems]]"
+              max-items="[[maxItems]]"
+              selected="{{recipient}}"
+              options-disabled="[[optionsDisabled]]"
+              spinner-status="[[!loaded]]">
+            </cells-avatar-item-searcher-selector>
+          </template>
+
+          <cells-product-selector
+            id="selector"
+            list-title="[[listTitle]]"
+            products="[[products]]"
+            message="[[t('cells-step-recipient-selector-title')]]"
+            products-list-title="[[t('cells-step-recipient-selector-account-list-title')]]"
+            max-products="[[maxItems]]"
+            visible-chars="[[visibleChars]]"
+            local-currency="[[localCurrency]]"
+            hidden$="[[!showProducts]]">
+          </cells-product-selector>
+        </div>
+    </cells-step>
+  </template>
+  <script src="cells-step-recipient-selector.js"></script>
+</dom-module>

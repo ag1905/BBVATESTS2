@@ -1,0 +1,88 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../google-map/google-map.html">
+
+<link rel="import" href="cells-map-styles.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-atom-button/cells-atom-button.html">
+
+
+<!--
+This is a map with markers.
+
+It finds your current location through native geolocation and makes a request to retrieve POI's near of the user.
+It consists of a Google Map Polymer component, a marker with your current location and a series of markers.
+
+Example:
+
+```html
+<cells-map></cells-map>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property             | Description         | Default       |
+|:---------------------------:|:-------------------:|:-------------:|
+| --cells-map                 | empty mixin         |{}             |
+| --cells-map-height          | map height          |100vh          |
+| --cells-map-mapBottom       | empty mixin         |{}             |
+| --cells-KMW_colour          | butons color        |#fff           |
+| --cells-map-button          | empty mixin         |{}             |
+| --cells-map-mapCenterMark   | empty mixin         |{}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-map">
+  <template>
+    <style include="cells-map-styles cells-map-shared-styles"></style>
+
+    <template is="dom-if" if="[[_canLoadMap(location, apiKey)]]">
+      <google-map id="gmap"
+        click-events
+        mouse-events
+        fit-to-markers
+        disable-default-ui
+        drag-events
+        map={{map}}
+        zoom="[[zoom]]"
+        map-type="[[mapType]]"
+        disable-zoom="[[disableZoom]]"
+        latitude="{{location.latitude}}"
+        longitude="{{location.longitude}}"
+        max-zoom="[[maxZoom]]"
+        min-zoom="[[minZoom]]"
+        language="[[lang]]"
+        additional-map-options="[[additionalMapOptions]]"
+        styles="[[mapStyles]]"
+        api-key="[[apiKey]]">
+
+        <google-map-marker id="me" hidden$="[[hideMe]]"
+          latitude="[[me.latitude]]"
+          longitude="[[me.longitude]]"
+          icon="[[locationIcon]]"></google-map-marker>
+
+        <template is="dom-repeat" items="[[markers]]" as="marker" id="geoMarkers">
+          <google-map-marker
+            click-events
+            mouse-events
+            data-index$="[[index]]"
+            poi="[[marker]]"
+            icon="[[marker.icon]]"
+            latitude="[[marker.geolocation.latitude]]"
+            longitude="[[marker.geolocation.longitude]]"
+            on-google-map-marker-click="_onMarkerClick"></google-map-marker>
+        </template>
+      </google-map>
+
+      <section class="mapBottom">
+        <div class="right">
+          <button is="cells-atom-button" id="centerToLocationBtn" class="rounded" on-click="_centerToLocation">
+            <cells-atom-icon icon="[[iconCenter]]" class="icon-size-26"></cells-atom-icon>
+          </button>
+        </div>
+      </section>
+    </template>
+  </template>
+  <script src="cells-map.js"></script>
+</dom-module>

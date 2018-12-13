@@ -1,0 +1,106 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../cells-enter-limited-amount/cells-enter-limited-amount.html">
+<link rel="import" href="../cells-molecule-amount-group/cells-molecule-amount-group.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-step/cells-step.html">
+<link rel="import" href="../cells-step-behavior/cells-step-behavior.html">
+
+<link rel="import" href="cells-step-enter-amount-styles.html">
+
+<!--
+# cells-step-enter-amount
+
+Enters an amount in a step proccess.
+
+Example:
+```html
+<cells-step-enter-amount></cells-step-enter-amount>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-step-enter-amount  | empty mixin     | empty mixin | {}             |
+| --cells-step-enter-amount-number  | empty mixin     | empty mixin | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-step-enter-amount">
+  <template>
+    <style include="cells-step-enter-amount-styles cells-step-enter-amount-shared-styles"></style>
+
+    <cells-step id="stepContainer"
+      active="[[active]]"
+      title="[[title]]"
+      current-step="[[currentStep]]"
+      max-steps="[[maxSteps]]"
+      collapsed="{{collapsed}}"
+      fixed="{{fixed}}"
+      change-label="[[changeLabel]]"
+      previous="[[previous]]"
+      next="[[next]]"
+      scrolled="[[scrolled]]"
+      decorated="[[decorated]]">
+
+        <div class="filled">
+          <cells-atom-amount
+            id="cellsStepEnterAmountFilled"
+            amount="[[value]]"
+            class="amount-huge"
+            currency-code="[[currency]]"
+            local-currency="[[localCurrency]]"
+            language="[[language]]">
+          </cells-atom-amount>
+        </div>
+
+        <template is="dom-if" if={{graphMode}}>
+          <div class="full">
+            <cells-molecule-amount-group
+              amounts=[[amounts]]
+              max-amount=[[minProductBalance]]
+              currency-code="[[inputCurrency]]"
+              local-currency="[[localCurrency]]">
+            </cells-molecule-amount-group>
+          </div>
+        </template>
+        <template is="dom-if" if={{!graphMode}}>
+          <div class="full">
+            <cells-enter-limited-amount
+              id="cellsEnterLimitedAmount"
+              name="[[name]]"
+              type="[[type]]"
+              input-mode="[[inputMode]]"
+              pattern="[[pattern]]"
+              currency-code="[[inputCurrency]]"
+              initial-currency="[[inputCurrency]]"
+              local-currency="[[localCurrency]]"
+              language="[[language]]"
+              set-amount="[[defaultValue]]"
+              min-limit="[[minLimit]]"
+              max-limit="[[maxLimit]]"
+              max-product="[[maxProduct]]"
+              max="[[max]]"
+              multiple="[[multiple]]"
+              range="[[range]]"
+              icon-code="[[iconCode]]"
+              icon-size="[[iconSize]]"
+              hide-limits-info="[[hideLimitsInfo]]"
+              hide-available-balance="[[hideAvailableBalance]]"
+              simple-max-product-message="[[simpleMaxProductMessage]]"
+              show-currency-switch="[[amountConfig.show]]"
+              avoid-validation="[[amountConfig.avoidValidation]]"
+              class$="[[stepState]]"
+              numeral-positive-only="[[numeralPositiveOnly]]"
+              not-enough-balance-after-key="[[notEnoughBalanceAfterKey]]">
+            </cells-enter-limited-amount>
+          </div>
+        </template>
+    </cells-step>
+  </template>
+
+  <script src="cells-step-enter-amount.js"></script>
+</dom-module>

@@ -1,0 +1,143 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href="../cells-st-button/cells-st-button.html">
+<link rel="import" href="../cells-molecule-amount-input/cells-molecule-amount-input.html">
+<link rel="import" href="../cells-switch/cells-switch.html">
+<link rel="import" href="cells-enter-limited-amount-styles.html">
+
+<!--
+# cells-enter-limited-amount
+
+Enter amount component.
+
+Example:
+```html
+<cells-enter-limited-amount></cells-enter-limited-amount>
+```
+
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-enter-limited-amount  | empty mixin     | {}             |
+| --cells-enter-limited-amount-step-inactive  | empty mixin     | {}             |
+| --cells-enter-limited-amount-step-inactive__txt  | empty mixin     | {}             |
+| --cells-enter-limited-amount__txt  | empty mixin     | {}             |
+| --cells-enter-limited-amount__btn  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-enter-limited-amount">
+  <template>
+    <style include="cells-enter-limited-amount-styles cells-enter-limited-amount-shared-styles"></style>
+
+    <div class="switch-container" hidden$="{{!showCurrencySwitch}}">
+      <span class="title">[[t('cells-enter-limited-amount-change-amount-label')]]</span>
+      <cells-switch id="currencySwitch" class="with-contents">
+        <span slot="checked-area" checked-area>S/</span>
+        <span slot="unchecked-area" unchecked-area>US$</span>
+      </cells-switch>
+    </div>
+
+    <cells-molecule-amount-input
+      id="enterAmountInput"
+      type="[[type]]"
+      input-mode="[[inputMode]]"
+      pattern="[[pattern]]"
+      class$="[[remainingClass]] [[inputErrorClass]]"
+      set-amount="[[setAmount]]"
+      amount="{{amount}}"
+      max="[[max]]"
+      name="[[name]]"
+      label="[[t('cells-enter-limited-amount-amount', 'Amount')]]"
+      currency-code="[[currencyCode]]"
+      local-currency="[[localCurrency]]"
+      language="[[language]]"
+      icon-size="[[iconSize]]"
+      icon-code="[[iconCode]]"
+      numeral-positive-only="[[numeralPositiveOnly]]"
+      on-blur="_manageMultimpleAmountErrors"
+      on-focusout="_manageMultimpleAmountErrors"
+      invalid="[[invalid]]">
+    </cells-molecule-amount-input>
+
+    <template is="dom-if" if="[[!range]]">
+      <div class="cells-enter-limited-amount__infoSection" hidden$="[[_hideLimits(hideLimitsInfo, maxProduct)]]">
+        <template is="dom-if" if="[[_showAvailableBalance(hideAvailableBalance, _overAmount)]]">
+          <div class="cells-enter-limited-amount__textInfo cells-enter-limited-amount__info">
+            <cells-atom-icon id="iconlimits" icon="coronita:info" class$="[[remainingClass]]"></cells-atom-icon>
+            <p class="cells-enter-limited-amount__txt">
+              [[t('cells-enter-limited-amount-available')]]
+              <cells-atom-amount id="totalAvailableCalculated" amount="[[_remaining]]" currency-code="[[currencyCode]]" local-currency="[[localCurrency]]" language="[[language]]"></cells-atom-amount>
+            </p>
+          </div>
+        </template>
+
+        <div class="cells-enter-limited-amount__error" hidden$="[[!errorMessage.show]]" >
+          <cells-atom-icon id="iconlimits" icon="coronita:alert" class$="[[remainingClass]]"></cells-atom-icon>
+          <div class="cells-enter-limited-amount__textInfo">
+            <p class$="cells-enter-limited-amount__txt [[remainingClass]]" >
+                <template is="dom-if" if="[[simpleMaxProductMessage]]">
+                  [[t(errorMessage.description)]]
+                </template>
+              <template is="dom-if" if="[[!simpleMaxProductMessage]]">
+                [[t('cells-enter-limited-amount-available-balance')]]
+                <cells-atom-amount id="totalAvailable" amount="[[maxProduct]]" currency-code="[[currencyCode]]" local-currency="[[localCurrency]]" language="[[language]]"></cells-atom-amount>
+                [[t(notEnoughBalanceAfterKey)]]
+              </template>
+              </p>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template is="dom-if" if="[[_checkedRange(multiple, range)]]">
+      <div class="cells-enter-limited-amount__multiple">
+        <cells-atom-icon id="iconlimits" icon$="coronita:[[iconType]]" class$="cells-enter-limited-amount__txt[[iconErrorClass]]"></cells-atom-icon>
+        <div class="cells-enter-limited-amount__textInfo">
+          <p class$="cells-enter-limited-amount__txt[[iconErrorClass]]">[[_getMultipleMessage('cells-enter-limited-amount-only-multiple')]]</p>
+        </div>
+      </div>
+    </template>
+
+    <template is="dom-if" if="[[range]]">
+      <div class="cells-enter-limited-amount__range" hidden$="[[errorMessage.show]]">
+        <cells-atom-icon id="iconlimits" icon="coronita:info" class="cells-enter-limited-amount__txt"></cells-atom-icon>
+        <div class="cells-enter-limited-amount__textInfo">
+          <p class="cells-enter-limited-amount__txt">
+            <span>[[_getMultipleMessage('cells-enter-limited-amount-multiple-range')]]</span>
+            <cells-atom-amount id="minLimit"
+              amount="[[minLimit]]"
+              currency-code="[[currencyCode]]"
+              local-currency="[[localCurrency]]"
+              language="[[language]]"></cells-atom-amount>
+            <span>[[t('cells-enter-limited-amount-multiple-range-and')]]</span>
+            <cells-atom-amount id="maxLimit"
+              amount="[[maxLimit]]"
+              currency-code="[[currencyCode]]"
+              local-currency="[[localCurrency]]"
+              language="[[language]]"></cells-atom-amount>
+          </p>
+        </div>
+      </div>
+
+      <div class="cells-enter-limited-amount__error" hidden$="[[!errorMessage.show]]">
+        <cells-atom-icon id="iconlimits" icon="coronita:alert"></cells-atom-icon>
+        <div class="cells-enter-limited-amount__textInfo">
+          <p class="cells-enter-limited-amount__txt">[[t(errorMessage.description)]]</p>
+        </div>
+      </div>
+    </template>
+
+    <cells-st-button class="secondary size-m">
+      <button id="enterAmountBtn" type="button" class="cells-enter-limited-amount__btn" disabled$="[[!_buttonIsEnabled]]" on-click="_sendAmountOutput">[[t('cells-enter-limited-amount-continue', 'Continue')]]</button>
+    </cells-st-button>
+  </template>
+  <script src="cells-enter-limited-amount.js"></script>
+</dom-module>

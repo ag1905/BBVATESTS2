@@ -1,0 +1,124 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-alert-box-styles.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-bottom-modal/cells-bottom-modal.html">
+<link rel="import" href="../cells-button-styles/cells-button-styles.html">
+
+
+<!--
+`cells-alert-box` is a wrapper component that using cells-bottom-modal creates a typical confirmation modal. It just includes a header and Accept/Cancel buttons. The 'body' of the modal will be handled by content.
+
+Example:
+
+```html
+<cells-alert-box
+  disable-primary-button
+  full-height
+  opened
+  title="cells-alert-box-title"
+  accept-button="cells-alert-box-accept"
+  cancel-button="cells-alert-box-cancel">
+    <p> Do you want to continue with the process? </p>
+  </cells-alert-box>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+### Custom Properties
+
+| Custom Property      | Selector           | CSS Property | Value       |
+| -------------------- | ------------------ | ------------ | ----------- |
+| --cells-fontDefault  | :host              | font-family  |  sans-serif |
+| --cells-text-size-16 | .subtitle          | font-size    |  1rem       |
+| --cells-text-size-14 | .wrapper           | font-size    |  0.875rem   |
+| --cells-text-size-14 | .content-container | font-size    |  0.875rem   |
+| --cells-text-size-14 | ::slotted(*)       | font-size    |  0.875rem   |
+
+### @apply
+
+| Mixins                                    | Selector                            | Value |
+| ----------------------------------------- | ----------------------------------- | ----- |
+| --cells-alert-box-cells-bottom-modal-body | :host > --cells-bottom-modal-body:  | {}    |
+| --cells-alert-box                         | :host                               | {}    |
+| --cells-alert-box-modal                   | #modal                              | {}    |
+| --cells-alert-box-subtitle                | .subtitle                           | {}    |
+| --cells-alert-box-wrapper                 | .wrapper                            | {}    |
+| --cells-alert-box-image-container         | .icon-container                     | {}    |
+| --cells-alert-box-image                   | .icon-container img                 | {}    |
+| --cells-alert-box-content-container       | .content-container                  | {}    |
+| --cells-alert-box-slotted                 | ::slotted(*)                        | {}    |
+| --cells-alert-box-button-container        | .buttons-container                  | {}    |
+| --cells-alert-box-button                  | .buttons-container button           | {}    |
+| --cells-alert-box-button-disabled         | .buttons-container button[disabled] | {}    |
+| --cells-alert-box-button-info             | .buttons-container button span      | {}    |
+
+@demo demo/index.html
+@hero cells-alert-box.png
+-->
+<dom-module id="cells-alert-box">
+  <template>
+    <style include="cells-alert-box-styles cells-button-styles cells-alert-box-shared-styles"></style>
+    <cells-bottom-modal
+      id="modal"
+      full-height="[[fullHeight]]"
+      icon-only-full-height="[[iconOnlyFullHeight]]"
+      expand="[[!fullHeight]]"
+      no-cancel-on-outside-click="[[fullHeight]]"
+      close-icon-id="[[closeIconId]]"
+      close-icon-size="[[closeIconSize]]"
+      with-backdrop="[[!fullHeight]]"
+      on-close="_onClose">
+      <template is="dom-if" if="[[title]]">
+        <header heading slot="heading">[[t(title)]]</header>
+      </template>
+
+      <template is="dom-if" if="[[subtitle]]">
+        <h2 class="subtitle">[[t(subtitle)]]</h2>
+      </template>
+
+      <template is="dom-if" if="[[heroImage]]">
+        <div class="icon-container">
+          <img src="[[heroImage]]" alt="" />
+        </div>
+      </template>
+
+      <div class="content-container">
+        <template is="dom-if" if="[[message]]">
+          <div inner-h-t-m-l="[[t(message)]]"></div>
+        </template>
+      </div>
+      <slot></slot>
+
+      <div class="buttons-container">
+        <template is="dom-if" if="[[acceptButton]]">
+          <button
+            id="acceptButton"
+            class$="btn [[primaryButtonClass]] btn--l"
+            disabled$="[[disablePrimaryButton]]"
+            on-click="_onAcceptClick">
+            [[t(acceptButton)]]
+            <template is="dom-if" if="[[acceptButtonInfo]]">
+              <span>[[t(acceptButtonInfo)]]</span>
+            </template>
+          </button>
+        </template>
+
+        <template is="dom-if" if="[[cancelButton]]">
+          <button
+            id="cancelButton"
+            class="btn link btn--tertiary btn--l"
+            disabled$="[[disableSecondaryButton]]"
+            on-click="_onCancelClick">
+            [[t(cancelButton)]]
+            <template is="dom-if" if="[[cancelButtonInfo]]">
+              <span>[[t(cancelButtonInfo)]]</span>
+            </template>
+          </button>
+        </template>
+      </div>
+    </cells-bottom-modal>
+  </template>
+  <script src="cells-alert-box.js"></script>
+</dom-module>

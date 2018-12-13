@@ -1,0 +1,173 @@
+<dom-module id="cells-molecule-spinner-styles"><template><style>
+:host {
+  display: block;
+  height: 100%;
+  box-sizing: border-box;
+  @apply --layout-horizontal;
+  @apply --layout-center;
+  @apply --cells-molecule-spinner;
+  --iron-icon-fill-color: currentColor; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host([hidden]), [hidden] {
+  display: none; }
+
+.wrapper {
+  width: 100%;
+  text-align: center;
+  @apply --cells-molecule-spinner-wrapper; }
+
+.spinner {
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  margin-bottom: var(--gutter-width-3, 1.875rem); }
+  .spinner__ring {
+    width: var(--cells-molecule-spinner-size, 9.375rem);
+    height: var(--cells-molecule-spinner-size, 9.375rem);
+    border-radius: calc(var(--cells-molecule-spinner-size, 150px) / 2);
+    border: var(--cells-molecule-spinner-ring-border-width, 0.1875rem) solid var(--cells-molecule-spinner-ring-content-color, #E9E9E9);
+    border-top: 0.1875rem solid var(--cells-molecule-spinner-ring-color, #2dcccd);
+    -webkit-animation: spinner__ring--anim 2s linear infinite;
+            animation: spinner__ring--anim 2s linear infinite; }
+  .spinner__icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate3d(-50%, -50%, 0);
+            transform: translate3d(-50%, -50%, 0);
+    color: var(--cells-molecule-spinner-icon-color, #2dcccd);
+    @apply --cells-molecule-spinner-icon; }
+  .spinner__message {
+    color: var(--cells-molecule-spinner-message-color, #fff);
+    text-align: center;
+    font-size: 0.875rem;
+    max-width: var(--cells-molecule-spinner-size, 9.375rem);
+    @apply --cells-fontDefaultNormal;
+    @apply --cells-molecule-spinner-message; }
+    .spinner__message:empty {
+      margin-top: 0; }
+
+:host([process]) {
+  overflow: hidden;
+  color: var(--cells-molecule-spinner-process-message-color, #fff);
+  background: var(--cells-molecule-spinner-process-background, #072146);
+  @apply --cells-molecule-spinner-process; }
+  :host([process]) .wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    @apply --cells-molecule-spinner-process-wrapper; }
+  :host([process]) .spinner {
+    justify-content: center;
+    flex: 1;
+    margin: 0;
+    @apply --cells-molecule-spinner-process-spinner; }
+  :host([process]) .text {
+    padding: 4.375rem 1rem;
+    background: var(--cells-molecule-spinner-process-text-background, #0c386f);
+    @apply --cells-molecule-spinner-process-text; }
+    :host([process]) .text span {
+      display: block;
+      min-width: 100%;
+      font-weight: 500;
+      -webkit-animation-name: text__appears;
+              animation-name: text__appears;
+      -webkit-animation-duration: 1s;
+              animation-duration: 1s;
+      @apply --cells-molecule-spinner-process-text-span; }
+
+.text {
+  text-align: center;
+  @apply --cells-molecule-spinner-text; }
+  .text cells-atom-icon {
+    margin: 0 0 1rem 0;
+    @apply --cells-molecule-spinner-text-icon; }
+  .text span {
+    display: block;
+    min-width: 100%;
+    font-weight: 500;
+    @apply --cells-molecule-spinner-text-span; }
+
+:host([finish]) .spinner__ring {
+  -webkit-animation-play-state: paused;
+          animation-play-state: paused;
+  border: var(--cells-molecule-spinner-ring-border-width--finished, 0.1875rem) solid var(--cells-molecule-spinner-ring-color, #2dcccd); }
+
+:host([finish]) .spinner__icon {
+  color: var(--cells-molecule-spinner-ring-color, #2dcccd); }
+
+:host([not-visible]) {
+  opacity: 0;
+  visibility: hidden; }
+  :host([not-visible]) .spinner__ring {
+    -webkit-animation-play-state: paused;
+            animation-play-state: paused; }
+
+:host([finish][process]) {
+  @apply --cells-molecule-spinner-process-finish; }
+  :host([finish][process]) .text {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    top: 0;
+    padding-top: 50vh;
+    -webkit-animation-name: spinner__end--anim;
+            animation-name: spinner__end--anim;
+    -webkit-animation-duration: 2s;
+            animation-duration: 2s;
+    @apply --cells-molecule-spinner-process-finish-text; }
+
+@-webkit-keyframes spinner__end--anim {
+  0% {
+    -webkit-transform: translate(0, 400px);
+            transform: translate(0, 400px); }
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0); } }
+
+@keyframes spinner__end--anim {
+  0% {
+    -webkit-transform: translate(0, 400px);
+            transform: translate(0, 400px); }
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0); } }
+
+@-webkit-keyframes spinner__ring--anim {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@keyframes spinner__ring--anim {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@-webkit-keyframes text__appears {
+  0% {
+    -webkit-transform: translate(0, 200px);
+            transform: translate(0, 200px); }
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0); } }
+
+@keyframes text__appears {
+  0% {
+    -webkit-transform: translate(0, 200px);
+            transform: translate(0, 200px); }
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0); } }
+
+</style></template></dom-module>

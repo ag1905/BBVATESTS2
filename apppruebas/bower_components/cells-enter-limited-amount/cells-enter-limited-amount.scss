@@ -1,0 +1,206 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+
+  --cells-molecule-amount-input: unquote("{
+      margin-bottom: rem(10px);
+  }");
+
+  @apply(--cells-enter-limited-amount);
+}
+
+:host([hidden]), [hidden] { display: none!important; }
+
+:host(.step-inactive) {
+  .cells-enter-limited-amount__txt {
+    color: var(--bbva-300);
+    @apply(--cells-enter-limited-amount-step-inactive__txt);
+  }
+  cells-molecule-amount-input {
+    --cells-molecule-amount-input-currency-label-left: unquote("{
+      color: var(--bbva-300);
+    }");
+    --cells-molecule-amount-input-input: unquote("{
+      color: var(--bbva-300);
+    }");
+  input {
+    color: red;
+  }
+}
+  cells-st-button {
+    #enterAmountBtn {
+      background-color: var(--cells-st-button-bg-color-disabled, #E9E9E9)
+    }
+  }
+
+  .switch-container {
+    display: none;
+  }
+
+  @apply(--cells-enter-limited-amount-step-inactive);
+}
+
+cells-st-button {
+  width: 100%;
+}
+cells-molecule-amount-input {
+  margin-bottom: rem(10px);
+  max-height: rem(60px);
+
+  &.cells-enter-limited-amount__txt--negative {
+    background-color: var(--bbva-white-red, #F8D7DC);
+  }
+  --cells-molecule-amount-input-currency-label-left: unquote("{
+      color: var(--bbva-600);
+  }");
+}
+
+cells-atom-amount {
+  margin-left: rem(2px);
+}
+
+.cells-enter-limited-amount__btn {
+  display: block;
+  width: rem(144px);
+  margin: rem(30px) auto;
+  @apply(--cells-enter-limited-amount__btn);
+}
+
+.cells-enter-limited-amount {
+  &__infoSection {
+    cells-atom-icon {
+      &.cells-enter-limited-amount__txt--negative,  {
+        color: var(--bbva-light-red, #E77D8E);
+        @apply(--cells-enter-limited-amount__txt-negative);
+      }
+    }
+
+    @apply(--cells-enter-limited-amount__infoSection);
+  }
+
+  &__info {
+    margin-bottom: rem(10px);
+
+    cells-atom-icon {
+      width: 24px;
+      margin: 0px .5rem 0.25rem 0px;
+      color: var(--bbva-light-blue, #5BBEFF);
+    }
+  }
+
+  &__error {
+    margin-bottom: rem(10px);
+    cells-atom-icon {
+      height: 1em;
+      float: left;
+      margin: 0px .5rem 0.25rem 0px;
+      color: var(--bbva-light-red, #E77D8E);
+    }
+    .cells-enter-limited-amount__txt {
+      color: var(--bbva-dark-red, #b92a45);
+    }
+    @apply(--cells-enter-limited-amount__error);
+  }
+
+  &__multiple {
+    display: flex;
+    align-items: flex-start;
+    cells-atom-icon {
+      width: 24px;
+      height: 1em;
+      color: var(--bbva-light-blue, #5BBEFF);
+    }
+    & .cells-enter-limited-amount__txt--invalid {
+      font-family: var(--cells-fontDefault);
+      font-size: 0.875rem;
+      text-align: left;
+      margin: 0px .5rem 0.25rem 0px;
+      color: var(--bbva-light-red, #E77D8E);
+    }
+    @apply(--cells-enter-limited-amount__multiple);
+  }
+
+  &__range {
+    display: flex;
+    align-items: flex-start;
+    cells-atom-icon {
+      width: 24px;
+      height: 1em;
+      color: var(--bbva-light-blue, #5BBEFF);
+    }
+    @apply(--cells-enter-limited-amount__range);
+  }
+
+  &__textInfo {
+    display: flex;
+    align-items: flex-start;
+    @apply(--cells-enter-limited-amount__textInfo);
+  }
+
+  &__txt {
+    font-family: var(--cells-fontDefault);
+    font-size: rem(14px);
+    color: var(--bbva-500);
+    text-align: left;
+    margin: 0px .5rem 0.25rem 0px;
+    @apply(--cells-enter-limited-amount__txt);
+    &--negative,  {
+      color: var(--bbva-dark-red, #B92A45);
+      min-width: 1rem;
+      margin-right: 0.625rem;
+      @apply(--cells-enter-limited-amount__txt-negative);
+    }
+    &--invalid {
+      color: var(--bbva-light-red, #E77D8E);
+    }
+    @apply(--cells-enter-limited-amount__txt);
+  }
+
+}
+
+.switch-container {
+  margin-bottom: rem(50px);
+  display: flex;
+  justify-content: space-between;
+  line-height: 36px;
+
+  cells-switch {
+    outline: none;
+    --cells-switch-checked-color: white;
+    --cells-switch-unchecked-color: white;
+    --cells-switch-knob-bg-color: #49A5E6;
+    --cells-switch-width: 75;
+    --cells-switch-knob-size: 36;
+    --cells-switch-switcher: unquote("{
+      border-radius: 20px;
+      height: 24px;
+    }");
+
+    --cells-switch-knob: unquote("{
+      height: 24px;
+      border-radius: 20px;
+    }");
+
+    /* To remove extra width of label, containing <content> */
+    /* :empty is not enough because we are using content of :host */
+    --cells-switch-label: unquote("{
+      display: none;
+    }");
+
+    span {
+      z-index: 1;
+      font-size: 13px;
+      font-weight: 400;
+    }
+  }
+
+  span.title{
+    color: var(--bbva-500, #BDBDBD);
+    font-family: var(--cells-fontDefault, sans-serif);
+    font-size: var(--cells-text-size-14, 0.875rem);
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+}
+

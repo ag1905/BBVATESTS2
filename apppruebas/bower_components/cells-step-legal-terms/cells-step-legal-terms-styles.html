@@ -1,0 +1,83 @@
+<dom-module id="cells-step-legal-terms-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  @apply (--cells-step-legal-terms); }
+
+p {
+  margin: 0; }
+
+:host(:not([active])) {
+  pointer-events: none; }
+  :host(:not([active])) .check-text {
+    color: var(--bbva-400, #BDBDBD); }
+  :host(:not([active])) cells-icon-message {
+    --cells-st-button-bg-color-primary: var(--bbva-400, #BDBDBD);
+    --cells-icon-message-icon-color-info: var(--bbva-400, #BDBDBD); }
+    :host(:not([active])) cells-icon-message.btn--message__info {
+      background: var(--bbva-200, #e9e9e9);
+      --cells-icon-message-icon-color-info: var(--bbva-400, #BDBDBD); }
+  :host(:not([active])) cells-checkbox-button {
+    --cells-checkbox-button-icon-color-checked: var(--bbva-400, #BDBDBD); }
+  :host(:not([active])):after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: .7;
+    background: var(--bbva-200, #e9e9e9);
+    @apply (--cells-step-legal-terms-veil); }
+
+.full {
+  box-sizing: border-box;
+  padding: 0 2rem 2rem 2rem;
+  margin-bottom: 0.625rem;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-flex-grow: 1;
+          flex-grow: 1;
+  --cells-checkbox-button: { padding: 0; margin: 0; };
+  --cells-checkbox-button-label: { padding: 0; margin-top: 0; };
+  --cells-checkbox-button-checkbox-size: 3.125rem;
+  @apply (--cells-step-legal-terms-full); }
+  .full cells-atom-icon {
+    --cells-checkbox-button-icon-icon-size: 50px; }
+  .full cells-checkbox-button {
+    margin-bottom: 0.625rem;
+    outline: none; }
+  .full cells-icon-message {
+    margin-bottom: 1.875rem; }
+    .full cells-icon-message.cursive {
+      color: var(--bbva-500, #666666);
+      font-size: 0.875rem;
+      font-style: italic; }
+  .full .btn--message__info {
+    margin-bottom: 0.625rem; }
+  .full .btn-message__buttons {
+    --cells-icon-message-icon-margin: 0px;
+    padding: 0px;
+    margin: 0px; }
+  .full .additonalInfoCheck {
+    --cells-checkbox-button-checkbox-size: 1.875rem; }
+
+.filled {
+  font-size: 1.125rem;
+  --cells-icon-message: { color: var(--bbva-white); font-style: italic; };
+  --cells-icon-message-inline: { -webkit-align-items: center; align-items: center; };
+  --cells-icon-message-icon-info: { color: var(--bbva-white); };
+  @apply (--cells-step-legal-terms-filled-p); }
+
+</style></template></dom-module>

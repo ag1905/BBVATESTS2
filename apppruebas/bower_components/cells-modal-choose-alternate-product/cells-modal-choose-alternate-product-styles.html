@@ -1,0 +1,46 @@
+<dom-module id="cells-modal-choose-alternate-product-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply (--cells-modal-choose-alternate-product);
+  --cells-product-selector-item: { padding-left: 0; padding-right: 0; border-bottom: 0; };
+  --cells-product-item-name: { color: #121212; font-size: 14px; padding-bottom: 8px; };
+  --cells-bottom-modal-header-wrapper: { background-color: #F4F4F4; };
+  --cells-bottom-modal-body-padding: 0;
+  --cells-bottom-modal-heading: { color: #072146; };
+  --cells-bottom-modal-btn-close: { color: #072146; }; }
+  :host cells-alert-box {
+    --cells-alert-box-content-container-text: { margin-bottom: 0; margin-left: 1.25rem; margin-right: 1.25rem; }; }
+  :host .options {
+    margin: 1.25rem 0;
+    padding: 1.875rem;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    background-color: #F4F4F4; }
+
+paper-card {
+  -webkit-flex: 1 0 0;
+      -ms-flex: 1 0 0;
+          flex: 1 0 0;
+  margin: 1.125rem 0;
+  padding: 1.875rem;
+  text-align: left; }
+  paper-card h3 {
+    padding: 0;
+    margin: 0;
+    color: var(--cells-modal-choose-alternate-product-option-title, #006EC1); }
+  paper-card.disabled {
+    opacity: .3; }
+
+:host([hidden]), [hidden] {
+  display: none; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+</style></template></dom-module>

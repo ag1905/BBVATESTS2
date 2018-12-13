@@ -1,0 +1,83 @@
+{
+  "name": "cells-product-summary",
+  "version": "10.1.2",
+  "description": "Displays product information.",
+  "keywords": [
+    "product",
+    "summary",
+    "card",
+    "account",
+    "deposit",
+    "fund",
+    "loan",
+    "progress bar"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "cells-i18n-behavior": "^10.2.0",
+    "cells-key-values": "^10.1.0",
+    "cells-atom-icon": "^10.0.0",
+    "cells-molecule-mask": "^10.0.0",
+    "cells-spinner-stripes": "^10.1.0",
+    "cells-st-button": "^10.0.0",
+    "cells-molecule-card-cover-ccds-wrapper": "^10.0.0",
+    "cells-heading": "^10.0.0",
+    "cells-3d-horizontal-bar-chart": "^10.0.0",
+    "cells-icon-message": "^10.0.0"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.1",
+    "coronita-icons": "^10.3.0",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "cells-demo-helper": "^10.3.0",
+    "cells-coronita-theme": "^10.0.0",
+    "cells-demo-mocker-selector": "^10.0.0",
+    "cells-meter": "^10.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "main": [
+    "cells-product-summary.html"
+  ],
+  "composer": {
+    "description": "displays product information with an optional product name, image, icon, masked heading and different lists of key and values (typically monetary values or other information related to the product)",
+    "preview": "cells-product-summary.png",
+    "type": "UI",
+    "platforms": "android, ios, desktop",
+    "family": "cells-catalog-distributors-family"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9.0",
+        "cells-i18n-behavior": "^10.2.0",
+        "cells-key-values": "^10.1.0",
+        "cells-atom-icon": "^10.0.0",
+        "cells-molecule-mask": "^10.0.0",
+        "cells-spinner-stripes": "^10.1.0",
+        "cells-st-button": "^10.0.0",
+        "cells-molecule-card-cover-ccds-wrapper": "^10.0.0",
+        "cells-heading": "^10.0.0",
+        "cells-3d-horizontal-bar-chart": "^10.0.0",
+        "cells-icon-message": "^10.0.0"
+      },
+      "devDependencies": {
+        "cells-sass": "^2.0.1",
+        "coronita-icons": "^10.3.0",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+        "cells-demo-helper": "^10.3.0",
+        "cells-coronita-theme": "^10.0.0",
+        "cells-demo-mocker-selector": "^10.0.0",
+        "cells-meter": "^10.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

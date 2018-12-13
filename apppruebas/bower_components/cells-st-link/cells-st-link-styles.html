@@ -1,0 +1,29 @@
+<dom-module id="cells-st-link-styles"><template><style>
+:host {
+  box-sizing: border-box;
+  @apply (--cells-st-link-host); }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/* Default links */
+:host ::content > * {
+  font-family: var(--cells-fontDefault, sans-serif);
+  font-weight: 700;
+  color: var(--cells-st-link-color, #2A86CA);
+  text-decoration: none;
+  font-size: 0.875rem;
+  @apply (--cells-st-link); }
+  :host ::content > *:hover {
+    color: var(--cells-st-link-color-hover, #2A86CA);
+    @apply (--cells-st-link-hover); }
+  :host ::content > *:focus {
+    @apply (--cells-st-link-focus); }
+  :host ::content > *:active {
+    color: var(--cells-st-link-color-active, #1162A5);
+    @apply (--cells-st-link-active); }
+
+</style></template></dom-module>

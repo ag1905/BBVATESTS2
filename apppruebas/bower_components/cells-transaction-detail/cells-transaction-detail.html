@@ -1,0 +1,169 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html">
+<link rel="import" href="../cells-atom-icon/cells-atom-icon.html">
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html">
+<link rel="import" href="../cells-key-values/cells-key-values.html">
+<link rel="import" href="../cells-skeleton-item/cells-skeleton-item.html">
+<link rel="import" href="../cells-icon-message/cells-icon-message.html">
+<link rel="import" href="../cells-operations-list-indicators/cells-operations-list-indicators.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../iron-image/iron-image.html">
+<link rel="import" href="cells-transaction-detail-styles.html">
+
+<!--
+`<cells-transaction-detail>` description.
+
+Example:
+
+```html
+<cells-transaction-detail></cells-transaction-detail>
+```
+
+## Data model
+[comment]: <> (use either one of the data model docs examples)
+
+Canonical DM: 'entityName', [one from list of entities]
+
+Component own DM example:
+```json
+{}
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-transaction-detail-scope      | scope description | default value  |
+| --cells-transaction-detail  | empty mixin     | {}             |
+| --cells-transaction-detail-lighting-text  | empty mixin     | {}             |
+| --cells-transaction-detail-dark-text  | empty mixin     | {}             |
+| --cells-transaction-detail-iron-image-bg  | empty mixin     | {}             |
+| --cells-transaction-detail-iron-image-commerce-logo  | empty mixin     | {}             |
+| --cells-transaction-detail-iron-image  | empty mixin     | {}             |
+| --cells-transaction-detail-header-wrapper-p  | empty mixin     | {}             |
+| --cells-transaction-detail-header-wrapper  | empty mixin     | {}             |
+| --cells-transaction-detail-header  | empty mixin     | {}             |
+| --cells-transaction-detail-transaction-description  | empty mixin     | {}             |
+| --cells-transaction-detail-transaction-title  | empty mixin     | {}             |
+| --cells-transaction-detail-transaction-status  | empty mixin     | {}             |
+| --cells-transaction-detail-main-amount  | empty mixin     | {}             |
+| --cells-transaction-detail-secondary-amount-before  | empty mixin     | {}             |
+| --cells-transaction-detail-secondary-amount  | empty mixin     | {}             |
+| --cells-transaction-detail-section-transaction-info-group | empty mixin     | {}             |
+| --cells-transaction-detail-section-transaction-info-subheader | empty mixin     | {}             |
+| --cells-transaction-detail-time  | empty mixin     | {}             |
+| --cells-transaction-detail-main  | empty mixin     | {}             |
+| --cells-transaction-detail-section-main-operations  | empty mixin     | {}             |
+| --cells-transaction-detail-section-transaction-info-item-last  | empty mixin     | {}             |
+| --cells-transaction-detail-section-transaction-info-item-title  | empty mixin     | {}             |
+| --cells-transaction-detail-section-transaction-info-item-body  | empty mixin     | {}             |
+| --cells-transaction-detail-section-transaction-info-item-card  | empty mixin     | {}             |
+| --cells-transaction-detail-section-transaction-info-item-card-mock  | empty mixin     | {}             |
+| --cells-transaction-detail-section-transaction-info-item  | empty mixin     | {}             |
+| --cells-transaction-detail-section-transaction-info-concept-tags  | empty mixin     | {}             |
+| --cells-transaction-detail-section-transaction-info-tag  | empty mixin     | {}             |
+| --cells-transaction-detail-section-transaction-info  | empty mixin     | {}             |
+| --cells-transaction-detail-section  | empty mixin     | {}             |
+| --cells-transaction-detail-transaction-group-date  | empty mixin     | {}             |
+| --cells-transaction-detail-subheader-h2  | empty mixin     | {}             |
+| --cells-transaction-detail-transaction-name  | empty mixin     | {}             |
+| --cells-transaction-detail-associated-prod  | empty mixin     | {}             |
+| --cells-transaction-detail-modal  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-transaction-detail">
+  <template>
+    <style include="cells-transaction-detail-styles cells-transaction-detail-shared-styles"></style>
+    <header class$="[[transaction.data.type]]">
+      <iron-image src="[[_getImage(transaction.data.type)]]" preload fade></iron-image>
+      <template is="dom-if" if="[[loaded]]">
+        <div class="wrapper" hidden$="[[!loaded]]">
+          <p class$="transaction-name [[transaction.data.label.style]]">[[t(transaction.data.label.value)]]</p>
+        </div>
+      </template>
+    </header>
+    <template is="dom-if" if="[[loaded]]">
+      <main role="main" class="cells-transaction-detail">
+        <div class="transaction-description">
+          <template is="dom-if" if="[[transaction.data.title]]">
+            <h1 class="transaction-title">[[transaction.data.title]]</h1>
+          </template>
+          <template is="dom-if" if="[[showStatus]]">
+            <div class="transaction-status">
+              <small class="status">[[t(transaction.data.status.value)]]</small>
+              <button on-click="_onClickStatusIcon"><cells-atom-icon icon="[[transaction.data.status.icon]]" class="btn__icon"></cells-atom-icon></button>
+            </div>
+          </template>
+        </div>
+
+        <div>
+          <cells-atom-amount 
+            amount="[[transaction.data.amount.amount]]"
+            currency-code="[[transaction.data.amount.currency]]"
+            local-currency="[[localCurrency]]"
+            class="amount-huge main-amount">
+          </cells-atom-amount>
+          <div class="transaction-points-info">
+            <template is="dom-if" if="[[transaction.data.points]]">
+              <cells-atom-amount
+                amount="[[transaction.data.points.amount.amount]]"
+                currency-code="[[transaction.data.points.amount.currency]]"
+                local-currency="[[localCurrency]]"></cells-atom-amount>
+              <span>[[t(transaction.data.points.label)]]</span>
+            </template>
+          </div>
+        </div>
+
+        <time class="operation-date">
+          <span>[[transaction.data.date]]</span>
+        </time>
+      </main>
+
+      <template is="dom-if" if="[[showOperations]]">
+        <cells-operations-list-indicators id="operations"
+          operations="[[transaction.data.operations]]"
+          limit="4"></cells-operations-list-indicators>
+      </template>
+
+      <section class="transaction-info">
+        <template is="dom-if" if="[[showNotification]]">
+          <cells-icon-message class="notification"
+            type='[[transaction.data.notification.type]]'
+            icon='[[transaction.data.notification.icon]]'
+            icon-label='[[transaction.data.notification.iconLabel]]'
+            icon-size="[[transaction.data.notification.iconSize]]"
+            message="[[t(transaction.data.notification.message)]]"></cells-icon-message>
+        </template>
+        <template is="dom-if" if="[[transaction.data.data]]">
+            <template is="dom-repeat" items="[[transaction.data.data]]" as="model">
+              <div class="transaction-info transaction-info__group">
+                <template is="dom-repeat" items="[[model]]" as="item">
+                    <template is="dom-if" if=[[item.subheader]]>
+                      <h6 class="transaction-info__subheader">[[t(item.subheader)]]</h6>
+                    </template>
+                    <template is="dom-if" if=[[!item.subheader]]>
+                      <cells-key-values class="transaction-info__item" key="[[t(item.key)]]" value="[[item.value]]" local-currency="[[item.localCurrency]]">
+                      </cells-key-values>
+                    </template>
+                </template>
+              </div>
+            </template>
+          </template>
+      </section>
+    </template>
+
+    <template is="dom-if" if={{!loaded}}>
+      <div class="content">
+        <div class="info-list">
+          <template is="dom-repeat" items={{_generateSkeletonItems(skeletonItems)}}>
+            <cells-skeleton-item show-title show-item></cells-skeleton-item>
+          </template>
+        </div>
+      </div>
+    </template>
+  </template>
+  <script src="cells-transaction-detail.js"></script>
+</dom-module>

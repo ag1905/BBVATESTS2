@@ -1,0 +1,61 @@
+{
+  "name": "cells-key-values",
+  "version": "10.3.0",
+  "description": "Displays key/value pairs with different layouts.",
+  "keywords": [
+    "key",
+    "value",
+    "distributor",
+    "amount",
+    "mask"
+  ],
+  "ignore": [],
+  "dependencies": {
+    "cells-atom-amount": "^12.0.0",
+    "cells-molecule-mask": "10 - 11",
+    "cells-i18n-behavior": "^13.0.0",
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "cells-sass": "^2.0.1",
+    "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "cells-demo-helper": "^10.0.0",
+    "cells-coronita-theme": "^10.0.0",
+    "cells-st-button": "^10.0.0",
+    "iron-icon": "1 - 2",
+    "coronita-icons": "^10.0.0",
+    "webcomponentsjs": "^1.0.0"
+  },
+  "main": [
+    "cells-key-values.html"
+  ],
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0",
+    "cells-i18n-behavior": "^13.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "cells-atom-amount": "^12.0.0",
+        "cells-molecule-mask": "^10.0.0",
+        "cells-i18n-behavior": "^13.0.0",
+        "polymer": "Polymer/polymer#^1.9.0"
+      },
+      "devDependencies": {
+        "cells-sass": "^2.0.1",
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "cells-demo-helper": "^10.0.0",
+        "cells-coronita-theme": "^10.0.0",
+        "cells-st-button": "^10.0.0",
+        "iron-icon": "^1.0.0",
+        "coronita-icons": "^10.0.0",
+        "webcomponentsjs": "^0.7"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7"
+      }
+    }
+  }
+}

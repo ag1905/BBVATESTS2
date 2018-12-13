@@ -1,0 +1,246 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-dm-global-apis-accounts/cells-dm-global-apis-accounts.html" />
+<link rel="import" href="../cells-dm-global-apis-cards/cells-dm-global-apis-cards.html" />
+<link rel="import" href="../cells-dm-global-apis-deposits/cells-dm-global-apis-deposits.html" />
+<link rel="import" href="../cells-dm-global-apis-loans/cells-dm-global-apis-loans.html" />
+<link rel="import" href="../cells-dm-global-apis-investment-funds/cells-dm-global-apis-investment-funds.html" />
+
+<!--
+# glomo-edit-field-dp
+
+Datamanager to edit field
+
+Example:
+```html
+<glomo-edit-field-dm></glomo-edit-field-dm>
+```
+
+It exposes `last-response`, `last-error` and `last-request` as properties that will be updated (as the case may be) once `generateRequest` is called.
+Also, It fires `response`, `error` and `request-in-progress`.
+
+@demo demo/index.html
+-->
+
+<dom-module id="glomo-edit-field-dm">
+  <template>
+    <cells-dm-global-apis-accounts
+      id="accountDm"
+      host="[[host]]"
+      account="{{response}}"
+      account-id="[[productId]]"
+      accounts-api-version="[[accountsApiVersion]]"></cells-dm-global-apis-accounts>
+
+    <cells-dm-global-apis-cards
+      id="cardDm"
+      host="[[host]]"
+      card="{{response}}"
+      card-id="[[productId]]"
+      cards-api-version="[[cardsApiVersion]]"></cells-dm-global-apis-cards>
+
+    <cells-dm-global-apis-deposits
+      id="depositDm"
+      host="[[host]]"
+      deposit="{{response}}"
+      deposit-id="[[productId]]"
+      deposits-api-version="[[depositsApiVersion]]"></cells-dm-global-apis-deposits>
+
+    <cells-dm-global-apis-loans
+      id="loanDm"
+      host="[[host]]"
+      loan="{{response}}"
+      loan-id="[[productId]]"
+      loans-api-version="[[loansApiVersion]]"></cells-dm-global-apis-loans>
+
+    <cells-dm-global-apis-investment-funds
+      id="fundDm"
+      host="[[host]]"
+      fund="{{response}}"
+      investment-fund-id="[[productId]]"
+      investment-funds-api-version="[[investmentFundsApiVersion]]"></cells-dm-global-apis-investment-funds>
+  </template>
+</dom-module>
+<script>
+  (function() {
+    'use strict';
+
+    Polymer({
+
+      is: 'glomo-edit-field-dm',
+
+      properties: {
+        /**
+          * Host
+          * @type {String}
+          */
+        host: String,
+        /**
+        * Product
+        * @type {Object}
+        */
+        product: String,
+        /**
+        * Response
+        * @type {Object}
+        */
+        response: {
+          type: Object,
+          notify: true
+        },
+        /**
+        * State to success edit
+        * @type {Boolean}
+        */
+        state: {
+          type: Boolean,
+          notify: true
+        },
+        /**
+        * Porduct Id
+        * @type {String}
+        */
+        productId: String,
+        /**
+        * Product type
+        * @type {String}
+        */
+        productType: {
+          type: String,
+          observer: '_dynamizeEvent'
+        },
+        /**
+        * Loans API version
+        * @type {String}
+        */
+        loansApiVersion: {
+          type: String,
+          value: '0'
+        },
+        /**
+        * Accounts API version
+        * @type {String}
+        */
+        accountsApiVersion: {
+          type: String,
+          value: '0'
+        },
+        /**
+        * Cards API version
+        * @type {String}
+        */
+        cardsApiVersion: {
+          type: String,
+          value: '0'
+        },
+        /**
+        * Deposits API version
+        * @type {String}
+        */
+        depositsApiVersion: {
+          type: String,
+          value: '0'
+        },
+        /**
+        * Investment funds API version
+        * @type {String}
+        */
+        investmentFundsApiVersion: {
+          type: String,
+          value: '0'
+        }
+      },
+
+      listeners: {
+        'patch-alias': 'successResponse',
+        'error-on-patch-account': 'errorResponse',
+        'error-on-patch-card': 'errorResponse',
+        'error-on-patch-deposit': 'errorResponse',
+        'error-on-patch-loan': 'errorResponse',
+        'error-on-patch-investment-fund': 'errorResponse'
+      },
+
+      init: function() {
+        if (this.product && this.product.alias) {
+          this.dispatchEvent(new CustomEvent('set-alias', {
+            bubbles: true,
+            composed: true,
+            detail: this.product.alias
+          }));
+        }
+      },
+
+      /*
+      * Change event name dynamically
+      */
+      _dynamizeEvent: function(product) {
+        if (product) {
+          this.listen(this, 'error-on-patch-investment-' + product, 'errorResponse');
+        }
+      },
+
+      /*
+      *  Delete error event if exist
+      */
+      detached: function() {
+        this.unlisten(this, 'error-on-patch-investment-' + this.productType, 'errorResponse');
+      },
+
+      /**
+      * Set alias by product type
+      */
+      setAlias: function(field) {
+        if (this.productId && field && this.$[this.productType + 'Dm']) {
+          var product = this.productType.substr(0, 1).toUpperCase() + this.productType.substring(1).toLowerCase();
+          this.$[this.productType + 'Dm']['patch' + product + 'Alias'](field);
+        }
+      },
+
+      /**
+      * Success service alias response
+      */
+      successResponse: function() {
+        //Save response if not is null
+        if (this.response) {
+          this.set('response', this.response);
+        }
+
+        this.state = true;
+        this.dispatchEvent(new CustomEvent('cells-save-edit-field-success', {
+          bubbles: true,
+          composed: true,
+          detail: {productId: this.productId}
+        }));
+        this.dispatchEvent(new CustomEvent('close-control-veil', {
+          bubbles: true,
+          composed: true
+        }));
+      },
+
+      /**
+      * Error service alias response
+      */
+      errorResponse: function() {
+        if (!window.navigator.onLine) {
+          this.dispatchEvent(new CustomEvent('set-offline-error-on-edit-field'), {
+            bubbles: true,
+            composed: true
+          });
+        } else {
+          this.dispatchEvent(new CustomEvent('set-error-on-edit-field', {
+            bubbles: true,
+            composed: true,
+            detail: true
+          }));
+          this.dispatchEvent(new CustomEvent('cells-save-edit-field-error', {
+            bubbles: true,
+            composed: true,
+            detail: {productId: this.productId}
+          }));
+        }
+        this.dispatchEvent(new CustomEvent('close-control-veil', {
+          bubbles: true,
+          composed: true
+        }));
+      }
+    });
+  }());
+</script>

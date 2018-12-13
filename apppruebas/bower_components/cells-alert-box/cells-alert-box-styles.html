@@ -1,0 +1,92 @@
+<dom-module id="cells-alert-box-styles"><template><style>
+:host {
+  display: block;
+  width: 100vw;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  pointer-events: none;
+  font-family: var(--cells-fontDefault, sans-serif);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  --cells-bottom-modal-body: { display:-webkit-box; display:-ms-flexbox; display:flex; -webkit-box-orient:vertical; -webkit-box-direction:normal; -ms-flex-direction:column; flex-direction:column; @apply --cells-alert-box-cells-bottom-modal-body; };
+  @apply --cells-alert-box; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+:host([opened]) {
+  pointer-events: auto; }
+
+#modal {
+  text-align: center;
+  @apply --cells-alert-box-modal; }
+
+.subtitle {
+  font-size: var(--cells-text-size-16, 1rem);
+  font-weight: normal;
+  @apply --cells-alert-box-subtitle; }
+
+.wrapper {
+  font-size: var(--cells-text-size-14, 0.875rem);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  @apply --cells-alert-box-wrapper; }
+
+.icon-container {
+  margin: 2.25rem 0 0.375rem;
+  @apply --cells-alert-box-image-container; }
+  .icon-container img {
+    max-width: 100%;
+    height: auto;
+    @apply --cells-alert-box-image; }
+
+.content-container {
+  position: relative;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  font-size: var(--cells-text-size-14, 0.875rem);
+  @apply --cells-alert-box-content-container; }
+
+::slotted(*) {
+  position: relative;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  font-size: var(--cells-text-size-14, 0.875rem);
+  @apply --cells-alert-box-slotted; }
+
+.buttons-container {
+  margin: 0.8rem 0;
+  text-align: center;
+  @apply --cells-alert-box-button-container; }
+
+.buttons-container button {
+  font-weight: bold;
+  display: block;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+  min-width: 40%;
+  margin: 0.2rem auto;
+  text-transform: none;
+  @apply --cells-alert-box-button; }
+  .buttons-container button[disabled] {
+    @apply --cells-alert-box-button-disabled; }
+
+.buttons-container button span {
+  font-size: 0.85em;
+  font-weight: lighter;
+  line-height: 1.2rem;
+  display: block;
+  @apply --cells-alert-box-button-info; }
+
+</style></template></dom-module>

@@ -1,0 +1,41 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-atom-input-styles.html">
+
+<!--
+An atomic element extending input native tag
+
+Example:
+```html
+
+<input is="cells-atom-input" type="text" value="value" empty={{isMyValueEmpty}}>
+
+<input is="cells-atom-input" type="text" placeholder="">
+
+<input is="cells-atom-input" type="password" placeholder="" class="input--error">
+
+<input is="cells-atom-input" type="text" disabled>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:---------------:|:---------------:| :-------------:|
+| --cells-input--base | gives basic styling for inputs .input--base | see theme-base-catalog  |
+| --cells-input--error | .input--error | see theme-base-catalog  |
+| --cells-input--focus  | mixin for :focus | see theme-base-catalog  |
+| --cells-input--active  | mixin for :active | see theme-base-catalog  |
+| --cells-input--disabled  | mixin for :disabled | see theme-base-catalog  |
+| --cells-atom-input  | empty mixin | {}  |
+
+@demo demo/index.html
+@hero cells-atom-input.jpg
+-->
+<dom-module id="cells-atom-input">
+  <template>
+    <style include="cells-atom-input-styles cells-atom-input-shared-styles"></style>
+    <content></content>
+  </template>
+  <script src ="cells-atom-input.js"></script>
+</dom-module>

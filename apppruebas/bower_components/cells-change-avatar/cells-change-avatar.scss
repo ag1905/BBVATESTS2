@@ -1,0 +1,91 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: block;
+  box-sizing: border-box;  
+  background: var(--bbva-white, #fff);
+  height: 100%;
+  font-family: var(--cells-fontDefault, sans-serif);
+  @apply --cells-change-avatar;
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+@each $state in ('focus', 'active') {
+  *:#{$state} {
+    @apply --cells-global-#{$state};
+  }
+}
+
+.image {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  &-button {
+    position: absolute;
+    bottom: 2rem;
+    outline: none;
+    z-index: 3;
+  }
+}
+
+.input {
+  &-file {
+    cursor: pointer;
+    outline: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+  }
+}
+
+.container {
+  padding: 1.875rem;
+  @apply --cells-change-avatar-container;
+}
+
+.notification {
+  margin: 0 0 3rem 0;
+  @apply --cells-change-avatar-notification;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  cells-st-button {
+    & + cells-st-button {margin: 1.25rem 0 0 0;}
+
+    @apply --cells-change-avatar-action-button;
+  }
+
+  @apply --cells-change-avatar-actions;
+}
+
+cells-image-cropper {
+  display: block;
+  width: 100%;
+
+  @apply --cells-change-avatar-cropper;
+}

@@ -1,0 +1,25 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+# cells-handle-life-cycle
+
+Includes the logic to fire `reset` event when app navigates from `pageName` to a page not included in `cache` list.
+To do so it will be necessary to set pageName with the fromPage to watched, set cache with the list of pages that won't fire the event 
+and call navigation method with the fromPage and currentPage information. 
+
+## Example:
+It will fire reset event when calling myEl.navigation() with fromPage `list` and currentPage other than `detail`.
+```html
+<cells-handle-life-cycle id="myEl" pageName="list" cache="['detail']"></cells-handle-life-cycle>
+```
+
+@demo demo/index.html
+@hero cells-handle-life-cycle.png
+-->
+
+<dom-module id="cells-handle-life-cycle">
+  <template>
+  </template>
+  <script src="cells-handle-life-cycle.js"></script>
+</dom-module>
+

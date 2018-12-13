@@ -1,0 +1,52 @@
+<dom-module id="cells-oc-banner-list-styles"><template><style>
+:host {
+  display: block;
+  height: 100%;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  background-color: var(--bbva-200, #E9E9E9);
+  @apply --cells-oc-banner-list; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+.oc-banner-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  @apply --cells-oc-banner-list-list; }
+  .oc-banner-list__item {
+    padding: 0 0.625rem 0.625rem;
+    background-color: var(--bbva-200, #E9E9E9);
+    @apply --cells-oc-banner-list-list-item; }
+    .oc-banner-list__item cells-oc-banner {
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15); }
+    .oc-banner-list__item.big {
+      padding: 0 0 0.625rem 0;
+      box-shadow: none;
+      @apply --cells-oc-banner-list-list-item-big; }
+
+.empty {
+  height: 100%;
+  background-color: var(--bbva-white, #ffffff);
+  text-align: center;
+  @apply --cells-oc-banner-list-empty; }
+  .empty__img {
+    margin: 4rem 0 1.25rem;
+    padding-bottom: var(--cells-oc-banner-list-empty-img--padding-bottom, 1.93125rem); }
+  .empty__title {
+    font-size: var(--cells-text-size-18, 1.125rem);
+    font-weight: var(--cells-fontDefaultMedium, 500);
+    padding-bottom: var(--cells-oc-banner-list-empty-title--padding-bottom, 1.875rem);
+    line-height: 1.22;
+    display: block; }
+  .empty__message {
+    padding: 0 3.125rem;
+    line-height: 1.43;
+    font-size: var(--cells-text-size-14, 0.875rem);
+    display: block; }
+
+</style></template></dom-module>

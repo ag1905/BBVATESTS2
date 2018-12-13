@@ -1,0 +1,110 @@
+<dom-module id="cells-notification-list-styles"><template><style>
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family: var(--cells-fontDefault, sans-serif);
+  padding: 30px;
+  background: var(--bbva-white, #fff);
+  @apply --cells-notification-list; }
+
+ul, li {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  @apply --cells-notification-list-ul-li; }
+
+.list {
+  @apply --cells-notification-list-list; }
+  .list > li:not(:last-of-type) {
+    margin-bottom: 20px; }
+  .list__date {
+    display: block;
+    color: var(--bbva-dark-gold, #b79e5e);
+    margin-bottom: 20px;
+    @apply --cells-notification-list-date; }
+  .list__notifications {
+    @apply --cells-notification-list-notifications; }
+    .list__notifications li {
+      padding: 20px 30px;
+      margin-left: 20px;
+      border-left: 1px solid var(--bbva-200);
+      @apply --cells-notification-list-notifications-li; }
+      .list__notifications li span {
+        display: block;
+        font-weight: 500;
+        color: var(--bbva-600, #121212);
+        @apply --cells-notification-list-notifications-li-span; }
+        .list__notifications li span:first-of-type {
+          font-style: italic;
+          @apply --cells-notification-list-notifications-li-span-first-of-type; }
+        .list__notifications li span:not(:last-of-type) {
+          margin-bottom: 5px;
+          @apply --cells-notification-list-notifications-li-span-not-last-of-type; }
+        .list__notifications li span:nth-child(2) {
+          position: relative;
+          @apply --cells-notification-list-notifications-li-span-second-el; }
+          .list__notifications li span:nth-child(2):before {
+            content: '';
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            background: var(--bbva-medium-blue, #237ABA);
+            position: absolute;
+            left: -18px;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+                    transform: translateY(-50%);
+            @apply --cells-notification-list-notifications-li-span-second-el-before; }
+        .list__notifications li span.other-info {
+          display: inline;
+          color: var(--bbva-500, #666);
+          font-weight: 300;
+          @apply --cells-notification-list-notifications-li-span-other; }
+      .list__notifications li.read {
+        @apply --cells-notification-list-notifications-li-read; }
+        .list__notifications li.read span:nth-child(2) {
+          @apply --cells-notification-list-notifications-li-read-span-second-child; }
+          .list__notifications li.read span:nth-child(2):before {
+            display: none;
+            @apply --cells-notification-list-notifications-li-read-span-second-child-before; }
+        .list__notifications li.read span {
+          font-weight: 300;
+          @apply --cells-notification-list-notifications-li-read-span; }
+      .list__notifications li cells-atom-amount {
+        color: var(--bbva-500, #666);
+        font-weight: 300; }
+
+.no-items {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 4.375rem; }
+
+:host([hidden]), [hidden] {
+  display: none !important; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/**
+ * Empty mixins to set outline for :focus and :active states.
+ * These mixins are meant to be set in an application's theme.
+ * --cells-global-focus, --cells-global-active
+ */
+*:focus {
+  @apply --cells-global-focus; }
+
+*:active {
+  @apply --cells-global-active; }
+
+button:active {
+  @apply --cells-global-active; }
+
+</style></template></dom-module>

@@ -1,0 +1,55 @@
+@import "bower_components/cells-sass/main";
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  font-size: rem(14px);
+  @apply(--cells-molecule-mask);
+}
+
+:host([hidden]), [hidden] {
+  display: none !important;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  @apply(--cells-molecule-mask-wrapper);
+}
+
+.content {
+  @apply(--cells-molecule-mask-content);
+}
+
+::slotted(*) {
+  padding-right: var(--cells-molecule-mask-margin-right, rem(3px));
+}
+
+.mask {
+  line-height: 1;
+  margin-right: var(--cells-molecule-mask-margin-right, rem(3px));
+  font-size: var(--cells-molecule-mask-separator-font-size, rem(16px));
+  @apply(--cells-molecule-mask-separator);
+}
+
+.icon {
+  color: var(--cells-molecule-mask-icon-color, currentColor);
+}
+
+.number {
+  line-height: 1;
+  font-size: var(--cells-molecule-mask-number-font-size, inherit);
+  @apply(--cells-molecule-mask-number);
+}
+
+.btn-transparent {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  margin-left: rem(2px);
+  position: relative;
+  top: rem(-1px);
+  overflow: visible;
+  background-color: transparent;
+  @apply(--cells-molecule-mask-icon-button);
+}

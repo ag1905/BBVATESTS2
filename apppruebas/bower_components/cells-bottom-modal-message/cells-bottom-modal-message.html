@@ -1,0 +1,51 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cells-bottom-modal-message-styles.html">
+
+<link rel="import" href="../cells-atom-message/cells-atom-message.html">
+<link rel="import" href="../cells-bottom-modal/cells-bottom-modal.html">
+
+<!--
+Bottom modal with message and icon
+
+Example:
+
+```html
+<cells-bottom-modal-message id="demo-3"
+  class="generic-demo"
+  icon="banking:F31"
+  icon-size="24"
+  message="cells-bottom-modal-message-demo-error"
+  type="info">
+</cells-bottom-modal-message>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --cells-bottom-modal-message-scope      | scope description | default value  |
+| --cells-bottom-modal-message  | empty mixin     | {}             |
+| --cells-bottom-modal-content  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="cells-bottom-modal-message">
+  <template>
+    <style include="cells-bottom-modal-message-styles cells-bottom-modal-message-shared-styles"></style>
+    <cells-bottom-modal id="modal" class="modal"
+      opened="{{opened}}"
+      close-icon-id="[[closeIcon]]"
+      icon-only-full-height="[[closeIconHide]]"
+      full-height="[[fullHeight]]"
+      with-backdrop="[[overlay]]">
+      <cells-atom-message id="message"
+        icon="[[icon]]"
+        icon-size="[[iconSize]]"
+        message="[[message]]"
+        ></cells-atom-message>
+    </cells-bottom-modal>
+  </template>
+  <script src="cells-bottom-modal-message.js"></script>
+</dom-module>

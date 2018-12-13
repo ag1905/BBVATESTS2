@@ -1,0 +1,430 @@
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../cells-dm-global-apis-cards/cells-dm-global-apis-cards.html" />
+<!--
+# glomo-accounts-dm
+
+Datamanager of glomo cards
+
+Example:
+```html
+<glomo-cards-dm host="https://urlToApi/example"></glomo-cards-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-cards-dm">
+  <template>
+    <cells-dm-global-apis-cards id="dm"
+      host="[[host]]"
+      cards="{{_cards}}"
+      cards-api-version="[[cardsApiVersion]]"></cells-dm-global-apis-cards>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-cards-dm',
+
+        properties: {
+          /**
+           * Chosen host to make requests to. Check providers.
+           * @type {String}
+           */
+          host: {
+            type: String
+          },
+          /**
+           * Cards
+           * @type {Object}
+           */
+          cards: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Cards
+           * @type {Object}
+           * @private
+           */
+          _cards: Object,
+          /**
+           * Filters
+           * @type {Array}
+           * @public
+           */
+          notShowCards: {
+            type: Array,
+            value: function() {
+              return [
+                'DEBIT_CARD',
+                'PREPAID_CARD'
+              ];
+            }
+          },
+          /**
+           * Possible card status
+           * @type {Object}
+           * @private
+           */
+          _status: {
+            type: Object,
+            value: function() {
+              return {
+                'BLOCKED': 'locked',
+                'INOPERATIVE': 'activate',
+                'OPERATIVE': 'operative'
+              };
+            }
+          },
+          /**
+           * Show not main currency
+           * @type {Boolean}
+           */
+          showNotMainCurrency: Boolean,
+          /**
+           * Local currency
+           * @type {String}
+           */
+          localCurrency: String,
+          /**
+           * Show granted credit
+           * @type {String}
+           */
+          showGrantedCredit: Boolean,
+          /**
+           * Cards API version
+           * @type {String}
+           */
+          cardsApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+           * Identifier for the product
+           */
+          productId: {
+            type: String,
+            notify: true
+          },
+          /**
+           * Dispatch the productId if there's only one card
+           * @type {Boolean}
+           */
+          dispatchIfOnlyOne: {
+            type: Boolean,
+            value: false
+          },
+          /*
+          * Debit cards array
+          * @type {String}
+          */
+          debitCards: {
+            type: Array,
+            notify: true
+          },
+          /**
+          * Show in accounts section dashboard debit cards related
+          * @type {String}
+          */
+          relatedDebitCards: {
+            type: Boolean,
+            value: true
+          }
+        },
+
+        observers: [
+          '_parseCardsResponse(_cards)'
+        ],
+
+        /**
+         * Reset cards
+         */
+        reset: function() {
+          this.set('cards', null);
+        },
+        /**
+         * Get cards
+         */
+        getCards: function() {
+          this.$.dm.getCards({
+            expand: 'related-contracts,participants,activations'
+          });
+        },
+        /**
+         * Filter and group cards and parse response
+         */
+        _parseCardsResponse: function(_cards) {
+          var response = [];
+          if (_cards && _cards.length) {
+            var _cardsSorted = this._sortCards(_cards);
+            var groups = this._generateResponse(_cardsSorted.CREDIT_CARD);
+
+            if (groups) {
+              response.push(groups);
+            }
+
+            if (this.relatedDebitCards) {
+              var sortedCards = this._groupByType(_cards);
+              this.set('debitCards',  this._setCardStatus(sortedCards).DEBIT_CARD || []);
+            }
+          }
+          if (this.dispatchIfOnlyOne && response.length === 1 && response[0].products.length === 1) {
+            this.set('productId', response[0].products[0].id);
+          }
+          this.set('cards', response);
+          this.fire('cards-fetched', response);
+        },
+        /**
+         * Generate response
+         */
+        _generateResponse: function(_cards) {
+          var _parsedCards = this._parseCards(_cards);
+          if (_parsedCards && _parsedCards.length) {
+            return {
+              headerTitle: 'cells-global-dashboard-cards-header',
+              order: 0,
+              products: _parsedCards
+            };
+          }
+        },
+        /**
+         * Parse cards
+         */
+        _parseCards: function(cards) {
+          return cards && cards.reduce(function(acc, card) {
+            var response = {
+              currencies: card.currencies,
+              description: {
+                value: card.number,
+                masked: true
+              },
+              id: card.cardId,
+              name: card.alias || card.title && card.title.name,
+              number: card.number,
+              primaryAmount: this._getPrimaryAmount(card),
+              secondaryAmount: this._getSecondaryAmount(card),
+              status: card.status && card.status.id
+            };
+
+            if (card.isChild) {
+              response.isChildClass = 'card-child';
+              response.isChild = card.isChild;
+            }
+
+            if (card.isFirstChild) {
+              response.isFirstChildClass = 'card-first-child';
+              response.isFirstChild = card.isFirstChild;
+            }
+
+            if (response.status && response.status !== 'operative') {
+              response.statusdescription = 'cells-global-dashboard-card-status-' + response.status;
+            }
+
+            if (card.images && card.images.length && card.images[0].url) {
+              response.imgSrc = card.images[0].url;
+            }
+
+            acc.push(response);
+            return acc;
+          }.bind(this), []);
+        },
+        /**
+         * Get primary amount
+         */
+        _getPrimaryAmount: function(card) {
+          var response;
+          var currency = card.currencies && card.currencies.find(function(cardCurrency) {
+            return cardCurrency.currency === this.localCurrency || cardCurrency;
+          }.bind(this));
+
+          if (currency) {
+            var amount = this._findBalanceByCurrency(card, 'availableBalance', currency);
+            if (amount) {
+              response = {
+                amount: amount.amount,
+                currency: currency.currency,
+                label: 'cells-global-dashboard-cards-available'
+              };
+            }
+          }
+
+          return response;
+        },
+        /**
+         * Get secondary amount, if showNotMainCurrency
+         */
+        _getSecondaryAmount: function(card) {
+          var response;
+          var type;
+          var currency;
+
+          if (this.showNotMainCurrency) {
+            type = 'availableBalance';
+            currency = card.currencies && card.currencies.find(function(cardCurrency) {
+              return cardCurrency.currency !== this.localCurrency;
+            }.bind(this));
+
+          } else if (this.showGrantedCredit) {
+            type = 'grantedCredits';
+            currency = card.currencies && card.currencies.find(function(cardCurrency) {
+              return cardCurrency.currency === this.localCurrency || cardCurrency;
+            }.bind(this));
+
+          } else {
+            type = 'disposedBalance';
+            currency = card.currencies && card.currencies.find(function(cardCurrency) {
+              return cardCurrency.currency === this.localCurrency || cardCurrency;
+            }.bind(this));
+          }
+
+          if (currency) {
+            var amount = this._findBalanceByCurrency(card, type, currency);
+            var label = this._getLabelSecondaryAmount(type);
+
+            if (amount) {
+              response = {
+                amount: amount.amount,
+                currency: currency.currency,
+                label: label
+              };
+            }
+          }
+
+          return response;
+        },
+
+        _getLabelSecondaryAmount: function(type) {
+          if (type === 'grantedCredits') {
+            return 'cells-global-dashboard-cards-granted';
+          } else {
+            return 'cells-global-dashboard-cards-' + (this.showNotMainCurrency ? 'available' : 'disposed');
+          }
+        },
+        /**
+         * Sort cards
+         */
+        _sortCards: function(_cards) {
+          var cards = {};
+          if (_cards && _cards.length) {
+            if (this.notShowCards && this.notShowCards.length) {
+              cards = this._groupByType(this._filterByType(_cards));
+            } else {
+              cards = this._groupByType(_cards);
+            }
+
+            return this._sortHostCards(this._setCardStatus(cards));
+          }
+        },
+        /**
+         * Find balance in card
+         */
+        _findBalanceByCurrency: function(card, type, currency) {
+          if (this.showGrantedCredit && type === 'grantedCredits') {
+            return card[type] && card[type].find(function(cardAmount) {
+              return cardAmount.currency === currency.currency;
+            });
+
+          } else {
+            return card[type] && card[type].currentBalances && card[type].currentBalances.find(function(cardAmount) {
+              return cardAmount.currency === currency.currency;
+            });
+          }
+        },
+        /**
+         * Filter cards array by type
+         */
+        _filterByType: function(cards) {
+          return cards.filter(function(card) {
+            return this.notShowCards.indexOf(card.cardType.id) === -1;
+          }, this);
+        },
+        /**
+         * Group cards array by type
+         */
+        _groupByType: function(cards) {
+          return cards.reduce(function(group, item) {
+            var type = item.cardType.id;
+            group[type] = group[type] || [];
+            group[type].push(item);
+            return group;
+          }, {});
+        },
+        /**
+         * Set status for cards
+         */
+        _setCardStatus: function(cards) {
+          Object.keys(cards).map(function(key) {
+            cards[key].map(function(card) {
+              if (card.status.id === 'OPERATIVE' && card.activations) {
+                card.isActive = card.activations.find(function(activation) {
+                  return activation.activationId === 'ON_OFF' ? activation.isActive : false;
+                });
+                card.status.id = card.isActive ? 'operative' : 'off';
+              } else {
+                card.status.id = this._status[card.status.id];
+              }
+            }, this);
+          }, this);
+          return cards;
+
+        },
+        /**
+         * Sort cards: first HOST then AUTHORICED
+         */
+        _sortHostCards: function(cards) {
+          var fullChildren = [];
+          var orderArrCards = [];
+          var orderObjTypeCards = {};
+
+          // Go through each group of type of cards
+          Object.keys(cards).map(function(key) {
+            // Go through each card
+            cards[key].map(function(card, index, cardList) {
+              // Find HOLDER cards
+              if (card.participants && card.participants.length && card.participants[0].participantType.id === 'HOLDER') {
+                orderArrCards.push(card);
+                fullChildren = this._extractChildCards(cardList, this._extractRelatedContracts(card));
+                fullChildren.map(function(fullChild, indexCard) {
+                  fullChild.isFirstChild = indexCard === 0 ? true : false;
+                  fullChild.isChild = true;
+                }, {});
+
+                // Set children next to HOLDER.
+                orderArrCards = orderArrCards.concat(fullChildren);
+              }
+            }.bind(this));
+            orderObjTypeCards[key] = orderArrCards;
+          }.bind(this));
+          return orderObjTypeCards;
+        },
+        /**
+         * Find children cards not accounts of the HOLDER
+         */
+        _extractRelatedContracts: function(card) {
+          return card.relatedContracts.reduce(function(acc, related) {
+            if (related.product.id === 'CARDS') {
+              acc.push(related.contractId);
+            }
+            return acc;
+          }, []);
+        },
+        /**
+         * Find children full data and set first sticker
+         */
+        _extractChildCards: function(cardList, childrenIds) {
+          return cardList.reduce(function(acc, cardChild, indexCard) {
+            if (childrenIds.indexOf(cardChild.cardId) !== -1) {
+              acc.push(cardChild);
+              acc.sort(function(cardType) {
+                return (cardType.alias === 'Sticker') ? -1 : 1;
+              });
+            }
+            return acc;
+          }, []);
+        }
+      });
+    }());
+  </script>
+</dom-module>

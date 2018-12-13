@@ -1,0 +1,387 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../cells-global-apis-behaviors/cells-global-apis-behaviors.html" />
+<link rel="import" href="../bgadp-customers/bgadp-customers.html"/>
+
+<!--
+# cells-dm-global-apis-customers
+
+CELLS Data Manager for GLOBAL APIS Customers
+
+## Example:
+
+```html
+<cells-dm-global-apis-customers></cells-dm-global-apis-customers>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="cells-dm-global-apis-customers">
+  <template></template>
+  <script>
+    /*global BGADPCustomers*/
+    /*eslint new-cap: 0*/
+    (function(Polymer) {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'cells-dm-global-apis-customers',
+
+        behaviors: [
+          CellsBehaviors.CellsGlobalApisHandleRequest,
+          CellsBehaviors.CellsGlobalApisHandleRequestSign
+        ],
+
+        properties: {
+          /**
+           * Chosen domain to make requests.
+           * @type {String}
+           */
+          host: String,
+          /**
+          * Customer Id
+          */
+          customerId: String,
+          /**
+          * Avatar Id
+          */
+          avatarId: String,
+          /**
+           * Customers
+           * @type  {Object}
+           */
+          customers: {
+            type: Object,
+            notify: true
+          },
+          /**
+          * Contact detail Id
+          */
+          contactDetailId: String,
+          /**
+           * Contact Details
+           * @type  {Object}
+           */
+          customerDetail: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Contact Detail
+           * @type  {Object}
+           */
+          contactDetail: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Avatar response
+           * @type  {Object}
+           */
+          avatar: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Customer contacts
+           * @type  {Array}
+           */
+          customerContacts: {
+            type: Array,
+            notify: true
+          },
+          /* Customer addresses
+           * @type  {Array}
+           */
+          customerAddresses: {
+            type: Array,
+            notify: true
+          },
+          /**
+          * Customers API version
+          * @type {String}
+          */
+          customersApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+          * requiredToken, 'jwt' or 'tsec' or empty
+          */
+          requiredToken: {
+            type: String,
+            value: 'tsec'
+          }
+        },
+
+        /**
+        * Get customers
+        */
+        getCustomers: function(params) {
+          var service = this._serviceCustomers({
+            host: this.host,
+            params: params,
+            version: this.customersApiVersion,
+            requiredToken: this.requiredToken
+          });
+
+          service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse());
+              this.set('customers', response);
+              this.dispatchEvent(new CustomEvent('set-customers', {
+                bubbles: true,
+                composed: true,
+                detail: response
+              }));
+            }.bind(this),
+            function() {
+              this.dispatchEvent(new CustomEvent('error-on-get-customers', {
+                bubbles: true,
+                composed: true
+              }));
+            }.bind(this));
+        },
+        /**
+        * Get customer detail
+        */
+        getCustomerDetail: function(params) {
+          var service = this._serviceCustomerDetail({
+            host: this.host,
+            params: Object.assign({'customer-id': this.customerId}, params),
+            version: this.customersApiVersion,
+            requiredToken: this.requiredToken
+          });
+
+          service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse());
+              this.set('customerDetail', response);
+              this.dispatchEvent(new CustomEvent('set-customer-detail', {
+                bubbles: true,
+                composed: true,
+                detail: response
+              }));
+            }.bind(this),
+            function() {
+              this.dispatchEvent(new CustomEvent('error-on-get-customer-detail', {
+                bubbles: true,
+                composed: true
+              }));
+            }.bind(this));
+        },
+        /**
+        * Get customer contacts
+        */
+        getCustomerContacts: function(params) {
+          var service = this._serviceCustomerContacts({
+            host: this.host,
+            params: Object.assign({
+              'customer-id': this.customerId,
+            }, params),
+            version: this.customersApiVersion,
+            requiredToken: this.requiredToken
+          });
+
+          service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse());
+              this.set('customerContacts', response);
+              this.dispatchEvent(new CustomEvent('set-customer-contacts', {
+                bubbles: true,
+                composed: true,
+                detail: response
+              }));
+            }.bind(this),
+            function() {
+              this.dispatchEvent(new CustomEvent('error-on-get-customer-contacts', {
+                bubbles: true,
+                composed: true
+              }));
+            }.bind(this));
+        },
+        /**
+        * Get contact detail
+        */
+        getContactDetail: function(params) {
+          var service = this._serviceContactDetail({
+            host: this.host,
+            params: Object.assign({
+              'customer-id': this.customerId,
+              'contact-detail-id': this.contactDetailId
+            }, params),
+            version: this.customersApiVersion,
+            requiredToken: this.requiredToken
+          });
+
+          service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse());
+              this.set('contactDetail', response);
+              this.dispatchEvent(new CustomEvent('set-contact-detail', {
+                bubbles: true,
+                composed: true,
+                detail: response
+              }));
+            }.bind(this),
+            function() {
+              this.dispatchEvent(new CustomEvent('error-on-get-contact-detail', {
+                bubbles: true,
+                composed: true
+              }));
+            }.bind(this));
+        },
+        /**
+        * Patch contact details
+        */
+        patchContactDetail: function(params) {
+          var service = this._serviceContactDetailPatch({
+            host: this.host,
+            params: Object.assign({
+              'customer-id': this.customerId,
+              'contact-detail-id': this.contactDetailId
+            }),
+            body: params,
+            version: this.customersApiVersion,
+            requiredToken: this.requiredToken
+          });
+
+          service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse());
+              this.set('contactDetail', response);
+              this.dispatchEvent(new CustomEvent('patch-contact-detail', {
+                bubbles: true,
+                composed: true,
+                detail: response
+              }));
+            }.bind(this),
+            function() {
+              this.dispatchEvent(new CustomEvent('error-on-patch-contact-detail', {
+                bubbles: true,
+                composed: true
+              }));
+            }.bind(this));
+        },
+        /**
+        * Put avatar of customer
+        */
+        putAvatar: function(params) {
+          var service = this._serviceAvatarPut({
+            host: this.host,
+            params: Object.assign({
+              'customer-id': this.customerId,
+              'avatar-id': this.avatarId
+            }),
+            body: params,
+            version: this.customersApiVersion,
+            requiredToken: this.requiredToken
+          });
+
+          service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse());
+              this.set('avatar', response);
+              this.dispatchEvent(new CustomEvent('put-avatar', {
+                bubbles: true,
+                composed: true,
+                detail: response
+              }));
+            }.bind(this),
+            function() {
+              this.dispatchEvent(new CustomEvent('error-on-put-avatar', {
+                bubbles: true,
+                composed: true
+              }));
+            }.bind(this));
+        },
+        /**
+        * Get customer addresses
+        */
+        getCustomerAdresses: function(params) {
+          var service = this._serviceCustomerAddresses({
+            host: this.host,
+            params: Object.assign({
+              'customer-id': this.customerId,
+            }, params),
+            version: this.customersApiVersion,
+            requiredToken: this.requiredToken
+          });
+
+          service.generateRequest().then(
+            function() {
+              var response = this._parseResponse(service.getLastResponse());
+              this.set('customerAddresses', response);
+              this.dispatchEvent(new CustomEvent('set-customer-addresses', {
+                bubbles: true,
+                composed: true,
+                detail: response
+              }));
+            }.bind(this),
+            function() {
+              this.dispatchEvent(new CustomEvent('error-on-get-customer-addresses', {
+                bubbles: true,
+                composed: true
+              }));
+            }.bind(this));
+        },
+        /**
+        * Service Loans
+        * /customers/v0/customers
+        */
+        _serviceCustomers: function(params) {
+          return new BGADPCustomers.customers.get(params);
+        },
+        /**
+        * Service Loans
+        * /customers/{customer-id}/
+        */
+        _serviceCustomerDetail: function(params) {
+          return new BGADPCustomers.customers.customer.get(params);
+        },
+        /**
+        * Service Loans
+        * /customers/{customer-id}/contact-details/
+        */
+        _serviceCustomerContacts: function(params) {
+          var service = new BGADPCustomers.customers.customer.contactDetails.get(params);
+          this._addSignListener(service);
+          return service;
+        },
+        /**
+        * Service Loans
+        * /customers/{customer-id}/contact-details/{contact-detail-id}
+        */
+        _serviceContactDetail: function(params) {
+          return new BGADPCustomers.customers.customer.contactDetails.contactDetail.get(params);
+        },
+        /**
+        * Service Loans
+        * /customers/{customer-id}/contact-details/{contact-detail-id}
+        */
+        _serviceContactDetailPatch: function(params) {
+          var service = new BGADPCustomers.customers.customer.contactDetails.contactDetail.patch(params);
+          this._addSignListener(service);
+          return service;
+        },
+        /**
+        * Service customers avatar
+        * /customers/{customer-id}/avatars/{contact-detail-id}
+        */
+        _serviceAvatarPut: function(params) {
+          return new BGADPCustomers.customers.customer.avatars.avatar.put(params);
+        },
+        /**
+        * Service customers addresses
+        * /customers/{customer-id}/addresses
+        */
+        _serviceCustomerAddresses: function(params) {
+          var service = new BGADPCustomers.customers.customer.addresses.get(params);
+          this._addSignListener(service);
+          return service;
+        },
+      });
+    }(Polymer));
+  </script>
+</dom-module>

@@ -1,0 +1,42 @@
+{
+  "name": "cells-step",
+  "version": "3.2.7",
+  "description": "Provides common UI behavior for step-by-step operatives",
+  "keywords": [
+    "i18n",
+    "cells",
+    "step",
+    "ui",
+    "behavior"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.0",
+    "iron-collapse": "PolymerElements/iron-collapse",
+    "cells-i18n-behavior": "~10.2.0",
+    "cells-atom-button": "~9.0.0",
+    "cells-step-behavior": "~3.4.0",
+    "cells-icon-message": "~9.0.1"
+  },
+  "devDependencies": {
+    "cells-demo-helpers": "~0.2.1",
+    "cells-glomo-theme": "~5.6.9",
+    "cells-icons": "~9.0.1",
+    "cells-sass": "~2.0.1",
+    "cells-theme-base": "~9.0.1",
+    "coronita-icons": "~9.0.1",
+    "paper-button": "^1.0.14",
+    "iron-demo-helpers": "^1.2.5",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^4.0.0"
+  },
+  "main": [
+    "cells-step.html"
+  ],
+  "resolutions": {
+    "cells-i18n-behavior": "~10.2.0",
+    "webcomponentsjs": "^v1.0.19"
+  }
+}

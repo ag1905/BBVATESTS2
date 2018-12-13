@@ -1,0 +1,125 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../cells-i18n-behavior/cells-i18n-behavior.html"/>
+<link rel="import" href="../cells-st-button/cells-st-button.html"/>
+<link rel="import" href="../cells-atom-amount/cells-atom-amount.html"/>
+<link rel="import" href="cells-summary-view-styles.html"/>
+
+<!--
+# cells-summary-view
+
+A confirmation showing the operation total amount and a 'finish' button. It also can display legal terms link with showLegalTerms property.
+It can shows only the button if showAddition property is not setted.
+
+Example:
+
+```html
+<cells-summary-view
+    operation = "{
+      id: '1497536068763',
+      description: '123',
+      totalFees: {
+        amount: 15,
+        currency: 'MXN'
+      },
+      fees: [
+        {
+          feeType: {
+            id: 'MANAGEMENT_FEE',
+            name: 'Management Fee'
+          },
+          feeAmount: {
+            amount: 15,
+            currency: 'MXN'
+          }
+        }
+      ],
+      status: {
+        id: 'SETTLED',
+        name: 'Settled'
+      },
+      amount: {
+        amount: 1515,
+        currency: 'MXN'
+      }
+    }"
+    currency-code="EUR"
+    local-currency="EUR"
+    buttonLabel="cells-summary-view-transfer"
+    showLegalTerms
+    showAddition>
+</cells-summary-view>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property                                | Description                | Default                          |
+|:-----------------------------------------------|:---------------------------|:--------------------------------:|
+| --cells-summary-view-bg-color                  | background color for :host | var(--bbva-white, #fff)          |
+| --cells-summary-view                           | empty mixin                | {}                               |
+| --cells-summary-view-title-color               | color for title            | var(--bbva-400, #BDBDBD)         |
+| --cells-summary-view-title                     | empty mixin                | {}                               |
+| --cells-summary-view-container                 | empty mixin                | {}                               |
+| --cells-summary-view-quantity-color            | color for quantity         | var(--bbva-core-blue, #004481)   |
+| --cells-summary-view-quantity                  | empty mixin                | {}                               |
+| --cells-summary-view-comission-color           | color for commision        | var(--bbva-600, #121212)         |
+| --cells-summary-view-comission                 | empty mixin                | {}                               |
+| --cells-summary-view-comission-last            | empty mixin                | {}                               |
+| --cells-summary-view-legal-terms-color         | color for legal terms      | var(--bbva-600, #121212)         |
+| --cells-summary-view-operations-total          | mixin applied at total     | {}                               |
+| --cells-summary-view-legal-terms               | empty mixin                | {}                               |
+| --cells-summary-view-submit-button             | empty mixin                | {}                               |
+| --cells-summary-view-legal-terms-text-color    | color for legal terms text | var(--bbva-medium-blue, #2A86CA) |
+| --cells-summary-view-legal-terms-text          | empty mixin                | {}                               |
+| --cells-summary-view-skeleton-color            | skeleton color             | var(--bbva-200, #E9E9E9)         |
+| --cells-summary-view-skeleton-background-color | skeleton background color  | var(--bbva-white, #FFF)          |
+
+@hero cells-summary-view.png
+@demo demo/index.html
+-->
+<dom-module id="cells-summary-view">
+  <template>
+    <style include="cells-summary-view-styles cells-summary-view-shared-styles"></style>
+    <div id="collapser" class="container" opened>
+      <template is="dom-if" if="[[_showSkeleton(showLoadingSkeleton,operation)]]">
+        <div class="cells-summary-view-operations-total">
+          <p class="cells-summary-view--title">[[t('cells-summary-view-total-operation', 'Total operation')]]</p>
+          <div class="skeleton">
+            <div class="row"></div>
+            <div class="row"></div>
+          </div>
+          <div class="animate-layer"></div>
+        </div>
+      </template>
+      <template is="dom-if" if="[[operation]]">
+        <div id="operationTotal" class="cells-summary-view-operations-total" hidden$="[[!showAddition]]">
+          <p class="cells-summary-view--title">[[t('cells-summary-view-total-operation', 'Total operation')]]</p>
+          <cells-atom-amount
+            amount="[[operation.amount.amount]]"
+            currency-code="[[operation.amount.currency]]"
+            local-currency="[[localCurrency]]"
+            class="amount-huge cells-summary-view--quantity">
+          </cells-atom-amount>
+          <template is="dom-repeat" items="[[operation.fees]]">
+            <p class="cells-summary-view--commission">
+              ([[t('cells-summary-view-mangement-fees', 'Management Fees ...')]]
+              <cells-atom-amount
+                amount="[[item.feeAmount.amount]]"
+                currency-code="[[item.feeAmount.currency]]"
+                local-currency="[[localCurrency]]"></cells-atom-amount>)
+            </p>
+          </template>
+        </div>
+      </template>
+      <cells-st-button class="secondary size-m cells-summary-view--submit-button" on-click="_onButtonPressed">
+        <button>[[t(buttonLabel, 'Continue')]]</button>
+      </cells-st-button>
+      <p class="cells-summary-view--legal-terms" hidden$="[[!showLegalTerms]]">
+        [[t('cells-summary-view-confirm-acept', 'To confirm I accept')]]
+        <a href="#" class="cells-summary-view--legal-terms--text" on-click="_seeLegalTerms">[[t('cells-summary-view-legal-terms', 'Legal Conditions')]]</a>
+      </p>
+    </div>
+  </template>
+  <script src="cells-summary-view.js"></script>
+</dom-module>

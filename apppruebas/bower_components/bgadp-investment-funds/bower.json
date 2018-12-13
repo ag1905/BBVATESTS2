@@ -1,0 +1,27 @@
+{
+  "name": "bgadp-investment-funds",
+  "description": "BGADP Data provider 'bgadp-investment-funds' importer",
+  "version": "1.1.5",
+  "main": "bgadp-investment-funds.html",
+  "ignore": [
+    "**/.*"
+  ],
+  "keywords": [
+    "data",
+    "provider",
+    "dp",
+    "data provider",
+    "xhr",
+    "ajax",
+    "api",
+    "global api",
+    "bgadp-investment-funds"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.8.0"
+  },
+  "devDependencies": {
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0"
+  }
+}

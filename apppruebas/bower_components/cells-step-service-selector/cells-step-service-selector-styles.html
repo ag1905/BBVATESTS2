@@ -1,0 +1,63 @@
+<dom-module id="cells-step-service-selector-styles"><template><style>
+:host {
+  display: block;
+  --iron-collapse-transition-duration: 600ms; }
+  :host .full {
+    width: 100%;
+    opacity: 1;
+    transition: .2s;
+    transition: .3s ease-out; }
+
+:host .filled cells-avatar-item {
+  --cells-avatar-item-list-info: { margin: 0.5rem 0 0; font-size: 14px; font-weight: 500; color: #fff; }; }
+
+:host .center {
+  text-align: center;
+  width: 100%;
+  display: block; }
+
+:host .searcher {
+  visibility: hidden;
+  opacity: 0;
+  --cells-avatar-item: { -webkit-transform: translateY(100vh); transform: translateY(100vh); };
+  --cells-avatar-item-first: { transition-delay:.0s; -webkit-transition-delay:.0s; };
+  --cells-avatar-item-second: { transition-delay:.15s; -webkit-transition-delay:.15s; };
+  --cells-avatar-item-third: { transition-delay:.2s; -webkit-transition-delay:.2s; };
+  --cells-avatar-item-fourth: { transition-delay:.25s; -webkit-transition-delay:.25s; };
+  --cells-avatar-item-fifth: { transition-delay:.3s; -webkit-transition-delay:.3s; };
+  --cells-avatar-item-sixth: { transition-delay:.35s; -webkit-transition-delay:.35s; };
+  --cells-avatar-item-seventh: { transition-delay:.4s; -webkit-transition-delay:.4s; };
+  --cells-avatar-item-eighth: { transition-delay:.45s; -webkit-transition-delay:.45s; }; }
+
+:host([searching]) .full {
+  margin-top: 0px;
+  opacity: 0;
+  height: 0; }
+
+:host([searching]) .searcher {
+  visibility: visible;
+  opacity: 1;
+  --cells-avatar-item: { transition: .05s ease-in-out; -webkit-transition: .3s ease-in-out; -webkit-transform: translateY(0); transform: translateY(0); }; }
+
+.shared {
+  background: var(--cells-step__shared-active-searcher-bg-searching, #fff); }
+  .shared cells-molecule-input[disabled] {
+    background-color: var(--bbva-100, #f4f4f4); }
+  .shared cells-molecule-input {
+    margin: 0 30px 30px;
+    background-color: var(--bbva-white, #fff);
+    transition: background .5s ease-in; }
+  .shared--searching-active {
+    background: var(--cells-step__shared-active-searcher-bg-searching-active, #f4f4f4);
+    padding: 10px 30px 21px;
+    margin-bottom: 20px;
+    transition: background .5s ease-in; }
+    .shared--searching-active cells-molecule-input {
+      margin: 0;
+      --cells-molecule-input-background-color: var(--bbva-white, #FFFFFF);
+      --cells-st-button-transparent: { color: var(--bbva-400); }; }
+
+cells-step-searcher {
+  --cells-step__shared-active-searcher: { margin: 0; }; }
+
+</style></template></dom-module>

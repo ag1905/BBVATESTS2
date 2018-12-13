@@ -1,0 +1,57 @@
+<dom-module id="cells-left-swipe-action-styles"><template><style>
+:host {
+  display: block;
+  font-family: var(--cells-fontDefault, --fontDefault);
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+:host {
+  position: relative;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  @apply (--cells-left-swipe-action); }
+
+.swipe-underlay {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  background: var(--cells-left-swipe-action-underlay-background, #5BBEFF);
+  @apply (--cells-left-swipe-action-swipe-underlay); }
+
+.swipe-content {
+  width: 100%;
+  @apply (--cells-left-swipe-action-swipe-content); }
+
+.cubic-bezier {
+  transition: -webkit-transform 0.5s cubic-bezier(0.1, 0.7, 0.1, 1) 0.05s;
+  transition: transform 0.5s cubic-bezier(0.1, 0.7, 0.1, 1) 0.05s;
+  transition: transform 0.5s cubic-bezier(0.1, 0.7, 0.1, 1) 0.05s, -webkit-transform 0.5s cubic-bezier(0.1, 0.7, 0.1, 1) 0.05s;
+  @apply (--cells-left-swipe-action-cubic-bezier); }
+
+.shadow {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  @apply (--cells-left-swipe-action-shadow); }
+
+#content {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  @apply (--cells-left-swipe-action-content); }
+
+</style></template></dom-module>

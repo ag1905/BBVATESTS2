@@ -1,0 +1,426 @@
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../cells-product-format-behavior/cells-product-format-behavior.html" />
+<link rel="import" href="../cells-dm-global-apis-accounts/cells-dm-global-apis-accounts.html" />
+<link rel="import" href="../cells-moment-import/cells-moment-import.html">
+<!--
+# glomo-account-summary-dm
+
+Datamanager of account summary
+
+Example:
+```html
+<glomo-account-summary-dm></glomo-account-summary-dm>
+```
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-account-summary-dm">
+  <template>
+    <cells-dm-global-apis-accounts id="dm"
+      host="[[host]]"
+      account-id="[[productId]]"
+      account="{{_account}}"
+      accounts-api-version="[[accountsApiVersion]]"
+      api-aggregator-api-version="[[apiAggregatorApiVersion]]"
+      required-token="[[requiredToken]]"
+      native="[[native]]">
+    </cells-dm-global-apis-accounts>
+  </template>
+</dom-module>
+<script>
+(function() {
+  'use strict';
+  /*global moment*/
+
+  Polymer({
+
+    is: 'glomo-account-summary-dm',
+
+    behaviors: [
+      CellsBehaviors.CellsProductFormatBehavior
+    ],
+
+    properties: {
+      /**
+       * Chosen host to make requests to. Check providers.
+       * @type {String}
+       */
+      host: {
+        type: String
+      },
+      /**
+      * Native request config
+      */
+      native: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Account Id, of account selected
+       * @type {String}
+       */
+      productId: {
+        type: String,
+        notify: true
+      },
+      /**
+       * Account selected
+       * @type {Object}
+       */
+      account: {
+        type: Object,
+        notify: true,
+        computed: '_parseAccountResponse(_account)'
+      },
+      /**
+       * Account selected
+       * @type {Object}
+       */
+      _account: {
+        type: Object
+      },
+      /**
+       * Card cached
+       * @type {Booelan}
+       */
+      accountCached: Boolean,
+      /**
+       * Short/Full method
+       * @type {Booelan}
+       */
+      short: {
+        type: Boolean,
+        value: true
+      },
+      /**
+       * More info of card
+       * @type {Array}
+       */
+      moreInfo: {
+        type: Array,
+        value: function() {
+          return [];
+        },
+        notify: true
+      },
+      /**
+       * Show account description
+       * @type {Boolean}
+       */
+      description: {
+        type: Boolean,
+        value: true
+      },
+      /**
+       * Show account participants
+       * @type {Boolean}
+       */
+      participants: {
+        type: Boolean,
+        value: true
+      },
+      /**
+       * Locale to format product
+       * @type {String}
+       */
+      locale: String,
+      /**
+      * Accounts API version
+      * @type {String}
+      */
+      accountsApiVersion: {
+        type: String,
+        value: '0'
+      },
+      /**
+      * Api agreggator API version
+      * @type {String}
+      */
+      apiAggregatorApiVersion: {
+        type: String,
+        value: '0'
+      },
+      /**
+       * Show opening date
+       * @type {Boolean}
+       */
+      openingDate: {
+        type: Boolean
+      },
+      /**
+      * requiredToken, 'jwt' or 'tsec' or empty
+      */
+      requiredToken: {
+        type: String,
+        value: 'tsec'
+      },
+      /**
+       * Account model response
+       * @type Object
+       */
+      accountResponseModel: {
+        type: Object
+      }
+    },
+
+    /**
+     * Reset account Id
+     */
+    reset: function() {
+      this.set('productId', '');
+    },
+    /**
+     * Get acocunt detail
+     */
+    getProduct: function() {
+      this.set('accountCached', !!(this.account && Object.keys(this.account).length));
+      this[(this.short) ? 'getAccountDetailShort' : 'getAccountDetailFull']();
+    },
+    /**
+     * Get account detail
+     */
+    getAccountDetailShort: function() {
+      this.$.dm.getAccount({ expand: 'indicators,related-contracts,customized-formats,holds' });
+    },
+    /**
+     * Get account
+     */
+    getAccountDetailFull: function() {
+      this.$.dm.getAccount({ expand: 'indicators,related-contracts,customized-formats,participants' });
+    },
+    /**
+     * Parse data
+     */
+    _parseAccountResponse: function(account) {
+      if (!this.short) {
+        this.set('moreInfo', this._generateMoreInfo(account));
+      } else {
+        this.fire('account-response-success', account);
+      }
+      return account;
+    },
+
+    /**
+     * Get participants account
+     */
+    _getAccountParticipants: function() {
+      this.$.dm.getAccount({ expand: 'participants' });
+    },
+    /**
+     * Generate more info by account
+     */
+    _generateMoreInfo: function(account) {
+      if (this.accountResponseModel !== undefined) {
+        return [ {
+          title: this.accountResponseModel.title,
+          items: this._generateModelItems(this.accountResponseModel.items, account)
+        } ];
+      }
+      var moreInfo = [
+        {
+          title: 'cells-product-more-info-general',
+          items: [{
+            key: 'cells-product-more-info-account-type',
+            value: account.accountType && account.accountType.name
+          },
+          {
+            key: 'cells-product-more-info-account-number',
+            value: this._parseAccountNumber(account.number),
+            label: true,
+            payload: this._parseAccountNumber(account.number)
+          }]
+        } ];
+
+      if (this.description) {
+        moreInfo[0].items.splice(1, 0, {
+          key: 'cells-product-more-info-description',
+          value: account.title && account.title.name
+        });
+      }
+
+      if (account.formats && account.formats.length) {
+        var clabeFormat = this._getClabeFormat(account.formats);
+        if (clabeFormat) {
+          moreInfo[0].items.push({
+            key: 'cells-product-more-info-account-clabe',
+            label: true,
+            value: this._formatProduct(clabeFormat.number, 'clabe')
+          });
+        }
+      }
+
+      if (account.customizedFormats && account.customizedFormats.length) {
+        account.customizedFormats.forEach(function(el) {
+          moreInfo[0].items.push(this._getCustomizedFormat(el));
+        }.bind(this));
+      }
+
+      if (this.openingDate) {
+        moreInfo[0].items.push({
+          key: 'cells-product-more-info-opening-date',
+          value: (this._parseDate(account.openingDate))
+        });
+      }
+
+      if (account.relatedContracts && account.relatedContracts.length) {
+        moreInfo.push(this._generateRelatedContracts(account.relatedContracts));
+      }
+
+      if (account.participants && account.participants.length && this.participants) {
+        moreInfo.push({
+          title: 'cells-product-more-info-participants',
+          items: this._generateParticipants(account.participants)
+        });
+      }
+
+      return moreInfo;
+    },
+
+    /**
+     * Generate customized formats
+     */
+
+    _getCustomizedFormat: function(customizedFormat) {
+      switch (customizedFormat.customizedFormatId) {
+        case 'SIMPLE_ACCOUNT':
+          return {
+            key: 'cells-product-more-info-account-simple',
+            value: customizedFormat.value
+          };
+        case 'SPEI':
+          return {
+            key: 'cells-product-more-info-account-spei',
+            value: customizedFormat.value,
+            label: true
+          };
+        case 'CCI':
+          return {
+            key: 'cells-product-more-info-account-cci',
+            value: this._formatProduct(customizedFormat.value, 'interbankaccountcode'),
+            textInfo: 'cells-product-more-info-account-cci-info',
+            iconInfo: 'coronita:info',
+            label: true,
+            payload: this._parseAccountNumber(customizedFormat.value)
+          };
+        case 'REMESA':
+          return {
+            key: 'cells-product-more-info-account-remesa',
+            value: this._formatProduct(customizedFormat.value, 'remittanceaccount')
+          };
+      }
+    },
+
+    _getClabeFormat: function(formats) {
+      return formats.find(function(format) {
+        return format.numberType.id === 'CLABE';
+      });
+    },
+    /**
+     * Generate related contracts
+     */
+    _generateRelatedContracts: function(relateds) {
+      relateds = relateds || [];
+      return {
+        title: 'cells-product-more-info-related-contracts',
+        items: relateds.map(function(contract) {
+          return {
+            key: 'cells-product-more-info-related-contract-' + contract.product.id.toLowerCase(),
+            value: this._parseAccountNumber(contract.number),
+            label: true,
+            payload: contract.number
+          };
+        }, this)
+      };
+    },
+    /**
+     * Generate participants list
+     */
+    _generateParticipants: function(participants) {
+      var participantsTmp = [];
+      participants = participants || [];
+
+      var holder = participants.find(function(participant) {
+        return participant.participantType.id === 'HOLDER';
+      });
+
+      if (holder) {
+        participantsTmp.push({
+          key: 'cells-product-more-info-holder',
+          value: holder.firstName + ' ' + holder.lastName
+        });
+      }
+
+      participants.forEach(function(participant) {
+        if (participant.participantType.id !== 'HOLDER') {
+          participantsTmp.push({
+            key: 'cells-product-more-info-authorized',
+            value: participant.firstName + ' ' + participant.lastName
+          });
+        }
+      }, this);
+
+      return participantsTmp;
+    },
+    /**
+     * Error handler
+     */
+    _errorHandler: function(error) {},
+    /**
+     * Parse account number ()
+     */
+    _parseAccountNumber: function(number) {
+      return number ? this._formatProduct(number, 'account') : undefined;
+    },
+    /**
+     * Edit alias, generate request
+     */
+    _findFirstRelatedAccount: function(related) {
+      return related.find(function(item) {
+        return item.product.id === 'ACCOUNTS';
+      });
+    },
+    /**
+     * Manage reponse on edit alias account success
+     */
+    _onEditAliasSuccess: function(payload) {
+      if ((((payload || {}).request || {}).xhr || {}).status === 200) {
+        this.getAccountDetailShort();
+      }
+    },
+    /**
+     * Parse date
+     */
+    _parseDate: function(date) {
+      return date ? moment(date).format('DD MM YYYY') : undefined;
+    },
+    /**
+     * Generate model account items
+     */
+    _generateModelItems: function(model, data) {
+      return model.reduce((acc, item)=>{
+        let parsed = {}; let aliasSplited;
+        switch (item.type) {
+          case 'textInfo':
+            parsed[item.type] = item.key.concat('-', this.get(item.field, data).toLowerCase());
+            break;
+          case 'labelCurrency':
+            parsed.textInfo = 'cells-amount-behavior-currency-'.concat(this.get(item.field, data));
+            break;
+          case 'splitAlias':
+            aliasSplited = this.get(item.field, data).replace(')', '').split('(');
+            acc.push({key: 'cells-product-more-info-account-branch', value: aliasSplited[0].trim()});
+            parsed.value = aliasSplited[1].trim();
+            break;
+          default:
+            parsed.value = this.get(item.field, data);
+        }
+        Object.keys(item).filter(att=>!['type', 'value', 'textInfo', 'field'].includes(att)).forEach(att=>{
+          parsed[att] = item[att];
+        });
+        acc.push(parsed);
+        return acc;
+      }, []);
+    }
+  });
+}());
+</script>

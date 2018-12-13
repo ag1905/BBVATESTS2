@@ -1,0 +1,19 @@
+{
+  "cells-credentials-form-forgotten-pwd": "Did you forget your access key?",
+  "cells-credentials-form-button-login": "Login",
+  "cells-credentials-form-greeting": "Hi",
+  "cells-credentials-form-user-id": "Username",
+  "cells-credentials-form-user-password": "Password",
+  "cells-credentials-form-user-document-type": "Document Type",
+  "cells-credentials-form-change-user": "Change user",
+  "cells-credentials-form-new-user": "You are not an user.",
+  "cells-credentials-form-register": "Register",
+  "cells-credentials-form-user-id-clear-icon": "Clear field",
+  "cells-credentials-form-user-password-toggle-icon": "Show/hide password",
+  "cells-credentials-form-user-password-clear-icon": "Clear field",
+  "cells-rut-error-message": "RUT contains erroneous characters",
+  "cells-mx-phone-error-message": "Cell phone number contains wrong characters",
+  "cells-mx-password-error-message": "_Character can not be repeated more than 3 times",
+  "cells-credentials-form-generic-error-message": "Field contains wrong characters",
+  "cells-credentials-form-min-characters-error-message": "Wrong characters amount"
+}

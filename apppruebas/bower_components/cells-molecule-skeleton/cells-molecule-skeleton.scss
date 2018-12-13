@@ -1,0 +1,168 @@
+@import "bower_components/cells-sass/main";
+
+
+:host(.is-noactive){
+  .skeleton-screen {
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    z-index: -10;
+    position: absolute;
+    transition: opacity 600ms ease-in-out, z-index 0ms 700ms ease-in-out;
+  }
+  @apply(--cells-molecule-skeleton-noactive);
+}
+.skeleton-screen {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  opacity: 1;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+  background-color: var(--cells-molecule-skeleton-background-primary,#fff);
+  @apply(--cells-molecule-skeleton-screen);
+
+
+}
+
+.skeleton-screen__header{
+  border-top:1px solid var(--cells-molecule-skeleton-screen-header,#fff);
+  background-color: var(--cells-molecule-skeleton-background-color,#F0F2EF);
+  @apply(--cells-molecule-skeleton-screen-header);
+}
+
+.skeleton-screen__repeat {
+  display: flex;
+  padding: 0.625rem 0.8rem;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--cells-molecule-skeleton-transparent,transparent);
+  animation: border-bottom 400ms 600ms ease-out forwards;
+  @apply(--cells-molecule-skeleton-screen-repeat);
+  .skeleton-screen__col,
+  .skeleton-screen__line {
+    flex: 1 0 auto;
+    display: flex;
+    &:last-child {
+      align-items: flex-end;
+      @apply(--cells-molecule-skeleton-screen-child);
+    }
+  }
+}
+
+.skeleton-screen__col {
+  flex-direction: column;
+  justify-content: center;
+  @apply(--cells-molecule-skeleton-screen-col);
+}
+
+.skeleton-screen__line {
+  flex-direction: row;
+  align-items: center;
+  @apply(--cells-molecule-skeleton-screen-line);
+  .skeleton-screen__step {
+    margin-bottom: 0;
+    margin-right: 1rem;
+  }
+}
+
+.skeleton-screen__step {
+  width: 0;
+  height: 16px;
+  background-color: rgb(229, 229, 229)
+  margin-bottom: 0.5rem;
+  animation: open 1.5s 800ms cubic-bezier(0, 0, 0.12, 0.99) forwards, pulse 4s 880ms ease-out infinite;
+  @apply(--cells-molecule-skeleton-screen-step);
+  &:last-child {
+    margin-bottom: 0;
+    @apply(--cells-molecule-skeleton-screen-last-child);
+  }
+}
+
+.skeleton-screen__step--step-1 {
+  max-width: rem(90px);
+  @apply(--cells-molecule-skeleton-step-1);
+}
+
+.skeleton-screen__step--step-2 {
+  max-width: rem(160px);
+  @apply(--cells-molecule-skeleton-step-2);
+}
+
+.skeleton-screen__step--step-3 {
+  max-width: rem(70px);
+  @apply(--cells-molecule-skeleton-step-3);
+}
+
+.skeleton-screen__step--step-4 {
+  max-width: rem(30px);
+  height: 12px;
+  @apply(--cells-molecule-skeleton-step-4);
+}
+
+.skeleton-screen__step--step-5 {
+  max-width: rem(160px);
+  height: 24px;
+  @apply(--cells-molecule-skeleton-step-5);
+}
+
+.skeleton-screen__step--step-6 {
+  max-width: rem(60px);
+  height: 40px;
+  @apply(--cells-molecule-skeleton-step-6);
+}
+
+.skeleton-screen__step--step-7 {
+  max-width: rem(30px);
+  @apply(--cells-molecule-skeleton-step-7);
+}
+
+@keyframes border-bottom {
+  100% {
+    border-bottom-color: rgba(215, 215, 215, .5);
+  }
+}
+
+
+@keyframes open {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+
+@keyframes pulse {
+  0% {
+    background-color: rgb(229, 229, 229);
+  }
+  30% {
+    background-color: rgb(229, 229, 229);
+  }
+  40% {
+    background-color: rgb(241, 241, 241);
+  }
+  50% {
+    background-color: rgb(229, 229, 229);
+  }
+  60% {
+    background-color: rgb(229, 229, 229);
+  }
+  70% {
+    background-color: rgb(241, 241, 241);
+  }
+  80% {
+    background-color: rgb(229, 229, 229);
+  }
+  100% {
+    background-color: rgb(229, 229, 229);
+  }
+}
+
+:host {
+  @apply(--cells-molecule-skeleton);
+}

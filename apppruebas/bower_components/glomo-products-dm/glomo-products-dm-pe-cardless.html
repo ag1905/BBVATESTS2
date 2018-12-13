@@ -1,0 +1,155 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../cells-products-behavior/cells-accounts-transforms-behavior.html">
+<link rel="import" href="../global-products-lists-behavior/global-products-lists-behavior.html" />
+<link rel="import" href="../cells-dm-global-apis-accounts/cells-dm-global-apis-accounts.html">
+
+<!--
+`<glomo-products-dm-pe-cardless>` description.
+
+Example:
+
+```html
+<glomo-products-dm-pe-cardless></glomo-products-dm-pe-cardless>
+```
+
+## Styling
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description     | Default        |
+|:----------------|:----------------|:--------------:|
+| --glomo-products-dm-pe-cardless  | empty mixin     | {}             |
+
+@demo demo/index.html
+-->
+<dom-module id="glomo-products-dm-pe-cardless">
+  <template>
+    <cells-dm-global-apis-accounts id="globalAccounts"
+      host="[[host]]"
+      accounts="{{accounts}}"
+      accounts-api-version="[[accountsApiVersion]]"
+      api-aggregator-api-version="[[apiAggregatorApiVersion]]"></cells-dm-global-apis-accounts>
+  </template>
+  <script>
+    (function() {
+
+      'use strict';
+
+      Polymer({
+
+        is: 'glomo-products-dm-pe-cardless',
+
+        behaviors: [
+          CellsBehaviors.AccountsTransforms,
+          CellsBehaviors.GlobalProductsListsBehavior
+        ],
+
+        properties: {
+          /**
+           * Host
+           * @type {String}
+           */
+          host: String,
+          /**
+           * Path
+           * @type {String}
+           */
+          path: String,
+          /**
+           * Account list
+           * @type {Array}
+           */
+          accounts: {
+            type: Array
+          },
+          /**
+           * Porducts
+           * @type {Array}
+           */
+          products: {
+            type: Array,
+            computed: 'setProducts(accounts)',
+            notify: true
+          },
+          /**
+          * Accounts API version
+          * @type {String}
+          */
+          accountsApiVersion: {
+            type: String,
+            value: '0'
+          },
+          /**
+          * Api agreggator API version
+          * @type {String}
+          */
+          apiAggregatorApiVersion: {
+            type: String,
+            value: '0'
+          }
+        },
+
+        reset: function() {
+          this.set('accounts', []);
+        },
+
+        getProducts: function() {
+          this.$.globalAccounts.getFullAccounts();
+        },
+
+        setProducts: function(accounts) {
+          accounts = accounts.items || accounts;
+          var products = this._parseAccounts(accounts);
+          this.fire('set-products-operative', products);
+          return products;
+        },
+
+        _formatAccounts: function(account, originalAccount, currency) {
+          var amount = this._getBalanceByCurrency(originalAccount.availableBalance.currentBalances, currency);
+          account.imgSrc = '';
+          account.primaryAmount = {
+            amount: amount.amount,
+            currency: amount.currency
+          };
+
+          var simpleNumber = this._getSimpleNumber(originalAccount);
+
+          if (simpleNumber) {
+            account.simpleNumber = simpleNumber;
+            account.description = null;
+          }
+
+          if (originalAccount.accountMobile) {
+            account.icon = 'glomo:mobile';
+          }
+
+          if (originalAccount.customizedFormats && originalAccount.customizedFormats.length) {
+            var isSpei = originalAccount.customizedFormats.find(function(customFormat) {
+              return customFormat.customizedFormatId === 'SPEI';
+            });
+
+            if (isSpei) {
+              account.icon = 'coronita:mobile';
+              account.isSpei = true;
+            }
+          }
+
+          if (!account.name) {
+            account.name = this._getProductName(originalAccount, 'cells-global-dashboard-account-description', 'Cuenta BBVA');
+          }
+
+          account.productType = 'ACCOUNTS';
+          account.contract = {
+            contractId: originalAccount.accountId,
+            number: originalAccount.number,
+            numberType: originalAccount.numberType,
+            contractType: {
+              id: 'ACCOUNT',
+              name: 'Accounts'
+            }
+          };
+        }
+      });
+    }());
+  </script>
+</dom-module>
