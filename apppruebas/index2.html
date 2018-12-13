@@ -1,0 +1,101 @@
+<!doctype html>
+
+<html lang="es-MX">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cells-salesforce-segments</title>
+  <!-- Place favicon.ico in the `app/` directory -->
+
+  <!-- Chrome for Android theme color -->
+  <meta name="theme-color" content="#303F9F">
+
+  <!-- Web Application Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Tile color for Win8 -->
+  <meta name="msapplication-TileColor" content="#3372DF">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="cells-salesforce-segments">
+  <link rel="icon" sizes="192x192" href="resources/images/touch/chrome-touch-icon-192x192.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="cells-salesforce-segments">
+  <link rel="apple-touch-icon" href="resources/images/touch/apple-touch-icon.png">
+
+  <!-- Tile icon for Win8 (144x144) -->
+  <meta name="msapplication-TileImage" content="resources/images/touch/ms-touch-icon-144x144-precomposed.png">
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild-->
+</head>
+
+<body class="fullbleed layout vertical loading">
+  <div id="splash" class="splash">
+    <img id="logo" class="logo logo--start" src="images/logo-bbva.svg" alt="BBVA" height="30">
+  </div>
+  <div id="app__content"></div>
+
+  <!-- for a11y purposes -->
+  <div id="announcer" aria-live="polite"></div>
+
+  <!-- BEGIN Salesforce DMP ControlTag for "BBVA" -->
+  <script class="kxct" data-id="su484iklv" data-timing="async" data-version="3.0" type="text/javascript">
+
+    let salesforceState =  window.localStorage.getItem('datalayer_bbvatest') ? JSON.parse(window.localStorage.getItem('datalayer_bbvatest')) : {"cardvisitcount":0};
+    window.datalayer_bbvatest = salesforceState;
+    console.log('======> BBVA DATA LAYER:', window.datalayer_bbvatest);
+    window.Krux||((Krux=function(){Krux.q.push(arguments)}).q=[]);
+    (function(){
+      var k=document.createElement('script');k.type='text/javascript';k.async=true;
+      k.src=(location.protocol==='https:'?'https:':'http:')+'//cdn.krxd.net/controltag/su484iklv.js';
+      var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(k,s);
+    }());
+
+
+  </script>
+  <!-- END Salesforce DMP ControlTag -->
+
+ <script class="kxint"  type="text/javascript">
+  window.Krux||((Krux=function(){Krux.q.push(arguments);}).q=[]);
+  (function(){
+    function retrieve(n){
+      var k= 'kx'+''+n, ls=(function(){
+        try {
+          return window.localStorage;
+        } catch(e) {
+          return null;
+        }
+      })();
+      if (ls) {
+          return ls[k] || '';
+      } else if (navigator.cookieEnabled) {
+          var m = document.cookie.match(k+'=([^;]*)');
+          return (m && unescape(m[1])) || '';
+      } else {
+          return '';
+      }
+    }
+    Krux.user = retrieve('user');
+    Krux.segments = retrieve('segs') ? retrieve('segs').split(',') : [];
+  })();
+</script>
+
+  <!-- build:js scripts/app-dist.js async -->
+  <script src="vendor/bowser.min.js"></script>
+  <script src="scripts/app-bootstrap.js"></script>
+  <script src="scripts/app.js" async></script>
+  <!-- endbuild-->
+</body>
+
+
+</html>
